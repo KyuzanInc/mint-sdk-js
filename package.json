@@ -1,20 +1,11 @@
 {
-  "name": "annapurna-sdk-js",
+  "name": "@kyuzan/annapurna-sdk-js",
+  "description": "Annapurna NFT Platform Client SDK",
   "version": "0.1.0",
-  "description": "annapurnaのクライアントSDK",
-  "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "rollup --config",
-    "watch": "todo",
-    "type-check": "tsc --pretty --noEmit",
-    "format": "prettier --write **/*.{ts}",
-    "lint": "eslint src --ext ts",
-    "lint:fix": "eslint src --ext ts --fix"
+  "dependencies": {
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-typescript": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
@@ -28,7 +19,22 @@
     "webpack": "^5.24.2",
     "webpack-cli": "^4.5.0"
   },
-  "dependencies": {
-    "@rollup/plugin-commonjs": "^17.1.0"
-  }
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rollup --config",
+    "format": "prettier --write **/*.{ts}",
+    "lint": "eslint src --ext ts",
+    "lint:fix": "eslint src --ext ts --fix",
+    "type-check": "tsc --pretty --noEmit",
+    "watch": "todo"
+  },
+  "repository": "https://github.com/KyuzanInc/annapurna-sdk-js",
+  "homepage": "https://github.com/KyuzanInc/annapurna-sdk-js",
+  "keywords": ["NFT"]
 }
