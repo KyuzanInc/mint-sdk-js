@@ -1,12 +1,14 @@
-class Hoo {
-  constructor() {
+import { hoo } from './Hoo'
+class AnnapurnaSDK {
+  private constructor() {
     console.log('aaaa')
+  }
+
+  public initialize() {
+    console.log(hoo)
+
+    return new Promise((resolve) => setTimeout(resolve, 2000))
   }
 }
 
-export const hoo = '1'
-;(() => {
-  console.log(hoo)
-})()
-
-export default Hoo
+export default AnnapurnaSDK

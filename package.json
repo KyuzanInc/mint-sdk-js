@@ -7,24 +7,28 @@
     "dist"
   ],
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack -w",
+    "build": "rollup --config",
+    "watch": "todo",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write **/*.{ts}",
     "lint": "eslint src --ext ts",
     "lint:fix": "eslint src --ext ts --fix"
   },
-  "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "fork-ts-checker-webpack-plugin": "^6.1.0",
     "prettier": "^2.2.1",
+    "rollup": "^2.40.0",
     "ts-loader": "^8.0.17",
     "typescript": "^4.2.2",
     "webpack": "^5.24.2",
     "webpack-cli": "^4.5.0"
+  },
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^17.1.0"
   }
 }
