@@ -1,6 +1,6 @@
 class AnnapurnaSDK {
   private constructor() {
-    console.log('test')
+    console.log('testssddddds')
   }
 }
 
