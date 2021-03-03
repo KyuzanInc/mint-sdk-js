@@ -24,9 +24,10 @@
   },
   "scripts": {
     "dev": "run-p watch:*",
-    "build:develop": "node build.ts development",
-    "build:production": "npm run typeCheck && node build.ts production",
+    "build:develop": "npm run clean && node build.ts development",
+    "build:production": "npm run clean && npm run typeCheck && node build.ts production",
     "typeCheck": "tsc -noEmit --project tsconfig.json",
+    "clean": "rimraf dist",
     "watch:typeCheck": "tsc --watch -noEmit --project tsconfig.json",
     "watch:build": "node build.ts development w",
     "format": "prettier --write **/*.{ts}",
