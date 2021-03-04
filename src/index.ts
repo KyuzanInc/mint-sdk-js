@@ -1,3 +1,4 @@
+import { Token } from './types/Token'
 import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
 import * as ethers from 'ethers'
@@ -102,6 +103,13 @@ export class AnnapurnaSDK {
     const { data } = await this.axios.get('item', { params: { itemId } })
     const item = data.data as Item
     return item
+  }
+
+  public getItemsByAddress = async (address: string) => {
+    const { data } = await this.axios.get('tokensByAddress', {
+      params: { address },
+    })
+    return data.data as Token[]
   }
 }
 
