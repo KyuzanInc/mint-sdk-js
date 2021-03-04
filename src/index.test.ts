@@ -2,13 +2,25 @@ import { BigNumber } from 'ethers'
 import { AnnapurnaSDK } from '.'
 // import axios from 'axios'
 
-jest.mock('axios')
+// jest.mock('axios')
 
 test('should initialize', async () => {
   // AxiosのMock
-  // const sdk = await AnnapurnaSDK.initialize('test', 'testToken', 4, {
-  //   fortmatic: { key: 'test' },
-  // })
+  const sdk = await AnnapurnaSDK.initialize(
+    'test',
+    'testToken',
+    4,
+    {
+      fortmatic: { key: 'test' },
+    },
+    {
+      backendUrl: 'http://localhost:5500/annapurna-production/us-central1/',
+      jsonRPCUrl: 'http://127.0.0.1:8545/',
+    }
+  )
+  console.log('ddd')
+  console.log(await sdk.getItemById('w'))
+  expect(0).toEqual(0)
 })
 
 test('should parse ether', () => {

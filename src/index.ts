@@ -1,6 +1,7 @@
 import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
 import * as ethers from 'ethers'
+import { Item } from './types/Item'
 
 type NetworkId = 1 | 4
 
@@ -37,7 +38,7 @@ export class AnnapurnaSDK {
     private projectId: string,
     private accessToken: string,
     private networkId: NetworkId,
-    private infuraProvider: ethers.providers.JsonRpcProvider,
+    private provider: ethers.providers.JsonRpcProvider,
     private axios: AxiosInstance
   ) {}
 
@@ -46,8 +47,10 @@ export class AnnapurnaSDK {
     accessToken: string,
     networkId: NetworkId,
     walletSetting: WalletSetting,
+    // for Developing SDK
     devOption?: {
       backendUrl: string
+      jsonRPCUrl: string
     }
   ) => {
     // infuraのURLはSDKからか
@@ -56,15 +59,17 @@ export class AnnapurnaSDK {
     const axios = Axios.create({
       baseURL: backendBaseUrl,
       headers: {
-        annapruna_access_token: accessToken,
+        'annapurna-access-token': accessToken,
       },
     })
     const { data } = await axios.get('/projectConfig')
-    const infuraURL: string =
-      networkId === 1
+    const providerURL: string =
+      devOption?.jsonRPCUrl ??
+      (networkId === 1
         ? data.data.infuraURL.main.wss
-        : data.data.infuraURL.rinkeby.wss
-    const infuraProvider = new ethers.providers.JsonRpcProvider(infuraURL)
+        : data.data.infuraURL.rinkeby.wss)
+    console.log(providerURL)
+    const provider = new ethers.providers.JsonRpcProvider(providerURL)
 
     // TODO: Signerをどうするか
     //
@@ -73,20 +78,30 @@ export class AnnapurnaSDK {
       projectId,
       accessToken,
       networkId,
-      infuraProvider,
+      provider,
       axios
     )
     return sdk
   }
 
   public waitForTransaction = async (txHash: string) => {
-    await this.infuraProvider.waitForTransaction(txHash)
+    await this.provider.waitForTransaction(txHash)
   }
 
-  public getBidItems = async () => {
-    // TODO
-    const { data } = await this.axios.get('/getItems')
-    console.log(data)
+  public getItems = async (option: {
+    onlyOnSale: boolean
+    onlyNoOnSale: boolean
+  }) => {
+    const { data } = await this.axios.get('/items')
+    console.log(option)
+    const items = data.data
+    return items as Item[]
+  }
+
+  public getItemById = async (itemId: string) => {
+    const { data } = await this.axios.get('item', { params: { itemId } })
+    const item = data.data as Item
+    return item
   }
 }
 
