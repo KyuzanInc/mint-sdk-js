@@ -3,6 +3,7 @@ import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
 import * as ethers from 'ethers'
 import { Item } from './types/Item'
+import { ItemLog } from './types/ItemLog'
 
 type NetworkId = 1 | 4
 
@@ -105,7 +106,13 @@ export class AnnapurnaSDK {
     return item
   }
 
-  public getItemsByAddress = async (address: string) => {
+  public getItemLogs = async (itemId: string) => {
+    const { data } = await this.axios.get('itemLogs', { params: { itemId } })
+    const logs = data.data as ItemLog
+    return logs
+  }
+
+  public getTokensByAddress = async (address: string) => {
     const { data } = await this.axios.get('tokensByAddress', {
       params: { address },
     })

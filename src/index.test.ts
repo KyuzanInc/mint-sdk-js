@@ -18,9 +18,7 @@ test('should initialize', async () => {
       jsonRPCUrl: 'http://127.0.0.1:8545/',
     }
   )
-  console.log(
-    await sdk.getItemsByAddress('0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec')
-  )
+  console.log(await sdk.getItemLogs('2'))
   expect(0).toEqual(0)
 })
 
