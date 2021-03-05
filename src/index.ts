@@ -35,8 +35,6 @@ export class AnnapurnaSDK {
     return ethers.utils.formatEther(bg)
   }
 
-  private walletProvider: ethers.providers.JsonRpcProvider | null = null
-
   private constructor(
     private projectId: string,
     private accessToken: string,
@@ -83,8 +81,6 @@ export class AnnapurnaSDK {
       contractShopAddress?: string
     }
   ) => {
-    // infuraのURLはSDKからか
-    // functionsからABIとAddressをFetch(RinkebyとMainどちらもあるとする)
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
     const axios = Axios.create({
       baseURL: backendBaseUrl,
@@ -174,12 +170,8 @@ export class AnnapurnaSDK {
     await this.provider.waitForTransaction(txHash)
   }
 
-  public getItems = async (option: {
-    onlyOnSale: boolean
-    onlyNoOnSale: boolean
-  }) => {
+  public getItems = async () => {
     const { data } = await this.axios.get('/items')
-    console.log(option)
     const items = data.data
     return items as Item[]
   }
@@ -211,13 +203,13 @@ export class AnnapurnaSDK {
   }
 
   public sendTxBid = async (itemId: string) => {
-    // wallet connect check
-    if (!this.walletProvider) {
+    if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
+
     const item = await this.getItemById(itemId)
 
-    const signer = this.walletProvider.getSigner()
+    const signer = this.getLoginWallet().getSigner()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -246,12 +238,12 @@ export class AnnapurnaSDK {
 
   public sendTxMakeSuccessfulBid = async (itemId: string) => {
     // wallet connect check
-    if (!this.walletProvider) {
+    if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
     const item = await this.getItemById(itemId)
 
-    const signer = this.walletProvider.getSigner()
+    const signer = this.getLoginWallet().getSigner()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -273,12 +265,12 @@ export class AnnapurnaSDK {
 
   public sendTxBuyItem = async (itemId: string) => {
     // wallet connect check
-    if (!this.walletProvider) {
+    if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
     const item = await this.getItemById(itemId)
 
-    const signer = this.walletProvider.getSigner()
+    const signer = this.getLoginWallet().getSigner()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -324,6 +316,10 @@ export class AnnapurnaSDK {
       this.metamaskProvider.on('disconnect', callback)
     }
     this.fmProvider.on('disconnect', callback)
+  }
+
+  private getLoginWallet = () => {
+    return this.metamaskProvider ?? this.fmProvider
   }
 }
 
