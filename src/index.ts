@@ -2,13 +2,14 @@ import { Token } from './types/Token'
 import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
 import * as ethers from 'ethers'
+import Fortmatic from 'fortmatic'
 import { Item } from './types/Item'
 import { ItemLog } from './types/ItemLog'
 import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
 
 type WalletSetting = {
-  fortmatic?: {
+  fortmatic: {
     key: string
   }
 }
@@ -35,9 +36,6 @@ export class AnnapurnaSDK {
   }
 
   private walletProvider: ethers.providers.JsonRpcProvider | null = null
-  private subscriberWalletChange: Array<(accounts: string[]) => any> = []
-  private subscriberConnect: Array<() => any> = []
-  private subscriberDisConnect: Array<() => any> = []
 
   private constructor(
     private projectId: string,
@@ -45,11 +43,32 @@ export class AnnapurnaSDK {
     private networkId: NetworkId,
     private provider: ethers.providers.JsonRpcProvider,
     private axios: AxiosInstance,
+    private fmProvider: ethers.providers.Web3Provider,
+    private metamaskProvider: ethers.providers.Web3Provider | null,
     private shopContract: {
       abi: any
       address: string
     }
-  ) {}
+  ) {
+    // for security
+    // ref: https://docs.ethers.io/v5/concepts/best-practices/
+    fmProvider.on('network', (_, oldNetwork) => {
+      // Whe n a Provider makes its initial connection, it emits a "network"
+      // event with a null oldNetwork along with the newNetwork. So, if the
+      // oldNetwork exists, it represents a changing network
+      if (oldNetwork) {
+        window.location.reload()
+      }
+    })
+
+    if (metamaskProvider) {
+      metamaskProvider.on('network', (_, oldNetwork) => {
+        if (oldNetwork) {
+          window.location.reload()
+        }
+      })
+    }
+  }
 
   public static initialize = async (
     projectId: string,
@@ -81,12 +100,26 @@ export class AnnapurnaSDK {
         : data.data.infuraURL.rinkeby.wss)
     const provider = new ethers.providers.JsonRpcProvider(providerURL)
 
+    const fmProvider = new ethers.providers.Web3Provider(
+      new Fortmatic(
+        walletSetting.fortmatic.key,
+        devOption?.jsonRPCUrl
+          ? {
+              rpcUrl: devOption.jsonRPCUrl,
+            }
+          : undefined
+      ).getProvider() as any
+    )
+
+    const metamaskProvider = (window as any).ethereum
+      ? new ethers.providers.Web3Provider((window as any).ethereum)
+      : null
+
     const contractShopAbi =
       devOption?.contractShopAbi ??
       (networkId === 1
         ? data.data.contract.shopContract.main.abi
         : data.data.contract.shopContract.rinkeby.abi)
-
     const contractShopAddress =
       devOption?.contractShopAddress ??
       (networkId === 1
@@ -98,6 +131,8 @@ export class AnnapurnaSDK {
       networkId,
       provider,
       axios,
+      fmProvider,
+      metamaskProvider,
       {
         abi: contractShopAbi,
         address: contractShopAddress,
@@ -106,40 +141,28 @@ export class AnnapurnaSDK {
     return sdk
   }
 
-  // TODO
-  public isWalletConnect = () => {
-    console.log(true)
+  public isWalletConnect = async () => {
+    if (this.metamaskProvider && this.metamaskProvider.provider.request) {
+      const accounts = await this.metamaskProvider.listAccounts()
+      return accounts.length > 0
+    } else {
+      return await (this.fmProvider.provider as any).user.isLoggedIn()
+    }
   }
 
-  // TODO
-  public connectWallet = async (wallet?: 'metamask' | 'fortmatic') => {
-    console.log(wallet)
-    // switch (wallet) {
-    //   case 'fortmatic':
-    //   case 'metamask':
-    // await window.ethereum.enable() // only for metamask
-    //
-    // }
-
-    // subscribeに通知するようにする
-
-    // ネットワークの変更を検知したら無条件でリロードさせてやる
-    // セキュリティー対策
-    // ref: https://docs.ethers.io/v5/concepts/best-practices/
-    // provider.on('network', (newNetwork, oldNetwork) => {
-    //     // Whe n a Provider makes its initial connection, it emits a "network"
-    //     // event with a null oldNetwork along with the newNetwork. So, if the
-    //     // oldNetwork exists, it represents a changing network
-    //     if (oldNetwork) {
-    //         window.location.reload();
-    //     }
-    // });
+  public connectWallet = async () => {
+    if (this.metamaskProvider && this.metamaskProvider.provider.request) {
+      await this.metamaskProvider.provider.request({
+        method: 'eth_requestAccounts',
+      })
+    } else {
+      await (this.fmProvider.provider as any).user.login()
+    }
   }
 
   // TODO
   public disconnectWallet = async () => {
     console.log('TODO')
-    // subscriberに通知するようにする
   }
 
   // TODO
@@ -281,15 +304,26 @@ export class AnnapurnaSDK {
   }
 
   public subscribeWalletChange = (callback: (accounts: string[]) => any) => {
-    this.subscriberWalletChange.push(callback)
+    if (this.metamaskProvider) {
+      this.metamaskProvider.on('accountsChanged', callback)
+    }
+    this.fmProvider.on('accountsChanged', callback)
   }
 
-  public subscribeConnect = (callback: () => any) => {
-    this.subscriberConnect.push(callback)
+  public subscribeConnect = (callback: (info: { chainId: number }) => any) => {
+    if (this.metamaskProvider) {
+      this.metamaskProvider.on('connect', callback)
+    }
+    this.fmProvider.on('connect', callback)
   }
 
-  public subscribeDisConnect = (callback: () => any) => {
-    this.subscriberDisConnect.push(callback)
+  public subscribeDisConnect = (
+    callback: (error: { code: number; message: string }) => any
+  ) => {
+    if (this.metamaskProvider) {
+      this.metamaskProvider.on('disconnect', callback)
+    }
+    this.fmProvider.on('disconnect', callback)
   }
 }
 
