@@ -9,6 +9,7 @@ const options = {
   minify: isProduction,
   bundle: true,
   target: 'es6',
+  format: 'esm',
   platform: 'browser',
   watch: argv[3] === 'w',
   sourcemap: !isProduction,

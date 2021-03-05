@@ -122,6 +122,18 @@ export class AnnapurnaSDK {
     // }
 
     // subscribeに通知するようにする
+
+    // ネットワークの変更を検知したら無条件でリロードさせてやる
+    // セキュリティー対策
+    // ref: https://docs.ethers.io/v5/concepts/best-practices/
+    // provider.on('network', (newNetwork, oldNetwork) => {
+    //     // Whe n a Provider makes its initial connection, it emits a "network"
+    //     // event with a null oldNetwork along with the newNetwork. So, if the
+    //     // oldNetwork exists, it represents a changing network
+    //     if (oldNetwork) {
+    //         window.location.reload();
+    //     }
+    // });
   }
 
   // TODO
