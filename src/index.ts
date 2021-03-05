@@ -96,11 +96,14 @@ export class AnnapurnaSDK {
     //   case 'fortmatic':
 
     // }
+
+    // subscribeに通知するようにする
   }
 
   // TODO
   public disconnectWallet = async () => {
     console.log('TODO')
+    // subscriberに通知するようにする
   }
 
   // TODO
@@ -122,6 +125,14 @@ export class AnnapurnaSDK {
     return items as Item[]
   }
 
+  // TODO
+  public getItemsByBidderAddress = async (address: string) => {
+    const { data } = await this.axios.get('getItemsByBidderAddress', {
+      params: { address },
+    })
+    return data.data as Item[]
+  }
+
   public getItemById = async (itemId: string) => {
     const { data } = await this.axios.get('item', { params: { itemId } })
     const item = data.data as Item
@@ -132,11 +143,6 @@ export class AnnapurnaSDK {
     const { data } = await this.axios.get('itemLogs', { params: { itemId } })
     const logs = data.data as ItemLog
     return logs
-  }
-
-  // TODO
-  public getBidItems = async (address: string) => {
-    console.log(address)
   }
 
   public getTokensByAddress = async (address: string) => {
