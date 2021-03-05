@@ -137,7 +137,7 @@ export class AnnapurnaSDK {
     return sdk
   }
 
-  public isWalletConnect = async () => {
+  public isLoggedIn = async () => {
     if (this.metamaskProvider && this.metamaskProvider.provider.request) {
       const accounts = await this.metamaskProvider.listAccounts()
       return accounts.length > 0
@@ -156,14 +156,27 @@ export class AnnapurnaSDK {
     }
   }
 
-  // TODO
   public disconnectWallet = async () => {
-    console.log('TODO')
+    if (await this.isLoggedIn()) {
+      const wallet = await this.getLoggedInWallet()
+      if (!wallet.provider.isMetaMask) {
+        await (wallet.provider as any).user.logout()
+      }
+    }
   }
 
-  // TODO
   public getWalletInfo = async () => {
-    console.log('TODO')
+    if (!(await this.isLoggedIn())) {
+      throw new Error('not LoggedId')
+    }
+
+    const wallet = await this.getLoggedInWallet()
+    const address = await wallet.listAccounts()
+    const balance = await wallet.getBalance(address[0])
+    return {
+      address,
+      balance,
+    }
   }
 
   public waitForTransaction = async (txHash: string) => {
@@ -203,13 +216,13 @@ export class AnnapurnaSDK {
   }
 
   public sendTxBid = async (itemId: string) => {
-    if (!(await this.isWalletConnect())) {
+    if (!(await this.isLoggedIn())) {
       throw new Error('Wallet is not connected')
     }
 
     const item = await this.getItemById(itemId)
-
-    const signer = this.getLoginWallet().getSigner()
+    const wallet = await this.getLoggedInWallet()
+    const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -238,12 +251,12 @@ export class AnnapurnaSDK {
 
   public sendTxMakeSuccessfulBid = async (itemId: string) => {
     // wallet connect check
-    if (!(await this.isWalletConnect())) {
+    if (!(await this.isLoggedIn())) {
       throw new Error('Wallet is not connected')
     }
     const item = await this.getItemById(itemId)
-
-    const signer = this.getLoginWallet().getSigner()
+    const wallet = await this.getLoggedInWallet()
+    const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -265,12 +278,12 @@ export class AnnapurnaSDK {
 
   public sendTxBuyItem = async (itemId: string) => {
     // wallet connect check
-    if (!(await this.isWalletConnect())) {
+    if (!(await this.isLoggedIn())) {
       throw new Error('Wallet is not connected')
     }
     const item = await this.getItemById(itemId)
-
-    const signer = this.getLoginWallet().getSigner()
+    const wallet = await this.getLoggedInWallet()
+    const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -318,8 +331,12 @@ export class AnnapurnaSDK {
     this.fmProvider.on('disconnect', callback)
   }
 
-  private getLoginWallet = () => {
-    return this.metamaskProvider ?? this.fmProvider
+  private getLoggedInWallet = async () => {
+    if (await this.isLoggedIn()) {
+      return this.metamaskProvider ?? this.fmProvider
+    } else {
+      throw new Error('not loggedIn')
+    }
   }
 }
 
