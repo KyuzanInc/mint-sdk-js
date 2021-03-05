@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "dependencies": {
     "axios": "^0.21.1",
-    "ethers": "^5.0.31"
+    "ethers": "^5.0.31",
+    "fortmatic": "^2.2.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

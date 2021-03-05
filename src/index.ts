@@ -4,16 +4,14 @@ import Axios, { AxiosInstance } from 'axios'
 import * as ethers from 'ethers'
 import { Item } from './types/Item'
 import { ItemLog } from './types/ItemLog'
-
-type NetworkId = 1 | 4
+import { NetworkId } from './types/NetworkId'
+import { BigNumber } from './types/BigNumber'
 
 type WalletSetting = {
   fortmatic?: {
     key: string
   }
 }
-
-type BigNumber = ethers.BigNumber
 
 export class AnnapurnaSDK {
   /**
@@ -35,6 +33,11 @@ export class AnnapurnaSDK {
   public static formatEther = (bg: BigNumber) => {
     return ethers.utils.formatEther(bg)
   }
+
+  private walletProvider: ethers.providers.Provider | null = null
+  private subscriberWalletChange: Array<(accounts: string[]) => any> = []
+  private subscriberConnect: Array<() => any> = []
+  private subscriberDisConnect: Array<() => any> = []
 
   private constructor(
     private projectId: string,
@@ -70,12 +73,7 @@ export class AnnapurnaSDK {
       (networkId === 1
         ? data.data.infuraURL.main.wss
         : data.data.infuraURL.rinkeby.wss)
-    console.log(providerURL)
     const provider = new ethers.providers.JsonRpcProvider(providerURL)
-
-    // TODO: Signerをどうするか
-    //
-
     const sdk = new AnnapurnaSDK(
       projectId,
       accessToken,
@@ -84,6 +82,30 @@ export class AnnapurnaSDK {
       axios
     )
     return sdk
+  }
+
+  // TODO
+  public isWalletConnect = () => {
+    console.log(true)
+  }
+
+  // TODO
+  public connectWallet = async (wallet?: 'metamask' | 'fortmatic') => {
+    console.log(wallet)
+    // switch (wallet) {
+    //   case 'fortmatic':
+
+    // }
+  }
+
+  // TODO
+  public disconnectWallet = async () => {
+    console.log('TODO')
+  }
+
+  // TODO
+  public getWalletInfo = async () => {
+    console.log('TODO')
   }
 
   public waitForTransaction = async (txHash: string) => {
@@ -112,11 +134,43 @@ export class AnnapurnaSDK {
     return logs
   }
 
+  // TODO
+  public getBidItems = async (address: string) => {
+    console.log(address)
+  }
+
   public getTokensByAddress = async (address: string) => {
     const { data } = await this.axios.get('tokensByAddress', {
       params: { address },
     })
     return data.data as Token[]
+  }
+
+  // TODO
+  public sendTxBid = async () => {
+    console.log('TODO')
+  }
+
+  // TODO
+  public sendTxMakeSuccessfulBid = async () => {
+    console.log('TODO')
+  }
+
+  // TODO
+  public sendTxBuyItem = async () => {
+    console.log('TODO')
+  }
+
+  public subscribeWalletChange = (callback: (accounts: string[]) => any) => {
+    this.subscriberWalletChange.push(callback)
+  }
+
+  public subscribeConnect = (callback: () => any) => {
+    this.subscriberConnect.push(callback)
+  }
+
+  public subscribeDisConnect = (callback: () => any) => {
+    this.subscriberDisConnect.push(callback)
   }
 }
 

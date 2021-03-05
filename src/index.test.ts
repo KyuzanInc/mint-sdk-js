@@ -11,7 +11,7 @@ test('should initialize', async () => {
     'testToken',
     4,
     {
-      fortmatic: { key: 'test' },
+      fortmatic: { key: 'pk_test_7459BD51DE1FC406' },
     },
     {
       backendUrl: 'http://localhost:5500/annapurna-production/us-central1/',
