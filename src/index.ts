@@ -34,7 +34,7 @@ export class AnnapurnaSDK {
     return ethers.utils.formatEther(bg)
   }
 
-  private walletProvider: ethers.providers.Provider | null = null
+  private walletProvider: ethers.providers.JsonRpcProvider | null = null
   private subscriberWalletChange: Array<(accounts: string[]) => any> = []
   private subscriberConnect: Array<() => any> = []
   private subscriberDisConnect: Array<() => any> = []
@@ -44,7 +44,11 @@ export class AnnapurnaSDK {
     private accessToken: string,
     private networkId: NetworkId,
     private provider: ethers.providers.JsonRpcProvider,
-    private axios: AxiosInstance
+    private axios: AxiosInstance,
+    private shopContract: {
+      abi: any
+      address: string
+    }
   ) {}
 
   public static initialize = async (
@@ -54,8 +58,10 @@ export class AnnapurnaSDK {
     walletSetting: WalletSetting,
     // for Developing SDK
     devOption?: {
-      backendUrl: string
-      jsonRPCUrl: string
+      backendUrl?: string
+      jsonRPCUrl?: string
+      contractShopAbi?: any
+      contractShopAddress?: string
     }
   ) => {
     // infuraのURLはSDKからか
@@ -74,12 +80,28 @@ export class AnnapurnaSDK {
         ? data.data.infuraURL.main.wss
         : data.data.infuraURL.rinkeby.wss)
     const provider = new ethers.providers.JsonRpcProvider(providerURL)
+
+    const contractShopAbi =
+      devOption?.contractShopAbi ??
+      (networkId === 1
+        ? data.data.contract.shopContract.main.abi
+        : data.data.contract.shopContract.rinkeby.abi)
+
+    const contractShopAddress =
+      devOption?.contractShopAddress ??
+      (networkId === 1
+        ? data.data.contract.shopContract.main.address
+        : data.data.contract.shopContract.rinkeby.address)
     const sdk = new AnnapurnaSDK(
       projectId,
       accessToken,
       networkId,
       provider,
-      axios
+      axios,
+      {
+        abi: contractShopAbi,
+        address: contractShopAddress,
+      }
     )
     return sdk
   }
@@ -94,7 +116,9 @@ export class AnnapurnaSDK {
     console.log(wallet)
     // switch (wallet) {
     //   case 'fortmatic':
-
+    //   case 'metamask':
+    // await window.ethereum.enable() // only for metamask
+    //
     // }
 
     // subscribeに通知するようにする
@@ -125,7 +149,6 @@ export class AnnapurnaSDK {
     return items as Item[]
   }
 
-  // TODO
   public getItemsByBidderAddress = async (address: string) => {
     const { data } = await this.axios.get('getItemsByBidderAddress', {
       params: { address },
@@ -152,19 +175,97 @@ export class AnnapurnaSDK {
     return data.data as Token[]
   }
 
-  // TODO
-  public sendTxBid = async () => {
-    console.log('TODO')
+  public sendTxBid = async (itemId: string) => {
+    // wallet connect check
+    if (!this.walletProvider) {
+      throw new Error('Wallet is not connected')
+    }
+    const item = await this.getItemById(itemId)
+
+    const signer = this.walletProvider.getSigner()
+    const shopContract = new ethers.Contract(
+      this.shopContract.address,
+      this.shopContract.abi,
+      signer
+    )
+    if (item.tradeType !== 'auction') {
+      throw new Error("Item's tradeType is not auction")
+    }
+    const price = ethers.utils
+      .parseEther((item.price as number).toString())
+      .toString()
+    return (await shopContract.bid(
+      item.tokenId,
+      item.tokenURI,
+      item.author,
+      item.initialPrice,
+      item.startAt,
+      item.endAt,
+      price,
+      item.signature,
+      {
+        value: price,
+      }
+    )) as ethers.providers.TransactionResponse
   }
 
-  // TODO
-  public sendTxMakeSuccessfulBid = async () => {
-    console.log('TODO')
+  public sendTxMakeSuccessfulBid = async (itemId: string) => {
+    // wallet connect check
+    if (!this.walletProvider) {
+      throw new Error('Wallet is not connected')
+    }
+    const item = await this.getItemById(itemId)
+
+    const signer = this.walletProvider.getSigner()
+    const shopContract = new ethers.Contract(
+      this.shopContract.address,
+      this.shopContract.abi,
+      signer
+    )
+    if (item.tradeType !== 'auction') {
+      throw new Error("Item's tradeType is not auction")
+    }
+    return (await shopContract.makeSuccessfulBid(
+      item.tokenId,
+      item.tokenURI,
+      item.author,
+      item.initialPrice,
+      item.startAt,
+      item.endAt,
+      item.signature
+    )) as ethers.providers.TransactionResponse
   }
 
-  // TODO
-  public sendTxBuyItem = async () => {
-    console.log('TODO')
+  public sendTxBuyItem = async (itemId: string) => {
+    // wallet connect check
+    if (!this.walletProvider) {
+      throw new Error('Wallet is not connected')
+    }
+    const item = await this.getItemById(itemId)
+
+    const signer = this.walletProvider.getSigner()
+    const shopContract = new ethers.Contract(
+      this.shopContract.address,
+      this.shopContract.abi,
+      signer
+    )
+    if (item.tradeType !== 'fixedPrice') {
+      throw new Error("Item's tradeType is not fixedPrice")
+    }
+
+    const price = ethers.utils
+      .parseEther((item.price as number).toString())
+      .toString()
+    return (await shopContract.buy(
+      item.tokenId,
+      item.tokenURI,
+      item.author,
+      price,
+      item.signature,
+      {
+        value: price,
+      }
+    )) as ethers.providers.TransactionResponse
   }
 
   public subscribeWalletChange = (callback: (accounts: string[]) => any) => {
