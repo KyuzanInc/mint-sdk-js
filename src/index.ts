@@ -88,6 +88,7 @@ export class AnnapurnaSDK {
         'annapurna-access-token': accessToken,
       },
     })
+
     const { data } = await axios.get('/projectConfig')
     const providerURL: string =
       devOption?.jsonRPCUrl ??
