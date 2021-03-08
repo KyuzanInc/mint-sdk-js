@@ -180,21 +180,23 @@ export class AnnapurnaSDK {
 
   public getItems = async () => {
     const { data } = await this.axios.get('/items')
-    const items = data.data
-    return items as Item[]
+    const items = data.data as Item[]
+    const formatItems = items.map(this.formatItem)
+    return formatItems
   }
 
   public getItemsByBidderAddress = async (address: string) => {
     const { data } = await this.axios.get('getItemsByBidderAddress', {
       params: { address },
     })
-    return data.data as Item[]
+    const items = data.data as Item[]
+    return items.map(this.formatItem)
   }
 
   public getItemById = async (itemId: string) => {
     const { data } = await this.axios.get('item', { params: { itemId } })
     const item = data.data as Item
-    return item
+    return this.formatItem(item)
   }
 
   public getItemLogs = async (itemId: string) => {
@@ -210,7 +212,7 @@ export class AnnapurnaSDK {
     return data.data as Token[]
   }
 
-  public sendTxBid = async (itemId: string) => {
+  public sendTxBid = async (itemId: string, bidPrice: number) => {
     if (!(await this.isLoggedIn())) {
       throw new Error('Wallet is not connected')
     }
@@ -226,16 +228,19 @@ export class AnnapurnaSDK {
     if (item.tradeType !== 'auction') {
       throw new Error("Item's tradeType is not auction")
     }
-    const price = ethers.utils
-      .parseEther((item.price as number).toString())
+    const initialPrice = ethers.utils
+      .parseEther(String(item.initialPrice))
       .toString()
+    const price = ethers.utils.parseEther(String(bidPrice)).toString()
+    const startAt = item.startAt!.getTime() / 1000
+    const endAt = item.endAt!.getTime() / 1000
     return (await shopContract.bidAuction(
       item.tokenId,
       item.tokenURI,
       item.authorAddress,
-      item.initialPrice,
-      item.startAt,
-      item.endAt,
+      initialPrice,
+      startAt,
+      endAt,
       price,
       item.signature,
       {
@@ -313,6 +318,14 @@ export class AnnapurnaSDK {
     } else {
       const provider = this.fortmatic.getProvider()
       return new ethers.providers.Web3Provider(provider as any)
+    }
+  }
+
+  private formatItem = (item: Item) => {
+    return {
+      ...item,
+      startAt: item.startAt ? new Date(item.startAt) : null,
+      endAt: item.endAt ? new Date(item.endAt) : null,
     }
   }
 }
