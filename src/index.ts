@@ -99,8 +99,9 @@ export class AnnapurnaSDK {
     const contractShopAddress =
       devOption?.contractMintShopAddress ??
       (networkId === 1
-        ? data.data.contract.mintContract.main.address
-        : data.data.contract.mintContract.rinkeby.address)
+        ? data.data.contract.mintShopContract.main.address
+        : data.data.contract.mintShopContract.rinkeby.address)
+
     const sdk = new AnnapurnaSDK(
       accessToken,
       networkId,
@@ -228,10 +229,10 @@ export class AnnapurnaSDK {
     const price = ethers.utils
       .parseEther((item.price as number).toString())
       .toString()
-    return (await shopContract.bid(
+    return (await shopContract.bidAuction(
       item.tokenId,
       item.tokenURI,
-      item.author,
+      item.authorAddress,
       item.initialPrice,
       item.startAt,
       item.endAt,
@@ -259,10 +260,10 @@ export class AnnapurnaSDK {
     if (item.tradeType !== 'auction') {
       throw new Error("Item's tradeType is not auction")
     }
-    return (await shopContract.makeSuccessfulBid(
+    return (await shopContract.buyAuction(
       item.tokenId,
       item.tokenURI,
-      item.author,
+      item.authorAddress,
       item.initialPrice,
       item.startAt,
       item.endAt,
@@ -271,7 +272,6 @@ export class AnnapurnaSDK {
   }
 
   public sendTxBuyItem = async (itemId: string) => {
-    // wallet connect check
     if (!(await this.isLoggedIn())) {
       throw new Error('Wallet is not connected')
     }
@@ -290,10 +290,10 @@ export class AnnapurnaSDK {
     const price = ethers.utils
       .parseEther((item.price as number).toString())
       .toString()
-    return (await shopContract.buy(
+    return (await shopContract.buyFixedPrice(
       item.tokenId,
       item.tokenURI,
-      item.author,
+      item.authorAddress,
       price,
       item.signature,
       {
