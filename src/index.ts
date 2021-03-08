@@ -7,6 +7,7 @@ import { Item } from './types/Item'
 import { ItemLog } from './types/ItemLog'
 import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
+import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
 
 type WalletSetting = {
   fortmatic: {
@@ -41,7 +42,7 @@ export class AnnapurnaSDK {
     private networkId: NetworkId,
     private provider: ethers.providers.JsonRpcProvider,
     private axios: AxiosInstance,
-    private fmProvider: ethers.providers.Web3Provider,
+    private fortmatic: WidgetMode,
     private metamaskProvider: ethers.providers.Web3Provider | null,
     private shopContract: {
       abi: any
@@ -50,14 +51,14 @@ export class AnnapurnaSDK {
   ) {
     // for security
     // ref: https://docs.ethers.io/v5/concepts/best-practices/
-    fmProvider.on('network', (_, oldNetwork) => {
-      // Whe n a Provider makes its initial connection, it emits a "network"
-      // event with a null oldNetwork along with the newNetwork. So, if the
-      // oldNetwork exists, it represents a changing network
-      if (oldNetwork) {
-        window.location.reload()
-      }
-    })
+    // fmProvider.on('network', (_, oldNetwork) => {
+    //   // Whe n a Provider makes its initial connection, it emits a "network"
+    //   // event with a null oldNetwork along with the newNetwork. So, if the
+    //   // oldNetwork exists, it represents a changing network
+    //   if (oldNetwork) {
+    //     window.location.reload()
+    //   }
+    // })
 
     if (metamaskProvider) {
       metamaskProvider.on('network', (_, oldNetwork) => {
@@ -97,19 +98,17 @@ export class AnnapurnaSDK {
         : data.data.infuraURL.rinkeby.wss)
     const provider = new ethers.providers.JsonRpcProvider(providerURL)
 
-    const fmProvider = new ethers.providers.Web3Provider(
-      new Fortmatic(
-        walletSetting.fortmatic.key,
-        devOption?.jsonRPCUrl
-          ? {
-              rpcUrl: devOption.jsonRPCUrl,
-            }
-          : undefined
-      ).getProvider() as any
+    const fortmatic = new Fortmatic(
+      walletSetting.fortmatic.key,
+      devOption?.jsonRPCUrl
+        ? {
+            rpcUrl: devOption.jsonRPCUrl,
+          }
+        : undefined
     )
 
     const metamaskProvider = (window as any).ethereum
-      ? new ethers.providers.Web3Provider((window as any).ethereum)
+      ? new ethers.providers.Web3Provider((window as any).ethereum, 'any')
       : null
 
     const contractShopAbi =
@@ -128,7 +127,7 @@ export class AnnapurnaSDK {
       networkId,
       provider,
       axios,
-      fmProvider,
+      fortmatic,
       metamaskProvider,
       {
         abi: contractShopAbi,
@@ -143,7 +142,10 @@ export class AnnapurnaSDK {
       const accounts = await this.metamaskProvider.listAccounts()
       return accounts.length > 0
     } else {
-      return await (this.fmProvider.provider as any).user.isLoggedIn()
+      const accounts = (await this.fortmatic
+        .getProvider()
+        .send('eth_accounts')) as string[]
+      return accounts.length > 0
     }
   }
 
@@ -153,17 +155,12 @@ export class AnnapurnaSDK {
         method: 'eth_requestAccounts',
       })
     } else {
-      await (this.fmProvider.provider as any).user.login()
+      await this.fortmatic.getProvider().enable()
     }
   }
 
   public disconnectWallet = async () => {
-    if (await this.isLoggedIn()) {
-      const wallet = await this.getLoggedInWallet()
-      if (!wallet.provider.isMetaMask) {
-        await (wallet.provider as any).user.logout()
-      }
-    }
+    await this.fortmatic.user.logout()
   }
 
   public getWalletInfo = async () => {
@@ -171,12 +168,26 @@ export class AnnapurnaSDK {
       throw new Error('not LoggedId')
     }
 
-    const wallet = await this.getLoggedInWallet()
-    const address = await wallet.listAccounts()
-    const balance = await wallet.getBalance(address[0])
-    return {
-      address,
-      balance,
+    if (this.metamaskProvider) {
+      const accounts = await this.metamaskProvider.listAccounts()
+      const address = accounts[0]
+      const balance = await this.metamaskProvider.getBalance(address)
+      return {
+        address,
+        balance,
+      }
+    } else {
+      const accounts = (await this.fortmatic
+        .getProvider()
+        .send('eth_accounts')) as string[]
+      const address = accounts[0]
+      const balance = await new ethers.providers.Web3Provider(
+        this.fortmatic.getProvider() as any
+      ).getBalance(address)
+      return {
+        address,
+        balance,
+      }
     }
   }
 
@@ -222,7 +233,7 @@ export class AnnapurnaSDK {
     }
 
     const item = await this.getItemById(itemId)
-    const wallet = await this.getLoggedInWallet()
+    const wallet = await this.getProvider()
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
@@ -256,7 +267,7 @@ export class AnnapurnaSDK {
       throw new Error('Wallet is not connected')
     }
     const item = await this.getItemById(itemId)
-    const wallet = await this.getLoggedInWallet()
+    const wallet = await this.getProvider()
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
@@ -283,7 +294,7 @@ export class AnnapurnaSDK {
       throw new Error('Wallet is not connected')
     }
     const item = await this.getItemById(itemId)
-    const wallet = await this.getLoggedInWallet()
+    const wallet = await this.getProvider()
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
@@ -309,34 +320,12 @@ export class AnnapurnaSDK {
     )) as ethers.providers.TransactionResponse
   }
 
-  public subscribeWalletChange = (callback: (accounts: string[]) => any) => {
+  private getProvider = () => {
     if (this.metamaskProvider) {
-      this.metamaskProvider.on('accountsChanged', callback)
-    }
-    this.fmProvider.on('accountsChanged', callback)
-  }
-
-  public subscribeConnect = (callback: (info: { chainId: number }) => any) => {
-    if (this.metamaskProvider) {
-      this.metamaskProvider.on('connect', callback)
-    }
-    this.fmProvider.on('connect', callback)
-  }
-
-  public subscribeDisConnect = (
-    callback: (error: { code: number; message: string }) => any
-  ) => {
-    if (this.metamaskProvider) {
-      this.metamaskProvider.on('disconnect', callback)
-    }
-    this.fmProvider.on('disconnect', callback)
-  }
-
-  private getLoggedInWallet = async () => {
-    if (await this.isLoggedIn()) {
-      return this.metamaskProvider ?? this.fmProvider
+      return this.metamaskProvider
     } else {
-      throw new Error('not loggedIn')
+      const provider = this.fortmatic.getProvider()
+      return new ethers.providers.Web3Provider(provider as any)
     }
   }
 }
