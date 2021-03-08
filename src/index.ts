@@ -320,6 +320,11 @@ export class AnnapurnaSDK {
     )) as ethers.providers.TransactionResponse
   }
 
+  // 以下のイベントをサブスクライブ
+  // connect
+  // disconnect
+  // change
+
   private getProvider = () => {
     if (this.metamaskProvider) {
       return this.metamaskProvider
