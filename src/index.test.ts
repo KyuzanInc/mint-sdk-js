@@ -7,7 +7,6 @@ import { AnnapurnaSDK } from '.'
 test('should initialize', async () => {
   // AxiosのMock
   const sdk = await AnnapurnaSDK.initialize(
-    'test',
     'testToken',
     4,
     {

@@ -37,7 +37,6 @@ export class AnnapurnaSDK {
   }
 
   private constructor(
-    private projectId: string,
     private accessToken: string,
     private networkId: NetworkId,
     private axios: AxiosInstance,
@@ -58,7 +57,6 @@ export class AnnapurnaSDK {
   }
 
   public static initialize = async (
-    projectId: string,
     accessToken: string,
     networkId: NetworkId,
     walletSetting: WalletSetting,
@@ -66,8 +64,8 @@ export class AnnapurnaSDK {
     devOption?: {
       backendUrl?: string
       jsonRPCUrl?: string
-      contractShopAbi?: any
-      contractShopAddress?: string
+      contractMintAbi?: any
+      contractMintShopAddress?: string
     }
   ) => {
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
@@ -94,17 +92,16 @@ export class AnnapurnaSDK {
       : null
 
     const contractShopAbi =
-      devOption?.contractShopAbi ??
+      devOption?.contractMintAbi ??
       (networkId === 1
-        ? data.data.contract.shopContract.main.abi
-        : data.data.contract.shopContract.rinkeby.abi)
+        ? data.data.contract.mintShopContract.main.abi
+        : data.data.contract.mintShopContract.rinkeby.abi)
     const contractShopAddress =
-      devOption?.contractShopAddress ??
+      devOption?.contractMintShopAddress ??
       (networkId === 1
-        ? data.data.contract.shopContract.main.address
-        : data.data.contract.shopContract.rinkeby.address)
+        ? data.data.contract.mintContract.main.address
+        : data.data.contract.mintContract.rinkeby.address)
     const sdk = new AnnapurnaSDK(
-      projectId,
       accessToken,
       networkId,
       axios,
