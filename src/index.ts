@@ -40,7 +40,6 @@ export class AnnapurnaSDK {
     private projectId: string,
     private accessToken: string,
     private networkId: NetworkId,
-    private provider: ethers.providers.JsonRpcProvider,
     private axios: AxiosInstance,
     private fortmatic: WidgetMode,
     private metamaskProvider: ethers.providers.Web3Provider | null,
@@ -49,17 +48,6 @@ export class AnnapurnaSDK {
       address: string
     }
   ) {
-    // for security
-    // ref: https://docs.ethers.io/v5/concepts/best-practices/
-    // fmProvider.on('network', (_, oldNetwork) => {
-    //   // Whe n a Provider makes its initial connection, it emits a "network"
-    //   // event with a null oldNetwork along with the newNetwork. So, if the
-    //   // oldNetwork exists, it represents a changing network
-    //   if (oldNetwork) {
-    //     window.location.reload()
-    //   }
-    // })
-
     if (metamaskProvider) {
       metamaskProvider.on('network', (_, oldNetwork) => {
         if (oldNetwork) {
@@ -91,12 +79,6 @@ export class AnnapurnaSDK {
     })
 
     const { data } = await axios.get('/projectConfig')
-    const providerURL: string =
-      devOption?.jsonRPCUrl ??
-      (networkId === 1
-        ? data.data.infuraURL.main.wss
-        : data.data.infuraURL.rinkeby.wss)
-    const provider = new ethers.providers.JsonRpcProvider(providerURL)
 
     const fortmatic = new Fortmatic(
       walletSetting.fortmatic.key,
@@ -125,7 +107,6 @@ export class AnnapurnaSDK {
       projectId,
       accessToken,
       networkId,
-      provider,
       axios,
       fortmatic,
       metamaskProvider,
@@ -192,7 +173,11 @@ export class AnnapurnaSDK {
   }
 
   public waitForTransaction = async (txHash: string) => {
-    await this.provider.waitForTransaction(txHash)
+    if (!(await this.isLoggedIn())) {
+      throw new Error('Wallet is not connected')
+    }
+    const wallet = await this.getProvider()
+    await wallet.waitForTransaction(txHash)
   }
 
   public getItems = async () => {
