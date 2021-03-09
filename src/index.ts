@@ -234,6 +234,7 @@ export class AnnapurnaSDK {
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
     const signer = wallet.getSigner()
+
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -271,6 +272,9 @@ export class AnnapurnaSDK {
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
     const signer = wallet.getSigner()
+    const initialPrice = ethers.utils
+      .parseEther(String(item.initialPrice))
+      .toString()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -283,7 +287,7 @@ export class AnnapurnaSDK {
       item.tokenId,
       item.tokenURI,
       item.authorAddress,
-      item.initialPrice,
+      initialPrice,
       item.startAt,
       item.endAt,
       item.signature
