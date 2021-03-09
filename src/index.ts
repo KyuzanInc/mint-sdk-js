@@ -203,9 +203,20 @@ export class AnnapurnaSDK {
   }
 
   public getItemLogs = async (itemId: string) => {
-    const { data } = await this.axios.get('itemLogs', { params: { itemId } })
-    const logs = data.data as ItemLog
-    return logs
+    const { data } = await this.axios.get<{
+      data: {
+        type: 'bought' | 'bid'
+        accountAddress: string
+        price: number // only 'bid' and 'bought'
+        createAt: Date
+        transactionHash: string
+      }[]
+    }>('itemLogs', { params: { itemId } })
+    const logs = data.data
+    return logs.map((l) => ({
+      ...l,
+      createAt: new Date(l.createAt),
+    })) as ItemLog[]
   }
 
   public getTokensByAddress = async (address: string) => {
