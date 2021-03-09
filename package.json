@@ -32,7 +32,7 @@
   },
   "scripts": {
     "dev": "run-p watch:*",
-    "doc": "typedoc --out docs /src",
+    "doc": "typedoc --out docs ./src",
     "build:develop": "npm run clean && node build.ts development && tsc --emitDeclarationOnly",
     "build:production": "npm run clean && npm run typeCheck && node build.ts production && tsc --emitDeclarationOnly",
     "typeCheck": "tsc -noEmit --project tsconfig.json",

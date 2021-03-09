@@ -56,6 +56,14 @@ export class AnnapurnaSDK {
     }
   }
 
+  /**
+   * sdkのイニシャライズ
+   *
+   * @param accessToken
+   * @param networkId
+   * @param walletSetting
+   * @returns sdkのインスタンス
+   */
   public static initialize = async (
     accessToken: string,
     networkId: NetworkId,
