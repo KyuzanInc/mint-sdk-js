@@ -29,7 +29,7 @@ Name | Type |
 
 **Returns:** [*AnnapurnaSDK*](annapurnasdk.md)
 
-Defined in: [index.ts:39](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L39)
+Defined in: [index.ts:39](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L39)
 
 ## Properties
 
@@ -37,7 +37,7 @@ Defined in: [index.ts:39](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387
 
 • `Private` **eventAccountsChangeCallbacks**: (`accounts`: *string*[]) => *any*[]
 
-Defined in: [index.ts:37](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L37)
+Defined in: [index.ts:37](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L37)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 • `Private` **eventConnectCallbacks**: () => *any*[]
 
-Defined in: [index.ts:39](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L39)
+Defined in: [index.ts:39](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L39)
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 • `Private` **eventDisconnectCallbacks**: () => *any*[]
 
-Defined in: [index.ts:38](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L38)
+Defined in: [index.ts:38](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L38)
 
 ___
 
@@ -67,9 +67,9 @@ ___
 
 **Returns:** *Promise*<[*WalletInfo*](../modules.md#walletinfo)\>
 
-Defined in: [index.ts:169](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L169)
+Defined in: [index.ts:169](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L169)
 
-Defined in: [index.ts:169](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L169)
+Defined in: [index.ts:169](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L169)
 
 ## Methods
 
@@ -79,7 +79,7 @@ Defined in: [index.ts:169](https://github.com/KyuzanInc/annapurna-sdk-js/blob/38
 
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:153](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L153)
+Defined in: [index.ts:153](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L153)
 
 ___
 
@@ -89,7 +89,7 @@ ___
 
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:164](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L164)
+Defined in: [index.ts:164](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L164)
 
 ___
 
@@ -105,7 +105,7 @@ Name | Type |
 
 **Returns:** *void*
 
-Defined in: [index.ts:427](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L427)
+Defined in: [index.ts:427](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L427)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 **Returns:** *void*
 
-Defined in: [index.ts:435](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L435)
+Defined in: [index.ts:435](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L435)
 
 ___
 
@@ -125,7 +125,7 @@ ___
 
 **Returns:** *void*
 
-Defined in: [index.ts:431](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L431)
+Defined in: [index.ts:431](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L431)
 
 ___
 
@@ -161,7 +161,7 @@ Name | Type |
 `tokenURI` | *string* |
 `tradeType` | *fixedPrice* \| *auction* |
 
-Defined in: [index.ts:419](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L419)
+Defined in: [index.ts:419](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L419)
 
 ___
 
@@ -177,7 +177,7 @@ Name | Type |
 
 **Returns:** *Promise*<{ `authorAddress`: *string* ; `buyerAddress`: *null* \| *string* ; `currentBidderAddress?`: *null* \| *string* ; `currentPrice?`: *number* ; `description`: *string* ; `endAt`: *undefined* \| Date ; `imageURL`: *string* ; `initialPrice?`: *number* ; `itemId`: *string* ; `name`: *string* ; `networkId`: *1* \| *4* ; `price?`: *number* ; `signature`: *string* ; `startAt`: *undefined* \| Date ; `tokenId`: *number* ; `tokenURI`: *string* ; `tradeType`: *fixedPrice* \| *auction*  }\>
 
-Defined in: [index.ts:223](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L223)
+Defined in: [index.ts:223](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L223)
 
 ___
 
@@ -193,7 +193,7 @@ Name | Type |
 
 **Returns:** *Promise*<[*ItemLog*](../modules.md#itemlog)[]\>
 
-Defined in: [index.ts:229](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L229)
+Defined in: [index.ts:229](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L229)
 
 ___
 
@@ -203,7 +203,7 @@ ___
 
 **Returns:** *Promise*<{ `authorAddress`: *string* ; `buyerAddress`: *null* \| *string* ; `currentBidderAddress?`: *null* \| *string* ; `currentPrice?`: *number* ; `description`: *string* ; `endAt`: *undefined* \| Date ; `imageURL`: *string* ; `initialPrice?`: *number* ; `itemId`: *string* ; `name`: *string* ; `networkId`: *1* \| *4* ; `price?`: *number* ; `signature`: *string* ; `startAt`: *undefined* \| Date ; `tokenId`: *number* ; `tokenURI`: *string* ; `tradeType`: *fixedPrice* \| *auction*  }[]\>
 
-Defined in: [index.ts:205](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L205)
+Defined in: [index.ts:205](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L205)
 
 ___
 
@@ -219,7 +219,7 @@ Name | Type |
 
 **Returns:** *Promise*<{ `authorAddress`: *string* ; `buyerAddress`: *null* \| *string* ; `currentBidderAddress?`: *null* \| *string* ; `currentPrice?`: *number* ; `description`: *string* ; `endAt`: *undefined* \| Date ; `imageURL`: *string* ; `initialPrice?`: *number* ; `itemId`: *string* ; `name`: *string* ; `networkId`: *1* \| *4* ; `price?`: *number* ; `signature`: *string* ; `startAt`: *undefined* \| Date ; `tokenId`: *number* ; `tokenURI`: *string* ; `tradeType`: *fixedPrice* \| *auction*  }[]\>
 
-Defined in: [index.ts:212](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L212)
+Defined in: [index.ts:212](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L212)
 
 ___
 
@@ -229,7 +229,7 @@ ___
 
 **Returns:** *Web3Provider*
 
-Defined in: [index.ts:410](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L410)
+Defined in: [index.ts:410](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L410)
 
 ___
 
@@ -243,7 +243,7 @@ ___
 
 unix time (ms)
 
-Defined in: [index.ts:405](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L405)
+Defined in: [index.ts:405](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L405)
 
 ___
 
@@ -259,7 +259,7 @@ Name | Type |
 
 **Returns:** *Promise*<[*Token*](../modules.md#token)[]\>
 
-Defined in: [index.ts:246](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L246)
+Defined in: [index.ts:246](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L246)
 
 ___
 
@@ -269,7 +269,7 @@ ___
 
 **Returns:** *Promise*<any\>
 
-Defined in: [index.ts:144](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L144)
+Defined in: [index.ts:144](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L144)
 
 ___
 
@@ -285,7 +285,7 @@ Name | Type |
 
 **Returns:** *void*
 
-Defined in: [index.ts:356](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L356)
+Defined in: [index.ts:356](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L356)
 
 ___
 
@@ -301,7 +301,7 @@ Name | Type |
 
 **Returns:** *void*
 
-Defined in: [index.ts:372](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L372)
+Defined in: [index.ts:372](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L372)
 
 ___
 
@@ -317,7 +317,7 @@ Name | Type |
 
 **Returns:** *void*
 
-Defined in: [index.ts:388](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L388)
+Defined in: [index.ts:388](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L388)
 
 ___
 
@@ -333,7 +333,7 @@ Name | Type |
 
 **Returns:** *void*
 
-Defined in: [index.ts:352](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L352)
+Defined in: [index.ts:352](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L352)
 
 ___
 
@@ -349,7 +349,7 @@ Name | Type |
 
 **Returns:** *void*
 
-Defined in: [index.ts:368](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L368)
+Defined in: [index.ts:368](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L368)
 
 ___
 
@@ -365,7 +365,7 @@ Name | Type |
 
 **Returns:** *void*
 
-Defined in: [index.ts:384](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L384)
+Defined in: [index.ts:384](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L384)
 
 ___
 
@@ -382,7 +382,7 @@ Name | Type |
 
 **Returns:** *Promise*<TransactionResponse\>
 
-Defined in: [index.ts:253](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L253)
+Defined in: [index.ts:253](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L253)
 
 ___
 
@@ -398,7 +398,7 @@ Name | Type |
 
 **Returns:** *Promise*<TransactionResponse\>
 
-Defined in: [index.ts:321](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L321)
+Defined in: [index.ts:321](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L321)
 
 ___
 
@@ -414,7 +414,7 @@ Name | Type |
 
 **Returns:** *Promise*<TransactionResponse\>
 
-Defined in: [index.ts:291](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L291)
+Defined in: [index.ts:291](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L291)
 
 ___
 
@@ -430,7 +430,7 @@ Name | Type |
 
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:197](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L197)
+Defined in: [index.ts:197](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L197)
 
 ___
 
@@ -450,7 +450,7 @@ Name | Type |
 
 Ether単位でパースされたstring
 
-Defined in: [index.ts:33](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L33)
+Defined in: [index.ts:33](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L33)
 
 ___
 
@@ -477,7 +477,7 @@ Name | Type |
 
 sdkのインスタンス
 
-Defined in: [index.ts:84](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L84)
+Defined in: [index.ts:84](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L84)
 
 ___
 
@@ -497,4 +497,4 @@ Name | Type | Description |
 
 etherをBigNumberとしてparseしたもの
 
-Defined in: [index.ts:23](https://github.com/KyuzanInc/annapurna-sdk-js/blob/387a816/src/index.ts#L23)
+Defined in: [index.ts:23](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L23)

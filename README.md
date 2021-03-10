@@ -26,6 +26,8 @@ Kyuzan に連絡
 
 ## Developing SDK
 
+- [ ] - want: 同時入札による競り負けエラーは、sdk 側で判別できるように
 - [ ] CI: test
 - [ ] CI: npm publish(ドキュメント生成・test・semver)
 - [ ] SDK を用いた MINT ローカル開発手順
+- [ ] Backend との IF。OpenAPI を用いた、ドキュメント・型・クライアントの自動生成
