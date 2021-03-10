@@ -15,6 +15,8 @@ type WalletSetting = {
   }
 }
 
+export { Item, ItemLog, NetworkId, BigNumber, Token }
+
 export class AnnapurnaSDK {
   /**
    * ether(通常のETHと表示される価格)をBigNumberとして返す
@@ -355,5 +357,3 @@ export class AnnapurnaSDK {
     }
   }
 }
-
-export default AnnapurnaSDK
