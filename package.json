@@ -33,7 +33,8 @@
   },
   "scripts": {
     "dev": "run-p watch:*",
-    "doc": "typedoc --plugin typedoc-plugin-markdown --theme docusaurus2 --out docs/docs ./src",
+    "doc:deploy": "cd ./docs && npm run deploy",
+    "doc:serve": "cd ./docs && npm run start",
     "build:develop": "npm run clean && node build.ts development && tsc --project tsconfig.json --emitDeclarationOnly",
     "build:production": "npm run clean && npm run typeCheck && node build.ts production && tsc --project tsconfig.json --emitDeclarationOnly",
     "typeCheck": "tsc -noEmit --project tsconfig.json",
