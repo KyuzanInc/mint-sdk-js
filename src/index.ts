@@ -8,13 +8,8 @@ import { ItemLog } from './types/ItemLog'
 import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
 import { WalletInfo } from './types/WalletInfo'
+import { WalletSetting } from './types/WalletSetting'
 import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
-
-type WalletSetting = {
-  fortmatic: {
-    key: string
-  }
-}
 
 export { Item, ItemLog, NetworkId, BigNumber, Token, WalletSetting, WalletInfo }
 
