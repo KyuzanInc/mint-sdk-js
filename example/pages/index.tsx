@@ -64,7 +64,7 @@ const Page = () => {
   useEffect(() => {
     const fn = async () => {
       if (!sdk) return
-      if (!(await sdk.isLoggedIn())) return
+      if (!(await sdk.isWalletConnect())) return
       const walletInfo = await sdk.getWalletInfo()
       const itemEls = (
         await sdk.getTokensByAddress(walletInfo.address)
