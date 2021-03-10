@@ -7,6 +7,7 @@ import { Item } from './types/Item'
 import { ItemLog } from './types/ItemLog'
 import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
+import { WalletInfo } from './types/WalletInfo'
 import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
 
 type WalletSetting = {
@@ -15,7 +16,7 @@ type WalletSetting = {
   }
 }
 
-export { Item, ItemLog, NetworkId, BigNumber, Token }
+export { Item, ItemLog, NetworkId, BigNumber, Token, WalletSetting, WalletInfo }
 
 export class AnnapurnaSDK {
   /**
@@ -149,7 +150,7 @@ export class AnnapurnaSDK {
     await this.fortmatic.user.logout()
   }
 
-  public getWalletInfo = async () => {
+  public getWalletInfo: () => Promise<WalletInfo> = async () => {
     if (!(await this.isWalletConnect())) {
       throw new Error('not LoggedId')
     }
