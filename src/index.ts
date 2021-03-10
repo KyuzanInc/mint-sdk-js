@@ -349,8 +349,8 @@ export class AnnapurnaSDK {
   private formatItem = (item: Item) => {
     return {
       ...item,
-      startAt: item.startAt ? new Date(item.startAt) : null,
-      endAt: item.endAt ? new Date(item.endAt) : null,
+      startAt: item.startAt ? new Date(item.startAt) : undefined,
+      endAt: item.endAt ? new Date(item.endAt) : undefined,
     }
   }
 }
