@@ -18,14 +18,13 @@ export const Item: React.FC<{
   const onAuction = !isBeforeAuction && !isAfterAuction
   return (
     <Container>
-      {isBought && <p>売れた</p>}
       {!isFixedPrice && isBeforeAuction && <p>オークション前</p>}
       {!isFixedPrice && isAfterAuction && <p>オークション後</p>}
       {!isFixedPrice && onAuction && <p>オークション中</p>}
       <img src={item.imageURL} />
       <p>{item.name}</p>
       <p>trade type: {item.tradeType}</p>
-      <p>price: {item.price}</p>
+      <p>price: {item.currentPrice}</p>
       <p>buyer: {item.buyerAddress}</p>
       {!isFixedPrice && onAuction && (
         <>
@@ -45,7 +44,7 @@ export const Item: React.FC<{
       {!isBought && isFixedPrice && (
         <Button onClick={() => onClickBuy(item.itemId)}>'買う'</Button>
       )}
-      <Link href={`/rdemo/${item.itemId}`}>アイテム詳細</Link>
+      <Link href={`/${item.itemId}`}>アイテム詳細</Link>
     </Container>
   )
 }

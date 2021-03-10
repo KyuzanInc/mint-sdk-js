@@ -136,7 +136,7 @@ const Page = () => {
       <Items>{items}</Items>
       <h2># 自分のアイテム</h2>
       <Section>{ownItems}</Section>
-      <p># Bid中のアイテム</p>
+      <h2># Bid中のアイテム</h2>
       <Section>{bidsItems}</Section>
     </Container>
   )

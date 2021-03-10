@@ -1,9 +1,6 @@
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
-import { Header } from '../../components/Header'
-import { AnnapurnaSDK } from '@kyuzan/annapurna-sdk-js'
-import isBefore from 'date-fns/isBefore'
-import isAfter from 'date-fns/isAfter'
+import React, { useEffect, useState } from 'react'
+import { AnnapurnaSDK, Item as ItemType } from '@kyuzan/annapurna-sdk-js'
 import { GetServerSideProps, NextPage } from 'next'
 import { Item } from '../components/Item'
 
@@ -12,45 +9,70 @@ type Props = {
 }
 
 const Page: NextPage<Props> = ({ itemId }) => {
-  const [items, setItems] = useState([])
-  const [value, setValue] = useState([])
-  useEffect(async () => {
-    const sdk = await AnnapurnaSDK.initialize(
-      'eb29cf8b-e159-4da4-aec1-b550ca36626f',
-      4,
-      {
-        fortmatic: {
-          key: 'pk_test_7459BD51DE1FC406',
-        },
-      }
-    )
-
-    const item = await sdk.getItemById(itemId)
-    const isFixedPrice = item.tradeType === 'fixedPrice'
-    const isBought = isFixedPrice && item.buyerAddress!.length !== 0
-    const isBeforeAuction = isBefore(new Date(), item.startAt as Date)
-    const isAfterAuction = isAfter(new Date(), item.endAt as Date)
-    const onAuction = !isBeforeAuction && !isAfterAuction
-    const currentBidderAddress = item.currentBidderAddress!
-    const logs = await sdk.getItemLogs(itemId)
-    console.log(logs)
-
-    const logEls = logs.map((l) => {
-      return (
-        <div>
-          <p>-----</p>
-          <p>type: {l.type}</p>
-          <p>account: {l.accountAddress}</p>
-        </div>
+  const [itemData, setItemData] = useState<ItemType>()
+  const [txStatus, setTxStatus] = useState('')
+  const [sdk, setSdk] = useState<AnnapurnaSDK>()
+  const [logs, setLogs] = useState<React.ReactNode>([])
+  useEffect(() => {
+    const init = async () => {
+      const sdkInstance = await AnnapurnaSDK.initialize(
+        'eb29cf8b-e159-4da4-aec1-b550ca36626f',
+        4,
+        {
+          fortmatic: {
+            key: 'pk_test_7459BD51DE1FC406',
+          },
+        }
       )
-    })
-    setItems(<Item item={item} />)
+      setSdk(sdk)
+      const item = await sdkInstance.getItemById(itemId)
+      setItemData(item)
+      const logs = await sdkInstance.getItemLogs(itemId)
+      setLogs(
+        logs.map((l) => {
+          return (
+            <div>
+              <p>-----</p>
+              <p>type: {l.type}</p>
+              <p>account: {l.accountAddress}</p>
+            </div>
+          )
+        })
+      )
+    }
+    init()
   }, [])
+  const itemEl = itemData && (
+    <Item
+      item={itemData}
+      onClickBid={async (itemId: string, ether: number) => {
+        const txReceipt = await sdk!.sendTxBid(itemId, ether)
+        setTxStatus(`処理中: ${txReceipt.hash}`)
+        try {
+          await sdk!.waitForTransaction(txReceipt.hash)
+          setTxStatus(`成功: ${txReceipt.hash}`)
+        } catch (err) {
+          setTxStatus(`失敗: ${txReceipt.hash}`)
+        }
+      }}
+      onClickBuy={async (itemId: string) => {
+        const txReceipt = await sdk!.sendTxBuyItem(itemId)
+        setTxStatus(`処理中: ${txReceipt.hash}`)
+        try {
+          await sdk!.waitForTransaction(txReceipt.hash)
+          setTxStatus(`成功: ${txReceipt.hash}`)
+        } catch (err) {
+          setTxStatus(`失敗: ${txReceipt.hash}`)
+        }
+      }}
+    />
+  )
   return (
     <>
-      <Header />
       <Container>
-        <Items>{items}</Items>
+        <p>Tx Status: {txStatus}</p>
+        <Items>{itemEl}</Items>
+        {logs}
       </Container>
     </>
   )
@@ -79,7 +101,6 @@ const Container = styled.div`
 `
 
 const Items = styled.div`
-  width: 720px;
   margin: 0 auto;
   display: flex;
 `
