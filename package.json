@@ -44,7 +44,10 @@
     "lint:fix": "eslint src --ext ts --fix",
     "type-check": "tsc --pretty --noEmit",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "publish:main": "npm build:production && npm version major && npm publish",
+    "publish:minor": "npm build:production && npm minor major && npm publish",
+    "publish:patch": "npm build:production && npm version patch && npm publish"
   },
   "repository": "https://github.com/KyuzanInc/annapurna-sdk-js",
   "homepage": "https://github.com/KyuzanInc/annapurna-sdk-js",
