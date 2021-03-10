@@ -397,6 +397,16 @@ export class AnnapurnaSDK {
     }
   }
 
+  /**
+   * サーバーのUnixタイムを取得
+   *
+   * @returns unix time (ms)
+   */
+  public getServerUnixTime = async () => {
+    const { data } = await this.axios.get('serverSideTime')
+    return data.data
+  }
+
   private getProvider = () => {
     if (this.metamaskProvider) {
       return this.metamaskProvider
