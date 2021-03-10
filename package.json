@@ -46,7 +46,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "publish:main": "npm run build:production && npm version major && npm publish",
-    "publish:minor": "npm run build:production && npm minor major && npm publish",
+    "publish:minor": "npm run build:production && npm version minor && npm publish",
     "publish:patch": "npm run build:production && npm version patch && npm publish"
   },
   "repository": "https://github.com/KyuzanInc/annapurna-sdk-js",
