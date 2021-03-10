@@ -12,7 +12,7 @@ export type Item = {
   buyerAddress: string | null //
   price?: number // only 'fixedPrice'  ether
   currentPrice?: number // only 'auction'  ether
-  currentBidder?: string | null // only 'auction'
+  currentBidderAddress?: string | null // only 'auction'
   startAt?: Date // only 'auction'
   endAt?: Date // only 'auction'
   initialPrice?: number // only 'auction'  ether
