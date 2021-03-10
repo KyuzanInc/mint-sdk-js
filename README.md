@@ -1,14 +1,12 @@
-# annapurna-sdk-js
+# @KyuzanInc/mint-sdk-js
 
 ## Introduction
 
-Kyuzan Annapurna (NFT ショップ作成サービス) の API Document
+MINT の API Document
 
 ## Source Code
 
-[KyuzanInc/annapurna-sdk-js](https://github.com/KyuzanInc/annapurna-sdk-js)
-
-[@kyuzan/annapurna-sdk-js](https://www.npmjs.com/package/@kyuzan/annapurna-sdk-js)
+[KyuzanInc/mint-sdk-js](https://github.com/KyuzanInc/mint-sdk-js)
 
 ## Getting Started
 
@@ -28,7 +26,6 @@ Kyuzan に連絡
 
 ## Developing SDK
 
-- [ ] Document の自動生成
 - [ ] CI: test
 - [ ] CI: npm publish(ドキュメント生成・test・semver)
-- [ ] SDK を用いた annarurna ローカル開発手順
+- [ ] SDK を用いた MINT ローカル開発手順
