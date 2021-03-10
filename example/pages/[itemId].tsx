@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { AnnapurnaSDK, Item as ItemType } from '@kyuzan/annapurna-sdk-js'
 import { GetServerSideProps, NextPage } from 'next'
 import { Item } from '../components/Item'
+import { DEMO_ACCESS_KEY, DEMO_FORTMATIC_KEY } from '../constants'
 
 type Props = {
   itemId: string
@@ -15,15 +16,11 @@ const Page: NextPage<Props> = ({ itemId }) => {
   const [logs, setLogs] = useState<React.ReactNode>([])
   useEffect(() => {
     const init = async () => {
-      const sdkInstance = await AnnapurnaSDK.initialize(
-        'eb29cf8b-e159-4da4-aec1-b550ca36626f',
-        4,
-        {
-          fortmatic: {
-            key: 'pk_test_7459BD51DE1FC406',
-          },
-        }
-      )
+      const sdkInstance = await AnnapurnaSDK.initialize(DEMO_ACCESS_KEY, 4, {
+        fortmatic: {
+          key: DEMO_FORTMATIC_KEY,
+        },
+      })
       setSdk(sdk)
       const item = await sdkInstance.getItemById(itemId)
       setItemData(item)

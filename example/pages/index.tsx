@@ -4,6 +4,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import styled from '@emotion/styled'
 import { Item } from '../components/Item'
 import { OwnItem } from '../components/OwnItem'
+import { DEMO_ACCESS_KEY, DEMO_FORTMATIC_KEY } from '../constants'
 
 const Page = () => {
   const [sdk, setSdk] = useState<AnnapurnaSDK>()
@@ -17,15 +18,11 @@ const Page = () => {
   }>({ address: '', balance: undefined })
   useEffect(() => {
     const init = async () => {
-      const sdk = await AnnapurnaSDK.initialize(
-        'eb29cf8b-e159-4da4-aec1-b550ca36626f',
-        4,
-        {
-          fortmatic: {
-            key: 'pk_test_7459BD51DE1FC406',
-          },
-        }
-      )
+      const sdk = await AnnapurnaSDK.initialize(DEMO_ACCESS_KEY, 4, {
+        fortmatic: {
+          key: DEMO_FORTMATIC_KEY,
+        },
+      })
       setSdk(sdk)
       if (await sdk.isLoggedIn()) {
         setWalletInfo(await sdk.getWalletInfo())
