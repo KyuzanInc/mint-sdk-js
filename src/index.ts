@@ -131,10 +131,7 @@ export class AnnapurnaSDK {
       const accounts = await this.metamaskProvider.listAccounts()
       return accounts.length > 0
     } else {
-      const accounts = (await this.fortmatic
-        .getProvider()
-        .send('eth_accounts')) as string[]
-      return accounts.length > 0
+      return await this.fortmatic.user.isLoggedIn()
     }
   }
 
