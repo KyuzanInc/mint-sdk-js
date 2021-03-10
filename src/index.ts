@@ -34,6 +34,10 @@ export class AnnapurnaSDK {
     return ethers.utils.formatEther(bg)
   }
 
+  private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
+  private eventDisconnectCallbacks: Array<() => any> = []
+  private eventConnectCallbacks: Array<() => any> = []
+
   private constructor(
     private accessToken: string,
     private networkId: NetworkId,
@@ -51,6 +55,21 @@ export class AnnapurnaSDK {
           window.location.reload()
         }
       })
+
+      metamaskProvider.on('accountsChanged', (accounts: string[]) => {
+        this.emitAccountChange(accounts)
+      })
+
+      metamaskProvider.on('connect', (_: { chainId: number }) => {
+        this.emitConnect()
+      })
+
+      metamaskProvider.on(
+        'disconnect',
+        (_: { code: number; message: string }) => {
+          this.emitDisconnect()
+        }
+      )
     }
   }
 
@@ -138,11 +157,13 @@ export class AnnapurnaSDK {
       })
     } else {
       await this.fortmatic.getProvider().enable()
+      this.emitConnect()
     }
   }
 
   public disconnectWallet = async () => {
     await this.fortmatic.user.logout()
+    this.emitDisconnect()
   }
 
   public getWalletInfo: () => Promise<WalletInfo> = async () => {
@@ -330,8 +351,53 @@ export class AnnapurnaSDK {
 
   // 以下のイベントをサブスクライブ
   // connect
-  // disconnect
-  // change
+  public onAccountsChange = (callback: (accounts: string[]) => any) => {
+    this.eventAccountsChangeCallbacks.push(callback)
+  }
+
+  public offAccountsChange = (callback?: (accounts: string[]) => any) => {
+    if (callback) {
+      this.eventAccountsChangeCallbacks.forEach((f, index) => {
+        if (f === callback) {
+          this.eventAccountsChangeCallbacks.splice(index, 1)
+        }
+      })
+    } else {
+      this.eventAccountsChangeCallbacks = []
+    }
+  }
+
+  public onConnect = (callback: () => any) => {
+    this.eventConnectCallbacks.push(callback)
+  }
+
+  public offConnect = (callback?: () => any) => {
+    if (callback) {
+      this.eventConnectCallbacks.forEach((f, index) => {
+        if (f === callback) {
+          this.eventConnectCallbacks.splice(index, 1)
+        }
+      })
+    } else {
+      this.eventConnectCallbacks = []
+    }
+  }
+
+  public onDisconnect = (callback: () => any) => {
+    this.eventDisconnectCallbacks.push(callback)
+  }
+
+  public offDisconnect = (callback?: () => any) => {
+    if (callback) {
+      this.eventDisconnectCallbacks.forEach((f, index) => {
+        if (f === callback) {
+          this.eventDisconnectCallbacks.splice(index, 1)
+        }
+      })
+    } else {
+      this.eventDisconnectCallbacks = []
+    }
+  }
 
   private getProvider = () => {
     if (this.metamaskProvider) {
@@ -348,5 +414,17 @@ export class AnnapurnaSDK {
       startAt: item.startAt ? new Date(item.startAt) : undefined,
       endAt: item.endAt ? new Date(item.endAt) : undefined,
     }
+  }
+
+  private emitAccountChange = (accounts: string[]) => {
+    this.eventAccountsChangeCallbacks.forEach((f) => f(accounts))
+  }
+
+  private emitDisconnect = () => {
+    this.eventDisconnectCallbacks.forEach((f) => f())
+  }
+
+  private emitConnect = () => {
+    this.eventConnectCallbacks.forEach((f) => f())
   }
 }
