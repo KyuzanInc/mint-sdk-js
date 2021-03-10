@@ -349,8 +349,6 @@ export class AnnapurnaSDK {
     )) as ethers.providers.TransactionResponse
   }
 
-  // 以下のイベントをサブスクライブ
-  // connect
   public onAccountsChange = (callback: (accounts: string[]) => any) => {
     this.eventAccountsChangeCallbacks.push(callback)
   }
