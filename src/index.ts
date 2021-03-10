@@ -126,7 +126,7 @@ export class AnnapurnaSDK {
     return sdk
   }
 
-  public isLoggedIn = async () => {
+  public isWalletConnect = async () => {
     if (this.metamaskProvider && this.metamaskProvider.provider.request) {
       const accounts = await this.metamaskProvider.listAccounts()
       return accounts.length > 0
@@ -150,7 +150,7 @@ export class AnnapurnaSDK {
   }
 
   public getWalletInfo = async () => {
-    if (!(await this.isLoggedIn())) {
+    if (!(await this.isWalletConnect())) {
       throw new Error('not LoggedId')
     }
 
@@ -178,7 +178,7 @@ export class AnnapurnaSDK {
   }
 
   public waitForTransaction = async (txHash: string) => {
-    if (!(await this.isLoggedIn())) {
+    if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
     const wallet = await this.getProvider()
@@ -234,7 +234,7 @@ export class AnnapurnaSDK {
   }
 
   public sendTxBid = async (itemId: string, bidPrice: number) => {
-    if (!(await this.isLoggedIn())) {
+    if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
 
@@ -273,7 +273,7 @@ export class AnnapurnaSDK {
 
   public sendTxMakeSuccessfulBid = async (itemId: string) => {
     // wallet connect check
-    if (!(await this.isLoggedIn())) {
+    if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
     const item = await this.getItemById(itemId)
@@ -302,7 +302,7 @@ export class AnnapurnaSDK {
   }
 
   public sendTxBuyItem = async (itemId: string) => {
-    if (!(await this.isLoggedIn())) {
+    if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
     const item = await this.getItemById(itemId)
