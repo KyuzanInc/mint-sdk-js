@@ -8,58 +8,25 @@ hide_title: true
 
 # Class: AnnapurnaSDK
 
-## Constructors
-
-### constructor
-
-\+ `Private`**new AnnapurnaSDK**(`accessToken`: *string*, `networkId`: [*NetworkId*](../modules.md#networkid), `axios`: AxiosInstance, `fortmatic`: *WidgetMode*, `metamaskProvider`: *null* \| *Web3Provider*, `shopContract`: { `abi`: *any* ; `address`: *string*  }): [*AnnapurnaSDK*](annapurnasdk.md)
-
-#### Parameters:
-
-Name | Type |
-:------ | :------ |
-`accessToken` | *string* |
-`networkId` | [*NetworkId*](../modules.md#networkid) |
-`axios` | AxiosInstance |
-`fortmatic` | *WidgetMode* |
-`metamaskProvider` | *null* \| *Web3Provider* |
-`shopContract` | *object* |
-`shopContract.abi` | *any* |
-`shopContract.address` | *string* |
-
-**Returns:** [*AnnapurnaSDK*](annapurnasdk.md)
-
-Defined in: [index.ts:39](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L39)
-
 ## Properties
-
-### eventAccountsChangeCallbacks
-
-• `Private` **eventAccountsChangeCallbacks**: (`accounts`: *string*[]) => *any*[]
-
-Defined in: [index.ts:37](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L37)
-
-___
-
-### eventConnectCallbacks
-
-• `Private` **eventConnectCallbacks**: () => *any*[]
-
-Defined in: [index.ts:39](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L39)
-
-___
-
-### eventDisconnectCallbacks
-
-• `Private` **eventDisconnectCallbacks**: () => *any*[]
-
-Defined in: [index.ts:38](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L38)
-
-___
 
 ### getWalletInfo
 
 • **getWalletInfo**: () => *Promise*<[*WalletInfo*](../modules.md#walletinfo)\>
+
+ウォレットのアカウントと残高情報などの情報が取得できる
+
+**Required**
+- ウォレットに接続していること
+
+**`returns`** 
+
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+const sdk = await AnnapurnaSDK.initialize(...)
+await sdk.connectWallet()  // required
+await sdk.getWalletInfo()
+```
 
 #### Type declaration:
 
@@ -67,9 +34,9 @@ ___
 
 **Returns:** *Promise*<[*WalletInfo*](../modules.md#walletinfo)\>
 
-Defined in: [index.ts:169](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L169)
+Defined in: [index.ts:256](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L256)
 
-Defined in: [index.ts:169](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L169)
+Defined in: [index.ts:256](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L256)
 
 ## Methods
 
@@ -77,9 +44,22 @@ Defined in: [index.ts:169](https://github.com/KyuzanInc/annapurna-sdk-js/blob/42
 
 ▸ **connectWallet**(): *Promise*<void\>
 
+ウォレットに接続
+MetamaskがインストールされているブラウザではMetamaskが、されていない場合はFortmaticに接続を行う
+ウォレットが接続されるとResolveされる
+ウォレット接続をキャンセルした場合は、Rejectされる
+
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+const sdk = await AnnapurnaSDK.initialize(...)
+await sdk.isWalletConnect() // false
+await sdk.connectWallet()
+await sdk.isWalletConnect()  // true
+```
+
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:153](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L153)
+Defined in: [index.ts:213](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L213)
 
 ___
 
@@ -87,97 +67,44 @@ ___
 
 ▸ **disconnectWallet**(): *Promise*<void\>
 
+ウォレットから切断
+Fortmaticの場合、切断される
+**MetaMaskが接続されている場合は何も実行されない**
+
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+
+const sdk = await AnnapurnaSDK.initialize(...)
+await sdk.disconnectWallet()
+```
+
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:164](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L164)
-
-___
-
-### emitAccountChange
-
-▸ `Private`**emitAccountChange**(`accounts`: *string*[]): *void*
-
-#### Parameters:
-
-Name | Type |
-:------ | :------ |
-`accounts` | *string*[] |
-
-**Returns:** *void*
-
-Defined in: [index.ts:427](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L427)
-
-___
-
-### emitConnect
-
-▸ `Private`**emitConnect**(): *void*
-
-**Returns:** *void*
-
-Defined in: [index.ts:435](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L435)
-
-___
-
-### emitDisconnect
-
-▸ `Private`**emitDisconnect**(): *void*
-
-**Returns:** *void*
-
-Defined in: [index.ts:431](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L431)
-
-___
-
-### formatItem
-
-▸ `Private`**formatItem**(`item`: [*Item*](../modules.md#item)): *object*
-
-#### Parameters:
-
-Name | Type |
-:------ | :------ |
-`item` | [*Item*](../modules.md#item) |
-
-**Returns:** *object*
-
-Name | Type |
-:------ | :------ |
-`authorAddress` | *string* |
-`buyerAddress` | *null* \| *string* |
-`currentBidderAddress`? | *null* \| *string* |
-`currentPrice`? | *number* |
-`description` | *string* |
-`endAt` | *undefined* \| Date |
-`imageURL` | *string* |
-`initialPrice`? | *number* |
-`itemId` | *string* |
-`name` | *string* |
-`networkId` | *1* \| *4* |
-`price`? | *number* |
-`signature` | *string* |
-`startAt` | *undefined* \| Date |
-`tokenId` | *number* |
-`tokenURI` | *string* |
-`tradeType` | *fixedPrice* \| *auction* |
-
-Defined in: [index.ts:419](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L419)
+Defined in: [index.ts:236](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L236)
 
 ___
 
 ### getItemById
 
-▸ **getItemById**(`itemId`: *string*): *Promise*<{ `authorAddress`: *string* ; `buyerAddress`: *null* \| *string* ; `currentBidderAddress?`: *null* \| *string* ; `currentPrice?`: *number* ; `description`: *string* ; `endAt`: *undefined* \| Date ; `imageURL`: *string* ; `initialPrice?`: *number* ; `itemId`: *string* ; `name`: *string* ; `networkId`: *1* \| *4* ; `price?`: *number* ; `signature`: *string* ; `startAt`: *undefined* \| Date ; `tokenId`: *number* ; `tokenURI`: *string* ; `tradeType`: *fixedPrice* \| *auction*  }\>
+▸ **getItemById**(`itemId`: *string*): *Promise*<[*Item*](../modules.md#item)\>
+
+ItemのitemId指定でアイテムを取得
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`itemId` | *string* |
+Name | Type | Description |
+:------ | :------ | :------ |
+`itemId` | *string* | [Item](../modules.md#item)のitemId   |
 
-**Returns:** *Promise*<{ `authorAddress`: *string* ; `buyerAddress`: *null* \| *string* ; `currentBidderAddress?`: *null* \| *string* ; `currentPrice?`: *number* ; `description`: *string* ; `endAt`: *undefined* \| Date ; `imageURL`: *string* ; `initialPrice?`: *number* ; `itemId`: *string* ; `name`: *string* ; `networkId`: *1* \| *4* ; `price?`: *number* ; `signature`: *string* ; `startAt`: *undefined* \| Date ; `tokenId`: *number* ; `tokenURI`: *string* ; `tradeType`: *fixedPrice* \| *auction*  }\>
+**Returns:** *Promise*<[*Item*](../modules.md#item)\>
 
-Defined in: [index.ts:223](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L223)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+const sdk = await AnnapurnaSDK.initialize(...)
+const item = await sdk.getItemById('item.itemId')
+```
+
+Defined in: [index.ts:367](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L367)
 
 ___
 
@@ -185,51 +112,67 @@ ___
 
 ▸ **getItemLogs**(`itemId`: *string*): *Promise*<[*ItemLog*](../modules.md#itemlog)[]\>
 
+アイテムの履歴(bidされた、買われた)の取得
+
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`itemId` | *string* |
+Name | Type | Description |
+:------ | :------ | :------ |
+`itemId` | *string* | [Item](../modules.md#item)のitemId   |
 
 **Returns:** *Promise*<[*ItemLog*](../modules.md#itemlog)[]\>
 
-Defined in: [index.ts:229](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L229)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+
+const sdk = await AnnapurnaSDK.initialize(...)
+const item = await sdk.getItemLogs('Item.itemId')
+```
+
+Defined in: [index.ts:386](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L386)
 
 ___
 
 ### getItems
 
-▸ **getItems**(): *Promise*<{ `authorAddress`: *string* ; `buyerAddress`: *null* \| *string* ; `currentBidderAddress?`: *null* \| *string* ; `currentPrice?`: *number* ; `description`: *string* ; `endAt`: *undefined* \| Date ; `imageURL`: *string* ; `initialPrice?`: *number* ; `itemId`: *string* ; `name`: *string* ; `networkId`: *1* \| *4* ; `price?`: *number* ; `signature`: *string* ; `startAt`: *undefined* \| Date ; `tokenId`: *number* ; `tokenURI`: *string* ; `tradeType`: *fixedPrice* \| *auction*  }[]\>
+▸ **getItems**(): *Promise*<[*Item*](../modules.md#item)[]\>
 
-**Returns:** *Promise*<{ `authorAddress`: *string* ; `buyerAddress`: *null* \| *string* ; `currentBidderAddress?`: *null* \| *string* ; `currentPrice?`: *number* ; `description`: *string* ; `endAt`: *undefined* \| Date ; `imageURL`: *string* ; `initialPrice?`: *number* ; `itemId`: *string* ; `name`: *string* ; `networkId`: *1* \| *4* ; `price?`: *number* ; `signature`: *string* ; `startAt`: *undefined* \| Date ; `tokenId`: *number* ; `tokenURI`: *string* ; `tradeType`: *fixedPrice* \| *auction*  }[]\>
+公開中のアイテムを取得
 
-Defined in: [index.ts:205](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L205)
+**Returns:** *Promise*<[*Item*](../modules.md#item)[]\>
+
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+
+const sdk = await AnnapurnaSDK.initialize(...)
+const items = await sdk.getItems()
+```
+
+Defined in: [index.ts:325](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L325)
 
 ___
 
 ### getItemsByBidderAddress
 
-▸ **getItemsByBidderAddress**(`address`: *string*): *Promise*<{ `authorAddress`: *string* ; `buyerAddress`: *null* \| *string* ; `currentBidderAddress?`: *null* \| *string* ; `currentPrice?`: *number* ; `description`: *string* ; `endAt`: *undefined* \| Date ; `imageURL`: *string* ; `initialPrice?`: *number* ; `itemId`: *string* ; `name`: *string* ; `networkId`: *1* \| *4* ; `price?`: *number* ; `signature`: *string* ; `startAt`: *undefined* \| Date ; `tokenId`: *number* ; `tokenURI`: *string* ; `tradeType`: *fixedPrice* \| *auction*  }[]\>
+▸ **getItemsByBidderAddress**(`address`: *string*): *Promise*<[*Item*](../modules.md#item)[]\>
+
+指定したアドレスがBidしたItemの一覧を取得
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`address` | *string* |
+Name | Type | Description |
+:------ | :------ | :------ |
+`address` | *string* | ウォレットのアドレス   |
 
-**Returns:** *Promise*<{ `authorAddress`: *string* ; `buyerAddress`: *null* \| *string* ; `currentBidderAddress?`: *null* \| *string* ; `currentPrice?`: *number* ; `description`: *string* ; `endAt`: *undefined* \| Date ; `imageURL`: *string* ; `initialPrice?`: *number* ; `itemId`: *string* ; `name`: *string* ; `networkId`: *1* \| *4* ; `price?`: *number* ; `signature`: *string* ; `startAt`: *undefined* \| Date ; `tokenId`: *number* ; `tokenURI`: *string* ; `tradeType`: *fixedPrice* \| *auction*  }[]\>
+**Returns:** *Promise*<[*Item*](../modules.md#item)[]\>
 
-Defined in: [index.ts:212](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L212)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+const sdk = await AnnapurnaSDK.initialize(...)
+const item = await sdk.getItemsByBidderAddress('0x1111......')
+```
 
-___
-
-### getProvider
-
-▸ `Private`**getProvider**(): *Web3Provider*
-
-**Returns:** *Web3Provider*
-
-Defined in: [index.ts:410](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L410)
+Defined in: [index.ts:344](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L344)
 
 ___
 
@@ -243,7 +186,14 @@ ___
 
 unix time (ms)
 
-Defined in: [index.ts:405](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L405)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+const sdk = AnnapurnaSDK.initialize(...)
+await	sdk.connectWallet()
+await sdk.getServerUnixTime()
+```
+
+Defined in: [index.ts:669](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L669)
 
 ___
 
@@ -251,15 +201,23 @@ ___
 
 ▸ **getTokensByAddress**(`address`: *string*): *Promise*<[*Token*](../modules.md#token)[]\>
 
+指定したアドレスが所持しているMINT経由で獲得したトークンを取得
+
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`address` | *string* |
+Name | Type | Description |
+:------ | :------ | :------ |
+`address` | *string* | Walletのアドレス   |
 
 **Returns:** *Promise*<[*Token*](../modules.md#token)[]\>
 
-Defined in: [index.ts:246](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L246)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+const sdk = await AnnapurnaSDK.initialize(...
+const tokens = await sdk.getTokensByAddress('0x11111...')
+```
+
+Defined in: [index.ts:415](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L415)
 
 ___
 
@@ -267,105 +225,20 @@ ___
 
 ▸ **isWalletConnect**(): *Promise*<any\>
 
+有効なアカウントがあるの状態を返す
+
 **Returns:** *Promise*<any\>
 
-Defined in: [index.ts:144](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L144)
+ウォレットが接続されていればtrue
 
-___
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
 
-### offAccountsChange
+const sdk = await AnnapurnaSDK.initialize(...)
+await sdk.isWalletConnect()
+```
 
-▸ **offAccountsChange**(`callback?`: (`accounts`: *string*[]) => *any*): *void*
-
-#### Parameters:
-
-Name | Type |
-:------ | :------ |
-`callback?` | (`accounts`: *string*[]) => *any* |
-
-**Returns:** *void*
-
-Defined in: [index.ts:356](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L356)
-
-___
-
-### offConnect
-
-▸ **offConnect**(`callback?`: () => *any*): *void*
-
-#### Parameters:
-
-Name | Type |
-:------ | :------ |
-`callback?` | () => *any* |
-
-**Returns:** *void*
-
-Defined in: [index.ts:372](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L372)
-
-___
-
-### offDisconnect
-
-▸ **offDisconnect**(`callback?`: () => *any*): *void*
-
-#### Parameters:
-
-Name | Type |
-:------ | :------ |
-`callback?` | () => *any* |
-
-**Returns:** *void*
-
-Defined in: [index.ts:388](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L388)
-
-___
-
-### onAccountsChange
-
-▸ **onAccountsChange**(`callback`: (`accounts`: *string*[]) => *any*): *void*
-
-#### Parameters:
-
-Name | Type |
-:------ | :------ |
-`callback` | (`accounts`: *string*[]) => *any* |
-
-**Returns:** *void*
-
-Defined in: [index.ts:352](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L352)
-
-___
-
-### onConnect
-
-▸ **onConnect**(`callback`: () => *any*): *void*
-
-#### Parameters:
-
-Name | Type |
-:------ | :------ |
-`callback` | () => *any* |
-
-**Returns:** *void*
-
-Defined in: [index.ts:368](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L368)
-
-___
-
-### onDisconnect
-
-▸ **onDisconnect**(`callback`: () => *any*): *void*
-
-#### Parameters:
-
-Name | Type |
-:------ | :------ |
-`callback` | () => *any* |
-
-**Returns:** *void*
-
-Defined in: [index.ts:384](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L384)
+Defined in: [index.ts:190](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L190)
 
 ___
 
@@ -373,16 +246,35 @@ ___
 
 ▸ **sendTxBid**(`itemId`: *string*, `bidPrice`: *number*): *Promise*<TransactionResponse\>
 
+指定した金額でBidするトランザクションを発行
+
+**Required**
+- ウォレットに接続していること
+
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`itemId` | *string* |
-`bidPrice` | *number* |
+Name | Type | Description |
+:------ | :------ | :------ |
+`itemId` | *string* | [Item](../modules.md#item)のitemId   |
+`bidPrice` | *number* | 単位はether   |
 
 **Returns:** *Promise*<TransactionResponse\>
 
-Defined in: [index.ts:253](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L253)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+const sdk = await AnnapurnaSDK.initialize(...)
+await sdk.connectWallet() // required
+try {
+ const tx = await sdk.sendTxBid('item.itemId', 2)
+ // show loading
+ await tx.wait()
+ // success transaction
+} catch (err) {
+ // display error message
+}
+```
+
+Defined in: [index.ts:446](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L446)
 
 ___
 
@@ -390,15 +282,34 @@ ___
 
 ▸ **sendTxBuyItem**(`itemId`: *string*): *Promise*<TransactionResponse\>
 
+FixedPriceのアイテムを購入するトランザクションを発行
+
+**Required**
+- ウォレットに接続していること
+
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`itemId` | *string* |
+Name | Type | Description |
+:------ | :------ | :------ |
+`itemId` | *string* | [Item](../modules.md#item)のitemId   |
 
 **Returns:** *Promise*<TransactionResponse\>
 
-Defined in: [index.ts:321](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L321)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+const sdk = await AnnapurnaSDK.initialize(...)
+await sdk.connectWallet() // required
+try {
+ const tx = await sdk.sendTxBuyItem('item.itemId')
+ // show loading
+ await tx.wait()
+ // success transaction
+} catch (err) {
+ // display error message
+}
+```
+
+Defined in: [index.ts:560](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L560)
 
 ___
 
@@ -406,15 +317,34 @@ ___
 
 ▸ **sendTxMakeSuccessfulBid**(`itemId`: *string*): *Promise*<TransactionResponse\>
 
+オークションで勝利したアイテムを引き出すトランザクションを発行
+
+**Required**
+- ウォレットに接続していること
+
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`itemId` | *string* |
+Name | Type | Description |
+:------ | :------ | :------ |
+`itemId` | *string* | [Item](../modules.md#item)のitemId   |
 
 **Returns:** *Promise*<TransactionResponse\>
 
-Defined in: [index.ts:291](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L291)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+const sdk = await AnnapurnaSDK.initialize(...)
+await sdk.connectWallet() // required
+try {
+ const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId')
+ // show loading
+ await tx.wait()
+ // success transaction
+} catch (err) {
+ // display error message
+}
+```
+
+Defined in: [index.ts:507](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L507)
 
 ___
 
@@ -422,15 +352,20 @@ ___
 
 ▸ **waitForTransaction**(`txHash`: *string*): *Promise*<void\>
 
+Transactionが成功するとResolveするPromiseを返します
+
+**Required**
+- ウォレットに接続していること
+
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`txHash` | *string* |
+Name | Type | Description |
+:------ | :------ | :------ |
+`txHash` | *string* | {@link ethers.providers.TransactionResponse}のhashプロパティ  ```typescript import { AnnapurnaSDK } from '@kyuzan/annapurna' const sdk = await AnnapurnaSDK.initialize(...) await sdk.connectWallet() // required try {  const tx = await sdk.sendTxBuyItem('item.itemId')  await tx.wait()  // success transaction } catch (err) {  // display error message } ```    |
 
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:197](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L197)
+Defined in: [index.ts:305](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L305)
 
 ___
 
@@ -450,7 +385,16 @@ Name | Type |
 
 Ether単位でパースされたstring
 
-Defined in: [index.ts:33](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L33)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+
+const sdk = await AnnapurnaSDK.initialize(...)
+await sdk.connectWallet()  // required
+const walletInfo = await sdk.getWalletInfo()
+AnnapurnaSDK.formatEther(walletInfo.balance) // 3.2
+```
+
+Defined in: [index.ts:48](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L48)
 
 ___
 
@@ -458,7 +402,7 @@ ___
 
 ▸ `Static`**initialize**(`accessToken`: *string*, `networkId`: [*NetworkId*](../modules.md#networkid), `walletSetting`: [*WalletSetting*](../modules.md#walletsetting), `devOption?`: { `backendUrl?`: *string* ; `contractMintAbi?`: *any* ; `contractMintShopAddress?`: *string* ; `jsonRPCUrl?`: *string*  }): *Promise*<[*AnnapurnaSDK*](annapurnasdk.md)\>
 
-sdkのイニシャライズ
+sdkのイシャライズ
 
 #### Parameters:
 
@@ -477,7 +421,12 @@ Name | Type |
 
 sdkのインスタンス
 
-Defined in: [index.ts:84](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L84)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+await AnnapurnaSDK.initialize(YOUR PROJECT ID, YOUR ACCESS TOKEN, { fortmatic: { token: YOUR FORTMATIC TOKEN } })
+```
+
+Defined in: [index.ts:118](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L118)
 
 ___
 
@@ -497,4 +446,10 @@ Name | Type | Description |
 
 etherをBigNumberとしてparseしたもの
 
-Defined in: [index.ts:23](https://github.com/KyuzanInc/annapurna-sdk-js/blob/4264e58/src/index.ts#L23)
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+
+AnnapurnaSDK.parseEther('3.2') // BigNumber
+```
+
+Defined in: [index.ts:29](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L29)

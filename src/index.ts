@@ -19,6 +19,12 @@ export class AnnapurnaSDK {
    *
    * @param ether 通常のETHと表示されるもの
    * @returns etherをBigNumberとしてparseしたもの
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
+   * AnnapurnaSDK.parseEther('3.2') // BigNumber
+   * ```
    */
   public static parseEther = (ether: string) => {
     return ethers.utils.parseEther(ether)
@@ -29,15 +35,38 @@ export class AnnapurnaSDK {
    *
    * @param bg
    * @returns Ether単位でパースされたstring
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * await sdk.connectWallet()  // required
+   * const walletInfo = await sdk.getWalletInfo()
+   * AnnapurnaSDK.formatEther(walletInfo.balance) // 3.2
+   * ```
    */
   public static formatEther = (bg: BigNumber) => {
     return ethers.utils.formatEther(bg)
   }
 
+  /**
+   * @ignore
+   */
   private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
+
+  /**
+   * @ignore
+   */
   private eventDisconnectCallbacks: Array<() => any> = []
+
+  /**
+   * @ignore
+   */
   private eventConnectCallbacks: Array<() => any> = []
 
+  /**
+   * @ignore
+   */
   private constructor(
     private accessToken: string,
     private networkId: NetworkId,
@@ -74,12 +103,17 @@ export class AnnapurnaSDK {
   }
 
   /**
-   * sdkのイニシャライズ
+   * sdkのイシャライズ
    *
    * @param accessToken
    * @param networkId
    * @param walletSetting
    * @returns sdkのインスタンス
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * await AnnapurnaSDK.initialize(YOUR PROJECT ID, YOUR ACCESS TOKEN, { fortmatic: { token: YOUR FORTMATIC TOKEN } })
+   * ```
    */
   public static initialize = async (
     accessToken: string,
@@ -141,6 +175,18 @@ export class AnnapurnaSDK {
     return sdk
   }
 
+  /**
+   * 有効なアカウントがあるの状態を返す
+   *
+   * @returns ウォレットが接続されていればtrue
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * await sdk.isWalletConnect()
+   * ```
+   */
   public isWalletConnect = async () => {
     if (this.metamaskProvider && this.metamaskProvider.provider.request) {
       const accounts = await this.metamaskProvider.listAccounts()
@@ -150,6 +196,20 @@ export class AnnapurnaSDK {
     }
   }
 
+  /**
+   * ウォレットに接続
+   * MetamaskがインストールされているブラウザではMetamaskが、されていない場合はFortmaticに接続を行う
+   * ウォレットが接続されるとResolveされる
+   * ウォレット接続をキャンセルした場合は、Rejectされる
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * await sdk.isWalletConnect() // false
+   * await sdk.connectWallet()
+   * await sdk.isWalletConnect()  // true
+   * ```
+   */
   public connectWallet = async () => {
     if (this.metamaskProvider && this.metamaskProvider.provider.request) {
       await this.metamaskProvider.provider.request({
@@ -161,11 +221,38 @@ export class AnnapurnaSDK {
     }
   }
 
+  /**
+   * ウォレットから切断
+   * Fortmaticの場合、切断される
+   * **MetaMaskが接続されている場合は何も実行されない**
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * await sdk.disconnectWallet()
+   * ```
+   */
   public disconnectWallet = async () => {
     await this.fortmatic.user.logout()
     this.emitDisconnect()
   }
 
+  /**
+   * ウォレットのアカウントと残高情報などの情報が取得できる
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * await sdk.connectWallet()  // required
+   * await sdk.getWalletInfo()
+   * ```
+   */
   public getWalletInfo: () => Promise<WalletInfo> = async () => {
     if (!(await this.isWalletConnect())) {
       throw new Error('not LoggedId')
@@ -194,6 +281,27 @@ export class AnnapurnaSDK {
     }
   }
 
+  /**
+   * Transactionが成功するとResolveするPromiseを返します
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param txHash {@link ethers.providers.TransactionResponse}のhashプロパティ
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * await sdk.connectWallet() // required
+   * try {
+   *  const tx = await sdk.sendTxBuyItem('item.itemId')
+   *  await tx.wait()
+   *  // success transaction
+   * } catch (err) {
+   *  // display error message
+   * }
+   * ```
+   */
   public waitForTransaction = async (txHash: string) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
@@ -202,6 +310,18 @@ export class AnnapurnaSDK {
     await wallet.waitForTransaction(txHash)
   }
 
+  /**
+   * 公開中のアイテムを取得
+   *
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const items = await sdk.getItems()
+   * ```
+   */
   public getItems = async () => {
     const { data } = await this.axios.get('/items')
     const items = data.data as Item[]
@@ -209,6 +329,18 @@ export class AnnapurnaSDK {
     return formatItems
   }
 
+  /**
+   * 指定したアドレスがBidしたItemの一覧を取得
+   *
+   * @param address ウォレットのアドレス
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const item = await sdk.getItemsByBidderAddress('0x1111......')
+   * ```
+   */
   public getItemsByBidderAddress = async (address: string) => {
     const { data } = await this.axios.get('getItemsByBidderAddress', {
       params: {
@@ -220,12 +352,37 @@ export class AnnapurnaSDK {
     return items.map(this.formatItem)
   }
 
+  /**
+   * ItemのitemId指定でアイテムを取得
+   *
+   * @param itemId {@link Item}のitemId
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const item = await sdk.getItemById('item.itemId')
+   * ```
+   */
   public getItemById = async (itemId: string) => {
     const { data } = await this.axios.get('item', { params: { itemId } })
     const item = data.data as Item
     return this.formatItem(item)
   }
 
+  /**
+   * アイテムの履歴(bidされた、買われた)の取得
+   *
+   * @param itemId {@link Item}のitemId
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const item = await sdk.getItemLogs('Item.itemId')
+   * ```
+   */
   public getItemLogs = async (itemId: string) => {
     const { data } = await this.axios.get<{
       data: {
@@ -243,6 +400,18 @@ export class AnnapurnaSDK {
     })) as ItemLog[]
   }
 
+  /**
+   * 指定したアドレスが所持しているMINT経由で獲得したトークンを取得
+   *
+   * @param address Walletのアドレス
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...
+   * const tokens = await sdk.getTokensByAddress('0x11111...')
+   * ```
+   */
   public getTokensByAddress = async (address: string) => {
     const { data } = await this.axios.get('tokensByAddress', {
       params: { address, networkId: this.networkId },
@@ -250,6 +419,30 @@ export class AnnapurnaSDK {
     return data.data as Token[]
   }
 
+  /**
+   * 指定した金額でBidするトランザクションを発行
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param itemId {@link Item}のitemId
+   * @param bidPrice 単位はether
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * await sdk.connectWallet() // required
+   * try {
+   *  const tx = await sdk.sendTxBid('item.itemId', 2)
+   *  // show loading
+   *  await tx.wait()
+   *  // success transaction
+   * } catch (err) {
+   *  // display error message
+   * }
+   * ```
+   */
   public sendTxBid = async (itemId: string, bidPrice: number) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
@@ -288,6 +481,29 @@ export class AnnapurnaSDK {
     )) as ethers.providers.TransactionResponse
   }
 
+  /**
+   * オークションで勝利したアイテムを引き出すトランザクションを発行
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param itemId {@link Item}のitemId
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * await sdk.connectWallet() // required
+   * try {
+   *  const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId')
+   *  // show loading
+   *  await tx.wait()
+   *  // success transaction
+   * } catch (err) {
+   *  // display error message
+   * }
+   * ```
+   */
   public sendTxMakeSuccessfulBid = async (itemId: string) => {
     // wallet connect check
     if (!(await this.isWalletConnect())) {
@@ -318,6 +534,29 @@ export class AnnapurnaSDK {
     )) as ethers.providers.TransactionResponse
   }
 
+  /**
+   * FixedPriceのアイテムを購入するトランザクションを発行
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param itemId {@link Item}のitemId
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * await sdk.connectWallet() // required
+   * try {
+   *  const tx = await sdk.sendTxBuyItem('item.itemId')
+   *  // show loading
+   *  await tx.wait()
+   *  // success transaction
+   * } catch (err) {
+   *  // display error message
+   * }
+   * ```
+   */
   public sendTxBuyItem = async (itemId: string) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
@@ -349,10 +588,16 @@ export class AnnapurnaSDK {
     )) as ethers.providers.TransactionResponse
   }
 
+  /**
+   * @ignore
+   */
   public onAccountsChange = (callback: (accounts: string[]) => any) => {
     this.eventAccountsChangeCallbacks.push(callback)
   }
 
+  /**
+   * @ignore
+   */
   public offAccountsChange = (callback?: (accounts: string[]) => any) => {
     if (callback) {
       this.eventAccountsChangeCallbacks.forEach((f, index) => {
@@ -365,10 +610,16 @@ export class AnnapurnaSDK {
     }
   }
 
+  /**
+   * @ignore
+   */
   public onConnect = (callback: () => any) => {
     this.eventConnectCallbacks.push(callback)
   }
 
+  /**
+   * @ignore
+   */
   public offConnect = (callback?: () => any) => {
     if (callback) {
       this.eventConnectCallbacks.forEach((f, index) => {
@@ -381,10 +632,16 @@ export class AnnapurnaSDK {
     }
   }
 
+  /**
+   * @ignore
+   */
   public onDisconnect = (callback: () => any) => {
     this.eventDisconnectCallbacks.push(callback)
   }
 
+  /**
+   * @ignore
+   */
   public offDisconnect = (callback?: () => any) => {
     if (callback) {
       this.eventDisconnectCallbacks.forEach((f, index) => {
@@ -401,12 +658,22 @@ export class AnnapurnaSDK {
    * サーバーのUnixタイムを取得
    *
    * @returns unix time (ms)
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = AnnapurnaSDK.initialize(...)
+   * await	sdk.connectWallet()
+   * await sdk.getServerUnixTime()
+   * ```
    */
   public getServerUnixTime = async () => {
     const { data } = await this.axios.get('serverSideTime')
     return data.data
   }
 
+  /**
+   * @ignore
+   */
   private getProvider = () => {
     if (this.metamaskProvider) {
       return this.metamaskProvider
@@ -416,22 +683,34 @@ export class AnnapurnaSDK {
     }
   }
 
+  /**
+   * @ignore
+   */
   private formatItem = (item: Item) => {
     return {
       ...item,
       startAt: item.startAt ? new Date(item.startAt) : undefined,
       endAt: item.endAt ? new Date(item.endAt) : undefined,
-    }
+    } as Item
   }
 
+  /**
+   * @ignore
+   */
   private emitAccountChange = (accounts: string[]) => {
     this.eventAccountsChangeCallbacks.forEach((f) => f(accounts))
   }
 
+  /**
+   * @ignore
+   */
   private emitDisconnect = () => {
     this.eventDisconnectCallbacks.forEach((f) => f())
   }
 
+  /**
+   * @ignore
+   */
   private emitConnect = () => {
     this.eventConnectCallbacks.forEach((f) => f())
   }
