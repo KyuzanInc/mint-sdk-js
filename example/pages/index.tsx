@@ -24,7 +24,7 @@ const Page = () => {
         },
       })
       setSdk(sdk)
-      if (await sdk.isLoggedIn()) {
+      if (await sdk.isWalletConnect()) {
         setWalletInfo(await sdk.getWalletInfo())
       }
 
