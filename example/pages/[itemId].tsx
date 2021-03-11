@@ -1,6 +1,10 @@
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { AnnapurnaSDK, Item as ItemType } from '@kyuzan/annapurna-sdk-js'
+import {
+  AnnapurnaSDK,
+  BigNumber,
+  Item as ItemType,
+} from '@kyuzan/annapurna-sdk-js'
 import { GetServerSideProps, NextPage } from 'next'
 import { Item } from '../components/Item'
 import { DEMO_ACCESS_KEY, DEMO_FORTMATIC_KEY } from '../constants'
@@ -14,6 +18,10 @@ const Page: NextPage<Props> = ({ itemId }) => {
   const [txStatus, setTxStatus] = useState('')
   const [sdk, setSdk] = useState<AnnapurnaSDK>()
   const [logs, setLogs] = useState<React.ReactNode>([])
+  const [walletInfo, setWalletInfo] = useState<{
+    address: string
+    balance: BigNumber | undefined
+  }>({ address: '', balance: undefined })
   useEffect(() => {
     const init = async () => {
       const sdk = await AnnapurnaSDK.initialize(
@@ -44,11 +52,25 @@ const Page: NextPage<Props> = ({ itemId }) => {
           )
         })
       )
+      if (await sdk.isWalletConnect()) {
+        setWalletInfo(await sdk.getWalletInfo())
+      }
     }
     init()
   }, [])
   const itemEl = itemData && (
     <Item
+      onClickWithdraw={async (itemId: string) => {
+        const txReceipt = await sdk!.sendTxMakeSuccessfulBid(itemId, ether)
+        setTxStatus(`処理中: ${txReceipt.hash}`)
+        try {
+          await sdk!.waitForTransaction(txReceipt.hash)
+          setTxStatus(`成功: ${txReceipt.hash}`)
+        } catch (err) {
+          setTxStatus(`失敗: ${txReceipt.hash}`)
+        }
+      }}
+      userAddress={walletInfo.address}
       item={itemData}
       onClickBid={async (itemId: string, ether: number) => {
         const txReceipt = await sdk!.sendTxBid(itemId, ether)
