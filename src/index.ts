@@ -523,8 +523,8 @@ export class AnnapurnaSDK {
       item.tokenURI,
       item.authorAddress,
       initialPrice,
-      item.startAt,
-      item.endAt,
+      item.startAt!.getTime() / 1000,
+      item.endAt!.getTime() / 1000,
       item.signature
     )) as ethers.providers.TransactionResponse
   }
