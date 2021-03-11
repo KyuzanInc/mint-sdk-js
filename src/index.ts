@@ -661,14 +661,31 @@ export class AnnapurnaSDK {
    *
    * ```typescript
    * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
    * const sdk = AnnapurnaSDK.initialize(...)
    * await	sdk.connectWallet()
-   * await sdk.getServerUnixTime()
+   * await sdk.getServerUnixTime()  // ex) 1615444120104
    * ```
    */
   public getServerUnixTime = async () => {
     const { data } = await this.axios.get('serverSideTime')
     return data.data
+  }
+
+  /**
+   * MetaMaskかどうかを判定
+   *
+   * @returns trueならばMetaMask
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
+   * const sdk = AnnapurnaSDK.initialize(...)
+   * await sdk.isInjectedWallet() // true
+   * ```
+   */
+  public isInjectedWallet = () => {
+    return typeof (window as any).ethereum !== 'undefined'
   }
 
   /**

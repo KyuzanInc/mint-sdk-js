@@ -34,9 +34,9 @@ await sdk.getWalletInfo()
 
 **Returns:** *Promise*<[*WalletInfo*](../modules.md#walletinfo)\>
 
-Defined in: [index.ts:256](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L256)
+Defined in: [index.ts:256](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L256)
 
-Defined in: [index.ts:256](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L256)
+Defined in: [index.ts:256](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L256)
 
 ## Methods
 
@@ -59,7 +59,7 @@ await sdk.isWalletConnect()  // true
 
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:213](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L213)
+Defined in: [index.ts:213](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L213)
 
 ___
 
@@ -80,7 +80,7 @@ await sdk.disconnectWallet()
 
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:236](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L236)
+Defined in: [index.ts:236](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L236)
 
 ___
 
@@ -104,7 +104,7 @@ const sdk = await AnnapurnaSDK.initialize(...)
 const item = await sdk.getItemById('item.itemId')
 ```
 
-Defined in: [index.ts:367](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L367)
+Defined in: [index.ts:367](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L367)
 
 ___
 
@@ -129,7 +129,7 @@ const sdk = await AnnapurnaSDK.initialize(...)
 const item = await sdk.getItemLogs('Item.itemId')
 ```
 
-Defined in: [index.ts:386](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L386)
+Defined in: [index.ts:386](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L386)
 
 ___
 
@@ -148,7 +148,7 @@ const sdk = await AnnapurnaSDK.initialize(...)
 const items = await sdk.getItems()
 ```
 
-Defined in: [index.ts:325](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L325)
+Defined in: [index.ts:325](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L325)
 
 ___
 
@@ -172,7 +172,7 @@ const sdk = await AnnapurnaSDK.initialize(...)
 const item = await sdk.getItemsByBidderAddress('0x1111......')
 ```
 
-Defined in: [index.ts:344](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L344)
+Defined in: [index.ts:344](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L344)
 
 ___
 
@@ -188,12 +188,13 @@ unix time (ms)
 
 ```typescript
 import { AnnapurnaSDK } from '@kyuzan/annapurna'
+
 const sdk = AnnapurnaSDK.initialize(...)
 await	sdk.connectWallet()
-await sdk.getServerUnixTime()
+await sdk.getServerUnixTime()  // ex) 1615444120104
 ```
 
-Defined in: [index.ts:669](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L669)
+Defined in: [index.ts:670](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L670)
 
 ___
 
@@ -217,7 +218,28 @@ const sdk = await AnnapurnaSDK.initialize(...
 const tokens = await sdk.getTokensByAddress('0x11111...')
 ```
 
-Defined in: [index.ts:415](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L415)
+Defined in: [index.ts:415](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L415)
+
+___
+
+### isInjectedWallet
+
+▸ **isInjectedWallet**(): *boolean*
+
+MetaMaskかどうかを判定
+
+**Returns:** *boolean*
+
+trueならばMetaMask
+
+```typescript
+import { AnnapurnaSDK } from '@kyuzan/annapurna'
+
+const sdk = AnnapurnaSDK.initialize(...)
+await sdk.isInjectedWallet() // true
+```
+
+Defined in: [index.ts:687](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L687)
 
 ___
 
@@ -238,7 +260,7 @@ const sdk = await AnnapurnaSDK.initialize(...)
 await sdk.isWalletConnect()
 ```
 
-Defined in: [index.ts:190](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L190)
+Defined in: [index.ts:190](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L190)
 
 ___
 
@@ -274,7 +296,7 @@ try {
 }
 ```
 
-Defined in: [index.ts:446](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L446)
+Defined in: [index.ts:446](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L446)
 
 ___
 
@@ -309,7 +331,7 @@ try {
 }
 ```
 
-Defined in: [index.ts:560](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L560)
+Defined in: [index.ts:560](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L560)
 
 ___
 
@@ -344,7 +366,7 @@ try {
 }
 ```
 
-Defined in: [index.ts:507](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L507)
+Defined in: [index.ts:507](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L507)
 
 ___
 
@@ -365,7 +387,7 @@ Name | Type | Description |
 
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:305](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L305)
+Defined in: [index.ts:305](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L305)
 
 ___
 
@@ -394,7 +416,7 @@ const walletInfo = await sdk.getWalletInfo()
 AnnapurnaSDK.formatEther(walletInfo.balance) // 3.2
 ```
 
-Defined in: [index.ts:48](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L48)
+Defined in: [index.ts:48](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L48)
 
 ___
 
@@ -426,7 +448,7 @@ import { AnnapurnaSDK } from '@kyuzan/annapurna'
 await AnnapurnaSDK.initialize(YOUR PROJECT ID, YOUR ACCESS TOKEN, { fortmatic: { token: YOUR FORTMATIC TOKEN } })
 ```
 
-Defined in: [index.ts:118](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L118)
+Defined in: [index.ts:118](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L118)
 
 ___
 
@@ -452,4 +474,4 @@ import { AnnapurnaSDK } from '@kyuzan/annapurna'
 AnnapurnaSDK.parseEther('3.2') // BigNumber
 ```
 
-Defined in: [index.ts:29](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ffae7c1/src/index.ts#L29)
+Defined in: [index.ts:29](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/index.ts#L29)

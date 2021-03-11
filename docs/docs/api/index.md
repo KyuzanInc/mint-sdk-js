@@ -23,6 +23,10 @@ Kyuzan Inc. MINT の SDK
 	% npm i @kyuzan/annapurna-sdk-js
 ```
 
+## API Documentation
+
+[docs](https://kyuzaninc.github.io/mint-sdk-js/)
+
 ## AccessToken と ProjectId の取得
 
 Kyuzan に連絡
