@@ -20,7 +20,7 @@ hide_title: true
 
 Ƭ **BigNumber**: ethers.BigNumber
 
-Defined in: [types/BigNumber.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/types/BigNumber.ts#L3)
+Defined in: [types/BigNumber.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ecac357/src/types/BigNumber.ts#L3)
 
 ___
 
@@ -50,7 +50,7 @@ Name | Type |
 `tokenURI` | *string* |
 `tradeType` | *fixedPrice* \| *auction* |
 
-Defined in: [types/Item.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/types/Item.ts#L1)
+Defined in: [types/Item.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ecac357/src/types/Item.ts#L1)
 
 ___
 
@@ -68,7 +68,7 @@ Name | Type |
 `transactionHash` | *string* |
 `type` | *bought* \| *bid* |
 
-Defined in: [types/ItemLog.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/types/ItemLog.ts#L1)
+Defined in: [types/ItemLog.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ecac357/src/types/ItemLog.ts#L1)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 Ƭ **NetworkId**: *1* \| *4*
 
-Defined in: [types/NetworkId.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/types/NetworkId.ts#L1)
+Defined in: [types/NetworkId.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ecac357/src/types/NetworkId.ts#L1)
 
 ___
 
@@ -97,7 +97,7 @@ Name | Type |
 `tokenId` | *number* |
 `tokenURI` | *string* |
 
-Defined in: [types/Token.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/types/Token.ts#L1)
+Defined in: [types/Token.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ecac357/src/types/Token.ts#L1)
 
 ___
 
@@ -112,7 +112,7 @@ Name | Type |
 `address` | *string* |
 `balance` | [*BigNumber*](modules.md#bignumber) |
 
-Defined in: [types/WalletInfo.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/types/WalletInfo.ts#L3)
+Defined in: [types/WalletInfo.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ecac357/src/types/WalletInfo.ts#L3)
 
 ___
 
@@ -127,4 +127,4 @@ Name | Type |
 `fortmatic` | *object* |
 `fortmatic.key` | *string* |
 
-Defined in: [types/WalletSetting.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5ea7f02/src/types/WalletSetting.ts#L1)
+Defined in: [types/WalletSetting.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/ecac357/src/types/WalletSetting.ts#L1)
