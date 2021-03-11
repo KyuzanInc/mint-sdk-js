@@ -5,7 +5,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "ethers": "^5.0.31",
-    "fortmatic": "^2.2.1"
+    "fortmatic": "^2.2.1",
+    "https": "^1.0.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

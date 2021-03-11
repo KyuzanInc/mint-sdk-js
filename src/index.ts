@@ -1,6 +1,8 @@
 import { Token } from './types/Token'
 import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
+import * as https from 'https'
+import * as http from 'http'
 import * as ethers from 'ethers'
 import Fortmatic from 'fortmatic'
 import { Item } from './types/Item'
@@ -120,6 +122,8 @@ export class AnnapurnaSDK {
   ) => {
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
     const axios = Axios.create({
+      httpsAgent: new https.Agent({ keepAlive: true }),
+      httpAgent: new http.Agent({ keepAlive: true }),
       baseURL: backendBaseUrl,
       headers: {
         'annapurna-access-token': accessToken,
