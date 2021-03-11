@@ -18,11 +18,19 @@ const Page = () => {
   }>({ address: '', balance: undefined })
   useEffect(() => {
     const init = async () => {
-      const sdk = await AnnapurnaSDK.initialize(DEMO_ACCESS_KEY, 4, {
-        fortmatic: {
-          key: DEMO_FORTMATIC_KEY,
+      const sdk = await AnnapurnaSDK.initialize(
+        DEMO_ACCESS_KEY,
+        4,
+        {
+          fortmatic: {
+            key: DEMO_FORTMATIC_KEY,
+          },
         },
-      })
+        {
+          backendUrl:
+            'http://localhost:5500/annapurna-development/asia-northeast1/',
+        }
+      )
       setSdk(sdk)
       if (await sdk.isWalletConnect()) {
         setWalletInfo(await sdk.getWalletInfo())

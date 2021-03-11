@@ -33,7 +33,7 @@ export const Item: React.FC<{
             value={values[0]}
             onChange={(e) => {
               const value = e.target.value
-              setValues([parseInt(value, 10)])
+              setValues([parseFloat(value)])
             }}
           />
           <Button onClick={() => onClickBid(item.itemId, values[0])}>
