@@ -25,11 +25,11 @@ const Page = () => {
           fortmatic: {
             key: DEMO_FORTMATIC_KEY,
           },
-        },
-        {
-          backendUrl:
-            'http://localhost:5500/annapurna-development/asia-northeast1/',
         }
+        // {
+        //   backendUrl:
+        //     'http://localhost:5500/annapurna-development/asia-northeast1/',
+        // }
       )
       setSdk(sdk)
       if (await sdk.isWalletConnect()) {
@@ -40,6 +40,7 @@ const Page = () => {
       const itemEls = items.map((item) => {
         return (
           <Item
+            userAddress={walletInfo.address}
             onClickBid={async (itemId: string, ether: number) => {
               const txReceipt = await sdk.sendTxBid(itemId, ether)
               setTxStatus(`処理中: ${txReceipt.hash}`)
@@ -61,13 +62,23 @@ const Page = () => {
                 setTxStatus(`失敗: ${txReceipt.hash}`)
               }
             }}
+            onClickWithdraw={async (itemId: string) => {
+              const txReceipt = await sdk.sendTxMakeSuccessfulBid(itemId)
+              setTxStatus(`処理中: ${txReceipt.hash}`)
+              try {
+                await sdk.waitForTransaction(txReceipt.hash)
+                setTxStatus(`成功: ${txReceipt.hash}`)
+              } catch (err) {
+                setTxStatus(`失敗: ${txReceipt.hash}`)
+              }
+            }}
           />
         )
       })
       setItems(itemEls)
     }
     init()
-  }, [])
+  }, [walletInfo.address])
 
   useEffect(() => {
     const fn = async () => {

@@ -16,15 +16,23 @@ const Page: NextPage<Props> = ({ itemId }) => {
   const [logs, setLogs] = useState<React.ReactNode>([])
   useEffect(() => {
     const init = async () => {
-      const sdkInstance = await AnnapurnaSDK.initialize(DEMO_ACCESS_KEY, 4, {
-        fortmatic: {
-          key: DEMO_FORTMATIC_KEY,
-        },
-      })
+      const sdk = await AnnapurnaSDK.initialize(
+        DEMO_ACCESS_KEY,
+        4,
+        {
+          fortmatic: {
+            key: DEMO_FORTMATIC_KEY,
+          },
+        }
+        // {
+        //   backendUrl:
+        //     'http://localhost:5500/annapurna-development/asia-northeast1/',
+        // }
+      )
       setSdk(sdk)
-      const item = await sdkInstance.getItemById(itemId)
+      const item = await sdk.getItemById(itemId)
       setItemData(item)
-      const logs = await sdkInstance.getItemLogs(itemId)
+      const logs = await sdk.getItemLogs(itemId)
       setLogs(
         logs.map((l) => {
           return (

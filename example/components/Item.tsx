@@ -7,21 +7,30 @@ import Link from 'next/link'
 
 export const Item: React.FC<{
   item: ItemType
+  userAddress: string | undefined
   onClickBid: (itemId: string, ether: number) => any
   onClickBuy: (itemId: string) => any
-}> = ({ item, onClickBid, onClickBuy }) => {
+  onClickWithdraw: (itemId: string) => any
+}> = ({ item, userAddress, onClickBid, onClickBuy, onClickWithdraw }) => {
+  console.log(item)
   const [values, setValues] = useState<number[]>([0])
   const isFixedPrice = item.tradeType === 'fixedPrice'
   const isBought = isFixedPrice && item.buyerAddress!.length !== 0
   const isBeforeAuction = isBefore(new Date(), item.startAt as Date)
   const isAfterAuction = isAfter(new Date(), item.endAt as Date)
   const onAuction = !isBeforeAuction && !isAfterAuction
+  const won = isAfterAuction && item.currentBidderAddress === userAddress
   return (
     <Container>
       {!isFixedPrice && isBeforeAuction && <p>オークション前</p>}
       {!isFixedPrice && isAfterAuction && <p>オークション後</p>}
       {!isFixedPrice && onAuction && <p>オークション中</p>}
-      <img src={item.imageURL} />
+      {item.imageURL.includes('.mp4') ? (
+        <video width={300} src={item.imageURL} autoPlay />
+      ) : (
+        <img src={item.imageURL} />
+      )}
+
       <p>{item.name}</p>
       <p>trade type: {item.tradeType}</p>
       <p>price: {item.currentPrice}</p>
@@ -43,6 +52,9 @@ export const Item: React.FC<{
       )}
       {!isBought && isFixedPrice && (
         <Button onClick={() => onClickBuy(item.itemId)}>'買う'</Button>
+      )}
+      {won && (
+        <Button onClick={() => onClickWithdraw(item.itemId)}>引き出す</Button>
       )}
       <Link href={`/${item.itemId}`}>アイテム詳細</Link>
     </Container>
