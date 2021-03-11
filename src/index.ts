@@ -315,7 +315,9 @@ export class AnnapurnaSDK {
    * ```
    */
   public getItems = async () => {
-    const { data } = await this.axios.get('/items')
+    const { data } = await this.axios.get('/items', {
+      params: { networkId: this.networkId },
+    })
     const items = data.data as Item[]
     const formatItems = items.map(this.formatItem)
     return formatItems
