@@ -95,6 +95,17 @@ const Page = () => {
       ).map((i) => {
         return (
           <Item
+            userAddress={walletInfo.address}
+            onClickWithdraw={async (itemId: string) => {
+              const txReceipt = await sdk.sendTxMakeSuccessfulBid(itemId)
+              setTxStatus(`処理中: ${txReceipt.hash}`)
+              try {
+                await sdk.waitForTransaction(txReceipt.hash)
+                setTxStatus(`成功: ${txReceipt.hash}`)
+              } catch (err) {
+                setTxStatus(`失敗: ${txReceipt.hash}`)
+              }
+            }}
             onClickBid={async (itemId: string, ether: number) => {
               const txReceipt = await sdk.sendTxBid(itemId, ether)
               setTxStatus(`処理中: ${txReceipt.hash}`)

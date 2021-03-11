@@ -61,7 +61,7 @@ const Page: NextPage<Props> = ({ itemId }) => {
   const itemEl = itemData && (
     <Item
       onClickWithdraw={async (itemId: string) => {
-        const txReceipt = await sdk!.sendTxMakeSuccessfulBid(itemId, ether)
+        const txReceipt = await sdk!.sendTxMakeSuccessfulBid(itemId)
         setTxStatus(`処理中: ${txReceipt.hash}`)
         try {
           await sdk!.waitForTransaction(txReceipt.hash)
