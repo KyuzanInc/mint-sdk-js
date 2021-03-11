@@ -1,8 +1,8 @@
 import { Token } from './types/Token'
 import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
-import * as https from 'https'
-import * as http from 'http'
+import * as Agent from 'agentkeepalive'
+
 import * as ethers from 'ethers'
 import Fortmatic from 'fortmatic'
 import { Item } from './types/Item'
@@ -121,9 +121,14 @@ export class AnnapurnaSDK {
     }
   ) => {
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
+    const keepAliveAgent = new Agent.HttpsAgent({
+      maxSockets: 100,
+      maxFreeSockets: 10,
+      timeout: 60000, // active socket keepalive for 60 seconds
+      freeSocketTimeout: 30000, // free socket keepalive for 30 seconds
+    })
     const axios = Axios.create({
-      httpsAgent: new https.Agent({ keepAlive: true }),
-      httpAgent: new http.Agent({ keepAlive: true }),
+      httpsAgent: keepAliveAgent,
       baseURL: backendBaseUrl,
       headers: {
         'annapurna-access-token': accessToken,
