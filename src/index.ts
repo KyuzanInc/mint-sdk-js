@@ -585,6 +585,7 @@ export class AnnapurnaSDK {
    * アカウントが変更された際に呼び出される関数を設定できる
    *
    * @param callback
+   * @returns void
    *
    * ```typescript
    * import { AnnapurnaSDK } from '@kyuzan/annapurna'
@@ -617,6 +618,7 @@ export class AnnapurnaSDK {
    * ウォレットに接続した際に呼び出される関数を設定できる
    *
    * @param callback
+   * @returns void
    *
    * ```typescript
    * import { AnnapurnaSDK } from '@kyuzan/annapurna'
@@ -649,6 +651,7 @@ export class AnnapurnaSDK {
    * ウォレットから切断した際に呼び出される関数を設定できる
    *
    * @param callback
+   * @returns void
    *
    * ```typescript
    * import { AnnapurnaSDK } from '@kyuzan/annapurna'
