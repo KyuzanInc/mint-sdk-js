@@ -84,21 +84,12 @@ export class AnnapurnaSDK {
           window.location.reload()
         }
       })
-
-      metamaskProvider.on('accountsChanged', (accounts: string[]) => {
+      ;(window as any).ethereum.on('accountsChanged', (accounts: string[]) => {
         this.emitAccountChange(accounts)
-      })
-
-      metamaskProvider.on('connect', (_: { chainId: number }) => {
-        this.emitConnect()
-      })
-
-      metamaskProvider.on(
-        'disconnect',
-        (_: { code: number; message: string }) => {
+        if (accounts.length === 0) {
           this.emitDisconnect()
         }
-      )
+      })
     }
   }
 
@@ -215,6 +206,7 @@ export class AnnapurnaSDK {
       await this.metamaskProvider.provider.request({
         method: 'eth_requestAccounts',
       })
+      this.emitConnect()
     } else {
       await this.fortmatic.getProvider().enable()
       this.emitConnect()
@@ -421,6 +413,7 @@ export class AnnapurnaSDK {
 
   /**
    * 指定した金額でBidするトランザクションを発行
+   * Bidする謹賀具の総額を`bidPrice`に指定する
    *
    * **Required**
    * - ウォレットに接続していること
@@ -589,7 +582,17 @@ export class AnnapurnaSDK {
   }
 
   /**
-   * @ignore
+   * アカウントが変更された際に呼び出される関数を設定できる
+   *
+   * @param callback
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * sdk.onAccountsChange((accounts: string[]) => {
+   *    // some thing
+   * })
+   * ```
    */
   public onAccountsChange = (callback: (accounts: string[]) => any) => {
     this.eventAccountsChangeCallbacks.push(callback)
@@ -611,7 +614,17 @@ export class AnnapurnaSDK {
   }
 
   /**
-   * @ignore
+   * ウォレットに接続した際に呼び出される関数を設定できる
+   *
+   * @param callback
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * sdk.onConnect(() => {
+   *    // some thing
+   * })
+   * ```
    */
   public onConnect = (callback: () => any) => {
     this.eventConnectCallbacks.push(callback)
@@ -633,7 +646,17 @@ export class AnnapurnaSDK {
   }
 
   /**
-   * @ignore
+   * ウォレットから切断した際に呼び出される関数を設定できる
+   *
+   * @param callback
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * sdk.onDisconnect(() => {
+   *    // some thing
+   * })
+   * ```
    */
   public onDisconnect = (callback: () => any) => {
     this.eventDisconnectCallbacks.push(callback)
