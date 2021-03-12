@@ -4,8 +4,8 @@ export type Item = {
   tokenId: number
   name: string
   description: string
-  tokenURI: string // 'QmStCJksdYHLE1xmsC7ny3U8QAMBXt7SozajWd3sWRMAxt/metadata.json',
-  imageURL: string
+  tokenURI: string // https://ipfs.io/ipfs/QmStCJksdYHLE1xmsC7ny3U8QAMBXt7SozajWd3sWRMAxt/metadata.json
+  imageURI: string // https://ipfs.io/ipfs/QmStCJksdYHLE1xmsC7ny3U8QAMBXt7SozajWd3sWRMAxt/nft.mp4
   authorAddress: string
   networkId: 1 | 4
   signature: string
