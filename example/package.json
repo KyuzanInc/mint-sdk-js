@@ -11,7 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.1.5",
-    "@kyuzan/annapurna-sdk-js": "^0.19.0",
+    "@kyuzan/annapurna-sdk-js": "^0.20.0",
     "date-fns": "^2.19.0",
     "next": "latest",
     "react": "^17.0.1",
