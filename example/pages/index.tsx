@@ -25,11 +25,11 @@ const Page = () => {
           fortmatic: {
             key: DEMO_FORTMATIC_KEY,
           },
+        },
+        {
+          backendUrl:
+            'http://localhost:5500/annapurna-development/asia-northeast1/',
         }
-        // {
-        //   backendUrl:
-        //     'http://localhost:5500/annapurna-development/asia-northeast1/',
-        // }
       )
       setSdk(sdk)
       if (await sdk.isWalletConnect()) {

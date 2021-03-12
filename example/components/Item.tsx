@@ -25,10 +25,10 @@ export const Item: React.FC<{
       {!isFixedPrice && isBeforeAuction && <p>オークション前</p>}
       {!isFixedPrice && isAfterAuction && <p>オークション後</p>}
       {!isFixedPrice && onAuction && <p>オークション中</p>}
-      {item.imageURL.includes('.mp4') ? (
-        <video width={300} src={item.imageURL} autoPlay />
+      {item.imageURI.includes('.mp4') ? (
+        <video width={300} src={item.imageURI} autoPlay />
       ) : (
-        <img src={item.imageURL} />
+        <img src={item.imageURI} />
       )}
 
       <p>{item.name}</p>
