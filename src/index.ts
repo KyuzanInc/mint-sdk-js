@@ -314,8 +314,8 @@ export class AnnapurnaSDK {
   /**
    * 公開中のアイテムを取得
    *
+   * @param paging
    * @returns
-   *
    * ```typescript
    * import { AnnapurnaSDK } from '@kyuzan/annapurna'
    *
@@ -323,9 +323,20 @@ export class AnnapurnaSDK {
    * const items = await sdk.getItems()
    * ```
    */
-  public getItems = async () => {
-    const { data } = await this.axios.get('/items', {
-      params: { networkId: this.networkId },
+  public getItems = async (
+    {
+      perPage,
+      page,
+    }: {
+      perPage: number
+      page: number
+    } = {
+      perPage: 30,
+      page: 1,
+    }
+  ) => {
+    const { data } = await this.axios.get('/v1_items', {
+      params: { networkId: this.networkId, perPage, page },
     })
     const items = data.data as Item[]
     const formatItems = items.map(this.formatItem)
@@ -386,7 +397,13 @@ export class AnnapurnaSDK {
    * const item = await sdk.getItemLogs('Item.itemId')
    * ```
    */
-  public getItemLogs = async (itemId: string) => {
+  public getItemLogs = async (
+    itemId: string,
+    paging = {
+      perPage: 30,
+      page: 1,
+    }
+  ) => {
     const { data } = await this.axios.get<{
       data: {
         type: 'bought' | 'bid'
@@ -395,7 +412,9 @@ export class AnnapurnaSDK {
         createAt: Date
         transactionHash: string
       }[]
-    }>('itemLogs', { params: { itemId } })
+    }>('v1_itemLogs', {
+      params: { itemId, page: paging.page, perPage: paging.perPage },
+    })
     const logs = data.data
     return logs.map((l) => ({
       ...l,

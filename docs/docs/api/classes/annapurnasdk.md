@@ -34,9 +34,9 @@ await sdk.getWalletInfo()
 
 **Returns:** *Promise*<[*WalletInfo*](../modules.md#walletinfo)\>
 
-Defined in: [index.ts:257](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L257)
+Defined in: [index.ts:257](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L257)
 
-Defined in: [index.ts:257](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L257)
+Defined in: [index.ts:257](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L257)
 
 ## Methods
 
@@ -59,7 +59,7 @@ await sdk.isWalletConnect()  // true
 
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:213](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L213)
+Defined in: [index.ts:213](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L213)
 
 ___
 
@@ -80,7 +80,7 @@ await sdk.disconnectWallet()
 
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:237](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L237)
+Defined in: [index.ts:237](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L237)
 
 ___
 
@@ -104,21 +104,24 @@ const sdk = await AnnapurnaSDK.initialize(...)
 const item = await sdk.getItemById('item.itemId')
 ```
 
-Defined in: [index.ts:370](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L370)
+Defined in: [index.ts:381](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L381)
 
 ___
 
 ### getItemLogs
 
-▸ **getItemLogs**(`itemId`: *string*): *Promise*<[*ItemLog*](../modules.md#itemlog)[]\>
+▸ **getItemLogs**(`itemId`: *string*, `paging?`: { `page`: *number* = 1; `perPage`: *number* = 30 }): *Promise*<[*ItemLog*](../modules.md#itemlog)[]\>
 
 アイテムの履歴(bidされた、買われた)の取得
 
 #### Parameters:
 
-Name | Type | Description |
-:------ | :------ | :------ |
-`itemId` | *string* | [Item](../modules.md#item)のitemId   |
+Name | Type | Default value | Description |
+:------ | :------ | :------ | :------ |
+`itemId` | *string* | - | [Item](../modules.md#item)のitemId   |
+`paging` | *object* | - | - |
+`paging.page` | *number* | 1 | - |
+`paging.perPage` | *number* | 30 | - |
 
 **Returns:** *Promise*<[*ItemLog*](../modules.md#itemlog)[]\>
 
@@ -129,15 +132,23 @@ const sdk = await AnnapurnaSDK.initialize(...)
 const item = await sdk.getItemLogs('Item.itemId')
 ```
 
-Defined in: [index.ts:389](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L389)
+Defined in: [index.ts:400](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L400)
 
 ___
 
 ### getItems
 
-▸ **getItems**(): *Promise*<[*Item*](../modules.md#item)[]\>
+▸ **getItems**(`__namedParameters?`: { `page`: *number* ; `perPage`: *number*  }): *Promise*<[*Item*](../modules.md#item)[]\>
 
 公開中のアイテムを取得
+
+#### Parameters:
+
+Name | Type |
+:------ | :------ |
+`__namedParameters` | *object* |
+`__namedParameters.page` | *number* |
+`__namedParameters.perPage` | *number* |
 
 **Returns:** *Promise*<[*Item*](../modules.md#item)[]\>
 
@@ -148,7 +159,7 @@ const sdk = await AnnapurnaSDK.initialize(...)
 const items = await sdk.getItems()
 ```
 
-Defined in: [index.ts:326](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L326)
+Defined in: [index.ts:326](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L326)
 
 ___
 
@@ -172,7 +183,7 @@ const sdk = await AnnapurnaSDK.initialize(...)
 const item = await sdk.getItemsByBidderAddress('0x1111......')
 ```
 
-Defined in: [index.ts:347](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L347)
+Defined in: [index.ts:358](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L358)
 
 ___
 
@@ -194,7 +205,7 @@ await	sdk.connectWallet()
 await sdk.getServerUnixTime()  // ex) 1615444120104
 ```
 
-Defined in: [index.ts:707](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L707)
+Defined in: [index.ts:726](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L726)
 
 ___
 
@@ -218,7 +229,7 @@ const sdk = await AnnapurnaSDK.initialize(...
 const tokens = await sdk.getTokensByAddress('0x11111...')
 ```
 
-Defined in: [index.ts:418](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L418)
+Defined in: [index.ts:437](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L437)
 
 ___
 
@@ -239,7 +250,7 @@ const sdk = AnnapurnaSDK.initialize(...)
 await sdk.isInjectedWallet() // true
 ```
 
-Defined in: [index.ts:724](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L724)
+Defined in: [index.ts:743](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L743)
 
 ___
 
@@ -260,7 +271,7 @@ const sdk = await AnnapurnaSDK.initialize(...)
 await sdk.isWalletConnect()
 ```
 
-Defined in: [index.ts:190](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L190)
+Defined in: [index.ts:190](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L190)
 
 ___
 
@@ -288,7 +299,7 @@ sdk.onAccountsChange((accounts: string[]) => {
 })
 ```
 
-Defined in: [index.ts:609](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L609)
+Defined in: [index.ts:628](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L628)
 
 ___
 
@@ -316,7 +327,7 @@ sdk.onConnect(() => {
 })
 ```
 
-Defined in: [index.ts:642](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L642)
+Defined in: [index.ts:661](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L661)
 
 ___
 
@@ -344,7 +355,7 @@ sdk.onDisconnect(() => {
 })
 ```
 
-Defined in: [index.ts:675](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L675)
+Defined in: [index.ts:694](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L694)
 
 ___
 
@@ -381,7 +392,7 @@ try {
 }
 ```
 
-Defined in: [index.ts:450](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L450)
+Defined in: [index.ts:469](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L469)
 
 ___
 
@@ -416,7 +427,7 @@ try {
 }
 ```
 
-Defined in: [index.ts:564](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L564)
+Defined in: [index.ts:583](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L583)
 
 ___
 
@@ -451,7 +462,7 @@ try {
 }
 ```
 
-Defined in: [index.ts:511](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L511)
+Defined in: [index.ts:530](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L530)
 
 ___
 
@@ -472,7 +483,7 @@ Name | Type | Description |
 
 **Returns:** *Promise*<void\>
 
-Defined in: [index.ts:306](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L306)
+Defined in: [index.ts:306](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L306)
 
 ___
 
@@ -501,7 +512,7 @@ const walletInfo = await sdk.getWalletInfo()
 AnnapurnaSDK.formatEther(walletInfo.balance) // 3.2
 ```
 
-Defined in: [index.ts:50](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L50)
+Defined in: [index.ts:50](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L50)
 
 ___
 
@@ -533,7 +544,7 @@ import { AnnapurnaSDK } from '@kyuzan/annapurna'
 await AnnapurnaSDK.initialize(YOUR PROJECT ID, YOUR ACCESS TOKEN, { fortmatic: { token: YOUR FORTMATIC TOKEN } })
 ```
 
-Defined in: [index.ts:111](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L111)
+Defined in: [index.ts:111](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L111)
 
 ___
 
@@ -559,4 +570,4 @@ import { AnnapurnaSDK } from '@kyuzan/annapurna'
 AnnapurnaSDK.parseEther('3.2') // BigNumber
 ```
 
-Defined in: [index.ts:31](https://github.com/KyuzanInc/annapurna-sdk-js/blob/da220fd/src/index.ts#L31)
+Defined in: [index.ts:31](https://github.com/KyuzanInc/annapurna-sdk-js/blob/692383b/src/index.ts#L31)
