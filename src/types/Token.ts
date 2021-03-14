@@ -11,6 +11,10 @@ export type Token = {
   /** https://ipfs.io/ipfs/xxxx */
   tokenURI: string // https://ipfs.io/ipfs/'QmStCJksdYHLE1xmsC7ny3U8QAMBXt7SozajWd3sWRMAxt/metadata.json',
   authorAddress: string
-  /** プレビューの画像URI */
+  /**
+   * プレビューのURI
+   * 動画・画像が入る
+   * プレビューが設定されていない場合は空配列になる
+   * */
   previewURIs: string[]
 }

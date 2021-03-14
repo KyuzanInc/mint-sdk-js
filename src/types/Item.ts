@@ -13,7 +13,11 @@ export type Item = {
   /** https://ipfs.io/ipfs/xxxx */
   imageURI: string // https://ipfs.io/ipfs/QmStCJksdYHLE1xmsC7ny3U8QAMBXt7SozajWd3sWRMAxt/nft.mp4
   authorAddress: string
-  /** プレビューの画像URI */
+  /**
+   * プレビューのURI
+   * 動画・画像が入る
+   * プレビューが設定されていない場合は空配列になる
+   * */
   previewURIs: string[]
   networkId: 1 | 4
   signature: string
