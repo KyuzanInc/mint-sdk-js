@@ -491,7 +491,8 @@ export class AnnapurnaSDK {
     const endAt = item.endAt!.getTime() / 1000
     return (await shopContract.bidAuction(
       item.tokenId,
-      item.tokenURI,
+      // TODO
+      item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
       item.authorAddress,
       initialPrice,
       startAt,
@@ -548,7 +549,8 @@ export class AnnapurnaSDK {
     }
     return (await shopContract.buyAuction(
       item.tokenId,
-      item.tokenURI,
+      // TODO
+      item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
       item.authorAddress,
       initialPrice,
       item.startAt!.getTime() / 1000,
@@ -601,7 +603,8 @@ export class AnnapurnaSDK {
       .toString()
     return (await shopContract.buyFixedPrice(
       item.tokenId,
-      item.tokenURI,
+      // TODO
+      item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
       item.authorAddress,
       price,
       item.signature,
