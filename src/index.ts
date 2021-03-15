@@ -386,6 +386,7 @@ export class AnnapurnaSDK {
 
   /**
    * アイテムの履歴(bidされた、買われた)の取得
+   * 最新の物から返される
    *
    * @param itemId {@link Item}のitemId
    * @returns
