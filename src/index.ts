@@ -387,22 +387,21 @@ export class AnnapurnaSDK {
 
   /**
    * Tokenに紐づいたItemを取得
-   * @param tokenId
-   * @param tokenAddress
+   * @param token
    * @returns
    *
    * ```typescript
    * import { AnnapurnaSDK } from '@kyuzan/annapurna'
    * const sdk = await AnnapurnaSDK.initialize(...)
-   * const item = await sdk.getItemByToken('item.itemId', '0x111....')
+   * const item = await sdk.getItemByToken(token)
    * ```
    */
-  public getItemByToken = async (tokenId: string, tokenAddress: string) => {
+  public getItemByToken = async (token: Token) => {
     const { data } = await this.axios.get<AxiosBody<Item>>('v1_itemByToken', {
       params: {
-        tokenId,
+        tokenId: token.tokenId,
         networkId: this.networkId,
-        tokenAddress,
+        tokenAddress: token.contractAddress,
       },
     })
     const item = data.data
