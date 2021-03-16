@@ -29,5 +29,5 @@ export type Token = {
    * 動画・画像が入る
    * プレビューが設定されていない場合は空配列になる
    * */
-  previewURIs: string[]
+  previews: { mimeType: string, url: string }[]
 }

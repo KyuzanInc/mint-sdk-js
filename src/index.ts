@@ -1,3 +1,4 @@
+import { AxiosBody } from './types/AxiosBody'
 import { Token } from './types/Token'
 import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
@@ -381,6 +382,29 @@ export class AnnapurnaSDK {
   public getItemById = async (itemId: string) => {
     const { data } = await this.axios.get('item', { params: { itemId } })
     const item = data.data as Item
+    return this.formatItem(item)
+  }
+
+  /**
+   * Tokenに紐づいたItemを取得
+   * @param token
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const item = await sdk.getItemByToken(token)
+   * ```
+   */
+  public getItemByToken = async (token: Token) => {
+    const { data } = await this.axios.get<AxiosBody<Item>>('v1_itemByToken', {
+      params: {
+        tokenId: token.tokenId,
+        networkId: this.networkId,
+        tokenAddress: token.contractAddress,
+      },
+    })
+    const item = data.data
     return this.formatItem(item)
   }
 
