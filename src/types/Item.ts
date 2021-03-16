@@ -18,7 +18,7 @@ export type Item = {
    * 動画・画像が入る
    * プレビューが設定されていない場合は空配列になる
    * */
-  previewURIs: string[]
+  previews: { mimeType: string, url: string }[]
   networkId: 1 | 4
   signature: string
   /** buyerAddress にアドレスが入っている場合、Itemが「引出された」「購入された」ている */
