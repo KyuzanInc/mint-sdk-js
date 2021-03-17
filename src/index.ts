@@ -390,7 +390,7 @@ export class AnnapurnaSDK {
    * ```
    */
   public getItemById = async (itemId: string) => {
-    const { data } = await this.axios.get('item', { params: { itemId } })
+    const { data } = await this.axios.get('v2_item', { params: { itemId } })
     const item = data.data as Item
     return this.formatItem(item)
   }
