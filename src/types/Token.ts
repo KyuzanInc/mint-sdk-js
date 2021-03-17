@@ -1,5 +1,8 @@
+import { Item } from './Item'
+
 /**
  * TokenはERC721を表現している
+ * Item:Token = 1:1
  * */
 export type Token = {
   contractAddress: string
@@ -16,5 +19,9 @@ export type Token = {
    * 動画・画像が入る
    * プレビューが設定されていない場合は空配列になる
    * */
-  previews: { mimeType: string, url: string }[]
+  previews: { mimeType: string; url: string }[]
+  /**
+   * Tokenの元になったItemが入る
+   */
+  item: Item
 }
