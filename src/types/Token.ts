@@ -24,7 +24,7 @@ export type Token = {
    * imageURIのブラウザ閲覧用
    * https://xxxx
    * */
-  imageURIHTTP: string
+  imageURIHTTP: { url: string; mimeType: string } // https://
   /** https://ipfs.io/ipfs/xxxx */
   authorAddress: string
   /**
@@ -36,5 +36,5 @@ export type Token = {
   /**
    * Tokenの元になったItemが入る
    */
-  item: Item // TODO
+  item: Item
 }

@@ -19,7 +19,9 @@ const Page = () => {
   useEffect(() => {
     const init = async () => {
       const sdk = await AnnapurnaSDK.initialize(
-        '35a9d66d-8d2f-43a1-af12-aa976de4c614',
+        // 旧で動くのを確認してから
+        '4bdaee8f-8e23-4913-9858-7a10dd7be877', // new
+        // '35a9d66d-8d2f-43a1-af12-aa976de4c614',
         4,
         {
           fortmatic: {
@@ -28,8 +30,8 @@ const Page = () => {
         },
         {
           backendUrl:
-            // 'http://localhost:5500/annapurna-development/asia-northeast1/',
-            'https://asia-northeast1-annapurna-development.cloudfunctions.net/',
+            'http://localhost:5500/annapurna-development/asia-northeast1/',
+          // 'https://asia-northeast1-annapurna-development.cloudfunctions.net/',
         }
       )
       setSdk(sdk)
@@ -86,9 +88,12 @@ const Page = () => {
       if (!sdk) return
       if (!(await sdk.isWalletConnect())) return
       const walletInfo = await sdk.getWalletInfo()
-      const itemEls = (
-        await sdk.getTokensByAddress(walletInfo.address)
-      ).map((token) => <OwnItem item={token} />)
+      const itemEls = (await sdk.getTokensByAddress(walletInfo.address)).map(
+        (token) => {
+          console.log('token', token)
+          return <OwnItem item={token} />
+        }
+      )
       setOwnItems(itemEls)
 
       const bidedItems = (

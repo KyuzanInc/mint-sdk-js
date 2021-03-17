@@ -25,7 +25,7 @@ export type Item = {
    * imageURIのブラウザ閲覧用
    * https://xxxx
    * */
-  imageURIHTTP: string
+  imageURIHTTP: { url: string; mimeType: string }
   authorAddress: string
   /**
    * プレビューのURI

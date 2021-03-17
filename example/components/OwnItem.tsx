@@ -8,8 +8,9 @@ export const OwnItem: React.FC<{
 }> = ({ item }) => {
   return (
     <Container>
-      <img src={`https://ipfs.io/ipfs/${item.image}`} />
+      <img src={item.imageURIHTTP.url} />
       <p>{item.name}</p>
+      <p>{item.item.description}</p>
       <Link href={`/${item.tokenId}`}>アイテム詳細</Link>
     </Container>
   )
