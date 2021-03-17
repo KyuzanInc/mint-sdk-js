@@ -576,9 +576,6 @@ export class AnnapurnaSDK {
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
     const signer = wallet.getSigner()
-    const initialPrice = ethers.utils
-      .parseEther(String(item.initialPrice))
-      .toString()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -588,14 +585,13 @@ export class AnnapurnaSDK {
       throw new Error("Item's tradeType is not auction")
     }
     const tx = (await shopContract.buyAuction(
+      item.mintContractAddress,
       item.tokenId,
-      // TODO
-      item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
+      item.tokenURI,
       item.authorAddress,
-      initialPrice,
-      item.startAt!.getTime() / 1000,
       item.endAt!.getTime() / 1000,
-      item.signature
+      item.feeRatePermill,
+      item.signatureBuyAuction
     )) as ethers.providers.TransactionResponse
     const hash = tx.hash
     await this.axios.post('/v1_registerTransactionReceiptsApp', {

@@ -63,6 +63,7 @@ export type Item = {
   mintShopContractAddress: string
   createdBy: string[]
   yearCreated: string
+  feeRatePermill: number
 }
 
 export type MediaType = {
