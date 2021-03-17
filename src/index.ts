@@ -407,11 +407,12 @@ export class AnnapurnaSDK {
    * ```
    */
   public getItemByToken = async (token: Token) => {
-    const { data } = await this.axios.get<AxiosBody<Item>>('v1_itemByToken', {
+    const { data } = await this.axios.get<AxiosBody<Item>>('v2_itemByToken', {
       params: {
         tokenId: token.tokenId,
         networkId: this.networkId,
         tokenAddress: token.contractAddress,
+        mintContractAddress: token.contractAddress,
       },
     })
     const item = data.data
