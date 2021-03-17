@@ -448,7 +448,7 @@ export class AnnapurnaSDK {
         createAt: Date
         transactionHash: string
       }[]
-    }>('v1_itemLogs', {
+    }>('v2_itemLogs', {
       params: { itemId, page: paging.page, perPage: paging.perPage },
     })
     const logs = data.data
