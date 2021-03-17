@@ -594,7 +594,7 @@ export class AnnapurnaSDK {
       item.signatureBuyAuction
     )) as ethers.providers.TransactionResponse
     const hash = tx.hash
-    await this.axios.post('/v1_registerTransactionReceiptsApp', {
+    await this.axios.post('/v2_registerTransactionReceiptsApp', {
       txHash: hash,
       itemId,
       residence: userResidence,
@@ -662,7 +662,7 @@ export class AnnapurnaSDK {
         value: price,
       }
     )) as ethers.providers.TransactionResponse
-    await this.axios.post('/v1_registerTransactionReceiptsApp', {
+    await this.axios.post('/v2_registerTransactionReceiptsApp', {
       txHash: tx.hash,
       itemId,
       residence: userResidence,
