@@ -36,5 +36,5 @@ export type Token = {
   /**
    * Tokenの元になったItemが入る
    */
-  item: Item
+  item: Item // TODO
 }
