@@ -651,12 +651,13 @@ export class AnnapurnaSDK {
       .parseEther((item.price as number).toString())
       .toString()
     const tx = (await shopContract.buyFixedPrice(
+      item.mintContractAddress,
       item.tokenId,
-      // TODO
-      item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
+      item.tokenURI,
       item.authorAddress,
       price,
-      item.signature,
+      item.feeRatePermill,
+      item.signatureBuyFixedPrice,
       {
         value: price,
       }
