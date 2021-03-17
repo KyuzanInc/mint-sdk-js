@@ -36,8 +36,8 @@ const Page: NextPage<Props> = ({ itemId }) => {
         },
         {
           backendUrl:
-            'http://localhost:5500/annapurna-development/asia-northeast1/',
-          // 'https://asia-northeast1-annapurna-development.cloudfunctions.net/',
+            // 'http://localhost:5500/annapurna-development/asia-northeast1/',
+            'https://asia-northeast1-annapurna-development.cloudfunctions.net/',
         }
       )
       setSdk(sdk)
@@ -51,6 +51,7 @@ const Page: NextPage<Props> = ({ itemId }) => {
               <p>-----</p>
               <p>type: {l.type}</p>
               <p>account: {l.accountAddress}</p>
+              <p>createAt: {l.createAt.toISOString()}</p>
             </div>
           )
         })

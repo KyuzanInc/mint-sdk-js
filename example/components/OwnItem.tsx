@@ -11,7 +11,9 @@ export const OwnItem: React.FC<{
       <img src={item.imageURIHTTP.url} />
       <p>{item.name}</p>
       <p>{item.item.description}</p>
-      <Link href={`/${item.tokenId}`}>アイテム詳細</Link>
+      <p>ContractAddress: {item.contractAddress}</p>
+      <p>TokenId: {item.tokenId}</p>
+      <Link href={`/${item.item.itemId}`}>アイテム詳細</Link>
     </Container>
   )
 }
