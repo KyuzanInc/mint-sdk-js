@@ -1,3 +1,4 @@
+import { Residence } from './types/Residence'
 import { AxiosBody } from './types/AxiosBody'
 import { Token } from './types/Token'
 import { BACKEND_URL } from './constants/index'
@@ -14,7 +15,16 @@ import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
 import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
 
-export { Item, ItemLog, NetworkId, BigNumber, Token, WalletSetting, WalletInfo }
+export {
+  Item,
+  ItemLog,
+  Residence,
+  NetworkId,
+  BigNumber,
+  Token,
+  WalletSetting,
+  WalletInfo,
+}
 
 export class AnnapurnaSDK {
   /**
@@ -532,11 +542,14 @@ export class AnnapurnaSDK {
 
   /**
    * オークションで勝利したアイテムを引き出すトランザクションを発行
+   * ユーザーの居住地を問うUIを合わせて実装必要
+   * 消費税に関する会計処理などがスムーズに行えます
    *
    * **Required**
    * - ウォレットに接続していること
    *
    * @param itemId {@link Item}のitemId
+   * @param userResidence {@link Residence} 購入者の居住地を指定する
    * @returns
    *
    * ```typescript
@@ -544,7 +557,7 @@ export class AnnapurnaSDK {
    * const sdk = await AnnapurnaSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
-   *  const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId')
+   *  const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId', 'jp')
    *  // show loading
    *  await tx.wait()
    *  // success transaction
@@ -553,7 +566,10 @@ export class AnnapurnaSDK {
    * }
    * ```
    */
-  public sendTxMakeSuccessfulBid = async (itemId: string) => {
+  public sendTxMakeSuccessfulBid = async (
+    itemId: string,
+    userResidence: Residence = 'unknown'
+  ) => {
     // wallet connect check
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
@@ -572,7 +588,7 @@ export class AnnapurnaSDK {
     if (item.tradeType !== 'auction') {
       throw new Error("Item's tradeType is not auction")
     }
-    return (await shopContract.buyAuction(
+    const tx = (await shopContract.buyAuction(
       item.tokenId,
       // TODO
       item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
@@ -582,15 +598,25 @@ export class AnnapurnaSDK {
       item.endAt!.getTime() / 1000,
       item.signature
     )) as ethers.providers.TransactionResponse
+    const hash = tx.hash
+    await this.axios.post('/v1_registerTransactionReceiptsApp', {
+      txHash: hash,
+      itemId,
+      residence: userResidence,
+    })
+    return tx
   }
 
   /**
    * FixedPriceのアイテムを購入するトランザクションを発行
+   * ユーザーの居住地を問うUIを合わせて実装必要
+   * 消費税に関する会計処理などがスムーズに行えます
    *
    * **Required**
    * - ウォレットに接続していること
    *
    * @param itemId {@link Item}のitemId
+   * @param userResidence {@link Residence} 購入者の居住地を指定する
    * @returns
    *
    * ```typescript
@@ -598,7 +624,7 @@ export class AnnapurnaSDK {
    * const sdk = await AnnapurnaSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
-   *  const tx = await sdk.sendTxBuyItem('item.itemId')
+   *  const tx = await sdk.sendTxBuyItem('item.itemId', 'jp')
    *  // show loading
    *  await tx.wait()
    *  // success transaction
@@ -607,7 +633,10 @@ export class AnnapurnaSDK {
    * }
    * ```
    */
-  public sendTxBuyItem = async (itemId: string) => {
+  public sendTxBuyItem = async (
+    itemId: string,
+    userResidence: Residence = 'unknown'
+  ) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
@@ -626,7 +655,7 @@ export class AnnapurnaSDK {
     const price = ethers.utils
       .parseEther((item.price as number).toString())
       .toString()
-    return (await shopContract.buyFixedPrice(
+    const tx = (await shopContract.buyFixedPrice(
       item.tokenId,
       // TODO
       item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
@@ -637,6 +666,12 @@ export class AnnapurnaSDK {
         value: price,
       }
     )) as ethers.providers.TransactionResponse
+    await this.axios.post('/v1_registerTransactionReceiptsApp', {
+      txHash: tx.hash,
+      itemId,
+      residence: userResidence,
+    })
+    return tx
   }
 
   /**
