@@ -510,7 +510,7 @@ export class AnnapurnaSDK {
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
     const signer = wallet.getSigner()
-
+    console.log(item)
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -526,15 +526,13 @@ export class AnnapurnaSDK {
     const startAt = item.startAt!.getTime() / 1000
     const endAt = item.endAt!.getTime() / 1000
     return (await shopContract.bidAuction(
+      item.mintContractAddress,
       item.tokenId,
-      // TODO
-      item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
-      item.authorAddress,
       initialPrice,
       startAt,
       endAt,
       price,
-      item.signature,
+      item.signatureBidAuction,
       {
         value: price,
       }

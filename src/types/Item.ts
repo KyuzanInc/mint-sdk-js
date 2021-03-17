@@ -57,4 +57,17 @@ export type Item = {
   signatureBuyAuction: string | undefined
   signatureBidAuction: string | undefined
   signatureBuyFixedPrice: string | undefined
+  chainType: 'ethereum'
+  collectionId: string // uuidv4
+  mintContractAddress: string
+  mintShopContractAddress: string
+  createdBy: string[]
+  yearCreated: string
+}
+
+export type MediaType = {
+  uri: string //"https://ipfs.pixura.io/ipfs/QmUwxycNe7kifiX6paYY6J7mpzXedJNzKhP9eWKhpQYVZy/dcg89-8przh.gif",
+  dimensions: string // "1059x864",
+  size: number // "47986047"
+  mimeType: string //  "image/gif"
 }
