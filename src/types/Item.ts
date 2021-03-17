@@ -32,9 +32,8 @@ export type Item = {
    * 動画・画像が入る
    * プレビューが設定されていない場合は空配列になる
    * */
-  previews: { mimeType: string, url: string }[]
+  previews: { mimeType: string; url: string }[]
   networkId: 1 | 4
-  signature: string
   /** buyerAddress にアドレスが入っている場合、Itemが「引出された」「購入された」ている */
   buyerAddress: string | null
   /** only 'fixedPrice'  ether */
@@ -53,4 +52,9 @@ export type Item = {
   endAt?: Date
   /** only 'auction' ether */
   initialPrice?: number
+  /** @deprecated */
+  signature: string | undefined // TODO: newが終わったら消す
+  signatureBuyAuction: string | undefined
+  signatureBidAuction: string | undefined
+  signatureBuyFixedPrice: string | undefined
 }

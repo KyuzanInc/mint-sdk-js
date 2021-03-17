@@ -146,7 +146,7 @@ export class AnnapurnaSDK {
       },
     })
 
-    const { data } = await axios.get('/projectConfig')
+    const { data } = await axios.get('/v2_projectConfig')
 
     const fortmatic = new Fortmatic(
       walletSetting.fortmatic.key,
@@ -346,7 +346,7 @@ export class AnnapurnaSDK {
       page: 1,
     }
   ) => {
-    const { data } = await this.axios.get('/v1_items', {
+    const { data } = await this.axios.get('/v2_items', {
       params: { networkId: this.networkId, perPage, page },
     })
     const items = data.data as Item[]
