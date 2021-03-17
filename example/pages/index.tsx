@@ -19,7 +19,7 @@ const Page = () => {
   useEffect(() => {
     const init = async () => {
       const sdk = await AnnapurnaSDK.initialize(
-        DEMO_ACCESS_KEY,
+        '35a9d66d-8d2f-43a1-af12-aa976de4c614',
         4,
         {
           fortmatic: {
@@ -28,7 +28,8 @@ const Page = () => {
         },
         {
           backendUrl:
-            'http://localhost:5500/annapurna-development/asia-northeast1/',
+            // 'http://localhost:5500/annapurna-development/asia-northeast1/',
+            'https://asia-northeast1-annapurna-development.cloudfunctions.net/',
         }
       )
       setSdk(sdk)
@@ -63,7 +64,7 @@ const Page = () => {
               }
             }}
             onClickWithdraw={async (itemId: string) => {
-              const txReceipt = await sdk.sendTxMakeSuccessfulBid(itemId)
+              const txReceipt = await sdk.sendTxMakeSuccessfulBid(itemId, 'jp')
               setTxStatus(`処理中: ${txReceipt.hash}`)
               try {
                 await sdk.waitForTransaction(txReceipt.hash)
