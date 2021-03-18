@@ -25,7 +25,10 @@ const Page: NextPage<Props> = ({ itemId }) => {
   useEffect(() => {
     const init = async () => {
       const sdk = await AnnapurnaSDK.initialize(
-        '35a9d66d-8d2f-43a1-af12-aa976de4c614',
+        '4bdaee8f-8e23-4913-9858-7a10dd7be877', // new
+        // '35a9d66d-8d2f-43a1-af12-aa976de4c614',
+        // '35a9d66d-8d2f-43a1-af12-aa976de4c614',
+
         4,
         {
           fortmatic: {
@@ -34,9 +37,8 @@ const Page: NextPage<Props> = ({ itemId }) => {
         },
         {
           backendUrl:
-            // 'http://localhost:5500/annapurna-development/asia-northeast1/',
-            // 'http://localhost:5500/annapurna-development/asia-northeast1/',
             'https://asia-northeast1-annapurna-development.cloudfunctions.net/',
+          // 'http://localhost:5500/annapurna-development/asia-northeast1/',
         }
       )
       setSdk(sdk)
@@ -50,6 +52,7 @@ const Page: NextPage<Props> = ({ itemId }) => {
               <p>-----</p>
               <p>type: {l.type}</p>
               <p>account: {l.accountAddress}</p>
+              <p>createAt: {l.createAt.toISOString()}</p>
             </div>
           )
         })

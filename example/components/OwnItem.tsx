@@ -1,14 +1,19 @@
 import React from 'react'
 import { Token } from '@kyuzan/annapurna-sdk-js'
 import styled from '@emotion/styled'
+import Link from 'next/link'
 
 export const OwnItem: React.FC<{
   item: Token
 }> = ({ item }) => {
   return (
     <Container>
-      <img src={item.imageURI} />
+      <img src={item.imageURIHTTP.url} />
       <p>{item.name}</p>
+      <p>{item.item.description}</p>
+      <p>ContractAddress: {item.contractAddress}</p>
+      <p>TokenId: {item.tokenId}</p>
+      <Link href={`/${item.item.itemId}`}>アイテム詳細</Link>
     </Container>
   )
 }

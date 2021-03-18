@@ -9,10 +9,23 @@ export type Token = {
   tokenId: number
   name: string
   description: string
+  /**
+   * ipfs://xxxx
+   * */
+  tokenURI: string
+  /**
+   * tokenURIのブラウザ閲覧用
+   * https://xxxx
+   * */
+  tokenURIHTTP: string
+  /** ipfs:// */
+  imageURI: string
+  /**
+   * imageURIのブラウザ閲覧用
+   * https://xxxx
+   * */
+  imageURIHTTP: { url: string; mimeType: string } // https://
   /** https://ipfs.io/ipfs/xxxx */
-  imageURI: string // https://ipfs.io/ipfs/xxxx
-  /** https://ipfs.io/ipfs/xxxx */
-  tokenURI: string // https://ipfs.io/ipfs/'QmStCJksdYHLE1xmsC7ny3U8QAMBXt7SozajWd3sWRMAxt/metadata.json',
   authorAddress: string
   /**
    * プレビューのURI

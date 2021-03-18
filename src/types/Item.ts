@@ -8,19 +8,32 @@ export type Item = {
   tokenId: number
   name: string
   description: string
-  /** https://ipfs.io/ipfs/xxxx */
-  tokenURI: string // https://ipfs.io/ipfs/QmStCJksdYHLE1xmsC7ny3U8QAMBXt7SozajWd3sWRMAxt/metadata.json
-  /** https://ipfs.io/ipfs/xxxx */
-  imageURI: string // https://ipfs.io/ipfs/QmStCJksdYHLE1xmsC7ny3U8QAMBXt7SozajWd3sWRMAxt/nft.mp4
+  /**
+   * ipfs://xxxx
+   * */
+  tokenURI: string
+  /**
+   * tokenURIのブラウザ閲覧用
+   * https://xxxx
+   * */
+  tokenURIHTTP: string
+  /**
+   * ipfs://xxxx
+   * */
+  imageURI: string
+  /**
+   * imageURIのブラウザ閲覧用
+   * https://xxxx
+   * */
+  imageURIHTTP: { url: string; mimeType: string }
   authorAddress: string
   /**
    * プレビューのURI
    * 動画・画像が入る
    * プレビューが設定されていない場合は空配列になる
    * */
-  previews: { mimeType: string, url: string }[]
+  previews: { mimeType: string; url: string }[]
   networkId: 1 | 4
-  signature: string
   /** buyerAddress にアドレスが入っている場合、Itemが「引出された」「購入された」ている */
   buyerAddress: string | null
   /** only 'fixedPrice'  ether */
@@ -39,4 +52,23 @@ export type Item = {
   endAt?: Date
   /** only 'auction' ether */
   initialPrice?: number
+  /** @deprecated */
+  signature: string | undefined // TODO: newが終わったら消す
+  signatureBuyAuction: string | undefined
+  signatureBidAuction: string | undefined
+  signatureBuyFixedPrice: string | undefined
+  chainType: 'ethereum'
+  collectionId: string // uuidv4
+  mintContractAddress: string
+  mintShopContractAddress: string
+  createdBy: string[]
+  yearCreated: string
+  feeRatePermill: number
+}
+
+export type MediaType = {
+  uri: string //"https://ipfs.pixura.io/ipfs/QmUwxycNe7kifiX6paYY6J7mpzXedJNzKhP9eWKhpQYVZy/dcg89-8przh.gif",
+  dimensions: string // "1059x864",
+  size: number // "47986047"
+  mimeType: string //  "image/gif"
 }

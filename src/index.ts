@@ -146,7 +146,7 @@ export class AnnapurnaSDK {
       },
     })
 
-    const { data } = await axios.get('/projectConfig')
+    const { data } = await axios.get('/v2_projectConfig')
 
     const fortmatic = new Fortmatic(
       walletSetting.fortmatic.key,
@@ -346,7 +346,7 @@ export class AnnapurnaSDK {
       page: 1,
     }
   ) => {
-    const { data } = await this.axios.get('/v1_items', {
+    const { data } = await this.axios.get('/v2_items', {
       params: { networkId: this.networkId, perPage, page },
     })
     const items = data.data as Item[]
@@ -367,7 +367,7 @@ export class AnnapurnaSDK {
    * ```
    */
   public getItemsByBidderAddress = async (address: string) => {
-    const { data } = await this.axios.get('getItemsByBidderAddress', {
+    const { data } = await this.axios.get('v2_getItemsByBidderAddress', {
       params: {
         address,
         networkId: this.networkId,
@@ -390,7 +390,7 @@ export class AnnapurnaSDK {
    * ```
    */
   public getItemById = async (itemId: string) => {
-    const { data } = await this.axios.get('item', { params: { itemId } })
+    const { data } = await this.axios.get('v2_item', { params: { itemId } })
     const item = data.data as Item
     return this.formatItem(item)
   }
@@ -407,11 +407,12 @@ export class AnnapurnaSDK {
    * ```
    */
   public getItemByToken = async (token: Token) => {
-    const { data } = await this.axios.get<AxiosBody<Item>>('v1_itemByToken', {
+    const { data } = await this.axios.get<AxiosBody<Item>>('v2_itemByToken', {
       params: {
         tokenId: token.tokenId,
         networkId: this.networkId,
         tokenAddress: token.contractAddress,
+        mintContractAddress: token.contractAddress,
       },
     })
     const item = data.data
@@ -447,7 +448,7 @@ export class AnnapurnaSDK {
         createAt: Date
         transactionHash: string
       }[]
-    }>('v1_itemLogs', {
+    }>('v2_itemLogs', {
       params: { itemId, page: paging.page, perPage: paging.perPage },
     })
     const logs = data.data
@@ -470,7 +471,7 @@ export class AnnapurnaSDK {
    * ```
    */
   public getTokensByAddress = async (address: string) => {
-    const { data } = await this.axios.get('tokensByAddress', {
+    const { data } = await this.axios.get('v2_tokensByAddress', {
       params: { address, networkId: this.networkId },
     })
     return data.data as Token[]
@@ -509,7 +510,7 @@ export class AnnapurnaSDK {
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
     const signer = wallet.getSigner()
-
+    console.log(item)
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -525,15 +526,13 @@ export class AnnapurnaSDK {
     const startAt = item.startAt!.getTime() / 1000
     const endAt = item.endAt!.getTime() / 1000
     return (await shopContract.bidAuction(
+      item.mintContractAddress,
       item.tokenId,
-      // TODO
-      item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
-      item.authorAddress,
       initialPrice,
       startAt,
       endAt,
       price,
-      item.signature,
+      item.signatureBidAuction,
       {
         value: price,
       }
@@ -577,9 +576,6 @@ export class AnnapurnaSDK {
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
     const signer = wallet.getSigner()
-    const initialPrice = ethers.utils
-      .parseEther(String(item.initialPrice))
-      .toString()
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -589,17 +585,16 @@ export class AnnapurnaSDK {
       throw new Error("Item's tradeType is not auction")
     }
     const tx = (await shopContract.buyAuction(
+      item.mintContractAddress,
       item.tokenId,
-      // TODO
-      item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
+      item.tokenURI,
       item.authorAddress,
-      initialPrice,
-      item.startAt!.getTime() / 1000,
       item.endAt!.getTime() / 1000,
-      item.signature
+      item.feeRatePermill,
+      item.signatureBuyAuction
     )) as ethers.providers.TransactionResponse
     const hash = tx.hash
-    await this.axios.post('/v1_registerTransactionReceiptsApp', {
+    await this.axios.post('/v2_registerTransactionReceiptsApp', {
       txHash: hash,
       itemId,
       residence: userResidence,
@@ -656,17 +651,18 @@ export class AnnapurnaSDK {
       .parseEther((item.price as number).toString())
       .toString()
     const tx = (await shopContract.buyFixedPrice(
+      item.mintContractAddress,
       item.tokenId,
-      // TODO
-      item.tokenURI.replace('https://ipfs.io/ipfs/', ''),
+      item.tokenURI,
       item.authorAddress,
       price,
-      item.signature,
+      item.feeRatePermill,
+      item.signatureBuyFixedPrice,
       {
         value: price,
       }
     )) as ethers.providers.TransactionResponse
-    await this.axios.post('/v1_registerTransactionReceiptsApp', {
+    await this.axios.post('/v2_registerTransactionReceiptsApp', {
       txHash: tx.hash,
       itemId,
       residence: userResidence,
