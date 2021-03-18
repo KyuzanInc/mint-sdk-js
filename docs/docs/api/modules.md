@@ -20,7 +20,7 @@ hide_title: true
 
 Ƭ **BigNumber**: ethers.BigNumber
 
-Defined in: [types/BigNumber.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/2c2f05b/src/types/BigNumber.ts#L3)
+Defined in: [types/BigNumber.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/914fc48/src/types/BigNumber.ts#L3)
 
 ___
 
@@ -37,26 +37,40 @@ Name | Type | Description |
 :------ | :------ | :------ |
 `authorAddress` | *string* | - |
 `buyerAddress` | *string* \| *null* | buyerAddress にアドレスが入っている場合、Itemが「引出された」「購入された」ている   |
+`chainType` | *ethereum* | - |
+`collectionId` | *string* | - |
+`createdBy` | *string*[] | - |
 `currentBidderAddress`? | *string* \| *null* | only 'auction'   |
 `currentPrice`? | *number* | only 'auction' ether   |
 `description` | *string* | - |
 `endAt`? | Date | only 'auction'   |
-`imageURI` | *string* | https://ipfs.io/ipfs/xxxx   |
+`feeRatePermill` | *number* | - |
+`imageURI` | *string* | ipfs://xxxx   |
+`imageURIHTTP` | *object* | imageURIのブラウザ閲覧用 https://xxxx   |
+`imageURIHTTP.mimeType` | *string* | - |
+`imageURIHTTP.url` | *string* | - |
 `initialPrice`? | *number* | only 'auction' ether   |
 `itemId` | *string* | - |
 `minBidPercentage`? | *number* | only 'auction'   |
 `minBidPrice`? | *number* | only 'auction'   |
+`mintContractAddress` | *string* | - |
+`mintShopContractAddress` | *string* | - |
 `name` | *string* | - |
 `networkId` | *1* \| *4* | - |
 `previews` | { `mimeType`: *string* ; `url`: *string*  }[] | プレビューのURI 動画・画像が入る プレビューが設定されていない場合は空配列になる   |
 `price`? | *number* | only 'fixedPrice'  ether   |
-`signature` | *string* | - |
+`signature` | *string* \| *undefined* | **`deprecated`**  |
+`signatureBidAuction` | *string* \| *undefined* | - |
+`signatureBuyAuction` | *string* \| *undefined* | - |
+`signatureBuyFixedPrice` | *string* \| *undefined* | - |
 `startAt`? | Date | only 'auction'   |
 `tokenId` | *number* | - |
-`tokenURI` | *string* | https://ipfs.io/ipfs/xxxx   |
+`tokenURI` | *string* | ipfs://xxxx   |
+`tokenURIHTTP` | *string* | tokenURIのブラウザ閲覧用 https://xxxx   |
 `tradeType` | *fixedPrice* \| *auction* | - |
+`yearCreated` | *string* | - |
 
-Defined in: [types/Item.ts:5](https://github.com/KyuzanInc/annapurna-sdk-js/blob/2c2f05b/src/types/Item.ts#L5)
+Defined in: [types/Item.ts:5](https://github.com/KyuzanInc/annapurna-sdk-js/blob/914fc48/src/types/Item.ts#L5)
 
 ___
 
@@ -74,7 +88,7 @@ Name | Type |
 `transactionHash` | *string* |
 `type` | *bought* \| *bid* |
 
-Defined in: [types/ItemLog.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/2c2f05b/src/types/ItemLog.ts#L1)
+Defined in: [types/ItemLog.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/914fc48/src/types/ItemLog.ts#L1)
 
 ___
 
@@ -82,7 +96,7 @@ ___
 
 Ƭ **NetworkId**: *1* \| *4*
 
-Defined in: [types/NetworkId.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/2c2f05b/src/types/NetworkId.ts#L1)
+Defined in: [types/NetworkId.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/914fc48/src/types/NetworkId.ts#L1)
 
 ___
 
@@ -90,7 +104,7 @@ ___
 
 Ƭ **Residence**: *typeof* residenceList[*number*]
 
-Defined in: [types/Residence.ts:2](https://github.com/KyuzanInc/annapurna-sdk-js/blob/2c2f05b/src/types/Residence.ts#L2)
+Defined in: [types/Residence.ts:2](https://github.com/KyuzanInc/annapurna-sdk-js/blob/914fc48/src/types/Residence.ts#L2)
 
 ___
 
@@ -105,17 +119,21 @@ Item:Token = 1:1
 
 Name | Type | Description |
 :------ | :------ | :------ |
-`authorAddress` | *string* | - |
+`authorAddress` | *string* | https://ipfs.io/ipfs/xxxx   |
 `contractAddress` | *string* | - |
 `description` | *string* | - |
-`imageURI` | *string* | https://ipfs.io/ipfs/xxxx   |
+`imageURI` | *string* | ipfs://   |
+`imageURIHTTP` | *object* | imageURIのブラウザ閲覧用 https://xxxx   |
+`imageURIHTTP.mimeType` | *string* | - |
+`imageURIHTTP.url` | *string* | - |
 `item` | [*Item*](modules.md#item) | Tokenの元になったItemが入る   |
 `name` | *string* | - |
 `previews` | { `mimeType`: *string* ; `url`: *string*  }[] | プレビューのURI 動画・画像が入る プレビューが設定されていない場合は空配列になる   |
 `tokenId` | *number* | - |
-`tokenURI` | *string* | https://ipfs.io/ipfs/xxxx   |
+`tokenURI` | *string* | ipfs://xxxx   |
+`tokenURIHTTP` | *string* | tokenURIのブラウザ閲覧用 https://xxxx   |
 
-Defined in: [types/Token.ts:7](https://github.com/KyuzanInc/annapurna-sdk-js/blob/2c2f05b/src/types/Token.ts#L7)
+Defined in: [types/Token.ts:7](https://github.com/KyuzanInc/annapurna-sdk-js/blob/914fc48/src/types/Token.ts#L7)
 
 ___
 
@@ -130,7 +148,7 @@ Name | Type |
 `address` | *string* |
 `balance` | [*BigNumber*](modules.md#bignumber) |
 
-Defined in: [types/WalletInfo.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/2c2f05b/src/types/WalletInfo.ts#L3)
+Defined in: [types/WalletInfo.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/914fc48/src/types/WalletInfo.ts#L3)
 
 ___
 
@@ -145,4 +163,4 @@ Name | Type |
 `fortmatic` | *object* |
 `fortmatic.key` | *string* |
 
-Defined in: [types/WalletSetting.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/2c2f05b/src/types/WalletSetting.ts#L1)
+Defined in: [types/WalletSetting.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/914fc48/src/types/WalletSetting.ts#L1)
