@@ -20,6 +20,7 @@ export const Item: React.FC<{
   const isAfterAuction = isAfter(new Date(), item.endAt as Date)
   const onAuction = !isBeforeAuction && !isAfterAuction
   const won = isAfterAuction && item.currentBidderAddress === userAddress
+
   return (
     <Container>
       {!isFixedPrice && isBeforeAuction && <p>オークション前</p>}
