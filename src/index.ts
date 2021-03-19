@@ -1,3 +1,4 @@
+import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
 import { AxiosBody } from './types/AxiosBody'
 import { Token } from './types/Token'
@@ -24,6 +25,7 @@ export {
   Token,
   WalletSetting,
   WalletInfo,
+  WrongNetworkError,
 }
 
 export class AnnapurnaSDK {
@@ -507,10 +509,13 @@ export class AnnapurnaSDK {
       throw new Error('Wallet is not connected')
     }
 
+    if (!(await this.isCorrectNetwork())) {
+      throw new WrongNetworkError('Network is not correct')
+    }
+
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
     const signer = wallet.getSigner()
-    console.log(item)
     const shopContract = new ethers.Contract(
       this.shopContract.address,
       this.shopContract.abi,
@@ -573,6 +578,10 @@ export class AnnapurnaSDK {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
+
+    if (!(await this.isCorrectNetwork())) {
+      throw new WrongNetworkError('Network is not correct')
+    }
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
     const signer = wallet.getSigner()
@@ -634,6 +643,10 @@ export class AnnapurnaSDK {
   ) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
+    }
+
+    if (!(await this.isCorrectNetwork())) {
+      throw new WrongNetworkError('Network is not correct')
     }
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
@@ -801,6 +814,29 @@ export class AnnapurnaSDK {
    */
   public isInjectedWallet = () => {
     return typeof (window as any).ethereum !== 'undefined'
+  }
+
+  /**
+   * 適切なネットワークかを判定
+   *
+   * @returns trueならば適切なネットワーク
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
+   * const sdk = AnnapurnaSDK.initialize(...)
+   * sdk.isInjectedWallet() // true
+   * ```
+   */
+  public isCorrectNetwork = async () => {
+    if (this.isInjectedWallet()) {
+      return (
+        parseInt((window as any).ethereum.networkVersion, 10) === this.networkId
+      )
+    } else {
+      const network = await this.getProvider().getNetwork()
+      return network.chainId === this.networkId
+    }
   }
 
   /**

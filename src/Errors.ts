@@ -7,4 +7,7 @@ class BaseError extends Error {
   }
 }
 
-export class TransactionError extends BaseError {}
+/**
+ * ネットワークが正しくない
+ */
+export class WrongNetworkError extends BaseError {}
