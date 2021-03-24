@@ -1,3 +1,5 @@
+import { NetworkId } from '..'
+
 /**
  * Itemはマスターデータ
  * Itemが購買・引出されてERC721トークンとなったものが{@link Token}
@@ -33,7 +35,7 @@ export type Item = {
    * プレビューが設定されていない場合は空配列になる
    * */
   previews: { mimeType: string; url: string }[]
-  networkId: 1 | 4
+  networkId: NetworkId
   /** buyerAddress にアドレスが入っている場合、Itemが「引出された」「購入された」ている */
   buyerAddress: string | null
   /** only 'fixedPrice'  ether */

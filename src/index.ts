@@ -10,7 +10,7 @@ import * as ethers from 'ethers'
 import Fortmatic from 'fortmatic'
 import { Item } from './types/Item'
 import { ItemLog } from './types/ItemLog'
-import { NetworkId } from './types/NetworkId'
+import { NetworkId, networkIdMapLabel } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
 import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
@@ -67,6 +67,21 @@ export class AnnapurnaSDK {
   /**
    * @ignore
    */
+  private axios: AxiosInstance
+
+  /**
+   * @ignore
+   */
+  private metamaskProvider: ethers.providers.Web3Provider | null
+
+  /**
+   * @ignore
+   */
+  private fortmatic: WidgetMode
+
+  /**
+   * @ignore
+   */
   private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
 
   /**
@@ -85,17 +100,38 @@ export class AnnapurnaSDK {
   private constructor(
     private accessToken: string,
     private networkId: NetworkId,
-    private axios: AxiosInstance,
-    private fortmatic: WidgetMode,
-    private metamaskProvider: ethers.providers.Web3Provider | null,
-    // TODO: こいつ結局動的に変わるから、sendTx*で内部で取得するようにする
-    private shopContract: {
-      abi: any
-      address: string
+    walletSetting: WalletSetting,
+    // for Developing SDK
+    devOption?: {
+      backendUrl?: string
+      jsonRPCUrl?: string
     }
   ) {
-    if (metamaskProvider) {
-      metamaskProvider.on('network', (_, oldNetwork) => {
+    this.fortmatic = new Fortmatic(
+      walletSetting.fortmatic.key,
+      devOption?.jsonRPCUrl
+        ? {
+            rpcUrl: devOption.jsonRPCUrl,
+          }
+        : undefined
+    )
+    this.metamaskProvider = (window as any).ethereum
+      ? new ethers.providers.Web3Provider((window as any).ethereum, 'any')
+      : null
+    const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
+    const keepAliveAgent = new Agent.HttpsAgent({
+      keepAlive: true,
+    })
+    this.axios = Axios.create({
+      httpsAgent: keepAliveAgent,
+      baseURL: backendBaseUrl,
+      headers: {
+        'annapurna-access-token': accessToken,
+      },
+    })
+
+    if (this.metamaskProvider) {
+      this.metamaskProvider.on('network', (_, oldNetwork) => {
         if (oldNetwork) {
           window.location.reload()
         }
@@ -107,84 +143,6 @@ export class AnnapurnaSDK {
         }
       })
     }
-  }
-
-  /**
-   * sdkのイシャライズ
-   *
-   * @param accessToken
-   * @param networkId
-   * @param walletSetting
-   * @returns sdkのインスタンス
-   *
-   * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * await AnnapurnaSDK.initialize(YOUR PROJECT ID, YOUR ACCESS TOKEN, { fortmatic: { token: YOUR FORTMATIC TOKEN } })
-   * ```
-   */
-  public static initialize = async (
-    accessToken: string,
-    networkId: NetworkId,
-    walletSetting: WalletSetting,
-    // for Developing SDK
-    devOption?: {
-      backendUrl?: string
-      jsonRPCUrl?: string
-      contractMintAbi?: any
-      contractMintShopAddress?: string
-    }
-  ) => {
-    const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
-    const keepAliveAgent = new Agent.HttpsAgent({
-      keepAlive: true,
-    })
-    const axios = Axios.create({
-      httpsAgent: keepAliveAgent,
-      baseURL: backendBaseUrl,
-      headers: {
-        'annapurna-access-token': accessToken,
-      },
-    })
-
-    // TODO: SDKが結構大変
-    const { data } = await axios.get('/v2_projectConfig')
-
-    const fortmatic = new Fortmatic(
-      walletSetting.fortmatic.key,
-      devOption?.jsonRPCUrl
-        ? {
-            rpcUrl: devOption.jsonRPCUrl,
-          }
-        : undefined
-    )
-
-    const metamaskProvider = (window as any).ethereum
-      ? new ethers.providers.Web3Provider((window as any).ethereum, 'any')
-      : null
-
-    const contractShopAbi =
-      devOption?.contractMintAbi ??
-      (networkId === 1
-        ? data.data.contract.mintShopContract.main.abi
-        : data.data.contract.mintShopContract.rinkeby.abi)
-    const contractShopAddress =
-      devOption?.contractMintShopAddress ??
-      (networkId === 1
-        ? data.data.contract.mintShopContract.main.address
-        : data.data.contract.mintShopContract.rinkeby.address)
-
-    const sdk = new AnnapurnaSDK(
-      accessToken,
-      networkId,
-      axios,
-      fortmatic,
-      metamaskProvider,
-      {
-        abi: contractShopAbi,
-        address: contractShopAddress,
-      }
-    )
-    return sdk
   }
 
   /**
@@ -519,12 +477,9 @@ export class AnnapurnaSDK {
 
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
+    const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
-    const shopContract = new ethers.Contract(
-      this.shopContract.address,
-      this.shopContract.abi,
-      signer
-    )
+    const shopContract = new ethers.Contract(address, abi, signer)
     if (item.tradeType !== 'auction') {
       throw new Error("Item's tradeType is not auction")
     }
@@ -588,12 +543,9 @@ export class AnnapurnaSDK {
     }
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
+    const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
-    const shopContract = new ethers.Contract(
-      this.shopContract.address,
-      this.shopContract.abi,
-      signer
-    )
+    const shopContract = new ethers.Contract(address, abi, signer)
     if (item.tradeType !== 'auction') {
       throw new Error("Item's tradeType is not auction")
     }
@@ -654,12 +606,9 @@ export class AnnapurnaSDK {
     }
     const item = await this.getItemById(itemId)
     const wallet = await this.getProvider()
+    const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
-    const shopContract = new ethers.Contract(
-      this.shopContract.address,
-      this.shopContract.abi,
-      signer
-    )
+    const shopContract = new ethers.Contract(address, abi, signer)
     if (item.tradeType !== 'fixedPrice') {
       throw new Error("Item's tradeType is not fixedPrice")
     }
@@ -873,6 +822,20 @@ export class AnnapurnaSDK {
     } else {
       const provider = this.fortmatic.getProvider()
       return new ethers.providers.Web3Provider(provider as any)
+    }
+  }
+
+  /**
+   * @ignore
+   */
+  private getMintShopContractInfo = async (networkId: NetworkId) => {
+    const { data } = await this.axios.get('/v2_projectConfig')
+    const networkLabel = networkIdMapLabel[networkId]
+    const abi = data.data.contract.mintShopContract[networkLabel].abi
+    const address = data.data.contract.mintShopContract[networkLabel].address
+    return {
+      abi,
+      address,
     }
   }
 
