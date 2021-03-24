@@ -822,7 +822,7 @@ export class AnnapurnaSDK {
    * import { AnnapurnaSDK } from '@kyuzan/annapurna'
    *
    * const sdk = AnnapurnaSDK.initialize(...)
-   * sdk.isInjectedWallet() // true
+   * await sdk.isCorrectNetwork() // true
    * ```
    */
   public isCorrectNetwork = async () => {

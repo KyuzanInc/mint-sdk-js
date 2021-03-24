@@ -21,7 +21,7 @@ hide_title: true
 
 Ƭ **BigNumber**: ethers.BigNumber
 
-Defined in: [src/types/BigNumber.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/89e5eb2/src/types/BigNumber.ts#L3)
+Defined in: [src/types/BigNumber.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/BigNumber.ts#L3)
 
 ___
 
@@ -71,7 +71,7 @@ Name | Type | Description |
 `tradeType` | *fixedPrice* \| *auction* | - |
 `yearCreated` | *string* | - |
 
-Defined in: [src/types/Item.ts:5](https://github.com/KyuzanInc/annapurna-sdk-js/blob/89e5eb2/src/types/Item.ts#L5)
+Defined in: [src/types/Item.ts:5](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/Item.ts#L5)
 
 ___
 
@@ -89,7 +89,7 @@ Name | Type |
 `transactionHash` | *string* |
 `type` | *bought* \| *bid* |
 
-Defined in: [src/types/ItemLog.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/89e5eb2/src/types/ItemLog.ts#L1)
+Defined in: [src/types/ItemLog.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/ItemLog.ts#L1)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 Ƭ **NetworkId**: *1* \| *4*
 
-Defined in: [src/types/NetworkId.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/89e5eb2/src/types/NetworkId.ts#L1)
+Defined in: [src/types/NetworkId.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/NetworkId.ts#L1)
 
 ___
 
@@ -105,7 +105,7 @@ ___
 
 Ƭ **Residence**: *typeof* residenceList[*number*]
 
-Defined in: [src/types/Residence.ts:2](https://github.com/KyuzanInc/annapurna-sdk-js/blob/89e5eb2/src/types/Residence.ts#L2)
+Defined in: [src/types/Residence.ts:2](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/Residence.ts#L2)
 
 ___
 
@@ -134,7 +134,7 @@ Name | Type | Description |
 `tokenURI` | *string* | ipfs://xxxx   |
 `tokenURIHTTP` | *string* | tokenURIのブラウザ閲覧用 https://xxxx   |
 
-Defined in: [src/types/Token.ts:7](https://github.com/KyuzanInc/annapurna-sdk-js/blob/89e5eb2/src/types/Token.ts#L7)
+Defined in: [src/types/Token.ts:7](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/Token.ts#L7)
 
 ___
 
@@ -149,7 +149,7 @@ Name | Type |
 `address` | *string* |
 `balance` | [*BigNumber*](modules.md#bignumber) |
 
-Defined in: [src/types/WalletInfo.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/89e5eb2/src/types/WalletInfo.ts#L3)
+Defined in: [src/types/WalletInfo.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/WalletInfo.ts#L3)
 
 ___
 
@@ -164,4 +164,4 @@ Name | Type |
 `fortmatic` | *object* |
 `fortmatic.key` | *string* |
 
-Defined in: [src/types/WalletSetting.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/89e5eb2/src/types/WalletSetting.ts#L1)
+Defined in: [src/types/WalletSetting.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/WalletSetting.ts#L1)
