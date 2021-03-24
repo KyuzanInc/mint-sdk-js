@@ -1,7 +1,7 @@
 {
   "name": "@kyuzan/annapurna-sdk-js",
   "description": "Annapurna NFT Platform Client SDK",
-  "version": "0.34.0",
+  "version": "0.35.0",
   "dependencies": {
     "agentkeepalive": "^4.1.4",
     "axios": "^0.21.1",
