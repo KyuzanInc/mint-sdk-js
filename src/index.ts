@@ -88,6 +88,7 @@ export class AnnapurnaSDK {
     private axios: AxiosInstance,
     private fortmatic: WidgetMode,
     private metamaskProvider: ethers.providers.Web3Provider | null,
+    // TODO: こいつ結局動的に変わるから、sendTx*で内部で取得するようにする
     private shopContract: {
       abi: any
       address: string
@@ -145,6 +146,7 @@ export class AnnapurnaSDK {
       },
     })
 
+    // TODO: SDKが結構大変
     const { data } = await axios.get('/v2_projectConfig')
 
     const fortmatic = new Fortmatic(
@@ -269,6 +271,9 @@ export class AnnapurnaSDK {
       throw new Error('not LoggedId')
     }
 
+    const networkId = await this.getConnectedNetworkId()
+    const unit = networkId === 137 || networkId === 80001 ? 'MATIC' : 'ETH'
+
     if (this.metamaskProvider) {
       const accounts = await this.metamaskProvider.listAccounts()
       const address = accounts[0]
@@ -276,6 +281,7 @@ export class AnnapurnaSDK {
       return {
         address,
         balance,
+        unit,
       }
     } else {
       const accounts = (await this.fortmatic
@@ -288,6 +294,7 @@ export class AnnapurnaSDK {
       return {
         address,
         balance,
+        unit,
       }
     }
   }
@@ -788,7 +795,7 @@ export class AnnapurnaSDK {
    * import { AnnapurnaSDK } from '@kyuzan/annapurna'
    *
    * const sdk = AnnapurnaSDK.initialize(...)
-   * await	sdk.connectWallet()
+   * await sdk.connectWallet()
    * await sdk.getServerUnixTime()  // ex) 1615444120104
    * ```
    */
@@ -833,6 +840,27 @@ export class AnnapurnaSDK {
     } else {
       const network = await this.getProvider().getNetwork()
       return network.chainId === this.networkId
+    }
+  }
+
+  /**
+   * 接続中のネットワークIDを返す
+   *
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
+   * const sdk = AnnapurnaSDK.initialize(...)
+   * await sdk.connectWallet()
+   * await sdk.getConnectedNetworkId()
+   */
+  public getConnectedNetworkId = async () => {
+    if (this.isInjectedWallet()) {
+      return parseInt((window as any).ethereum.networkVersion, 10)
+    } else {
+      const network = await this.getProvider().getNetwork()
+      return network.chainId
     }
   }
 
