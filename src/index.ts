@@ -135,10 +135,7 @@ export class AnnapurnaSDK {
   ) => {
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
     const keepAliveAgent = new Agent.HttpsAgent({
-      maxSockets: 100,
-      maxFreeSockets: 10,
-      timeout: 60000, // active socket keepalive for 60 seconds
-      freeSocketTimeout: 30000, // free socket keepalive for 30 seconds
+      keepAlive: true,
     })
     const axios = Axios.create({
       httpsAgent: keepAliveAgent,
