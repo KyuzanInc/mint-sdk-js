@@ -95,9 +95,12 @@ export class AnnapurnaSDK {
   private eventConnectCallbacks: Array<() => any> = []
 
   /**
-   * @ignore
+   *
+   * @param accessToken
+   * @param networkId
+   * @param walletSetting
    */
-  private constructor(
+  public constructor(
     private accessToken: string,
     private networkId: NetworkId,
     walletSetting: WalletSetting,
@@ -471,11 +474,8 @@ export class AnnapurnaSDK {
       throw new Error('Wallet is not connected')
     }
 
-    if (!(await this.isCorrectNetwork())) {
-      throw new WrongNetworkError('Network is not correct')
-    }
-
     const item = await this.getItemById(itemId)
+    await this.validateNetworkForItem(item)
     const wallet = await this.getProvider()
     const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
@@ -537,11 +537,8 @@ export class AnnapurnaSDK {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
-
-    if (!(await this.isCorrectNetwork())) {
-      throw new WrongNetworkError('Network is not correct')
-    }
     const item = await this.getItemById(itemId)
+    await this.validateNetworkForItem(item)
     const wallet = await this.getProvider()
     const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
@@ -601,10 +598,8 @@ export class AnnapurnaSDK {
       throw new Error('Wallet is not connected')
     }
 
-    if (!(await this.isCorrectNetwork())) {
-      throw new WrongNetworkError('Network is not correct')
-    }
     const item = await this.getItemById(itemId)
+    await this.validateNetworkForItem(item)
     const wallet = await this.getProvider()
     const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
@@ -782,6 +777,7 @@ export class AnnapurnaSDK {
    * ```
    */
   public isCorrectNetwork = async () => {
+    // TODO: ここをマルチに対応
     if (this.isInjectedWallet()) {
       return (
         parseInt((window as any).ethereum.networkVersion, 10) === this.networkId
@@ -810,6 +806,13 @@ export class AnnapurnaSDK {
     } else {
       const network = await this.getProvider().getNetwork()
       return network.chainId
+    }
+  }
+
+  private validateNetworkForItem = async (item: Item) => {
+    const currentNetwork = await this.getConnectedNetworkId()
+    if (currentNetwork !== item.networkId) {
+      throw new WrongNetworkError('Network is not correct')
     }
   }
 
