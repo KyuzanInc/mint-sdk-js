@@ -438,8 +438,8 @@ export class AnnapurnaSDK {
    * ```
    */
   public getTokensByAddress = async (address: string) => {
-    const { data } = await this.axios.get('v2_tokensByAddress', {
-      params: { address, networkId: this.networkIds },
+    const { data } = await this.axios.get('v3_tokensByAddress', {
+      params: { address, networkIds: this.networkIds },
     })
     return data.data as Token[]
   }
