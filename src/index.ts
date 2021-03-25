@@ -334,10 +334,10 @@ export class AnnapurnaSDK {
    * ```
    */
   public getItemsByBidderAddress = async (address: string) => {
-    const { data } = await this.axios.get('v2_getItemsByBidderAddress', {
+    const { data } = await this.axios.get('v3_getItemsByBidderAddress', {
       params: {
         address,
-        networkId: this.networkIds,
+        networkIds: this.networkIds,
       },
     })
     const items = data.data as Item[]
