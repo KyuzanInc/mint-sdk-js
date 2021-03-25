@@ -102,7 +102,7 @@ export class AnnapurnaSDK {
    */
   public constructor(
     private accessToken: string,
-    private networkId: NetworkId,
+    private networkIds: NetworkId[],
     walletSetting: WalletSetting,
     // for Developing SDK
     devOption?: {
@@ -313,8 +313,8 @@ export class AnnapurnaSDK {
       page: 1,
     }
   ) => {
-    const { data } = await this.axios.get('/v2_items', {
-      params: { networkId: this.networkId, perPage, page },
+    const { data } = await this.axios.get('/v3_items', {
+      params: { networkIds: this.networkIds, perPage, page },
     })
     const items = data.data as Item[]
     const formatItems = items.map(this.formatItem)
@@ -337,7 +337,7 @@ export class AnnapurnaSDK {
     const { data } = await this.axios.get('v2_getItemsByBidderAddress', {
       params: {
         address,
-        networkId: this.networkId,
+        networkId: this.networkIds,
       },
     })
     const items = data.data as Item[]
@@ -377,7 +377,7 @@ export class AnnapurnaSDK {
     const { data } = await this.axios.get<AxiosBody<Item>>('v2_itemByToken', {
       params: {
         tokenId: token.tokenId,
-        networkId: this.networkId,
+        networkId: this.networkIds,
         tokenAddress: token.contractAddress,
         mintContractAddress: token.contractAddress,
       },
@@ -439,7 +439,7 @@ export class AnnapurnaSDK {
    */
   public getTokensByAddress = async (address: string) => {
     const { data } = await this.axios.get('v2_tokensByAddress', {
-      params: { address, networkId: this.networkId },
+      params: { address, networkId: this.networkIds },
     })
     return data.data as Token[]
   }
@@ -777,14 +777,13 @@ export class AnnapurnaSDK {
    * ```
    */
   public isCorrectNetwork = async () => {
-    // TODO: ここをマルチに対応
     if (this.isInjectedWallet()) {
-      return (
-        parseInt((window as any).ethereum.networkVersion, 10) === this.networkId
+      return this.networkIds.includes(
+        parseInt((window as any).ethereum.networkVersion, 10) as any
       )
     } else {
       const network = await this.getProvider().getNetwork()
-      return network.chainId === this.networkId
+      return this.networkIds.includes(network.chainId as any)
     }
   }
 
