@@ -377,7 +377,7 @@ export class AnnapurnaSDK {
     const { data } = await this.axios.get<AxiosBody<Item>>('v2_itemByToken', {
       params: {
         tokenId: token.tokenId,
-        networkId: this.networkIds,
+        networkId: token.item.networkId,
         tokenAddress: token.contractAddress,
         mintContractAddress: token.contractAddress,
       },
@@ -806,6 +806,69 @@ export class AnnapurnaSDK {
       const network = await this.getProvider().getNetwork()
       return network.chainId
     }
+  }
+
+  /**
+   * 指定したネットワークをウォレットに追加する
+   * 137 => Polygon本番ネットワーク
+   * 80001 => Polygonテストネットワーク
+   *
+   * **Required**
+   * sdk.isInjectedWallet() => trueの場合のみ（MetaMaskのみ使える）
+   *
+   * @returns
+   *
+   * ```typescript
+   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   *
+   * const sdk = AnnapurnaSDK.initialize(...)
+   * await sdk.connectWallet()
+   * await sdk.getConnectedNetworkId()
+   */
+  public addEthereumChain = async (networkId: 137 | 80001) => {
+    type AddEthereumChainParameter = {
+      chainId: string // A 0x-prefixed hexadecimal string
+      chainName: string
+      nativeCurrency: {
+        name: string
+        symbol: string // 2-6 characters long
+        decimals: 18
+      }
+      rpcUrls: string[]
+      blockExplorerUrls?: string[]
+      iconUrls?: string[] // Currently ignored.
+    }
+    const NETWORK_ID_MAP_CHAIN_PARAMETER: Record<
+      137 | 80001,
+      AddEthereumChainParameter
+    > = {
+      137: {
+        chainId: '0x89',
+        chainName: 'Matic Network',
+        nativeCurrency: {
+          name: 'MATIC',
+          symbol: 'MATIC',
+          decimals: 18,
+        },
+        rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
+        blockExplorerUrls: ['https://explorer-mainnet.maticvigil.com/'],
+      },
+      80001: {
+        chainId: '0x13881',
+        chainName: 'Mumbai',
+        nativeCurrency: {
+          name: 'MATIC',
+          symbol: 'MATIC',
+          decimals: 18,
+        },
+        rpcUrls: ['https://rpc-mumbai.matic.today'],
+        blockExplorerUrls: ['https://explorer-mumbai.maticvigil.com/'],
+      },
+    }
+    await (window as any).ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [NETWORK_ID_MAP_CHAIN_PARAMETER[networkId]], // you must have access to the specified account
+    })
   }
 
   private validateNetworkForItem = async (item: Item) => {
