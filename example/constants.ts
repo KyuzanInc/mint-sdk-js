@@ -1,2 +1,2 @@
-export const DEMO_ACCESS_KEY = '35a9d66d-8d2f-43a1-af12-aa976de4c614'
+export const DEMO_ACCESS_KEY = '194c55bf-3db6-4671-a520-6bbde766a31e'
 export const DEMO_FORTMATIC_KEY = 'pk_test_7459BD51DE1FC406'

@@ -23,6 +23,11 @@ export const Item: React.FC<{
 
   return (
     <Container>
+      <div>
+        {item.networkId === 1 || item.networkId === 4
+          ? '【Ethereum】'
+          : '【Polygon】'}
+      </div>
       {!isFixedPrice && isBeforeAuction && <p>オークション前</p>}
       {!isFixedPrice && isAfterAuction && <p>オークション後</p>}
       {!isFixedPrice && onAuction && <p>オークション中</p>}

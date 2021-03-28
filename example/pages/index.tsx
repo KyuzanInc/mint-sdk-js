@@ -18,25 +18,15 @@ const Page = () => {
   }>({ address: '', balance: undefined })
   useEffect(() => {
     const init = async () => {
-      const sdk = await AnnapurnaSDK.initialize(
-        // 旧で動くのを確認してから
-        '4bdaee8f-8e23-4913-9858-7a10dd7be877', // new
-        // '35a9d66d-8d2f-43a1-af12-aa976de4c614',
-        4,
-        {
-          fortmatic: {
-            key: DEMO_FORTMATIC_KEY,
-          },
+      const sdk = new AnnapurnaSDK(DEMO_ACCESS_KEY, [4, 80001], {
+        fortmatic: {
+          key: DEMO_FORTMATIC_KEY,
         },
-        {
-          backendUrl:
-            // 'http://localhost:5500/annapurna-development/asia-northeast1/',
-            'https://asia-northeast1-annapurna-development.cloudfunctions.net/',
-        }
-      )
+      })
       setSdk(sdk)
       if (await sdk.isWalletConnect()) {
         setWalletInfo(await sdk.getWalletInfo())
+        console.log('wallet network id', await sdk.getConnectedNetworkId())
       }
 
       const items = await sdk.getItems()
@@ -88,13 +78,6 @@ const Page = () => {
       if (!sdk) return
       if (!(await sdk.isWalletConnect())) return
       const walletInfo = await sdk.getWalletInfo()
-      const itemEls = (await sdk.getTokensByAddress(walletInfo.address)).map(
-        (token) => {
-          console.log('token', token)
-          return <OwnItem item={token} />
-        }
-      )
-      setOwnItems(itemEls)
 
       const bidedItems = (
         await sdk.getItemsByBidderAddress(walletInfo.address)
@@ -137,15 +120,31 @@ const Page = () => {
         )
       })
       setBidsItems(bidedItems)
+      const itemEls = (await sdk.getTokensByAddress(walletInfo.address)).map(
+        (token) => {
+          console.log('token', token)
+          return <OwnItem item={token} />
+        }
+      )
+      setOwnItems(itemEls)
     }
     fn()
   }, [sdk, walletInfo.address])
   return (
     <Container>
+      <div
+        onClick={() => {
+          sdk.addEthereumChain(80001)
+        }}
+      >
+        Mumbaiを追加
+      </div>
       {walletInfo.address ? (
         <p>
           address: {walletInfo.address}
-          balance: {AnnapurnaSDK.formatEther(walletInfo.balance!)}
+          {'   '}
+          balance: {AnnapurnaSDK.formatEther(walletInfo.balance!)}{' '}
+          {walletInfo.unit}
         </p>
       ) : (
         <Button
