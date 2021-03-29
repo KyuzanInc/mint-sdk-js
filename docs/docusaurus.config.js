@@ -21,6 +21,12 @@ module.exports = {
       },
       items: [
         {
+          to: '/tutorial',
+          activeBasePath: 'docs',
+          label: 'Tutorial',
+          position: 'left',
+        },
+        {
           to: 'docs/api',
           activeBasePath: 'docs',
           label: 'Docs',
@@ -82,12 +88,6 @@ module.exports = {
           // Please change this to your repo.
           editUrl: URL_REPO,
         },
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   editUrl:
-        //     'https://github.com/facebook/docusaurus/edit/master/website/blog/',
-        // },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
