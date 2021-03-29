@@ -1,10 +1,16 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
+import { useAppDispatch } from '../redux/getStore'
+import { initialWalletActionCreator } from '../redux/wallet'
 
 type Props = {
   children?: ReactNode
 }
 
 const Layout = ({ children }: Props) => {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(initialWalletActionCreator() as any)
+  }, [])
   return (
     <div>
       <header>

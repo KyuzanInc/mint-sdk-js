@@ -1,12 +1,12 @@
 import { AppComponent } from 'next/dist/next-server/lib/router/router'
 import { Provider } from 'react-redux'
-import { createStore } from '../redux/createStore'
+import { getStore } from '../redux/getStore'
 import * as React from 'react'
 import Layout from '../components/Layout'
 
 const MyApp: AppComponent = ({ Component, pageProps }) => {
   return (
-    <Provider store={createStore()}>
+    <Provider store={getStore()}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
