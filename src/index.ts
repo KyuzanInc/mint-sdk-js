@@ -99,7 +99,7 @@ export class MintSDK {
   /**
    *
    * @param accessToken
-   * @param networkId
+   * @param networkId アイテムのネットワークIDを指定
    * @param walletSetting
    */
   public constructor(
