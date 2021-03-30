@@ -1,3 +1,4 @@
+import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
 import { AxiosBody } from './types/AxiosBody'
@@ -26,6 +27,7 @@ export {
   WalletSetting,
   WalletInfo,
   WrongNetworkError,
+  CurrencyUnit,
 }
 
 export class AnnapurnaSDK {
