@@ -1,5 +1,5 @@
 {
-  "name": "@KyuzanInc/mint-sdk-js",
+  "name": "@kyuzan/mint-sdk-js",
   "description": "MINT NFT Platform Client SDK",
   "version": "2.0.0",
   "dependencies": {
