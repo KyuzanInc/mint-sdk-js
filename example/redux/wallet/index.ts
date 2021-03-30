@@ -1,7 +1,6 @@
-import { CurrencyUnit } from './../../../src/types/CurrencyUnit'
+import { AnnapurnaSDK, CurrencyUnit } from '@kyuzan/annapurna-sdk-js'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
-import { AnnapurnaSDK, WalletInfo } from '@kyuzan/annapurna-sdk-js'
 
 // State
 
