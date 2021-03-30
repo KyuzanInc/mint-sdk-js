@@ -4,7 +4,7 @@ import { useAppDispatch } from '../redux/getStore'
 import { initialWalletActionCreator, walletSlice } from '../redux/wallet'
 import { Header } from './organisms/Header'
 import { getSdk } from '../sdk'
-import { AnnapurnaSDK } from '@kyuzan/annapurna-sdk-js'
+import { MintSDK } from '@kyuzan/mint-sdk-js'
 
 type Props = {
   children?: ReactNode
@@ -21,7 +21,7 @@ const Layout = ({ children }: Props) => {
         const walletInfo = await sdk.getWalletInfo()
         dispatch(
           walletSlice.actions.updateWalletInfo({
-            balance: AnnapurnaSDK.formatEther(walletInfo.balance),
+            balance: MintSDK.formatEther(walletInfo.balance),
             currencyUnit: walletInfo.unit,
             address: walletInfo.address,
           })

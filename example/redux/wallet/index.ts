@@ -1,4 +1,4 @@
-import { AnnapurnaSDK, CurrencyUnit } from '@kyuzan/annapurna-sdk-js'
+import { MintSDK, CurrencyUnit } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
@@ -40,7 +40,7 @@ export const initialWalletActionCreator = createAsyncThunk(
     if (await getSdk()!.isWalletConnect()) {
       const walletInfo = await getSdk()!.getWalletInfo()
       return {
-        balance: AnnapurnaSDK.formatEther(walletInfo.balance),
+        balance: MintSDK.formatEther(walletInfo.balance),
         currencyUnit: walletInfo.unit,
         address: walletInfo.address,
       }
@@ -61,7 +61,7 @@ export const connectWalletActionCreator = createAsyncThunk<
     await getSdk()!.connectWallet()
     const walletInfo = await getSdk()!.getWalletInfo()
     return {
-      balance: AnnapurnaSDK.formatEther(walletInfo.balance),
+      balance: MintSDK.formatEther(walletInfo.balance),
       currencyUnit: walletInfo.unit,
       address: walletInfo.address,
     }

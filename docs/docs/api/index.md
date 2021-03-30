@@ -1,6 +1,6 @@
 ---
 id: "index"
-title: "@kyuzan/annapurna-sdk-js"
+title: "@kyuzan/mint-sdk-js"
 slug: "/api"
 sidebar_label: "Readme"
 custom_edit_url: null
