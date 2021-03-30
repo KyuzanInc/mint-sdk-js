@@ -21,7 +21,15 @@ hide_title: true
 
 Ƭ **BigNumber**: ethers.BigNumber
 
-Defined in: [src/types/BigNumber.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/BigNumber.ts#L3)
+Defined in: [src/types/BigNumber.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/17cac11/src/types/BigNumber.ts#L3)
+
+___
+
+### CurrencyUnit
+
+Ƭ **CurrencyUnit**: *typeof* currencys[*number*]
+
+Defined in: [src/types/CurrencyUnit.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/17cac11/src/types/CurrencyUnit.ts#L3)
 
 ___
 
@@ -57,7 +65,7 @@ Name | Type | Description |
 `mintContractAddress` | *string* | - |
 `mintShopContractAddress` | *string* | - |
 `name` | *string* | - |
-`networkId` | *1* \| *4* | - |
+`networkId` | [*NetworkId*](modules.md#networkid) | - |
 `previews` | { `mimeType`: *string* ; `url`: *string*  }[] | プレビューのURI 動画・画像が入る プレビューが設定されていない場合は空配列になる   |
 `price`? | *number* | only 'fixedPrice'  ether   |
 `signature` | *string* \| *undefined* | **`deprecated`**  |
@@ -71,7 +79,7 @@ Name | Type | Description |
 `tradeType` | *fixedPrice* \| *auction* | - |
 `yearCreated` | *string* | - |
 
-Defined in: [src/types/Item.ts:5](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/Item.ts#L5)
+Defined in: [src/types/Item.ts:7](https://github.com/KyuzanInc/annapurna-sdk-js/blob/17cac11/src/types/Item.ts#L7)
 
 ___
 
@@ -89,15 +97,15 @@ Name | Type |
 `transactionHash` | *string* |
 `type` | *bought* \| *bid* |
 
-Defined in: [src/types/ItemLog.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/ItemLog.ts#L1)
+Defined in: [src/types/ItemLog.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/17cac11/src/types/ItemLog.ts#L1)
 
 ___
 
 ### NetworkId
 
-Ƭ **NetworkId**: *1* \| *4*
+Ƭ **NetworkId**: *1* \| *4* \| *80001* \| *137*
 
-Defined in: [src/types/NetworkId.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/NetworkId.ts#L1)
+Defined in: [src/types/NetworkId.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/17cac11/src/types/NetworkId.ts#L1)
 
 ___
 
@@ -105,7 +113,7 @@ ___
 
 Ƭ **Residence**: *typeof* residenceList[*number*]
 
-Defined in: [src/types/Residence.ts:2](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/Residence.ts#L2)
+Defined in: [src/types/Residence.ts:2](https://github.com/KyuzanInc/annapurna-sdk-js/blob/17cac11/src/types/Residence.ts#L2)
 
 ___
 
@@ -134,7 +142,7 @@ Name | Type | Description |
 `tokenURI` | *string* | ipfs://xxxx   |
 `tokenURIHTTP` | *string* | tokenURIのブラウザ閲覧用 https://xxxx   |
 
-Defined in: [src/types/Token.ts:7](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/Token.ts#L7)
+Defined in: [src/types/Token.ts:7](https://github.com/KyuzanInc/annapurna-sdk-js/blob/17cac11/src/types/Token.ts#L7)
 
 ___
 
@@ -148,8 +156,9 @@ Name | Type |
 :------ | :------ |
 `address` | *string* |
 `balance` | [*BigNumber*](modules.md#bignumber) |
+`unit` | [*CurrencyUnit*](modules.md#currencyunit) |
 
-Defined in: [src/types/WalletInfo.ts:3](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/WalletInfo.ts#L3)
+Defined in: [src/types/WalletInfo.ts:4](https://github.com/KyuzanInc/annapurna-sdk-js/blob/17cac11/src/types/WalletInfo.ts#L4)
 
 ___
 
@@ -164,4 +173,4 @@ Name | Type |
 `fortmatic` | *object* |
 `fortmatic.key` | *string* |
 
-Defined in: [src/types/WalletSetting.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/25f60fe/src/types/WalletSetting.ts#L1)
+Defined in: [src/types/WalletSetting.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/17cac11/src/types/WalletSetting.ts#L1)

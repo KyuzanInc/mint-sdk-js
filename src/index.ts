@@ -800,6 +800,7 @@ export class AnnapurnaSDK {
    * const sdk = AnnapurnaSDK.initialize(...)
    * await sdk.connectWallet()
    * await sdk.getConnectedNetworkId()
+   * ```
    */
   public getConnectedNetworkId = async () => {
     if (this.isInjectedWallet()) {

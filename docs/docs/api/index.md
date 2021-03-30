@@ -72,6 +72,20 @@ SDK では通貨のユーティリティーとして以下を提供している�
 
 ## Developing SDK
 
+### Docs
+
+#### Docs をローカルで開発・閲覧したい時
+
+```bash
+% npm run doc:serve
+```
+
+#### Docs をデプロイ
+
+```bash
+% npm run doc:deploy
+```
+
 - [ ] - want: 同時入札による競り負けエラーは、sdk 側で判別できるように
 - [ ] CI: test
 - [ ] CI: npm publish(ドキュメント生成・test・semver)
