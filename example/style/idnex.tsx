@@ -1,6 +1,7 @@
 export const color = {
   primary: '#155B61',
   secondary: '#CBA4A0',
+  white: '#fff',
   subColor: {
     blue: '#3D98B8',
     orange: '#FF9575',

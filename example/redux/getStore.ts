@@ -2,19 +2,19 @@ import { Store, combineReducers } from 'redux'
 import logger from 'redux-logger'
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { walletSlice, initialState } from './wallet'
-import { useDispatch } from 'react-redux'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 const rootReducer = combineReducers({
   app: combineReducers({
     wallet: walletSlice.reducer,
   }),
-  ui: combineReducers({}),
+  // ui: combineReducers({}),
 })
 
 const preloadedState = () => {
   return {
     app: { wallet: initialState },
-    ui: {},
+    // ui: {},
   }
 }
 
@@ -22,6 +22,7 @@ export type StoreState = ReturnType<typeof preloadedState>
 export type ReduxStore = Store<StoreState>
 export type AppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const useAppSelector: TypedUseSelectorHook<StoreState> = useSelector
 const middlewareList = [...getDefaultMiddleware(), logger]
 const store = configureStore({
   reducer: rootReducer,

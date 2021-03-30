@@ -1,15 +1,22 @@
-import { WalletInfo } from '@kyuzan/annapurna-sdk-js'
+import { CurrencyUnit } from './../../../src/types/CurrencyUnit'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
+import { AnnapurnaSDK, WalletInfo } from '@kyuzan/annapurna-sdk-js'
 
 // State
 
+type FormattedWalletInfo = {
+  currencyUnit: CurrencyUnit
+  balance: string
+  address: string
+}
+
 export type WalletState = {
   data: {
-    walletInfo: WalletInfo | undefined
+    walletInfo: FormattedWalletInfo | undefined
   }
   meta: {
-    loading: boolean
+    waitingWalletAction: boolean
     initialized: boolean
     error: string | undefined
   }
@@ -20,7 +27,7 @@ export const initialState: WalletState = {
     walletInfo: undefined,
   },
   meta: {
-    loading: false,
+    waitingWalletAction: false,
     error: undefined,
     initialized: false,
   },
@@ -32,7 +39,12 @@ export const initialWalletActionCreator = createAsyncThunk(
   'app/wallet/init',
   async () => {
     if (await getSdk()!.isWalletConnect()) {
-      return await getSdk()!.getWalletInfo()
+      const walletInfo = await getSdk()!.getWalletInfo()
+      return {
+        balance: AnnapurnaSDK.formatEther(walletInfo.balance),
+        currencyUnit: walletInfo.unit,
+        address: walletInfo.address,
+      }
     } else {
       return undefined
     }
@@ -40,7 +52,7 @@ export const initialWalletActionCreator = createAsyncThunk(
 )
 
 export const connectWalletActionCreator = createAsyncThunk<
-  WalletInfo,
+  FormattedWalletInfo,
   void,
   {
     rejectValue: string
@@ -48,7 +60,12 @@ export const connectWalletActionCreator = createAsyncThunk<
 >('app/wallet/connect', async (_, thunkApi) => {
   try {
     await getSdk()!.connectWallet()
-    return await getSdk()!.getWalletInfo()
+    const walletInfo = await getSdk()!.getWalletInfo()
+    return {
+      balance: AnnapurnaSDK.formatEther(walletInfo.balance),
+      currencyUnit: walletInfo.unit,
+      address: walletInfo.address,
+    }
   } catch (err) {
     return thunkApi.rejectWithValue('ウォレットの接続に失敗しました')
   }
@@ -60,27 +77,55 @@ export const walletSlice = createSlice({
   name: 'wallet',
   initialState,
   reducers: {
-    updateWalletInfo: (state, action: PayloadAction<WalletInfo>) => {
-      state.data.walletInfo = action.payload
+    updateWalletInfo: (
+      state,
+      { payload }: PayloadAction<FormattedWalletInfo | undefined>
+    ) => {
+      if (typeof payload === 'undefined') {
+        state.data.walletInfo = undefined
+      } else {
+        state.data.walletInfo = {
+          balance: payload.balance,
+          currencyUnit: payload.currencyUnit,
+          address: payload.address,
+        }
+      }
     },
   },
   extraReducers: (builder) => {
     builder.addCase(
       initialWalletActionCreator.fulfilled,
       (state, { payload }) => {
-        state.data.walletInfo = payload
+        if (typeof payload === 'undefined') {
+          state.data.walletInfo = undefined
+        } else {
+          state.data.walletInfo = {
+            balance: payload.balance,
+            currencyUnit: payload.currencyUnit,
+            address: payload.address,
+          }
+        }
       }
     )
+    builder.addCase(connectWalletActionCreator.pending, (state) => {
+      state.meta.waitingWalletAction = true
+    })
     builder.addCase(
       connectWalletActionCreator.fulfilled,
       (state, { payload }) => {
-        state.data.walletInfo = payload
+        state.data.walletInfo = {
+          balance: payload.balance,
+          currencyUnit: payload.currencyUnit,
+          address: payload.address,
+        }
+        state.meta.waitingWalletAction = false
       }
     )
     builder.addCase(
       connectWalletActionCreator.rejected,
       (state, { payload }) => {
         state.meta.error = payload
+        state.meta.waitingWalletAction = false
       }
     )
   },

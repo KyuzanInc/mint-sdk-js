@@ -18,6 +18,11 @@ const MyApp: AppComponent = ({ Component, pageProps }) => {
             color: ${color.content.dark};
           }
 
+          html,
+          body {
+            background-color: ${color.background.bague};
+          }
+
           *,
           *::after,
           *::before {
