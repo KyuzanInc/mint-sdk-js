@@ -30,7 +30,7 @@ Name | Type |
 
 **Returns:** [*WrongNetworkError*](wrongnetworkerror.md)
 
-Defined in: [src/Errors.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/f4d98d1/src/Errors.ts#L1)
+Defined in: [src/Errors.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/13df114/src/Errors.ts#L1)
 
 ## Properties
 

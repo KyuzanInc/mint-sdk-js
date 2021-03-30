@@ -7,7 +7,7 @@ module.exports = {
   tagline: 'MINT SDK',
   url: URL_REPO,
   baseUrl: '/mint-sdk-js/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
   organizationName: 'KyuzanInc', // Usually your GitHub org/user name.
