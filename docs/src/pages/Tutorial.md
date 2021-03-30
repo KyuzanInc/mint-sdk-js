@@ -15,14 +15,14 @@ title: Tutorial
 ## 1.パッケージのインストール
 
 ```sh
-% npm i @kyuzan/annapurna-sdk-js
+% npm i @kyuzan/mint-sdk-js
 ```
 
 ## 2.SDK の初期化
 
 ```typescript
-import { AnnapurnaSDK } from '@kyuzan/annapurna-sdk-js'
-const sdk = new AnnapurnaSDK({
+import { MintSDK } from '@kyuzan/mint-sdk-js'
+const sdk = new MintSDK({
   'YOUR_ACCESS_KEY',
   [4],
   {

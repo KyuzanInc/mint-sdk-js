@@ -11,7 +11,7 @@ Kyuzan Inc. MINT の SDK
 ## Install
 
 ```bash
-	% npm i @kyuzan/annapurna-sdk-js
+% npm i @kyuzan/mint-sdk-js
 ```
 
 ## API Documentation
