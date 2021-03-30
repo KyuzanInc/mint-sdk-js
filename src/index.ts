@@ -30,7 +30,7 @@ export {
   CurrencyUnit,
 }
 
-export class AnnapurnaSDK {
+export class MintSDK {
   /**
    * ether(通常のETHと表示される価格)をBigNumberとして返す
    *
@@ -38,9 +38,9 @@ export class AnnapurnaSDK {
    * @returns etherをBigNumberとしてparseしたもの
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * AnnapurnaSDK.parseEther('3.2') // BigNumber
+   * MintSDK.parseEther('3.2') // BigNumber
    * ```
    */
   public static parseEther = (ether: string) => {
@@ -54,12 +54,12 @@ export class AnnapurnaSDK {
    * @returns Ether単位でパースされたstring
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet()  // required
    * const walletInfo = await sdk.getWalletInfo()
-   * AnnapurnaSDK.formatEther(walletInfo.balance) // 3.2
+   * MintSDK.formatEther(walletInfo.balance) // 3.2
    * ```
    */
   public static formatEther = (bg: BigNumber) => {
@@ -156,9 +156,9 @@ export class AnnapurnaSDK {
    * @returns ウォレットが接続されていればtrue
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.isWalletConnect()
    * ```
    */
@@ -178,8 +178,8 @@ export class AnnapurnaSDK {
    * ウォレット接続をキャンセルした場合は、Rejectされる
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.isWalletConnect() // false
    * await sdk.connectWallet()
    * await sdk.isWalletConnect()  // true
@@ -203,9 +203,9 @@ export class AnnapurnaSDK {
    * **MetaMaskが接続されている場合は何も実行されない**
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.disconnectWallet()
    * ```
    */
@@ -223,8 +223,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet()  // required
    * await sdk.getWalletInfo()
    * ```
@@ -271,8 +271,8 @@ export class AnnapurnaSDK {
    * @param txHash {@link ethers.providers.TransactionResponse}のhashプロパティ
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxBuyItem('item.itemId')
@@ -297,9 +297,9 @@ export class AnnapurnaSDK {
    * @param paging
    * @returns
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const sdk = await MintSDK.initialize(...)
    * const items = await sdk.getItems()
    * ```
    */
@@ -330,8 +330,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemsByBidderAddress('0x1111......')
    * ```
    */
@@ -353,8 +353,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemById('item.itemId')
    * ```
    */
@@ -370,8 +370,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemByToken(token)
    * ```
    */
@@ -396,9 +396,9 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemLogs('Item.itemId')
    * ```
    */
@@ -434,8 +434,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...
    * const tokens = await sdk.getTokensByAddress('0x11111...')
    * ```
    */
@@ -458,8 +458,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxBid('item.itemId', 2)
@@ -518,8 +518,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId', 'jp')
@@ -579,8 +579,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxBuyItem('item.itemId', 'jp')
@@ -640,8 +640,8 @@ export class AnnapurnaSDK {
    * @returns void
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * sdk.onAccountsChange((accounts: string[]) => {
    *    // some thing
    * })
@@ -673,8 +673,8 @@ export class AnnapurnaSDK {
    * @returns void
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * sdk.onConnect(() => {
    *    // some thing
    * })
@@ -706,8 +706,8 @@ export class AnnapurnaSDK {
    * @returns void
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * sdk.onDisconnect(() => {
    *    // some thing
    * })
@@ -738,9 +738,9 @@ export class AnnapurnaSDK {
    * @returns unix time (ms)
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * const sdk = AnnapurnaSDK.initialize(...)
+   * const sdk = MintSDK.initialize(...)
    * await sdk.connectWallet()
    * await sdk.getServerUnixTime()  // ex) 1615444120104
    * ```
@@ -756,9 +756,9 @@ export class AnnapurnaSDK {
    * @returns trueならばMetaMask
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * const sdk = AnnapurnaSDK.initialize(...)
+   * const sdk = MintSDK.initialize(...)
    * await sdk.isInjectedWallet() // true
    * ```
    */
@@ -772,9 +772,9 @@ export class AnnapurnaSDK {
    * @returns trueならば適切なネットワーク
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * const sdk = AnnapurnaSDK.initialize(...)
+   * const sdk = MintSDK.initialize(...)
    * await sdk.isCorrectNetwork() // true
    * ```
    */
@@ -795,9 +795,9 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * const sdk = AnnapurnaSDK.initialize(...)
+   * const sdk = MintSDK.initialize(...)
    * await sdk.connectWallet()
    * await sdk.getConnectedNetworkId()
    * ```
@@ -822,9 +822,9 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
    *
-   * const sdk = AnnapurnaSDK.initialize(...)
+   * const sdk = MintSDK.initialize(...)
    * await sdk.connectWallet()
    * await sdk.getConnectedNetworkId()
    */

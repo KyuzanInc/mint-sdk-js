@@ -1,7 +1,7 @@
 {
-  "name": "@kyuzan/annapurna-sdk-js",
-  "description": "Annapurna NFT Platform Client SDK",
-  "version": "1.1.0",
+  "name": "@KyuzanInc/mint-sdk-js",
+  "description": "MINT NFT Platform Client SDK",
+  "version": "1.0.0",
   "dependencies": {
     "agentkeepalive": "^4.1.4",
     "axios": "^0.21.1",
