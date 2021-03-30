@@ -827,6 +827,7 @@ export class MintSDK {
    * const sdk = MintSDK.initialize(...)
    * await sdk.connectWallet()
    * await sdk.getConnectedNetworkId()
+   * ```
    */
   public addEthereumChain = async (networkId: 137 | 80001) => {
     type AddEthereumChainParameter = {
