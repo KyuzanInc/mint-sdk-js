@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import { Card } from '../../atoms/Card'
+import { Card } from '.'
 import { color, font } from '../../../style'
 
 type Props = {
@@ -58,7 +58,7 @@ export const ActiveCard: React.FC<Props> = ({
 }
 
 const StatusBar = styled.span`
-	background: linear-gradient(180deg, #FD80A8 0%, #FCCF42 100%);
+	background: ${color.active}
   width: 6px;
 	height: 52px;
 	border-radius: 3px;

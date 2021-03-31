@@ -21,7 +21,6 @@ const MyApp: AppComponent = ({ Component, pageProps }) => {
           html,
           body {
             background-color: ${color.background.bague};
-            overflow-y: hidden;
           }
 
           *,

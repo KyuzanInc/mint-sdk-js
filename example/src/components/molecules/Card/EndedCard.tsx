@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import { Card } from '../../atoms/Card'
+import { Card } from '.'
 import { color, font } from '../../../style'
 
 type Props = {

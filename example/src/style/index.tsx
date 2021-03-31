@@ -20,6 +20,7 @@ export const color = {
     light: 'rgba(0, 0, 0, 0.14)',
     superLight: 'rgba(0, 0, 0, 0.08);',
   },
+  active: 'linear-gradient(180deg, #FD80A8 0%, #FCCF42 100%);'
 } as const
 
 export const font = {
