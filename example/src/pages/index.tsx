@@ -1,21 +1,23 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import { Card } from '../components/atoms/Card'
-import { ActiveCard } from '../components/organisms/Card/ActiveCard'
-import { EndedCard } from '../components/organisms/Card/EndedCard'
+import { EndedAuctionList } from '../components/organisms/EndedAuctionList'
+import { LiveAuctionList } from '../components/organisms/LiveAuctionList'
+import { color } from '../style'
 
 const Page = () => {
   return (
   <Container>
-    <Card title={'NIKE AIR JORDAN 1 MID “HYPER ROYAL”'} onClick={()=>{}}></Card>
-    <ActiveCard title={'NIKE AIR JORDAN 1 MID “HYPER ROYAL”'} onClick={()=>{}} />
-    <EndedCard title={'NIKE AIR JORDAN 1 MID “HYPER ROYAL”'} onClick={()=>{}} />
+    <InnerContainer>
+      <LiveAuctionList />
+      <EndedAuctionList />
+    </InnerContainer>
   </Container>)
 }
 
 export default Page
 
 const Container = styled.div`
+  background:  ${color.background.bague};
   width: 100%;
   min-height: 100vh;
   display: flex;
@@ -23,5 +25,10 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: 72px;
-  overflow-y: scroll;
+`
+
+const InnerContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  padding: 0px 0px 0 300px;
 `
