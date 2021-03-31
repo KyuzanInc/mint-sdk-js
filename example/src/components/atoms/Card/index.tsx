@@ -1,16 +1,18 @@
 import styled from '@emotion/styled'
 import Image from 'next/image'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { color, font } from '../../../style'
 
 type Props = {
   title: string
-  onClick: () => any
+  onClick: () => any,
+	children?: ReactNode
 }
 
 export const Card: React.FC<Props> = ({
 	onClick,
-  title
+  title,
+	children
 }) => {
   return (
     <CardBase onClick={onClick}>
@@ -25,45 +27,7 @@ export const Card: React.FC<Props> = ({
 					{title}
 				</Typography>
 				<CardAction>
-					<StatusBar />
-					<StatusContent>
-						<StatusTitle>
-							current bid
-						</StatusTitle>
-						<StatusValue>
-							<Value>
-								0.61
-							</Value>
-							<Unit>
-								ETH
-							</Unit>
-						</StatusValue>
-					</StatusContent>
-					<StatusContent>
-						<StatusTitle>
-							ending in
-						</StatusTitle>
-						<StatusValue>
-							<Time>
-								21
-							</Time>
-							<TimeUnit>
-								h
-							</TimeUnit>
-							<Time>
-								21
-							</Time>
-							<TimeUnit>
-								m
-							</TimeUnit>
-							<Time>
-								21
-							</Time>
-							<TimeUnit>
-								s
-							</TimeUnit>
-						</StatusValue>
-					</StatusContent>
+					{children}
 				</CardAction>
 			</CardContent>
     </CardBase>
