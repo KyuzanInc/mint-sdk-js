@@ -5,7 +5,7 @@ import emotionReset from 'emotion-reset'
 import { getStore } from '../redux/getStore'
 import * as React from 'react'
 import Layout from '../components/Layout'
-import { color } from '../style/idnex'
+import { color } from '../style'
 
 const MyApp: AppComponent = ({ Component, pageProps }) => {
   return (

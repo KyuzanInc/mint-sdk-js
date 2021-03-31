@@ -7,7 +7,7 @@ import { Anchor } from '../../atoms/Anchor'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { PrimaryButton } from '../../atoms/Botton'
 import { connectWalletActionCreator } from '../../../redux/wallet'
-import { font } from '../../../style/idnex'
+import { font } from '../../../style'
 
 export const Header: React.FC = () => {
   const dispatch = useAppDispatch()
