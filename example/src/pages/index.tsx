@@ -1,11 +1,15 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import { Card } from '../components/atoms/Card'
+import { ActiveCard } from '../components/organisms/Card/ActiveCard'
+import { EndedCard } from '../components/organisms/Card/EndedCard'
 
 const Page = () => {
   return (
   <Container>
     <Card title={'NIKE AIR JORDAN 1 MID “HYPER ROYAL”'} onClick={()=>{}}></Card>
+    <ActiveCard title={'NIKE AIR JORDAN 1 MID “HYPER ROYAL”'} onClick={()=>{}} />
+    <EndedCard title={'NIKE AIR JORDAN 1 MID “HYPER ROYAL”'} onClick={()=>{}} />
   </Container>)
 }
 
@@ -18,5 +22,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 72px;
+  padding-top: 72px;
+  overflow-y: scroll;
 `
