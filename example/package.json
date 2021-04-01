@@ -9,8 +9,8 @@
     "type:check": "tsc",
     "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"./src/**/*.{ts,tsx}\"",
-    "lint:check": "eslint ./src --ext ts,tsx -c ./.eslintrc --resolve-plugins-relative-to .",
-    "lint:fix": "eslint ./src --ext ts,tsx --fix -c  ./.eslintrc --resolve-plugins-relative-to ."
+    "lint:check": "eslint src --ext ts,tsx --resolve-plugins-relative-to ./example",
+    "lint:fix": "eslint src --ext ts,tsx --fix --resolve-plugins-relative-to ./example"
   },
   "dependencies": {
     "@emotion/react": "^11.1.5",
