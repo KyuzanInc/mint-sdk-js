@@ -6,9 +6,10 @@
     "build": "next build",
     "start": "next start",
     "deploy": "now --prod",
-    "type-check": "tsc",
-    "format": "prettier --write src/**/*.{ts,tsx}",
-    "lint": "eslint ./src --ext ts,tsx --resolve-plugins-relative-to .",
+    "type:check": "tsc",
+    "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"./src/**/*.{ts,tsx}\"",
+    "lint:check": "eslint ./src --ext ts,tsx --resolve-plugins-relative-to .",
     "lint:fix": "eslint src --ext ts,tsx --fix --resolve-plugins-relative-to ."
   },
   "dependencies": {
