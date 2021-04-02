@@ -1,35 +1,28 @@
-# @KyuzanInc/mint-sdk-js
+# @kyuzan/mint-sdk-js
 
-Kyuzan Inc. MINT の SDK
+[Mint](https://www.mintnft.jp/) クライアント SDK
 
-# Source Code
+## Mint の導入
+
+お気軽に[Kyuzan Inc.](https://www.mintnft.jp/) にお問い合わせください。
+
+## Source Code
 
 [KyuzanInc/mint-sdk-js](https://github.com/KyuzanInc/mint-sdk-js)
 
-# Getting Started
+## Getting Started
 
-## Install
+### Install
 
 ```bash
-	% npm i @kyuzan/annapurna-sdk-js
+% npm i @kyuzan/mint-sdk-js
 ```
 
-## API Documentation
+### API Documentation
 
-[docs](https://kyuzaninc.github.io/mint-sdk-js/)
+[SDK Docs](https://kyuzaninc.github.io/mint-sdk-js/)
 
-## AccessToken と ProjectId の取得
-
-Kyuzan に連絡
-
-本番用、開発用単位でプロジェクトを生成して運用する想定。
-現状は Kyuzan が用意する、
-
-## NFT のマスターデータ入稿
-
-Kyuzan に連絡
-
-# About ETH
+## About ETH
 
 通常の NFT ショップなどは ETH は、ether という単位で取引される。（日本円でいうと`円`）
 
@@ -37,7 +30,7 @@ ETH にとって wei が最小単位である。（銭）
 
 `1ether === 1000000000000000000wei`
 
-## ETH in SDK
+### ETH in SDK
 
 SDK では基本的には、`number`型を用いて ether 単位で通貨を扱う。
 
@@ -48,7 +41,7 @@ SDK では通貨のユーティリティーとして以下を提供している�
 - `SDK.formatEther` を用いると、`BigNumber`から ether 単位に変換した`string`を取得できる
 - `SDK.parseEther`を用いると、ether の文字列から`wei`を表現した`BigNumber`を取得できる
 
-# How to Get ETH for Rinkeby(Test Env)
+## How to Get ETH for Rinkeby(Test Env)
 
 テスト環境で使える ETH の入手方法は以下の通り
 
@@ -60,11 +53,3 @@ SDK では通貨のユーティリティーとして以下を提供している�
 1. Tweet の URL をコピーしサイトの Input に貼り付ける
 1. Give me Ether ボタンを押す
 1. しばらくすると入金される
-
-## Developing SDK
-
-- [ ] - want: 同時入札による競り負けエラーは、sdk 側で判別できるように
-- [ ] CI: test
-- [ ] CI: npm publish(ドキュメント生成・test・semver)
-- [ ] SDK を用いた MINT ローカル開発手順
-- [ ] Backend との IF。OpenAPI を用いた、ドキュメント・型・クライアントの自動生成
