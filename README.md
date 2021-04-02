@@ -1,5 +1,7 @@
 # @kyuzan/mint-sdk-js
 
+[![npm version](https://badge.fury.io/js/%40kyuzan%2Fmint-sdk-js.svg)](https://badge.fury.io/js/%40kyuzan%2Fmint-sdk-js)
+
 [Mint](https://www.mintnft.jp/) クライアント SDK
 
 ## Mint の導入
@@ -8,7 +10,7 @@
 
 ## Source Code
 
-[KyuzanInc/mint-sdk-js](https://github.com/KyuzanInc/mint-sdk-js)
+[@kyuzan/mint-sdk-js](https://github.com/KyuzanInc/mint-sdk-js)
 
 ## Getting Started
 
