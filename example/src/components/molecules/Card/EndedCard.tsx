@@ -1,9 +1,8 @@
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
-import { format, getHours } from 'date-fns'
-import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
+import { format } from 'date-fns'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Card } from '.'
 import { color, font } from '../../../style'
 
@@ -16,8 +15,12 @@ export const EndedCard: React.FC<Props> = ({
 }) => {
   const target = item.endAt ? item.endAt : new Date();
   const date = format(target, 'yyyy.MM.dd HH:mm');
+
+  const onClick = useEffect(()=>{
+    //TODO: write onclick action
+  }, []);
   return (
-    <Card onClick={()=>{}} title={item.name}>
+    <Card onClick={onClick} title={item.name}>
       <StatusBar />
       <StatusContent>
         <StatusTitle>

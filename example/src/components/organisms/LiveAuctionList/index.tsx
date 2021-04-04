@@ -23,7 +23,7 @@ export const LiveAuctionList: React.FC<Props> = ({items}) => {
         {items.map((item, i)=>{
           return (
             <CardList key={i}>
-              <ActiveCard item={item} onClick={()=>{}} />
+              <ActiveCard item={item} />
             </CardList>
           );
         })}

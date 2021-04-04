@@ -5,7 +5,7 @@ import { color, font } from '../../../style'
 
 type Props = {
   title: string
-  onClick: () => any,
+  onClick: any,
   children?: ReactNode
 }
 

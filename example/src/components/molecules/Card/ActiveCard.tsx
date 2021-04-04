@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Countdown from 'react-countdown';
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
@@ -7,7 +7,6 @@ import { color, font } from '../../../style'
 
 type Props = {
   item: Item;
-  onClick: () => any
 }
 
 interface FormattedProps {
@@ -62,9 +61,11 @@ const renderer = ({ days , hours, minutes, seconds, completed }: FormattedProps)
 };
 
 export const ActiveCard: React.FC<Props> = ({
-  item,
-  onClick
+  item
 }) => { 
+  const onClick = useEffect(()=>{
+    //TODO: write onclick action
+  },[])
   return (
     <Card onClick={onClick} title={item.name}>
       <StatusBar />
