@@ -1,31 +1,33 @@
 import styled from '@emotion/styled'
-import { Item } from '@kyuzan/mint-sdk-js'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { EndedAuctionList } from '../components/organisms/EndedAuctionList'
 import { LiveAuctionList } from '../components/organisms/LiveAuctionList'
-import { getSdk } from '../sdk'
+import { useAppDispatch, useAppSelector } from '../redux/getStore'
+import { getItemsActionCreator } from '../redux/items'
 import { color } from '../style'
 
 const Page = () => {
-  // const dispatch = useAppDispatch()
-  const [liveItems, setLiveItems] = useState<Item[]>([])
-  const [endedItems, setEndedItems] = useState<Item[]>([])
+  const dispatch = useAppDispatch()
+  const items = useAppSelector((state) => {
+    return state.ui.items.data
+  })
+  //TODO: use loading
+  const waitingItems = useAppSelector((state) => {
+    return state.ui.items.meta.waitingItemAction
+  })
+  const getItems = useCallback(() => {
+    dispatch(getItemsActionCreator() as any)
+  }, [])
+
   useEffect(() => {
-    // dispatch(initialWalletActionCreator() as any)
-    const sdk = getSdk()
-    sdk?.getItems().then((items) => {
-      const now = new Date()
-      const live = items.filter((item) => item.endAt && now < item.endAt)
-      const ended = items.filter((item) => item.endAt && now >= item.endAt)
-      setLiveItems(live)
-      setEndedItems(ended)
-    })
+    getItems()
   }, [])
   return (
     <Container>
       <InnerContainer>
-        <LiveAuctionList items={liveItems} />
-        <EndedAuctionList items={endedItems} />
+        {waitingItems && <div>Loading....</div>}
+        <LiveAuctionList items={items.live} />
+        <EndedAuctionList items={items.ended} />
       </InnerContainer>
     </Container>
   )
