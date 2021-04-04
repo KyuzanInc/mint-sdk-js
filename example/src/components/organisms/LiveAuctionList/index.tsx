@@ -1,14 +1,16 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import { Item } from '@kyuzan/mint-sdk-js'
+import React, { ReactNode } from 'react'
 import { color } from '../../../style'
 import { ListComponent, ListTitle, Title, CardUL, CardList } from '../../atoms/CardList'
 import { ActiveCard } from '../../molecules/Card/ActiveCard'
 
 type Props = {
+  items: Item[]
+  children?: ReactNode
 }
 
-export const LiveAuctionList: React.FC<Props> = ({
-}) => {
+export const LiveAuctionList: React.FC<Props> = ({items}) => {
   return (
     <ListComponent>
       <ListTitle>
@@ -18,18 +20,13 @@ export const LiveAuctionList: React.FC<Props> = ({
         </Title>
       </ListTitle>
       <CardUL>
-        <CardList>
-          <ActiveCard title={'NIKE AIR JORDAN 1 MID “HYPER ROYAL”'} onClick={()=>{}} />
-        </CardList>
-        <CardList>
-          <ActiveCard title={'NIKE AIR JORDAN 1 MID “HYPER ROYAL”'} onClick={()=>{}} />
-        </CardList>
-        <CardList>
-          <ActiveCard title={'NIKE AIR JORDAN 1 MID “HYPER ROYAL”'} onClick={()=>{}} />
-        </CardList>
-        <CardList>
-          <ActiveCard title={'NIKE AIR JORDAN 1 MID “HYPER ROYAL”'} onClick={()=>{}} />
-        </CardList>
+        {items.map((item, i)=>{
+          return (
+            <CardList key={i}>
+              <ActiveCard item={item} onClick={()=>{}} />
+            </CardList>
+          );
+        })}
       </CardUL>
     </ListComponent>
   )

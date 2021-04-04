@@ -1,15 +1,31 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import { Item } from '@kyuzan/mint-sdk-js'
+import React, { useEffect, useState } from 'react'
 import { EndedAuctionList } from '../components/organisms/EndedAuctionList'
 import { LiveAuctionList } from '../components/organisms/LiveAuctionList'
+import { getSdk } from '../sdk'
 import { color } from '../style'
 
 const Page = () => {
+  // const dispatch = useAppDispatch()
+  const [liveItems, setLiveItems] = useState<Item[]>([]);
+  const [endedItems, setEndedItems] = useState<Item[]>([]);
+  useEffect(() => {
+    // dispatch(initialWalletActionCreator() as any)
+    const sdk = getSdk();
+    sdk?.getItems().then((items)=>{
+      const now = new Date();
+      const live = items.filter((item)=> item.endAt && now < item.endAt);
+      const ended = items.filter((item)=> item.endAt && now >= item.endAt );
+      setLiveItems(live);
+      setEndedItems(ended);
+    });
+  }, []);
   return (
   <Container>
     <InnerContainer>
-      <LiveAuctionList />
-      <EndedAuctionList />
+      <LiveAuctionList items={liveItems}/>
+      <EndedAuctionList items={endedItems} />
     </InnerContainer>
   </Container>)
 }
