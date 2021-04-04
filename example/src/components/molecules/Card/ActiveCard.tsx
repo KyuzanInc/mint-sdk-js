@@ -1,96 +1,73 @@
 import React, { useEffect } from 'react'
-import Countdown from 'react-countdown';
+import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { Card } from '.'
 import { color, font } from '../../../style'
 
 type Props = {
-  item: Item;
+  item: Item
 }
 
 interface FormattedProps {
-  total: number,
-  days: number,
-  hours: number,
-  minutes: number,
-  seconds: number,
-  milliseconds: number,
-  completed: boolean,
-  api: any;
-  props: any;
-  formatted: any;
+  total: number
+  days: number
+  hours: number
+  minutes: number
+  seconds: number
+  milliseconds: number
+  completed: boolean
+  api: any
+  props: any
+  formatted: any
 }
 
 // Renderer callback with condition
-const renderer = ({ days , hours, minutes, seconds, completed }: FormattedProps) => {
+const renderer = ({
+  days,
+  hours,
+  minutes,
+  seconds,
+  completed,
+}: FormattedProps) => {
   if (completed) {
     // Render a completed state
-    return (<StatusValue>Ended</StatusValue>);
+    return <StatusValue>Ended</StatusValue>
   } else {
     // Render a countdown
     return (
       <StatusValue>
-        <Time>
-          {days}
-        </Time>
-        <TimeUnit>
-          d
-        </TimeUnit>
-        <Time>
-          {hours}
-        </Time>
-        <TimeUnit>
-          h
-        </TimeUnit>
-        <Time>
-          {minutes}
-        </Time>
-        <TimeUnit>
-          m
-        </TimeUnit>
-        <Time>
-          {seconds}
-        </Time>
-        <TimeUnit>
-          s
-        </TimeUnit>
+        <Time>{days}</Time>
+        <TimeUnit>d</TimeUnit>
+        <Time>{hours}</Time>
+        <TimeUnit>h</TimeUnit>
+        <Time>{minutes}</Time>
+        <TimeUnit>m</TimeUnit>
+        <Time>{seconds}</Time>
+        <TimeUnit>s</TimeUnit>
       </StatusValue>
-    );
+    )
   }
-};
+}
 
-export const ActiveCard: React.FC<Props> = ({
-  item
-}) => { 
-  const onClick = useEffect(()=>{
+export const ActiveCard: React.FC<Props> = ({ item }) => {
+  const onClick = useEffect(() => {
     //TODO: write onclick action
-  },[])
+  }, [])
   return (
     <Card onClick={onClick} title={item.name}>
       <StatusBar />
-        <StatusContent>
-          <StatusTitle>
-            current bid
-          </StatusTitle>
-          <StatusValue>
-            <Value>
-              {item.currentPrice || item.initialPrice || 0}
-            </Value>
-            <Unit>
-              ETH
-            </Unit>
-          </StatusValue>
-        </StatusContent>
-        <StatusContent>
-          <StatusTitle>
-            ending in
-          </StatusTitle>
-          <Countdown
-            date={item.endAt ?? 0 - Date.now()}
-            renderer={renderer}
-          />
-        </StatusContent>
+      <StatusContent>
+        <StatusTitle>current bid</StatusTitle>
+        <StatusValue>
+          <Value>{item.currentPrice || item.initialPrice || 0}</Value>
+          <Unit>ETH</Unit>
+        </StatusValue>
+      </StatusContent>
+      <StatusContent>
+        <StatusTitle>ending in</StatusTitle>
+        <Countdown date={item.endAt ?? 0 - Date.now()} renderer={renderer} />
+      </StatusContent>
     </Card>
   )
 }
@@ -103,7 +80,7 @@ const StatusBar = styled.span`
 `
 
 const StatusContent = styled.div`
-  background:  ${color.white};
+  background: ${color.white};
   padding: 0px 24px 0px 8px;
 `
 
@@ -112,7 +89,6 @@ const StatusTitle = styled.div`
   ${font.lg.label}
   padding: 0 10px 0 0;
 `
-
 
 const StatusValue = styled.div`
   width: 68px;
@@ -136,13 +112,15 @@ const Unit = styled.div`
   height: 12px;
   ${font.lg.unit}
   color: ${color.content.dark};
-  margin: 4px 0 6px 0
+  margin: 4px 0 6px 0;
 `
 const Time = styled.div`
   width: 17px;
   height: 20px;
   display: flex;
-  font-weight: 600; font-size: 16px; line-height: 19.5px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19.5px;
   color: ${color.content.dark};
 `
 

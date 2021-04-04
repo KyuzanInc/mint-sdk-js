@@ -10,39 +10,27 @@ type Props = {
   item: Item
 }
 
-export const EndedCard: React.FC<Props> = ({
-  item
-}) => {
-  const target = item.endAt ? item.endAt : new Date();
-  const date = format(target, 'yyyy.MM.dd HH:mm');
+export const EndedCard: React.FC<Props> = ({ item }) => {
+  const target = item.endAt ? item.endAt : new Date()
+  const date = format(target, 'yyyy.MM.dd HH:mm')
 
-  const onClick = useEffect(()=>{
+  const onClick = useEffect(() => {
     //TODO: write onclick action
-  }, []);
+  }, [])
   return (
     <Card onClick={onClick} title={item.name}>
       <StatusBar />
       <StatusContent>
-        <StatusTitle>
-          sold for
-        </StatusTitle>
+        <StatusTitle>sold for</StatusTitle>
         <StatusValue>
-          <Value>
-              {item.currentPrice}
-          </Value>
-          <Unit>
-              ETH
-          </Unit>
+          <Value>{item.currentPrice}</Value>
+          <Unit>ETH</Unit>
         </StatusValue>
       </StatusContent>
       <StatusContent>
-        <StatusTitle>
-          end time
-        </StatusTitle>
+        <StatusTitle>end time</StatusTitle>
         <StatusValue>
-          <Time>
-            {date}
-          </Time>
+          <Time>{date}</Time>
         </StatusValue>
       </StatusContent>
     </Card>
@@ -57,7 +45,7 @@ const StatusBar = styled.span`
 `
 
 const StatusContent = styled.div`
-  background:  ${color.white};
+  background: ${color.white};
   padding: 0px 24px 0px 8px;
 `
 
@@ -66,7 +54,6 @@ const StatusTitle = styled.div`
   ${font.lg.label}
   padding: 0 10px 0 0;
 `
-
 
 const StatusValue = styled.div`
   width: 68px;
@@ -90,13 +77,15 @@ const Unit = styled.div`
   height: 20px;
   ${font.lg.unit}
   color: ${color.content.dark};
-  margin: 6px 0 6px 0
+  margin: 6px 0 6px 0;
 `
 const Time = styled.div`
   width: 118px;
   height: 20px;
   display: flex;
-  font-weight: 500; font-size: 14px; line-height: 1.3;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.3;
   color: ${color.content.dark};
   display: table;
 `

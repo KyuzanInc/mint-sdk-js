@@ -5,30 +5,19 @@ import { color, font } from '../../../style'
 
 type Props = {
   title: string
-  onClick: any,
+  onClick: any
   children?: ReactNode
 }
 
-export const Card: React.FC<Props> = ({
-  onClick,
-  title,
-  children
-}) => {
+export const Card: React.FC<Props> = ({ onClick, title, children }) => {
   return (
     <CardBase onClick={onClick}>
       <CardMedia>
-        <Image
-          src={'/images/shoes.png'}
-          layout={'fill'}
-        />
+        <Image src={'/images/shoes.png'} layout={'fill'} />
       </CardMedia>
       <CardContent>
-        <Typography>
-          {title}
-        </Typography>
-        <CardAction>
-          {children}
-        </CardAction>
+        <Typography>{title}</Typography>
+        <CardAction>{children}</CardAction>
       </CardContent>
     </CardBase>
   )
@@ -44,9 +33,11 @@ const CardBase = styled.div`
   border-radius: 22px;
   color: ${color.white};
   padding: 0px 0px 24px;
-  box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04), 0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443), 0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+  box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
+    0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
+    0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 12px;
-  `
+`
 const CardMedia = styled(CardBase)`
   border-radius: 12px 12px 0 0;
   background: ${color.primary};
@@ -54,7 +45,6 @@ const CardMedia = styled(CardBase)`
   width: 264px%;
   position: relative;
 `
-
 
 const CardContent = styled.div`
   background: ${color.white};

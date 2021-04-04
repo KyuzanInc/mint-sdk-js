@@ -8,32 +8,33 @@ import { color } from '../style'
 
 const Page = () => {
   // const dispatch = useAppDispatch()
-  const [liveItems, setLiveItems] = useState<Item[]>([]);
-  const [endedItems, setEndedItems] = useState<Item[]>([]);
+  const [liveItems, setLiveItems] = useState<Item[]>([])
+  const [endedItems, setEndedItems] = useState<Item[]>([])
   useEffect(() => {
     // dispatch(initialWalletActionCreator() as any)
-    const sdk = getSdk();
-    sdk?.getItems().then((items)=>{
-      const now = new Date();
-      const live = items.filter((item)=> item.endAt && now < item.endAt);
-      const ended = items.filter((item)=> item.endAt && now >= item.endAt );
-      setLiveItems(live);
-      setEndedItems(ended);
-    });
-  }, []);
+    const sdk = getSdk()
+    sdk?.getItems().then((items) => {
+      const now = new Date()
+      const live = items.filter((item) => item.endAt && now < item.endAt)
+      const ended = items.filter((item) => item.endAt && now >= item.endAt)
+      setLiveItems(live)
+      setEndedItems(ended)
+    })
+  }, [])
   return (
-  <Container>
-    <InnerContainer>
-      <LiveAuctionList items={liveItems}/>
-      <EndedAuctionList items={endedItems} />
-    </InnerContainer>
-  </Container>)
+    <Container>
+      <InnerContainer>
+        <LiveAuctionList items={liveItems} />
+        <EndedAuctionList items={endedItems} />
+      </InnerContainer>
+    </Container>
+  )
 }
 
 export default Page
 
 const Container = styled.div`
-  background:  ${color.background.bague};
+  background: ${color.background.bague};
   width: 100%;
   min-height: 100vh;
   display: flex;
