@@ -9,7 +9,7 @@ import {
 } from '../../atoms/CardList'
 import { LoadingCard } from '../../molecules/Card/LoadingCard'
 
-export const LoadingList: React.FC<{}> = () => {
+export const LoadingList: React.FC = () => {
   return (
     <React.Fragment>
       <ListComponent>

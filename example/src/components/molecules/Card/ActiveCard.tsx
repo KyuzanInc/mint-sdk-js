@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { Card } from '.'
 import { color, font } from '../../../style'
-import image from 'next/image'
 
 type Props = {
   item: Item

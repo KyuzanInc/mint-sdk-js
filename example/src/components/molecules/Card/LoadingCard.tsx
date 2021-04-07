@@ -5,9 +5,7 @@ import React, { useEffect } from 'react'
 import { Card } from '.'
 import { color, font } from '../../../style'
 
-type Props = {}
-
-export const LoadingCard: React.FC<Props> = () => {
+export const LoadingCard: React.FC = () => {
   const onClick = useEffect(() => {
     //TODO: write onclick action
   }, [])

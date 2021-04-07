@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import React, { useCallback, useEffect } from 'react'
-import { LoadingCard } from '../components/molecules/Card/LoadingCard'
 import { EndedAuctionList } from '../components/organisms/EndedAuctionList'
 import { LiveAuctionList } from '../components/organisms/LiveAuctionList'
 import { LoadingList } from '../components/organisms/LoadingList'
