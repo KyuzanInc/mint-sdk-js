@@ -1,7 +1,9 @@
 import styled from '@emotion/styled'
 import React, { useCallback, useEffect } from 'react'
+import { LoadingCard } from '../components/molecules/Card/LoadingCard'
 import { EndedAuctionList } from '../components/organisms/EndedAuctionList'
 import { LiveAuctionList } from '../components/organisms/LiveAuctionList'
+import { LoadingList } from '../components/organisms/LoadingList'
 import { useAppDispatch, useAppSelector } from '../redux/getStore'
 import { getItemsActionCreator } from '../redux/items'
 import { color } from '../style'
@@ -25,7 +27,7 @@ const Page = () => {
   return (
     <Container>
       <InnerContainer>
-        {waitingItems && <div>Loading....</div>}
+        {waitingItems && <LoadingList />}
         <LiveAuctionList items={items.live} />
         <EndedAuctionList items={items.ended} />
       </InnerContainer>

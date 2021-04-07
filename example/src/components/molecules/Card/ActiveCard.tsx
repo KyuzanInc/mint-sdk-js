@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { Card } from '.'
 import { color, font } from '../../../style'
+import image from 'next/image'
 
 type Props = {
   item: Item
@@ -55,7 +56,7 @@ export const ActiveCard: React.FC<Props> = ({ item }) => {
     //TODO: write onclick action
   }, [])
   return (
-    <Card onClick={onClick} title={item.name}>
+    <Card onClick={onClick} title={item.name} image={item.imageURI}>
       <StatusBar />
       <StatusContent>
         <StatusTitle>current bid</StatusTitle>

@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
-import { font } from '../../../style'
+import { color, font } from '../../../style'
 
 export const ListComponent = styled.div`
-  width: 840px;
+  width: 860px;
   display: flex;
   flex-direction: column;
 `
@@ -25,3 +25,10 @@ export const CardList = styled.li`
 `
 
 export const CardUL = styled.ul``
+
+export const ActiveStatus = styled.div`
+  background: ${color.active};
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+`

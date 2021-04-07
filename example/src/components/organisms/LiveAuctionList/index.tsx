@@ -1,13 +1,12 @@
-import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import React, { ReactNode } from 'react'
-import { color } from '../../../style'
 import {
   ListComponent,
   ListTitle,
   Title,
   CardUL,
   CardList,
+  ActiveStatus,
 } from '../../atoms/CardList'
 import { ActiveCard } from '../../molecules/Card/ActiveCard'
 
@@ -35,10 +34,3 @@ export const LiveAuctionList: React.FC<Props> = ({ items }) => {
     </ListComponent>
   )
 }
-
-const ActiveStatus = styled.div`
-  background: ${color.active};
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-`

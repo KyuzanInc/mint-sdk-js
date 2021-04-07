@@ -1,22 +1,40 @@
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import React, { ReactNode } from 'react'
+import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
 
 type Props = {
-  title: string
+  title?: string
   onClick: any
+  image?: string
   children?: ReactNode
 }
 
-export const Card: React.FC<Props> = ({ onClick, title, children }) => {
+export const Card: React.FC<Props> = ({ onClick, title, image, children }) => {
   return (
     <CardBase onClick={onClick}>
       <CardMedia>
-        <Image src={'/images/shoes.png'} layout={'fill'} />
+        {image ? (
+          <Image src={'/images/shoes.png'} layout={'fill'} />
+        ) : (
+          <Skeleton
+            height={220}
+            width={269}
+            style={{ top: 0, position: 'absolute' }}
+          />
+        )}
       </CardMedia>
       <CardContent>
-        <Typography>{title}</Typography>
+        <Typography>
+          {title ? (
+            title
+          ) : (
+            <LoadingTypography>
+              <Skeleton width={237} count={2} />
+            </LoadingTypography>
+          )}
+        </Typography>
         <CardAction>{children}</CardAction>
       </CardContent>
     </CardBase>
@@ -40,9 +58,9 @@ const CardBase = styled.div`
 `
 const CardMedia = styled(CardBase)`
   border-radius: 12px 12px 0 0;
-  background: ${color.primary};
+  background: ${color.white};
   height: 220px;
-  width: 264px%;
+  width: 100%;
   position: relative;
 `
 
@@ -63,6 +81,10 @@ const Typography = styled.div`
   color: ${color.content.dark};
   padding-bottom: 32px;
   align-items: center;
+`
+
+const LoadingTypography = styled.div`
+  display: flex;
 `
 
 const CardAction = styled.div`

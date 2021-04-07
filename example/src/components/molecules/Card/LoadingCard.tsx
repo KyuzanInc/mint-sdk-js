@@ -1,36 +1,38 @@
 import styled from '@emotion/styled'
-import { Item } from '@kyuzan/mint-sdk-js'
-import { format } from 'date-fns'
+import Skeleton from 'react-loading-skeleton'
 
 import React, { useEffect } from 'react'
 import { Card } from '.'
 import { color, font } from '../../../style'
 
-type Props = {
-  item: Item
-}
+type Props = {}
 
-export const EndedCard: React.FC<Props> = ({ item }) => {
-  const target = item.endAt ? item.endAt : new Date()
-  const date = format(target, 'yyyy.MM.dd HH:mm')
-
+export const LoadingCard: React.FC<Props> = () => {
   const onClick = useEffect(() => {
     //TODO: write onclick action
   }, [])
   return (
-    <Card onClick={onClick} title={item.name} image={item.imageURI}>
+    <Card onClick={onClick}>
       <StatusBar />
+      <Skeleton count={10} />
       <StatusContent>
-        <StatusTitle>sold for</StatusTitle>
+        <StatusTitle>
+          <Skeleton />
+        </StatusTitle>
         <StatusValue>
-          <Value>{item.currentPrice}</Value>
-          <Unit>ETH</Unit>
+          <Value>
+            <Skeleton height={20} width={32} />
+          </Value>
         </StatusValue>
       </StatusContent>
       <StatusContent>
-        <StatusTitle>end time</StatusTitle>
+        <StatusTitle>
+          <Skeleton />
+        </StatusTitle>
         <StatusValue>
-          <Time>{date}</Time>
+          <Time>
+            <Skeleton height={20} />
+          </Time>
         </StatusValue>
       </StatusContent>
     </Card>
@@ -38,7 +40,7 @@ export const EndedCard: React.FC<Props> = ({ item }) => {
 }
 
 const StatusBar = styled.span`
-  background: rgba(0, 0, 0, 0.14);
+  background: rgba(0, 0, 0, 0);
   width: 6px;
   height: 52px;
   border-radius: 3px;
@@ -70,14 +72,6 @@ const Value = styled.div`
   display: flex;
   ${font.lg.h3}
   color: ${color.content.dark};
-`
-
-const Unit = styled.div`
-  width: 22px;
-  height: 20px;
-  ${font.lg.unit}
-  color: ${color.content.dark};
-  margin: 6px 0 6px 0;
 `
 const Time = styled.div`
   width: 118px;
