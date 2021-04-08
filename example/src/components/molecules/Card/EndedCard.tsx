@@ -18,7 +18,7 @@ export const EndedCard: React.FC<Props> = ({ item }) => {
     //TODO: write onclick action
   }, [])
   return (
-    <Card onClick={onClick} title={item.name} image={item.imageURI}>
+    <Card onClick={onClick} title={item.name} media={item.imageURIHTTP}>
       <StatusBar />
       <StatusContent>
         <StatusTitle>sold for</StatusTitle>

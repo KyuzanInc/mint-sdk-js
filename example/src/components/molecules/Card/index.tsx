@@ -1,22 +1,26 @@
 import styled from '@emotion/styled'
-import Image from 'next/image'
 import React, { ReactNode } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
 
+type Media = {
+  url: string
+  mimeType: string
+}
+
 type Props = {
   title?: string
   onClick: any
-  image?: string
+  media?: Media
   children?: ReactNode
 }
 
-export const Card: React.FC<Props> = ({ onClick, title, image, children }) => {
+export const Card: React.FC<Props> = ({ onClick, title, media, children }) => {
   return (
     <CardBase onClick={onClick}>
       <CardMedia>
-        {image ? (
-          <Image src={'/images/shoes.png'} layout={'fill'} />
+        {media ? (
+          <Image src={media.url} loading="lazy" />
         ) : (
           <Skeleton
             height={220}
@@ -48,7 +52,6 @@ const CardBase = styled.div`
   height: 382px;
   width: 269px;
   line-height: 44px;
-  border-radius: 22px;
   color: ${color.white};
   padding: 0px 0px 24px;
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
@@ -96,4 +99,10 @@ const CardAction = styled.div`
   align-items: center;
   color: ${color.content.dark};
   align-items: center;
+`
+
+const Image = styled.img`
+  height: 220px;
+  width: 269px;
+  border-radius: 12px 12px 0 0;
 `
