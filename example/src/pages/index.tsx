@@ -27,8 +27,8 @@ const Page = () => {
     <Container>
       <InnerContainer>
         {waitingItems && <LoadingList />}
-        <LiveAuctionList items={items.live} />
-        <EndedAuctionList items={items.ended} />
+        {!waitingItems && <LiveAuctionList items={items.live} />}
+        {!waitingItems && <EndedAuctionList items={items.ended} />}
       </InnerContainer>
     </Container>
   )

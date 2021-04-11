@@ -19,15 +19,7 @@ export const Card: React.FC<Props> = ({ onClick, title, media, children }) => {
   return (
     <CardBase onClick={onClick}>
       <CardMedia>
-        {media ? (
-          <Image src={media.url} loading="lazy" />
-        ) : (
-          <Skeleton
-            height={220}
-            width={269}
-            style={{ top: 0, position: 'absolute' }}
-          />
-        )}
+        <MediaContent media={media} />
       </CardMedia>
       <CardContent>
         <Typography>
@@ -42,6 +34,34 @@ export const Card: React.FC<Props> = ({ onClick, title, media, children }) => {
         <CardAction>{children}</CardAction>
       </CardContent>
     </CardBase>
+  )
+}
+
+const MediaContent: React.FC<{ media: Media | undefined }> = ({ media }) => {
+  if (!media) {
+    return (
+      <Skeleton
+        height={220}
+        width={269}
+        style={{ top: 0, position: 'absolute' }}
+      />
+    )
+  }
+  const type = media.mimeType.split('/')[0]
+  const src = media.url
+  if (type === 'image') {
+    return <Image src={src} loading="lazy" />
+  }
+  return (
+    <Video
+      src={src}
+      height={'220px'}
+      width={'269px'}
+      autoPlay
+      loop
+      preload="auto"
+      muted
+    />
   )
 }
 
@@ -102,6 +122,12 @@ const CardAction = styled.div`
 `
 
 const Image = styled.img`
+  height: 220px;
+  width: 269px;
+  border-radius: 12px 12px 0 0;
+`
+
+const Video = styled.video`
   height: 220px;
   width: 269px;
   border-radius: 12px 12px 0 0;
