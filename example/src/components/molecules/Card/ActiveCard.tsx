@@ -3,7 +3,14 @@ import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { Card } from '.'
-import { color, font } from '../../../style'
+import { color } from '../../../style'
+import {
+  StatusContent,
+  StatusTitle,
+  StatusValue,
+  Unit,
+  Value,
+} from '../../atoms/Card'
 
 type Props = {
   item: Item
@@ -54,13 +61,19 @@ export const ActiveCard: React.FC<Props> = ({ item }) => {
   const onClick = useEffect(() => {
     //TODO: write onclick action
   }, [])
+  let price = item.currentPrice || item.initialPrice || 0
+  if (price < 0.01) {
+    price = 0.01
+  } else {
+    price = Math.round(price * 100) / 100
+  }
   return (
     <Card onClick={onClick} title={item.name} media={item.imageURIHTTP}>
       <StatusBar />
       <StatusContent>
         <StatusTitle>current bid</StatusTitle>
         <StatusValue>
-          <Value>{item.currentPrice || item.initialPrice || 0}</Value>
+          <Value>{price}</Value>
           <Unit>ETH</Unit>
         </StatusValue>
       </StatusContent>
@@ -78,49 +91,13 @@ const StatusBar = styled.span`
   height: 52px;
   border-radius: 3px;
 `
-
-const StatusContent = styled.div`
-  background: ${color.white};
-  padding: 0px 24px 0px 8px;
-`
-
-const StatusTitle = styled.div`
-  color: ${color.content.dark};
-  ${font.lg.label}
-  padding: 0 10px 0 0;
-`
-
-const StatusValue = styled.div`
-  width: 68px;
-  height: 24px;
-  ${font.lg.h3}
-  color: ${color.content.dark};
-  margin: 9px 10px 0 0px;
-  display: flex;
-`
-
-const Value = styled.div`
-  width: 42px;
-  height: 24px;
-  display: flex;
-  ${font.lg.h3}
-  color: ${color.content.dark};
-`
-
-const Unit = styled.div`
-  width: 22px;
-  height: 12px;
-  ${font.lg.unit}
-  color: ${color.content.dark};
-  margin: 4px 0 6px 0;
-`
 const Time = styled.div`
-  width: 17px;
+  width: 18px;
   height: 20px;
   display: flex;
   font-weight: 600;
   font-size: 16px;
-  line-height: 19.5px;
+  line-height: 20px;
   color: ${color.content.dark};
 `
 

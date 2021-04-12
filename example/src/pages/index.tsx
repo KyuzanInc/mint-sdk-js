@@ -12,7 +12,7 @@ const Page = () => {
   const items = useAppSelector((state) => {
     return state.ui.items.data
   })
-  //TODO: use loading
+
   const waitingItems = useAppSelector((state) => {
     return state.ui.items.meta.waitingItemAction
   })

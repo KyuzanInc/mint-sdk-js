@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { color, font } from '../../../style'
 
 export const ListComponent = styled.div`
-  width: 860px;
+  width: 864px;
   display: flex;
   flex-direction: column;
 `
@@ -20,7 +20,7 @@ export const Title = styled(ListComponent)`
 `
 
 export const CardList = styled.li`
-  margin: 0 0 16px 16px;
+  margin: 0 24px 0 0;
   float: left;
 `
 

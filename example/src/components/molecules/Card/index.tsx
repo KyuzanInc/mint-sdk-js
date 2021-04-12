@@ -42,7 +42,7 @@ const MediaContent: React.FC<{ media: Media | undefined }> = ({ media }) => {
     return (
       <Skeleton
         height={220}
-        width={269}
+        width={264}
         style={{ top: 0, position: 'absolute' }}
       />
     )
@@ -56,7 +56,7 @@ const MediaContent: React.FC<{ media: Media | undefined }> = ({ media }) => {
     <Video
       src={src}
       height={'220px'}
-      width={'269px'}
+      width={'264px'}
       autoPlay
       loop
       preload="auto"
@@ -70,10 +70,10 @@ const CardBase = styled.div`
   background: ${color.white};
   ${font.lg.button}
   height: 382px;
-  width: 269px;
+  width: 264px;
   line-height: 44px;
   color: ${color.white};
-  padding: 0px 0px 24px;
+  padding: 0;
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
@@ -90,6 +90,7 @@ const CardMedia = styled(CardBase)`
 const CardContent = styled.div`
   background: ${color.white};
   width: 100%;
+  height: 162px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -99,10 +100,11 @@ const CardContent = styled.div`
 const Typography = styled.div`
   background: ${color.white};
   width: 100%;
+  height: 38px;
   ${font.lg.subtitle1}
   display: flex;
   color: ${color.content.dark};
-  padding-bottom: 32px;
+  margin-bottom: 32px;
   align-items: center;
 `
 
@@ -123,12 +125,12 @@ const CardAction = styled.div`
 
 const Image = styled.img`
   height: 220px;
-  width: 269px;
+  width: 264px;
   border-radius: 12px 12px 0 0;
 `
 
 const Video = styled.video`
   height: 220px;
-  width: 269px;
+  width: 264px;
   border-radius: 12px 12px 0 0;
 `
