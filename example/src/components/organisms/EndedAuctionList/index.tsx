@@ -6,6 +6,7 @@ import {
   Title,
   CardUL,
   CardList,
+  EmptyTitle,
 } from '../../atoms/CardList'
 import { EndedCard } from '../../molecules/Card/EndedCard'
 
@@ -14,6 +15,16 @@ type Props = {
 }
 
 export const EndedAuctionList: React.FC<Props> = ({ items }) => {
+  if (items.length === 0) {
+    return (
+      <ListComponent>
+        <ListTitle>
+          <Title>Ended Auctions</Title>
+        </ListTitle>
+        <EmptyTitle>No Items</EmptyTitle>
+      </ListComponent>
+    )
+  }
   return (
     <ListComponent>
       <ListTitle>

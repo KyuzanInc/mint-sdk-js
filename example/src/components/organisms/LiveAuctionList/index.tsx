@@ -7,6 +7,7 @@ import {
   CardUL,
   CardList,
   ActiveStatus,
+  EmptyTitle,
 } from '../../atoms/CardList'
 import { ActiveCard } from '../../molecules/Card/ActiveCard'
 
@@ -16,6 +17,17 @@ type Props = {
 }
 
 export const LiveAuctionList: React.FC<Props> = ({ items }) => {
+  if (items.length === 0) {
+    return (
+      <ListComponent>
+        <ListTitle>
+          <ActiveStatus />
+          <Title>Live Auctions</Title>
+        </ListTitle>
+        <EmptyTitle>No Items</EmptyTitle>
+      </ListComponent>
+    )
+  }
   return (
     <ListComponent>
       <ListTitle>

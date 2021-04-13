@@ -19,6 +19,13 @@ export const Title = styled(ListComponent)`
   margin-left: 10px;
 `
 
+export const EmptyTitle = styled(ListComponent)`
+  ${font.lg.h3}
+  color: ${color.content.gray};
+  margin-left: 10px;
+  padding: 32px 0;
+`
+
 export const CardList = styled.li`
   margin: 0 24px 0 0;
   float: left;
