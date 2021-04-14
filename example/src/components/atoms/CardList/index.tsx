@@ -5,6 +5,7 @@ export const ListComponent = styled.div`
   width: 864px;
   display: flex;
   flex-direction: column;
+  aligin-items: center;
 `
 export const ListTitle = styled(ListComponent)`
   ${font.lg.h3}

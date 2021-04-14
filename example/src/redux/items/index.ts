@@ -1,5 +1,5 @@
 import { Item } from '@kyuzan/mint-sdk-js'
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
 type ItemsInfo = {
@@ -77,21 +77,7 @@ export const getItemsActionCreator = createAsyncThunk<
 export const itemsSlice = createSlice({
   name: 'items',
   initialState: initialItemState,
-  reducers: {
-    updateWalletInfo: (state, { payload }: PayloadAction<ItemsInfo>) => {
-      if (typeof payload === 'undefined') {
-        state.data = {
-          live: [],
-          ended: [],
-        }
-      } else {
-        state.data = {
-          live: payload.live,
-          ended: payload.ended,
-        }
-      }
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
       initialItemActionCreator.fulfilled,

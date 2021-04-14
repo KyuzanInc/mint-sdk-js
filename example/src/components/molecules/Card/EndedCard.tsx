@@ -4,13 +4,13 @@ import { format } from 'date-fns'
 
 import React, { useEffect } from 'react'
 import { Card } from '.'
-import { color } from '../../../style'
 import {
   StatusContent,
   StatusTitle,
   StatusValue,
   Value,
   Unit,
+  Time,
 } from '../../atoms/Card'
 
 type Props = {
@@ -55,15 +55,4 @@ const StatusBar = styled.span`
   width: 6px;
   height: 52px;
   border-radius: 3px;
-`
-
-const Time = styled.div`
-  width: 118px;
-  height: 20px;
-  display: flex;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 1.3;
-  color: ${color.content.dark};
-  display: table;
 `

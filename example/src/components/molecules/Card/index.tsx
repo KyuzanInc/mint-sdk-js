@@ -100,12 +100,15 @@ const CardContent = styled.div`
 const Typography = styled.div`
   background: ${color.white};
   width: 100%;
-  height: 38px;
+  height: 2.6em;
   ${font.lg.subtitle1}
-  display: flex;
   color: ${color.content.dark};
   margin-bottom: 32px;
-  align-items: center;
+  align-items: baseline;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 `
 
 const LoadingTypography = styled.div`
@@ -127,10 +130,12 @@ const Image = styled.img`
   height: 220px;
   width: 264px;
   border-radius: 12px 12px 0 0;
+  object-fit: cover;
 `
 
 const Video = styled.video`
   height: 220px;
   width: 264px;
   border-radius: 12px 12px 0 0;
+  object-fit: cover;
 `

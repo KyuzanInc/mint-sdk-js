@@ -38,17 +38,17 @@ export default Page
 
 const Container = styled.div`
   background: ${color.background.bague};
-  width: 100%;
+  max-width: 840px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding-top: 72px;
+  margin: auto;
 `
 
 const InnerContainer = styled.div`
-  width: 100%;
+  max-width: 840px;
   min-height: 100vh;
-  padding: 0px 0px 0 300px;
 `
