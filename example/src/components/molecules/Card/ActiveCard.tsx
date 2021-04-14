@@ -18,7 +18,7 @@ type Props = {
   item: Item
 }
 
-interface FormattedProps {
+type FormattedProps = {
   total: number
   days: number
   hours: number

@@ -11,7 +11,7 @@ import { LoadingCard } from '../../molecules/Card/LoadingCard'
 
 export const LoadingList: React.FC = () => {
   return (
-    <React.Fragment>
+    <>
       <ListComponent>
         <ListTitle>
           <ActiveStatus />
@@ -45,6 +45,6 @@ export const LoadingList: React.FC = () => {
           </CardList>
         </CardUL>
       </ListComponent>
-    </React.Fragment>
+    </>
   )
 }

@@ -8,16 +8,16 @@ import { initialItemState, itemsSlice } from './items'
 const rootReducer = combineReducers({
   app: combineReducers({
     wallet: walletSlice.reducer,
-  }),
-  ui: combineReducers({
     items: itemsSlice.reducer,
   }),
+  // ui: combineReducers({
+  // }),
 })
 
 const preloadedState = () => {
   return {
-    app: { wallet: initialState },
-    ui: { items: initialItemState },
+    app: { wallet: initialState, items: initialItemState },
+    // ui: {},
   }
 }
 

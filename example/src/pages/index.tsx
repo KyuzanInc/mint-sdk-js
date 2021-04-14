@@ -10,11 +10,11 @@ import { color } from '../style'
 const Page = () => {
   const dispatch = useAppDispatch()
   const items = useAppSelector((state) => {
-    return state.ui.items.data
+    return state.app.items.data
   })
 
   const waitingItems = useAppSelector((state) => {
-    return state.ui.items.meta.waitingItemAction
+    return state.app.items.meta.waitingItemAction
   })
   const getItems = useCallback(() => {
     dispatch(getItemsActionCreator() as any)

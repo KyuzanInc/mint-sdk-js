@@ -30,7 +30,7 @@ export const initialItemState: ItemsState = {
 
 // AsyncAction
 export const initialItemActionCreator = createAsyncThunk(
-  'ui/items/init',
+  'app/items/init',
   async () => {
     if (await getSdk()) {
       const items = await getSdk()?.getItems()
@@ -57,7 +57,7 @@ export const getItemsActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('ui/items/get', async (_, thunkApi) => {
+>('app/items/get', async (_, thunkApi) => {
   try {
     const items = await getSdk()!.getItems()
     const now = new Date()
