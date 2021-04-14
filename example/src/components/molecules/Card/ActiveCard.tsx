@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
@@ -11,6 +11,8 @@ import {
   Unit,
   Value,
 } from '../../atoms/Card'
+import { useAppDispatch } from '../../../redux/getStore'
+import { getItemsActionCreator } from '../../../redux/items'
 
 type Props = {
   item: Item
@@ -38,8 +40,7 @@ const renderer = ({
   completed,
 }: FormattedProps) => {
   if (completed) {
-    // Render a completed state
-    return <StatusValue>Ended</StatusValue>
+    return <StatusValue>ended</StatusValue>
   } else {
     // Render a countdown
     return (
@@ -58,6 +59,11 @@ const renderer = ({
 }
 
 export const ActiveCard: React.FC<Props> = ({ item }) => {
+  const dispatch = useAppDispatch()
+  const getItems = useCallback(() => {
+    dispatch(getItemsActionCreator() as any)
+  }, [])
+
   const onClick = useEffect(() => {
     //TODO: write onclick action
   }, [])
@@ -79,7 +85,11 @@ export const ActiveCard: React.FC<Props> = ({ item }) => {
       </StatusContent>
       <StatusContent>
         <StatusTitle>ending in</StatusTitle>
-        <Countdown date={item.endAt ?? 0 - Date.now()} renderer={renderer} />
+        <Countdown
+          date={item.endAt ?? 0 - Date.now()}
+          renderer={renderer}
+          onComplete={getItems}
+        />
       </StatusContent>
     </Card>
   )
