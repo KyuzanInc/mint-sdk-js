@@ -13,6 +13,7 @@ export const ListTitle = styled(ListComponent)`
   height: 48px;
   flex-direction: row;
   margin-top: 64px;
+  align-items: center;
 `
 
 export const Title = styled(ListComponent)`

@@ -38,6 +38,7 @@ export const Unit = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
+  margin-left: 2px;
 `
 
 export const Time = styled.div`

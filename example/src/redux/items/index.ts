@@ -32,7 +32,7 @@ export const initialItemState: ItemsState = {
 export const initialItemActionCreator = createAsyncThunk(
   'app/items/init',
   async () => {
-    if (await getSdk()) {
+    if (getSdk()) {
       const items = await getSdk()?.getItems()
       const now = new Date()
       const live = items?.filter((item) => item.endAt && now < item.endAt) ?? []
