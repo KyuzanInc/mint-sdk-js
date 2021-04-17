@@ -1,4 +1,4 @@
-name: deploy-demosite-development
+name: deploy-demosite-production
 
 # クリックによってデプロイ
 on: workflow_dispatch
@@ -43,5 +43,6 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
           vercel-org-id: UJv6dL2Li9E9w8XAW5J4sY83 #Required
           vercel-project-id: prj_UV4Xn3uNrX6Y1eFgwJyWka3lgPRv #Required
+          vercel-args: '--prod'
           working-directory: ./example
 
