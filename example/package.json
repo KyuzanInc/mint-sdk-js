@@ -5,8 +5,12 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc",
-    "deploy": "now --prod"
+    "deploy": "now --prod",
+    "type:check": "tsc --project tsconfig.json --pretty --noEmit",
+    "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"./src/**/*.{ts,tsx}\"",
+    "lint:check": "eslint src --ext ts,tsx --resolve-plugins-relative-to ./example",
+    "lint:fix": "eslint src --ext ts,tsx --fix --resolve-plugins-relative-to ./example"
   },
   "dependencies": {
     "@emotion/react": "^11.1.5",

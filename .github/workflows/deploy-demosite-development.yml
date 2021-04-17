@@ -1,0 +1,49 @@
+name: deploy-demosite-development
+
+# クリックによってデプロイ
+on: workflow_dispatch
+
+jobs:
+  # This workflow contains a single job called "build"
+  check-src:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+      - name: npm ci
+        run: npm ci
+        working-directory: ./example
+      - name: npm run lint:check
+        run: npm run lint:check
+        working-directory: ./example
+      - name: npm run type:check
+        run: npm run type:check
+        working-directory: ./example
+      - name: npm run format:check
+        run: npm run format:check
+        working-directory: ./example
+      - uses: amondnet/vercel-action@v20
+        with:
+          # GitHub Actions の Secrets で作成した値を参照する形で
+          # Vercel デプロイ時に必要となる各種パラメタを設定する
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          vercel-org-id: prj_UV4Xn3uNrX6Y1eFgwJyWka3lgPRv #Required
+          vercel-project-id: UJv6dL2Li9E9w8XAW5J4sY83 #Required
+          working-directory: ./example
+
