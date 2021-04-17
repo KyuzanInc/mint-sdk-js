@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "deploy": "now --prod",
-    "type:check": "tsc",
+    "type:check": "tsc --project tsconfig.json --pretty --noEmit",
     "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"./src/**/*.{ts,tsx}\"",
     "lint:check": "eslint src --ext ts,tsx --resolve-plugins-relative-to ./example",
