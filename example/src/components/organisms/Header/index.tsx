@@ -7,7 +7,7 @@ import { Anchor } from '../../atoms/Anchor'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { PrimaryButton } from '../../atoms/Botton'
 import { connectWalletActionCreator } from '../../../redux/wallet'
-import { font } from '../../../style/idnex'
+import { font } from '../../../style'
 
 export const Header: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -84,6 +84,7 @@ const HeaderContainer = styled.nav`
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+  z-index: 1;
 `
 
 const HeaderInner = styled.div`

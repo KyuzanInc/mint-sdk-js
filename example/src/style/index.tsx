@@ -19,7 +19,9 @@ export const color = {
     middle: '#999999',
     light: 'rgba(0, 0, 0, 0.14)',
     superLight: 'rgba(0, 0, 0, 0.08);',
+    gray: 'rgba(0, 0, 0, .54)',
   },
+  active: 'linear-gradient(180deg, #FD80A8 0%, #FCCF42 100%);',
 } as const
 
 export const font = {
@@ -37,5 +39,6 @@ export const font = {
     caption: 'font-weight: 400; font-size: 12px; line-height: 1.5;',
     label: 'font-weight: 600; font-size: 12px; line-height: 1.5;',
     overline: 'font-weight: 400; font-size: 10px; line-height: 1.5;',
+    unit: 'font-weight: 700; font-size: 10px; line-height: 1.3;',
   },
 } as const

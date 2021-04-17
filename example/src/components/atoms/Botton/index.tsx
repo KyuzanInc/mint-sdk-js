@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import React from 'react'
-import { color, font } from '../../../style/idnex'
+import { color, font } from '../../../style'
 
 type Props = {
   isLoading: boolean
