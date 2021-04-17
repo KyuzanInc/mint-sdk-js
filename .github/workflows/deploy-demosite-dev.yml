@@ -1,4 +1,4 @@
-name: deploy-demosite-development
+name: deploy-demosite-dev
 
 # クリックによってデプロイ
 on: workflow_dispatch
