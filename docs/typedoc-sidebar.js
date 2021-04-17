@@ -5,7 +5,7 @@ module.exports = [
     "type": "category",
     "label": "Classes",
     "items": [
-      "api/classes/annapurnasdk",
+      "api/classes/mintsdk",
       "api/classes/wrongnetworkerror"
     ]
   }

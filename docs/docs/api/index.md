@@ -1,6 +1,6 @@
 ---
 id: "index"
-title: "@kyuzan/annapurna-sdk-js"
+title: "@kyuzan/mint-sdk-js"
 slug: "/api"
 sidebar_label: "Readme"
 custom_edit_url: null
@@ -20,7 +20,7 @@ Kyuzan Inc. MINT の SDK
 ## Install
 
 ```bash
-	% npm i @kyuzan/annapurna-sdk-js
+% npm i @kyuzan/mint-sdk-js
 ```
 
 ## API Documentation
@@ -87,6 +87,7 @@ SDK では通貨のユーティリティーとして以下を提供している�
 ```
 
 - [ ] - want: 同時入札による競り負けエラーは、sdk 側で判別できるように
+- [ ] 同時入札による競り負けエラーは、sdk 側で判別できるように
 - [ ] CI: test
 - [ ] CI: npm publish(ドキュメント生成・test・semver)
 - [ ] SDK を用いた MINT ローカル開発手順

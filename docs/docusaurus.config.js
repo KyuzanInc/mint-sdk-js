@@ -7,7 +7,7 @@ module.exports = {
   tagline: 'MINT SDK',
   url: URL_REPO,
   baseUrl: '/mint-sdk-js/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
   organizationName: 'KyuzanInc', // Usually your GitHub org/user name.
@@ -20,6 +20,12 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
+        {
+          to: '/tutorial',
+          activeBasePath: 'docs',
+          label: 'Tutorial',
+          position: 'left',
+        },
         {
           to: 'docs/api',
           activeBasePath: 'docs',
@@ -82,12 +88,6 @@ module.exports = {
           // Please change this to your repo.
           editUrl: URL_REPO,
         },
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   editUrl:
-        //     'https://github.com/facebook/docusaurus/edit/master/website/blog/',
-        // },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },

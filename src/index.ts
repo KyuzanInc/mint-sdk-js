@@ -99,7 +99,7 @@ export class MintSDK {
   /**
    *
    * @param accessToken
-   * @param networkId
+   * @param networkId アイテムのネットワークIDを指定
    * @param walletSetting
    */
   public constructor(
@@ -827,6 +827,7 @@ export class MintSDK {
    * const sdk = MintSDK.initialize(...)
    * await sdk.connectWallet()
    * await sdk.getConnectedNetworkId()
+   * ```
    */
   public addEthereumChain = async (networkId: 137 | 80001) => {
     type AddEthereumChainParameter = {

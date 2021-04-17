@@ -8,7 +8,7 @@
 
 お気軽に[Kyuzan Inc.](https://www.mintnft.jp/) にお問い合わせください。
 
-## Source Code
+## API Documentation
 
 [@kyuzan/mint-sdk-js](https://github.com/KyuzanInc/mint-sdk-js)
 
