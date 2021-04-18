@@ -38,7 +38,7 @@ export default Page
 
 const Container = styled.div`
   background: ${color.background.bague};
-  max-width: 840px;
+  min-width: 840px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -49,6 +49,6 @@ const Container = styled.div`
 `
 
 const InnerContainer = styled.div`
-  max-width: 840px;
+  min-width: 840px;
   min-height: 100vh;
 `

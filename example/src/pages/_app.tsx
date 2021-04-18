@@ -1,15 +1,15 @@
 import { AppComponent } from 'next/dist/next-server/lib/router/router'
-import { Provider } from 'react-redux'
 import { Global, css } from '@emotion/react'
 import emotionReset from 'emotion-reset'
-import { getStore } from '../redux/getStore'
 import * as React from 'react'
 import Layout from '../components/Layout'
 import { color } from '../style'
+import { ConnectedRouter } from 'connected-next-router'
+import { wrapper } from '../redux/getStore'
 
 const MyApp: AppComponent = ({ Component, pageProps }) => {
   return (
-    <Provider store={getStore()}>
+    <ConnectedRouter>
       <Global
         styles={css`
           ${emotionReset}
@@ -36,8 +36,8 @@ const MyApp: AppComponent = ({ Component, pageProps }) => {
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </Provider>
+    </ConnectedRouter>
   )
 }
 
-export default MyApp
+export default wrapper.withRedux(MyApp)
