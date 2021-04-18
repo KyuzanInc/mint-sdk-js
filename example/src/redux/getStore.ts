@@ -1,4 +1,4 @@
-import { Store, combineReducers, AnyAction } from 'redux'
+import { Store, combineReducers, AnyAction, CombinedState } from 'redux'
 import {
   createRouterMiddleware,
   initialRouterState,
@@ -6,12 +6,12 @@ import {
 } from 'connected-next-router'
 import logger from 'redux-logger'
 import Router from 'next/router'
-import { Reducer } from 'react'
 import { HYDRATE, createWrapper, MakeStore } from 'next-redux-wrapper'
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { walletSlice, initialState } from './wallet'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { initialItemState, itemsSlice } from './items'
+import { RouterState } from 'connected-next-router/types'
 
 const rootReducer = combineReducers({
   router: routerReducer,
@@ -38,7 +38,15 @@ const getInitialState = (asPath?: string) => {
 }
 
 // Using next-redux-wrapper's initStore
-const reducer: Reducer<StoreState, AnyAction> = (state, action) => {
+const reducer = (
+  state:
+    | CombinedState<{
+        router: RouterState
+        app: CombinedState<{ wallet: any; items: any }>
+      }>
+    | undefined,
+  action: AnyAction
+) => {
   if (action.type === HYDRATE) {
     const nextState = {
       ...state, // use previous state
