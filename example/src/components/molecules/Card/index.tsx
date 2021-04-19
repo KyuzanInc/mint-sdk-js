@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
 
-type Media = {
+export type Media = {
   url: string
   mimeType: string
 }
