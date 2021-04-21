@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://github.com/KyuzanInc/mint-sdk-js/blog</id>
-    <title>MINT SDK Blog</title>
+    <title>Mint Developers Blog</title>
     <updated>2015-10-25T23:29:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://github.com/KyuzanInc/mint-sdk-js/blog"/>
-    <subtitle>MINT SDK Blog</subtitle>
+    <subtitle>Mint Developers Blog</subtitle>
     <icon>https://github.com/KyuzanInc/mint-sdk-js/img/favicon.png</icon>
 </feed>
