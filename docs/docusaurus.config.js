@@ -3,8 +3,8 @@
 const URL_REPO = 'https://github.com/KyuzanInc/mint-sdk-js'
 
 module.exports = {
-  title: 'MINT SDK',
-  tagline: 'MINT SDK',
+  title: 'Mint Developers',
+  tagline: 'Mint Developers',
   url: URL_REPO,
   baseUrl: '/mint-sdk-js/',
   onBrokenLinks: 'warn',
@@ -13,58 +13,48 @@ module.exports = {
   organizationName: 'KyuzanInc', // Usually your GitHub org/user name.
   projectName: 'mint-sdk-js', // Usually your repo name.
   themeConfig: {
+    image: 'img/ogp.png',
+    metadatas: [{name: 'twitter:card', content: 'summary'}],
     navbar: {
-      title: 'MINT SDK JS',
-      logo: {
-        alt: 'MINT SDK JS',
-        src: 'img/logo.svg',
-      },
+      title: 'Mint Developers',
+
       items: [
         {
-          to: '/tutorial',
-          activeBasePath: 'docs',
+          to: 'docs/Tutorial',
+          activeBasePath: '/docs/Tutorial',
           label: 'Tutorial',
           position: 'left',
         },
         {
           to: 'docs/api',
-          activeBasePath: 'docs',
+          activeBasePath: 'docs/api',
           label: 'Docs',
           position: 'left',
+        },
+        {
+          href: 'https://mintnft.jp',
+          label: 'Mint',
+          position: 'right',
         },
         {
           href: URL_REPO,
           label: 'GitHub',
           position: 'right',
         },
+        {
+          href: 'https://www.npmjs.com/package/@kyuzan/mint-sdk-js',
+          label: 'npm',
+          position: 'right',
+        },
       ],
     },
     footer: {
       style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'API',
-              to: '/docs/api',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'About company',
-              href: 'https://kyuzan.com/',
-            },
-            {
-              label: 'GitHub',
-              href: URL_REPO,
-            },
-          ],
-        },
-      ],
+      logo: {
+        alt: 'Powered by Kyuzan Inc.',
+        src: 'img/logo_footer.svg',
+        href: 'https://kyuzan.com',
+      },
       copyright: `Copyright © ${new Date().getFullYear()} Kyuzan Inc. Built with Docusaurus.`,
     },
   },
@@ -89,7 +79,7 @@ module.exports = {
           editUrl: URL_REPO,
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve('./src/css/index.css'),
         },
       },
     ],
