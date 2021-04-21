@@ -7,8 +7,20 @@ import { NetworkId } from '..'
 export type Item = {
   itemId: string
   tradeType: 'fixedPrice' | 'auction'
+  /**
+   * `Item`に対応するERC721準拠した tokenId
+   * `Item`が買われた時などに、生成されるTokenの tokenId
+   * */
   tokenId: number
+  /**
+   * アイテムの名前
+   * IPFSにあるアイテムデータの`name`値
+   * */
   name: string
+  /**
+   * アイテムの詳細
+   * IPFSにあるアイテムデータの`description`値
+   * */
   description: string
   /**
    * ipfs://xxxx
@@ -28,6 +40,9 @@ export type Item = {
    * https://xxxx
    * */
   imageURIHTTP: { url: string; mimeType: string }
+  /**
+   * Itemの作成者ウォレットアドレス
+   * */
   authorAddress: string
   /**
    * プレビューのURI
@@ -36,23 +51,51 @@ export type Item = {
    * */
   previews: { mimeType: string; url: string }[]
   networkId: NetworkId
-  /** buyerAddress にアドレスが入っている場合、Itemが「引出された」「購入された」ている */
+  /**
+   * 購入者のウォレットアドレス
+   * アドレスが null でない場合、Itemが「引出された」「購入された」た状態を表す
+   * */
   buyerAddress: string | null
-  /** only 'fixedPrice'  ether */
+  /**
+   * アイテムの販売価格。単位は`ether`。
+   * tradeType === 'fixedPrice` の時だけ値が入る
+   * */
   price?: number
-  /** only 'auction' ether */
+  /**
+   * アイテムの現在の入札価格。単位は`ether`。
+   * tradeType === 'auction` の時だけ値が入る
+   * */
   currentPrice?: number // only 'auction'  ether
-  /** only 'auction' */
+  /**
+   * アイテムの最新の入札者ウォレットアドレス。
+   * tradeType === 'auction` の時だけ値が入る
+   * */
   currentBidderAddress?: string | null
-  /** only 'auction' */
+  /**
+   * アイテムの最新の最低入札価格
+   * tradeType === 'auction` の時だけ値が入る
+   * */
   minBidPrice?: number
-  /** only 'auction' */
+  /**
+   * アイテムの最低入札価格比
+   * `currentPrice * minBidPercentage`でminBidPriceが求められる
+   * tradeType === 'auction` の時だけ値が入る
+   * */
   minBidPercentage?: number
-  /** only 'auction' */
+  /**
+   * オークション開始日時
+   * tradeType === 'auction` の時だけ値が入る
+   * */
   startAt?: Date
-  /** only 'auction' */
+  /**
+   * オークション終了日時
+   * tradeType === 'auction` の時だけ値が入る
+   * */
   endAt?: Date
-  /** only 'auction' ether */
+  /**
+   * オークション開始価格
+   * tradeType === 'auction` の時だけ値が入る
+   * */
   initialPrice?: number
   /** @deprecated */
   signature: string | undefined // TODO: newが終わったら消す
@@ -63,7 +106,15 @@ export type Item = {
   collectionId: string // uuidv4
   mintContractAddress: string
   mintShopContractAddress: string
+  /**
+   * アイテムの作成者
+   * IPFSにあるアイテムデータの`createdBy`値
+   * */
   createdBy: string[]
+  /**
+   * アイテムの制作年
+   * IPFSにあるアイテムデータの`yearCreated`値
+   * */
   yearCreated: string
   feeRatePermill: number
 }
