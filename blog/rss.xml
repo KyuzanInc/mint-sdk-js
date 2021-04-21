@@ -2,7 +2,7 @@
 <rss version="2.0">
     <channel>
         <title>Mint Developers Blog</title>
-        <link>https://github.com/KyuzanInc/mint-sdk-js/blog</link>
+        <link>https://kyuzaninc.github.io/blog</link>
         <description>Mint Developers Blog</description>
         <lastBuildDate>Sun, 25 Oct 2015 23:29:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
