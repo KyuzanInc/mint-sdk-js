@@ -82,7 +82,8 @@ export default function Home() {
             <h3 className={clsx(styles.contentTitle)}>DASHBOARD</h3>
             <div className={clsx(styles.contentDescription)}>
               ショップでの出品や商品管理はダッシュボードからおこなえます。
-
+              <br/>
+              <br/>
               NFT販売において面倒な会計・税務についても、ダッシュボードの売り上げレポートを使えば簡単に処理することができます
             </div>
             <Link href={'https://www.mintnft.jp/#contact-form'} className={clsx(styles.contentLink)}>
