@@ -24,19 +24,23 @@ hide_title: true
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`e?` | *string* |
+| Name | Type |
+| :------ | :------ |
+| `e?` | *string* |
 
 **Returns:** [*WrongNetworkError*](wrongnetworkerror.md)
 
-Defined in: [src/Errors.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9965b97/src/Errors.ts#L1)
+Inherited from: BaseError.constructor
+
+Defined in: [src/Errors.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/d180508/src/Errors.ts#L1)
 
 ## Properties
 
 ### message
 
 • **message**: *string*
+
+Inherited from: BaseError.message
 
 Defined in: node_modules/typescript/lib/lib.es5.d.ts:974
 
@@ -46,6 +50,8 @@ ___
 
 • **name**: *string*
 
+Inherited from: BaseError.name
+
 Defined in: node_modules/typescript/lib/lib.es5.d.ts:973
 
 ___
@@ -54,13 +60,15 @@ ___
 
 • `Optional` **stack**: *string*
 
+Inherited from: BaseError.stack
+
 Defined in: node_modules/typescript/lib/lib.es5.d.ts:975
 
 ___
 
 ### prepareStackTrace
 
-▪ `Optional` `Static` **prepareStackTrace**: (`err`: Error, `stackTraces`: CallSite[]) => *any*
+▪ `Static` `Optional` **prepareStackTrace**: (`err`: Error, `stackTraces`: CallSite[]) => *any*
 
 Optional override for formatting stack traces
 
@@ -72,14 +80,16 @@ Optional override for formatting stack traces
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`err` | Error |
-`stackTraces` | CallSite[] |
+| Name | Type |
+| :------ | :------ |
+| `err` | Error |
+| `stackTraces` | CallSite[] |
 
 **Returns:** *any*
 
 Defined in: node_modules/@types/node/globals.d.ts:11
+
+Inherited from: BaseError.prepareStackTrace
 
 Defined in: node_modules/@types/node/globals.d.ts:11
 
@@ -88,6 +98,8 @@ ___
 ### stackTraceLimit
 
 ▪ `Static` **stackTraceLimit**: *number*
+
+Inherited from: BaseError.stackTraceLimit
 
 Defined in: node_modules/@types/node/globals.d.ts:13
 
@@ -101,11 +113,13 @@ Create .stack property on a target object
 
 #### Parameters:
 
-Name | Type |
-:------ | :------ |
-`targetObject` | *object* |
-`constructorOpt?` | Function |
+| Name | Type |
+| :------ | :------ |
+| `targetObject` | *object* |
+| `constructorOpt?` | Function |
 
 **Returns:** *void*
+
+Inherited from: BaseError.captureStackTrace
 
 Defined in: node_modules/@types/node/globals.d.ts:4

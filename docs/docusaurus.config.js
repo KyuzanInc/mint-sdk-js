@@ -5,7 +5,7 @@ const URL_REPO = 'https://github.com/KyuzanInc/mint-sdk-js'
 module.exports = {
   title: 'Mint Developers',
   tagline: 'Mint Developers',
-  url: URL_REPO,
+  url: 'https://kyuzaninc.github.io',
   baseUrl: '/mint-sdk-js/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
