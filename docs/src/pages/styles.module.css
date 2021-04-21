@@ -36,7 +36,7 @@ html[data-theme="dark"] .heroBanner::after {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1040px;
+  max-width: 1024px;
   width: 100%;
   margin: 0 auto;
 }
@@ -71,14 +71,14 @@ html[data-theme="dark"] .heroBanner::after {
 }
 
 .getStarted {
-  background-color: #155B61;
-  border-color: #155B61;
+  background-color: #294446;
+  border-color: #294446;
 }
 
 .learnMore {
   margin-left: 1rem;
-  background-color: #155B61;
-  border-color: #155B61;
+  background-color: #294446;
+  border-color: #294446;
 }
 
 html[data-theme="dark"] .learnMore,.getStarted{
@@ -92,6 +92,7 @@ html[data-theme="dark"] .learnMore,.getStarted{
 .contentContainer {
   padding: 8rem 0 0;
   width: 100%;
+  max-width: 1024px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -146,7 +147,7 @@ html[data-theme="dark"] .learnMore,.getStarted{
   align-items: center;
   justify-content: flex-start;
   padding-left: 24px;
-  color: #155B61;
+  color: #294446;
   font-weight: bold;
 }
 
