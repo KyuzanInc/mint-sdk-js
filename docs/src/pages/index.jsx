@@ -8,8 +8,8 @@ import styles from './styles.module.css'
 export default function Home() {
   return (
     <Layout
-      title={`Mint Developers | あなたのNFTショップ構築に並走します`}
-      description="Mint SDKは、NFT Shop開発に特化したJavaScriptライブラリです。MINT SDKと管理者ダッシュボードを使うことで、素早く簡単にオリジナルNFT Shopを作成し、オリジナルのNFTを販売することができます。"
+      title={`あなたのNFTショップ構築に並走します`}
+      description="Mint SDKは、NFT Shop開発に特化したJavaScriptライブラリです。Mint SDKと管理者ダッシュボードを使うことで、素早く簡単にオリジナルNFT Shopを作成し、オリジナルのNFTを販売することができます。"
     >
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className={clsx('heroContainer', styles.heroContainer)}>
@@ -61,13 +61,13 @@ export default function Home() {
               DEMOをみる (作成中)
             </Link>
             <div className={clsx(styles.contentDescription)}>
-              DEMOのソースコードはオープンソースとなっています。実際の動作を確認しながらMINT SDKの使用方法を理解することができます。
+              DEMOのソースコードはオープンソースとなっています。実際の動作を確認しながらMint SDKの使用方法を理解することができます。
             </div>
             <Link href={'https://github.com/KyuzanInc/mint-sdk-js/tree/multi_network'} className={clsx(styles.contentLink)}>
               DEMOのソースコードを見る
             </Link>
             <div className={clsx(styles.contentDescription)}>
-              MINT SDKの詳細な使用方法については、APIドキュメントをご覧ください。
+              Mint SDKの詳細な使用方法については、APIドキュメントをご覧ください。
             </div>
             <Link to={useBaseUrl('/docs/api')} className={clsx(styles.contentLink)}>
               APIドキュメントを見る
