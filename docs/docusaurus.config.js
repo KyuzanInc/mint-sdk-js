@@ -14,7 +14,7 @@ module.exports = {
   projectName: 'mint-sdk-js', // Usually your repo name.
   themeConfig: {
     image: 'img/ogp.png',
-    metadatas: [{name: 'twitter:card', content: 'summary'}],
+    metadatas: [{name: 'twitter:card', content: 'summary_large_image'}],
     navbar: {
       title: 'Mint Developers',
 
