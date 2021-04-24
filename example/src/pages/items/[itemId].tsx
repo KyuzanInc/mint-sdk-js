@@ -3,6 +3,9 @@ import { useRouter } from 'next/router'
 import React, { useCallback, useEffect } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { Media } from '../../components/molecules/Card'
+import { BidButton } from '../../components/molecules/Detail/BidButton'
+import { StatusDetail } from '../../components/molecules/Detail/StatusDetail'
+import { ViewOnButton } from '../../components/molecules/Detail/ViewOnButton'
 import { useAppDispatch, useAppSelector } from '../../redux/getStore'
 import { getItemActionCreator } from '../../redux/item'
 import { color, font } from '../../style'
@@ -11,29 +14,46 @@ const ItemDetailPage = () => {
   const router = useRouter()
   const { itemId } = router.query
   const dispatch = useAppDispatch()
-  const item = useAppSelector((state) => {
+  const itemState = useAppSelector((state) => {
     return state.app.item
   })
-  // const waitingItem = useAppSelector((state) => {
-  //   return state.app.item.meta.waitingItemAction
-  // })
+  const waitingItem = useAppSelector((state) => {
+    return state.app.item.meta.waitingItemAction
+  })
   const getItem = useCallback(() => {
     if (typeof itemId === 'string') {
       dispatch(getItemActionCreator(itemId) as any)
     }
   }, [itemId])
 
+  const onClick = useCallback(() => {
+    //TODO: onclick event
+  }, [])
+
   useEffect(() => {
     getItem()
   }, [itemId])
+  const item = itemState.data
+
+  if (waitingItem) {
+    return <div>Loading...</div>
+  }
   return (
     <Container>
       <MediaContainer>
-        <MediaContent media={item.data?.imageURIHTTP}></MediaContent>
+        <MediaContent media={item?.imageURIHTTP}></MediaContent>
       </MediaContainer>
       <DetailContainer>
         <Detail>
-          <Title>{item.data?.name}</Title>
+          <Title>{item?.name}</Title>
+          <StatusDetail item={item} />
+          <BidButton label={'PLACE A BID'} onClick={onClick} />
+          <Description>{item?.description}</Description>
+          <ExternalLinks>
+            <ViewOnButton label={'IPFS'} onClick={onClick} />
+            <ViewOnButton label={'OpenSea'} onClick={onClick} />
+            <ViewOnButton label={'Etherscan'} onClick={onClick} />
+          </ExternalLinks>
         </Detail>
       </DetailContainer>
     </Container>
@@ -78,7 +98,7 @@ const DetailContainer = styled.div`
   padding: 0 150px;
 `
 const Detail = styled.div`
-  max-width: 426px;
+  width: 426px;
   padding: 64px 0;
 `
 
@@ -93,4 +113,13 @@ const Image = styled.img`
 
 const Video = styled.video`
   object-fit: cover;
+`
+const Description = styled.div`
+  ${font.lg.body1}
+`
+
+const ExternalLinks = styled.div`
+  margin-top: 32px;
+  display: flex;
+  overflow-x: scroll;
 `

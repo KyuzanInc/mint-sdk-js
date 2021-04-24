@@ -2,9 +2,8 @@ import { Item } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
-type ItemDetail = Item | undefined
-export type ItemsState = {
-  data: ItemDetail
+export type ItemState = {
+  data?: Item
   meta: {
     waitingItemAction: boolean
     initialized: boolean
@@ -12,7 +11,7 @@ export type ItemsState = {
   }
 }
 
-export const initialItemState: ItemsState = {
+export const initialItemState: ItemState = {
   data: undefined,
   meta: {
     waitingItemAction: false,
