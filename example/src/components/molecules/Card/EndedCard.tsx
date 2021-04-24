@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
+import { useRouter } from 'next/router'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { format } from 'date-fns'
 
-import React, { useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { Card } from '.'
 import {
   StatusContent,
@@ -20,9 +21,10 @@ type Props = {
 export const EndedCard: React.FC<Props> = ({ item }) => {
   const target = item.endAt ? item.endAt : new Date()
   const date = format(target, 'yyyy.MM.dd HH:mm')
-
-  const onClick = useEffect(() => {
-    //TODO: write onclick action
+  const router = useRouter()
+  const onClick = useCallback((event: { preventDefault: () => void }) => {
+    event.preventDefault()
+    router.push(`/items/${item.itemId}`)
   }, [])
   let price = item.currentPrice ?? 0.01
   if (price < 0.01) {

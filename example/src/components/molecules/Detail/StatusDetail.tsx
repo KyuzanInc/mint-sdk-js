@@ -49,7 +49,6 @@ const renderer = ({
 }
 
 export const StatusDetail: React.FC<Props> = ({ item }) => {
-  console.log(item)
   let price = item?.currentPrice || item?.initialPrice || 0
   if (price < 0.01) {
     price = 0.01
