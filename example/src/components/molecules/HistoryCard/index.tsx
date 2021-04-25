@@ -26,7 +26,7 @@ export const HistoryCard: React.FC<Props> = ({ log }) => {
   )
 }
 
-const HistoryContainer = styled.div`
+export const HistoryContainer = styled.div`
   width: 426px;
   height: 70px;
   padding: 8px 16px 8px 16px;
@@ -46,26 +46,26 @@ const Avatar = styled.img`
   border-radius: 50%;
 `
 
-const BidderDetail = styled.div`
+export const BidderDetail = styled.div`
   width: 200px;
   overflow-wrap: break-word;
 `
-const BidderId = styled.div`
+export const BidderId = styled.div`
   ${font.lg.caption}
 `
-const BidTime = styled.div`
+export const BidTime = styled.div`
   padding: 4px 0 0 0;
   ${font.lg.caption}
   color: ${color.content.gray}
 `
-const BidPrice = styled.div`
+export const BidPrice = styled.div`
   min-width: 100px;
   ${font.lg.subtitle1}
   justify-content: center;
   display: flex;
   margin: auto;
 `
-const Icon = styled.img`
+export const Icon = styled.img`
   text-align: center;
   margin-left: 4px;
 `

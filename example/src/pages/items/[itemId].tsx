@@ -6,9 +6,8 @@ import { Media } from '../../components/molecules/Card'
 import { BidButton } from '../../components/molecules/Detail/BidButton'
 import { StatusDetail } from '../../components/molecules/Detail/StatusDetail'
 import { ViewOnButton } from '../../components/molecules/Detail/ViewOnButton'
-import { HistoryCard } from '../../components/molecules/History'
+import { HistoryComponent } from '../../components/organisms/History'
 import { useAppDispatch, useAppSelector } from '../../redux/getStore'
-import { getHistoryActionCreator } from '../../redux/history'
 import { getItemActionCreator } from '../../redux/item'
 import { color, font } from '../../style'
 
@@ -21,26 +20,13 @@ const ItemDetailPage = () => {
     return state.app.item
   })
 
-  const historyState = useAppSelector((state) => {
-    return state.app.history
-  })
-
   const waitingItem = useAppSelector((state) => {
     return state.app.item.meta.waitingItemAction
   })
-  // const waitingHistory = useAppSelector((state) => {
-  //   return state.app.history.meta.waitingHistoryAction
-  // })
 
   const getItem = useCallback(() => {
     if (typeof itemId === 'string') {
       dispatch(getItemActionCreator(itemId) as any)
-    }
-  }, [itemId])
-
-  const getHistory = useCallback(() => {
-    if (typeof itemId === 'string') {
-      dispatch(getHistoryActionCreator(itemId) as any)
     }
   }, [itemId])
 
@@ -50,11 +36,9 @@ const ItemDetailPage = () => {
 
   useEffect(() => {
     getItem()
-    getHistory()
   }, [itemId])
 
   const item = itemState.data
-  const history = historyState.data
   if (waitingItem) {
     return <div>Loading...</div>
   }
@@ -75,20 +59,7 @@ const ItemDetailPage = () => {
             <ViewOnButton label={'Etherscan'} onClick={onClick} />
           </ExternalLinks>
         </Detail>
-        <History>
-          <Label>History</Label>
-          {history.length === 0 ? (
-            <EmptyHistory>No Bids</EmptyHistory>
-          ) : (
-            <HistoryUL>
-              {history.map((log, i) => (
-                <HistoryList key={i}>
-                  <HistoryCard log={log} />
-                </HistoryList>
-              ))}
-            </HistoryUL>
-          )}
-        </History>
+        <HistoryComponent itemId={itemId} />
       </DetailContainer>
     </Container>
   )
@@ -125,7 +96,6 @@ const MediaContainer = styled.div`
 
 const DetailContainer = styled.div`
   background: ${color.white};
-  max-height: 673px;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -136,18 +106,10 @@ const Detail = styled.div`
   padding: 64px 0;
   margin-right: 128px;
 `
-const History = styled.div`
-  width: 426px;
-  padding: 64px 0;
-`
+
 const Title = styled.div`
   ${font.lg.h2}
   height: 2.6em;
-`
-
-const Label = styled.div`
-  ${font.lg.h3}
-  margin-bottom: 16px;
 `
 const Image = styled.img`
   object-fit: cover;
@@ -166,14 +128,4 @@ const ExternalLinks = styled.div`
   margin-top: 32px;
   display: flex;
   overflow-x: scroll;
-`
-
-const HistoryUL = styled.ul``
-
-const HistoryList = styled.li`
-  margin-bottom: 16px;
-`
-const EmptyHistory = styled.div`
-  ${font.lg.subtitle2}
-  color: ${color.content.gray};
 `
