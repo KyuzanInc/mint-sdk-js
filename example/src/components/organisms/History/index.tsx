@@ -13,8 +13,12 @@ type Props = {
 
 export const HistoryComponent: React.FC<Props> = ({ itemId }) => {
   const dispatch = useAppDispatch()
-  const historyState = useAppSelector((state) => {
-    return state.app.history
+  const history = useAppSelector((state) => {
+    return state.app.history.data
+  })
+
+  const item = useAppSelector((state) => {
+    return state.app.item.data
   })
 
   const getHistory = useCallback(() => {
@@ -31,9 +35,8 @@ export const HistoryComponent: React.FC<Props> = ({ itemId }) => {
 
   useEffect(() => {
     getHistory()
-  }, [itemId])
+  }, [itemId, item])
 
-  const history = historyState.data
   return (
     <History>
       <Label>History</Label>
@@ -42,14 +45,14 @@ export const HistoryComponent: React.FC<Props> = ({ itemId }) => {
       ) : (
         <HistoryUL>
           {waitingHistory &&
-            loading.map(() => (
-              <HistoryList>
+            loading.map((_, i) => (
+              <HistoryList key={i}>
                 <LoadingHistoryCard />
               </HistoryList>
             ))}
           {history.map((log, i) => (
             <HistoryList key={i}>
-              <HistoryCard log={log} />
+              <HistoryCard log={log} networkId={item?.networkId} />
             </HistoryList>
           ))}
         </HistoryUL>

@@ -83,7 +83,12 @@ const getStore: MakeStore<StoreState> = (context: any) => {
   const middlewareList = [
     ...getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['app/items/get/fulfilled'],
+        ignoredActions: [
+          'app/items/get/fulfilled',
+          'app/item/get/fulfilled',
+          'app/history/get/fulfilled',
+          'app/wallet/init/fulfilled',
+        ],
       },
     }),
     logger,
