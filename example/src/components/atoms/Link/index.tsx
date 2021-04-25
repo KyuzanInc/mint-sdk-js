@@ -4,34 +4,33 @@ import { color, font } from '../../../style'
 
 type Props = {
   label: string
-  onClick: () => any
+  href: string
 }
 
-export const ViewOnButton: React.FC<Props> = ({ label, onClick }) => {
+export const Link: React.FC<Props> = ({ label, href }) => {
   return (
-    <Secondary onClick={onClick}>
-      View on {label}
+    <Secondary href={href} target="blank">
+      {label}
       <Icon src={'/images/external-link.svg'} />
     </Secondary>
   )
 }
 
-const ButtonBase = styled.div`
+const LinkBase = styled.a`
   cursor: pointer;
   ${font.lg.article1}
   height: 33px;
-  border: 2px solid ${color.content.dark};
+  line-height: 33px;
   border-radius: 22px;
   color: ${color.content.dark};
-  width: fit-content;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 8px 17px;
-  margin-right: 10px;
-  width: max-content;
-  white-space: nowrap;
+  padding: 0 32px;
+  border: 2px solid ${color.content.dark};
+  text-decoration: none;
 `
 
 const Icon = styled.img`
@@ -40,8 +39,7 @@ const Icon = styled.img`
   margin-bottom: 3px;
 `
 
-const Secondary = styled(ButtonBase)`
+const Secondary = styled(LinkBase)`
   background-color: ${color.white};
-  color: ${color.content.dark}
-  margin: 32px 0px;
+  color: ${color.content.dark};
 `
