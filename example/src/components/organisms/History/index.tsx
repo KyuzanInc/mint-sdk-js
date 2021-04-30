@@ -35,7 +35,7 @@ export const HistoryComponent: React.FC<Props> = ({ itemId }) => {
 
   useEffect(() => {
     getHistory()
-  }, [itemId, item])
+  }, [itemId])
 
   return (
     <History>

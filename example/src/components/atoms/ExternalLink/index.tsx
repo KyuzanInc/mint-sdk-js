@@ -7,7 +7,7 @@ type Props = {
   href: string
 }
 
-export const Link: React.FC<Props> = ({ label, href }) => {
+export const ExternalLink: React.FC<Props> = ({ label, href }) => {
   return (
     <Secondary href={href} target="blank">
       {label}
