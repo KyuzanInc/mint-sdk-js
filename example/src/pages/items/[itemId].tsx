@@ -54,7 +54,15 @@ const ItemDetailPage = () => {
           <Description>{item?.description}</Description>
           <ExternalLinkUL>
             <ExternalLinkList>
+              {item?.tokenURIHTTP ? (
+                <Link label={'View On IPFS'} href={item?.tokenURIHTTP} />
+              ) : null}
+            </ExternalLinkList>
+            <ExternalLinkList>
               <Link label={'View On OpenSea'} href={getOpenSeaLink(item)} />
+            </ExternalLinkList>
+            <ExternalLinkList>
+              <Link label={'View On Etherscan'} href={''} />
             </ExternalLinkList>
           </ExternalLinkUL>
         </Detail>
@@ -129,7 +137,7 @@ const ExternalLinkUL = styled.ul`
 `
 
 const ExternalLinkList = styled.li`
-  margin: 30px 0px 0 0;
+  margin: 16px 0px 0 0;
   width: 100%;
 `
 

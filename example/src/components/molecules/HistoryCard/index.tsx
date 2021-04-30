@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { ItemLog, NetworkId } from '@kyuzan/mint-sdk-js'
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import { format } from 'date-fns'
 import { color, font } from '../../../style'
 
@@ -15,7 +16,9 @@ export const HistoryCard: React.FC<Props> = ({ log, networkId }) => {
   const link = getLink(log.transactionHash, networkId)
   return (
     <HistoryContainer href={link} target="blank">
-      <Avatar src={'/images/avatar.png'} />
+      <Avatar>
+        <Jazzicon diameter={44} seed={jsNumberForAddress(log.accountAddress)} />
+      </Avatar>
       <BidderDetail>
         <BidderId>{log.accountAddress}</BidderId>
         <BidTime>{date}</BidTime>
@@ -41,7 +44,7 @@ export const HistoryContainer = styled.a`
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
 `
 
-const Avatar = styled.img`
+const Avatar = styled.div`
   width: 44px;
   height: 44px;
   margin: 4.5px 16px 4.5px 0;
