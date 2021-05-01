@@ -1,18 +1,15 @@
 import styled from '@emotion/styled'
-import React, { ReactNode, useCallback, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
-import { getHistoryActionCreator } from '../../../redux/history'
+import React, { ReactNode } from 'react'
+import { useAppSelector } from '../../../redux/getStore'
 import { color, font } from '../../../style'
 import { HistoryCard } from '../../molecules/HistoryCard'
 import { LoadingHistoryCard } from '../../molecules/HistoryCard/loading'
 
 type Props = {
-  itemId: string | string[]
   children?: ReactNode
 }
 
-export const HistoryComponent: React.FC<Props> = ({ itemId }) => {
-  const dispatch = useAppDispatch()
+export const HistoryComponent: React.FC<Props> = () => {
   const history = useAppSelector((state) => {
     return state.app.history.data
   })
@@ -21,22 +18,11 @@ export const HistoryComponent: React.FC<Props> = ({ itemId }) => {
     return state.app.item.data
   })
 
-  const getHistory = useCallback(() => {
-    if (typeof itemId === 'string') {
-      dispatch(getHistoryActionCreator(itemId) as any)
-    }
-  }, [itemId])
-
   const waitingHistory = useAppSelector((state) => {
     return state.app.history.meta.waitingHistoryAction
   })
 
   const loading = new Array(6).fill(1)
-
-  useEffect(() => {
-    getHistory()
-  }, [itemId])
-
   return (
     <History>
       <Label>History</Label>

@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/getStore'
 import { getItemActionCreator } from '../../redux/item'
 import { color } from '../../style'
 import { ItemDetailComponent } from '../../components/organisms/ItemDetail'
+import { getHistoryActionCreator } from '../../redux/history'
 
 const ItemDetailPage = () => {
   const router = useRouter()
@@ -18,6 +19,12 @@ const ItemDetailPage = () => {
     return state.app.item.data
   })
 
+  const getHistory = useCallback(() => {
+    if (typeof itemId === 'string') {
+      dispatch(getHistoryActionCreator(itemId) as any)
+    }
+  }, [itemId])
+
   const getItem = useCallback(() => {
     if (typeof itemId === 'string') {
       dispatch(getItemActionCreator(itemId) as any)
@@ -26,16 +33,17 @@ const ItemDetailPage = () => {
 
   useEffect(() => {
     getItem()
+    getHistory()
   }, [itemId])
 
   return (
     <Container>
       <MediaContainer>
-        <MediaContent media={item?.imageURIHTTP}></MediaContent>
+        <MediaContent media={item?.imageURIHTTP} />
       </MediaContainer>
       <DetailContainer>
         <ItemDetailComponent />
-        <HistoryComponent itemId={itemId} />
+        <HistoryComponent />
       </DetailContainer>
     </Container>
   )
@@ -44,7 +52,11 @@ const ItemDetailPage = () => {
 export default ItemDetailPage
 
 const MediaContent: React.FC<{ media: Media | undefined }> = ({ media }) => {
-  if (!media) {
+  const waitingItem = useAppSelector((state) => {
+    return state.app.item.meta.waitingItemAction
+  })
+
+  if (waitingItem || !media) {
     return <Skeleton height={480} />
   }
   const type = media.mimeType.split('/')[0]

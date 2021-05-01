@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { color, font } from '../../../style'
+import { format } from 'date-fns'
 
 type Props = {
   item?: Item
+}
+
+type LiveProps = {
+  item?: Item
+  onComplete: () => void
 }
 
 type FormattedProps = {
@@ -49,12 +55,22 @@ const renderer = ({
 }
 
 export const StatusDetail: React.FC<Props> = ({ item }) => {
-  let price = item?.currentPrice || item?.initialPrice || 0
-  if (price < 0.01) {
-    price = 0.01
-  } else {
-    price = Math.round(price * 100) / 100
-  }
+  const endDate = item?.endAt ?? new Date()
+  const initialState = endDate < new Date()
+  const [isEnded, setIsEnded] = useState(initialState)
+  const updateTime = useCallback(() => {
+    setIsEnded(true)
+  }, [])
+  return (
+    <>
+      {!isEnded && <LiveStatus item={item} onComplete={updateTime} />}
+      {isEnded && <EndedStatus item={item} />}
+    </>
+  )
+}
+
+export const LiveStatus: React.FC<LiveProps> = ({ item, onComplete }) => {
+  const price = getPrice(item)
   return (
     <StatusContainer>
       <PriceContent>
@@ -66,10 +82,45 @@ export const StatusDetail: React.FC<Props> = ({ item }) => {
       </PriceContent>
       <TimeContent>
         <StatusTitle>ending in</StatusTitle>
-        <Countdown date={item?.endAt ?? 0 - Date.now()} renderer={renderer} />
+        <Countdown
+          date={item?.endAt ?? 0 - Date.now()}
+          renderer={renderer}
+          onComplete={onComplete}
+        />
       </TimeContent>
     </StatusContainer>
   )
+}
+
+export const EndedStatus: React.FC<Props> = ({ item }) => {
+  const price = getPrice(item)
+  const target = item?.endAt ?? new Date()
+  const date = format(target, 'yyyy.MM.dd HH:mm')
+  return (
+    <StatusContainer>
+      <PriceContent>
+        <StatusTitle>sold for</StatusTitle>
+        <StatusValue>
+          <Value>{price}</Value>
+          <Unit>ETH</Unit>
+        </StatusValue>
+      </PriceContent>
+      <TimeContent>
+        <StatusTitle>ending time</StatusTitle>
+        <EndedStatusValue>{date}</EndedStatusValue>
+      </TimeContent>
+    </StatusContainer>
+  )
+}
+
+const getPrice = (item?: Item) => {
+  let price = item?.currentPrice || item?.initialPrice || 0
+  if (price < 0.01) {
+    price = 0.01
+  } else {
+    price = Math.round(price * 100) / 100
+  }
+  return price
 }
 
 const StatusContainer = styled.div`
@@ -106,6 +157,16 @@ const StatusTitle = styled.div`
 
 const StatusValue = styled.div`
   ${font.lg.h2}
+  color: ${color.content.dark};
+  margin: 16px 0px;
+  display: flex;
+  align-items: center;
+`
+
+const EndedStatusValue = styled.div`
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.3;
   color: ${color.content.dark};
   margin: 16px 0px;
   display: flex;
