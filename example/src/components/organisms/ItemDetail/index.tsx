@@ -4,8 +4,8 @@ import { useAppSelector } from '../../../redux/getStore'
 import { ItemDetail } from '../../../redux/item'
 import { font } from '../../../style'
 import { ExternalLink } from '../../atoms/ExternalLink'
-import { BidButton } from '../../molecules/Detail/BidButton'
-import { StatusDetail } from '../../molecules/Detail/StatusDetail'
+import { BidButton } from '../../molecules/Button/bid'
+import { StatusDetail } from '../../molecules/Detail'
 import { LoadingItemDetailComponent } from './loading'
 
 type Props = {

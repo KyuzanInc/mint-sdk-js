@@ -57,7 +57,7 @@ const MediaContent: React.FC<{ media: Media | undefined }> = ({ media }) => {
   })
 
   if (waitingItem || !media) {
-    return <Skeleton height={480} />
+    return <Skeleton height={480} width={1440} />
   }
   const type = media.mimeType.split('/')[0]
   const src = media.url

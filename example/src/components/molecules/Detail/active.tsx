@@ -1,13 +1,8 @@
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { color, font } from '../../../style'
-import { format } from 'date-fns'
-
-type Props = {
-  item?: Item
-}
 
 type LiveProps = {
   item?: Item
@@ -54,21 +49,6 @@ const renderer = ({
   }
 }
 
-export const StatusDetail: React.FC<Props> = ({ item }) => {
-  const endDate = item?.endAt ?? new Date()
-  const initialState = endDate < new Date()
-  const [isEnded, setIsEnded] = useState(initialState)
-  const updateTime = useCallback(() => {
-    setIsEnded(true)
-  }, [])
-  return (
-    <>
-      {!isEnded && <LiveStatus item={item} onComplete={updateTime} />}
-      {isEnded && <EndedStatus item={item} />}
-    </>
-  )
-}
-
 export const LiveStatus: React.FC<LiveProps> = ({ item, onComplete }) => {
   const price = getPrice(item)
   return (
@@ -92,28 +72,7 @@ export const LiveStatus: React.FC<LiveProps> = ({ item, onComplete }) => {
   )
 }
 
-export const EndedStatus: React.FC<Props> = ({ item }) => {
-  const price = getPrice(item)
-  const target = item?.endAt ?? new Date()
-  const date = format(target, 'yyyy.MM.dd HH:mm')
-  return (
-    <StatusContainer>
-      <PriceContent>
-        <StatusTitle>sold for</StatusTitle>
-        <StatusValue>
-          <Value>{price}</Value>
-          <Unit>ETH</Unit>
-        </StatusValue>
-      </PriceContent>
-      <TimeContent>
-        <StatusTitle>ending time</StatusTitle>
-        <EndedStatusValue>{date}</EndedStatusValue>
-      </TimeContent>
-    </StatusContainer>
-  )
-}
-
-const getPrice = (item?: Item) => {
+export const getPrice = (item?: Item) => {
   let price = item?.currentPrice || item?.initialPrice || 0
   if (price < 0.01) {
     price = 0.01
@@ -123,39 +82,39 @@ const getPrice = (item?: Item) => {
   return price
 }
 
-const StatusContainer = styled.div`
+export const StatusContainer = styled.div`
   margin-top: 32px;
   display: flex;
 `
 
-const Time = styled.div`
+export const Time = styled.div`
   ${font.lg.h2}
   color: ${color.content.dark};
 `
 
-const TimeUnit = styled.div`
+export const TimeUnit = styled.div`
   ${font.lg.label}
   color: ${color.content.dark};
   margin: 6px;
 `
 
-const PriceContent = styled.div`
+export const PriceContent = styled.div`
   background: ${color.white};
   padding: 0px 24px 0px 8px;
 `
 
-const TimeContent = styled.div`
+export const TimeContent = styled.div`
   background: ${color.white};
   padding: 0px 24px;
 `
 
-const StatusTitle = styled.div`
+export const StatusTitle = styled.div`
   color: ${color.content.dark};
   ${font.lg.label}
   padding: 0 10px 0 0;
 `
 
-const StatusValue = styled.div`
+export const StatusValue = styled.div`
   ${font.lg.h2}
   color: ${color.content.dark};
   margin: 16px 0px;
@@ -163,23 +122,13 @@ const StatusValue = styled.div`
   align-items: center;
 `
 
-const EndedStatusValue = styled.div`
-  font-weight: 700;
-  font-size: 30px;
-  line-height: 1.3;
-  color: ${color.content.dark};
-  margin: 16px 0px;
-  display: flex;
-  align-items: center;
-`
-
-const Value = styled.div`
+export const Value = styled.div`
   display: flex;
   ${font.lg.h2}
   color: ${color.content.dark};
 `
 
-const Unit = styled.div`
+export const Unit = styled.div`
   ${font.lg.unit}
   color: ${color.content.dark};
   justify-content: center;

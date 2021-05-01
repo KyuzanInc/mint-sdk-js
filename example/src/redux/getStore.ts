@@ -84,10 +84,15 @@ const getStore: MakeStore<StoreState> = (context: any) => {
     ...getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [
+          'app/items/get/pending',
+          'app/item/get/pending',
+          'app/history/get/pending',
+          'app/wallet/init/pending',
           'app/items/get/fulfilled',
           'app/item/get/fulfilled',
           'app/history/get/fulfilled',
           'app/wallet/init/fulfilled',
+          '@@router/LOCATION_CHANGE',
         ],
       },
     }),
