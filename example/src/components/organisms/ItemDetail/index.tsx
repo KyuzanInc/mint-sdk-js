@@ -37,15 +37,20 @@ export const ItemDetailComponent: React.FC<Props> = () => {
       <Description>{item?.description}</Description>
       <ExternalLinkUL>
         <ExternalLinkList>
-          {item?.tokenURIHTTP ? (
-            <ExternalLink label={'View On IPFS'} href={item?.tokenURIHTTP} />
+          {item?.buyerAddress ? (
+            <ExternalLink
+              label={'View On IPFS'}
+              href={item?.tokenURIHTTP ?? ''}
+            />
           ) : null}
         </ExternalLinkList>
         <ExternalLinkList>
-          <ExternalLink label={'View On OpenSea'} href={getOpenSeaLink(item)} />
-        </ExternalLinkList>
-        <ExternalLinkList>
-          <ExternalLink label={'View On Etherscan'} href={''} />
+          {item?.buyerAddress ? (
+            <ExternalLink
+              label={'View On OpenSea'}
+              href={getOpenSeaLink(item)}
+            />
+          ) : null}
         </ExternalLinkList>
       </ExternalLinkUL>
     </Detail>
@@ -88,6 +93,15 @@ const getOpenSeaLink = (item: ItemDetail) => {
 
   if (networkId === 4) {
     return `https://testnets.opensea.io/assets/${contactAddress}/${tokenId}`
+  }
+
+  if (networkId === 137) {
+    return `https://matic.opensea.io/`
+  }
+
+  if (networkId === 80001) {
+    // TODO: fix link
+    return ''
   }
 
   return ''

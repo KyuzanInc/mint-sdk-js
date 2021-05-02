@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react'
-import { useRouter } from 'next/router'
 import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
@@ -64,11 +63,6 @@ export const ActiveCard: React.FC<Props> = ({ item }) => {
   const getItems = useCallback(() => {
     dispatch(getItemsActionCreator() as any)
   }, [])
-  const router = useRouter()
-  const onClick = useCallback((event) => {
-    event.preventDefault()
-    router.push(`/items/${item.itemId}`)
-  }, [])
   let price = item.currentPrice || item.initialPrice || 0
   if (price < 0.01) {
     price = 0.01
@@ -76,7 +70,11 @@ export const ActiveCard: React.FC<Props> = ({ item }) => {
     price = Math.round(price * 100) / 100
   }
   return (
-    <Card onClick={onClick} title={item.name} media={item.imageURIHTTP}>
+    <Card
+      href={`/items/${item.itemId}`}
+      title={item.name}
+      media={item.imageURIHTTP}
+    >
       <StatusBar />
       <StatusContent>
         <StatusTitle>current bid</StatusTitle>

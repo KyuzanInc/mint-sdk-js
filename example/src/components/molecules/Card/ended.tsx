@@ -1,9 +1,8 @@
 import styled from '@emotion/styled'
-import { useRouter } from 'next/router'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { format } from 'date-fns'
 
-import React, { useCallback } from 'react'
+import React from 'react'
 import { Card } from '.'
 import {
   StatusContent,
@@ -21,11 +20,6 @@ type Props = {
 export const EndedCard: React.FC<Props> = ({ item }) => {
   const target = item.endAt ? item.endAt : new Date()
   const date = format(target, 'yyyy.MM.dd HH:mm')
-  const router = useRouter()
-  const onClick = useCallback((event: { preventDefault: () => void }) => {
-    event.preventDefault()
-    router.push(`/items/${item.itemId}`)
-  }, [])
   let price = item.currentPrice ?? 0.01
   if (price < 0.01) {
     price = 0.01
@@ -33,7 +27,11 @@ export const EndedCard: React.FC<Props> = ({ item }) => {
     price = Math.round(price * 100) / 100
   }
   return (
-    <Card onClick={onClick} title={item.name} media={item.imageURIHTTP}>
+    <Card
+      href={`/items/${item.itemId}`}
+      title={item.name}
+      media={item.imageURIHTTP}
+    >
       <StatusBar />
       <StatusContent>
         <StatusTitle>sold for</StatusTitle>

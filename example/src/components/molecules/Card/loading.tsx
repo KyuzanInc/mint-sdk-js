@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import Skeleton from 'react-loading-skeleton'
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Card } from '.'
 import {
   StatusContent,
@@ -12,11 +12,8 @@ import {
 } from '../../atoms/Card'
 
 export const LoadingCard: React.FC = () => {
-  const onClick = useEffect(() => {
-    //TODO: write onclick action
-  }, [])
   return (
-    <Card onClick={onClick}>
+    <Card href={''}>
       <StatusBar />
       <Skeleton count={10} />
       <StatusContent>
