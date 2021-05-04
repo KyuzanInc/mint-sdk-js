@@ -7,7 +7,7 @@ import {
   ActiveStatus,
   CardList,
 } from '../../atoms/CardList'
-import { LoadingCard } from '../../molecules/Card/LoadingCard'
+import { LoadingCard } from '../../molecules/Card/loading'
 
 export const LoadingList: React.FC = () => {
   return (

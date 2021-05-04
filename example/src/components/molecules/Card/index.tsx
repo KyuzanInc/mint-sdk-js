@@ -1,39 +1,42 @@
 import styled from '@emotion/styled'
+import Link from 'next/link'
 import React, { ReactNode } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
 
-type Media = {
+export type Media = {
   url: string
   mimeType: string
 }
 
 type Props = {
   title?: string
-  onClick: any
+  href: string
   media?: Media
   children?: ReactNode
 }
 
-export const Card: React.FC<Props> = ({ onClick, title, media, children }) => {
+export const Card: React.FC<Props> = ({ href, title, media, children }) => {
   return (
-    <CardBase onClick={onClick}>
-      <CardMedia>
-        <MediaContent media={media} />
-      </CardMedia>
-      <CardContent>
-        <Typography>
-          {title ? (
-            title
-          ) : (
-            <LoadingTypography>
-              <Skeleton width={237} count={2} />
-            </LoadingTypography>
-          )}
-        </Typography>
-        <CardAction>{children}</CardAction>
-      </CardContent>
-    </CardBase>
+    <Link href={href}>
+      <CardBase>
+        <CardMedia>
+          <MediaContent media={media} />
+        </CardMedia>
+        <CardContent>
+          <Typography>
+            {title ? (
+              title
+            ) : (
+              <LoadingTypography>
+                <Skeleton width={237} count={2} />
+              </LoadingTypography>
+            )}
+          </Typography>
+          <CardAction>{children}</CardAction>
+        </CardContent>
+      </CardBase>
+    </Link>
   )
 }
 
