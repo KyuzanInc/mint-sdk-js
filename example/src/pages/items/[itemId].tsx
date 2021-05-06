@@ -9,8 +9,9 @@ import { getItemActionCreator } from '../../redux/item'
 import { color } from '../../style'
 import { ItemDetailComponent } from '../../components/organisms/ItemDetail'
 import { getHistoryActionCreator } from '../../redux/history'
+import { NextPage } from 'next'
 
-const ItemDetailPage = () => {
+const ItemDetailPage: NextPage = () => {
   const router = useRouter()
   const { itemId } = router.query
   const dispatch = useAppDispatch()

@@ -6,8 +6,9 @@ import { LoadingList } from '../components/organisms/AuctionList/loading'
 import { useAppDispatch, useAppSelector } from '../redux/getStore'
 import { getItemsActionCreator } from '../redux/items'
 import { color } from '../style'
+import { NextPage } from 'next'
 
-const Page = () => {
+const Page: NextPage = () => {
   const dispatch = useAppDispatch()
   const items = useAppSelector((state) => {
     return state.app.items.data
