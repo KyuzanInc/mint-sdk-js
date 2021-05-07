@@ -1,11 +1,13 @@
 import styled from '@emotion/styled'
-import React, { ReactNode, useCallback } from 'react'
-import { useAppSelector } from '../../../redux/getStore'
+import React, { ReactNode, useCallback, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { ItemDetail } from '../../../redux/item'
+import { connectWalletActionCreator } from '../../../redux/wallet'
 import { font } from '../../../style'
 import { ExternalLink } from '../../atoms/ExternalLink'
 import { BidButton } from '../../molecules/Button/bid'
 import { StatusDetail } from '../../molecules/Detail'
+import { WalletModal } from '../../molecules/WalletModal'
 import { LoadingItemDetailComponent } from './loading'
 
 type Props = {
@@ -13,6 +15,7 @@ type Props = {
 }
 
 export const ItemDetailComponent: React.FC<Props> = () => {
+  const dispatch = useAppDispatch()
   const item = useAppSelector((state) => {
     return state.app.item.data
   })
@@ -21,39 +24,69 @@ export const ItemDetailComponent: React.FC<Props> = () => {
     return state.app.item.meta.waitingItemAction
   })
 
-  const onClick = useCallback(() => {
-    //TODO: onclick event
+  const walletIsConnect = useAppSelector((state) => {
+    return typeof state.app.wallet.data.walletInfo?.address !== 'undefined'
+  })
+
+  const waitingWallet = useAppSelector((state) => {
+    return state.app.wallet.meta.waitingWalletAction
+  })
+
+  const connectWallet = useCallback(async () => {
+    await dispatch(connectWalletActionCreator() as any)
+    closeWalletModal()
   }, [])
+
+  const [walletModalIsOpen, setWalletModalIsOpen] = useState(false)
+
+  const closeWalletModal = useCallback(() => setWalletModalIsOpen(false), [])
+  const openWalletModal = useCallback(() => setWalletModalIsOpen(true), [])
+
+  const onClick = useCallback(() => {
+    if (!walletIsConnect) {
+      openWalletModal()
+    }
+    //TODO: onclick event
+    // Place a bid modal
+  }, [walletIsConnect])
 
   if (waitingItem) {
     return <LoadingItemDetailComponent />
   }
 
   return (
-    <Detail>
-      <Title>{item?.name}</Title>
-      <StatusDetail item={item} />
-      <BidButton label={'PLACE A BID'} onClick={onClick} />
-      <Description>{item?.description}</Description>
-      <ExternalLinkUL>
-        <ExternalLinkList>
-          {item?.buyerAddress ? (
-            <ExternalLink
-              label={'View On IPFS'}
-              href={item?.tokenURIHTTP ?? ''}
-            />
-          ) : null}
-        </ExternalLinkList>
-        <ExternalLinkList>
-          {item?.buyerAddress ? (
-            <ExternalLink
-              label={'View On OpenSea'}
-              href={getOpenSeaLink(item)}
-            />
-          ) : null}
-        </ExternalLinkList>
-      </ExternalLinkUL>
-    </Detail>
+    <>
+      <Detail>
+        <Title>{item?.name}</Title>
+        <StatusDetail item={item} />
+        <BidButton label={'PLACE A BID'} onClick={onClick} />
+        <Description>{item?.description}</Description>
+        <ExternalLinkUL>
+          <ExternalLinkList>
+            {item?.buyerAddress ? (
+              <ExternalLink
+                label={'View On IPFS'}
+                href={item?.tokenURIHTTP ?? ''}
+              />
+            ) : null}
+          </ExternalLinkList>
+          <ExternalLinkList>
+            {item?.buyerAddress ? (
+              <ExternalLink
+                label={'View On OpenSea'}
+                href={getOpenSeaLink(item)}
+              />
+            ) : null}
+          </ExternalLinkList>
+        </ExternalLinkUL>
+      </Detail>
+      <WalletModal
+        isOpen={walletModalIsOpen}
+        loading={waitingWallet}
+        connectWallet={connectWallet}
+        closeModal={closeWalletModal}
+      />
+    </>
   )
 }
 
