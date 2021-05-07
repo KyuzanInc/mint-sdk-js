@@ -15,11 +15,13 @@ import { walletSlice, initialState } from './wallet'
 import { initialItemsState, itemsSlice } from './items'
 import { initialItemState, itemSlice } from './item'
 import { historySlice, initialHistoryState } from './history'
+import { initialMyItemsState, myItemsSlice } from './myItems'
 
 const rootReducer = combineReducers({
   router: routerReducer,
   app: combineReducers({
     wallet: walletSlice.reducer,
+    myItems: myItemsSlice.reducer,
     items: itemsSlice.reducer,
     item: itemSlice.reducer,
     history: historySlice.reducer,
@@ -33,6 +35,7 @@ const getInitialState = (asPath?: string) => {
     router: initialRouterState(),
     app: {
       wallet: initialState,
+      myItems: initialMyItemsState,
       items: initialItemsState,
       item: initialItemState,
       history: initialHistoryState,
@@ -85,19 +88,7 @@ const getStore: MakeStore<StoreState> = (context: any) => {
 
   const middlewareList = [
     ...getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [
-          'app/items/get/pending',
-          'app/item/get/pending',
-          'app/history/get/pending',
-          'app/wallet/init/pending',
-          'app/items/get/fulfilled',
-          'app/item/get/fulfilled',
-          'app/history/get/fulfilled',
-          'app/wallet/init/fulfilled',
-          '@@router/LOCATION_CHANGE',
-        ],
-      },
+      serializableCheck: false,
     }),
     logger,
     createRouterMiddleware(),

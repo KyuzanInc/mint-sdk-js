@@ -7,10 +7,10 @@ type Props = {
   isLoading: boolean
   label: string
   className?: string
-  onClick: () => any
+  onClick?: () => any
 }
 
-export const PrimaryButton: React.FC<Props> = ({
+export const PrimaryLoadingButton: React.FC<Props> = ({
   label,
   onClick,
   isLoading,
