@@ -43,7 +43,6 @@ export const CardMyPage: React.VFC<Props> = ({
     )
   }
   if (isToken(item)) {
-    // 商品を見る
     // TODO
     // 物理アイテム付きなら
     // 配送先住所を入力
@@ -58,7 +57,10 @@ export const CardMyPage: React.VFC<Props> = ({
             <CenterTitle>{item?.name}</CenterTitle>
           </CenterTitleContainer>
           <CenterTagsContainer>
-            <Tag>{getItemChainName(item.item)}</Tag>
+            <CenterTags>{getItemChainName(item.item)}</CenterTags>
+            {item?.item.type === 'nftWithPhysicalProduct' && (
+              <CenterTags>フィジカルアイテムつき</CenterTags>
+            )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
             <AuctionInfo item={item.item} />
@@ -91,7 +93,10 @@ export const CardMyPage: React.VFC<Props> = ({
             <CenterTitle>{item?.name}</CenterTitle>
           </CenterTitleContainer>
           <CenterTagsContainer>
-            <Tag>{getItemChainName(item)}</Tag>
+            <CenterTags>{getItemChainName(item)}</CenterTags>
+            {item?.type === 'nftWithPhysicalProduct' && (
+              <CenterTags>フィジカルアイテムつき</CenterTags>
+            )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
             <AuctionInfo item={item} />
@@ -186,7 +191,7 @@ const MediaContainer = styled.div`
 `
 
 const Center = styled.div`
-  width: 250px;
+  width: 316px;
   padding: 32px 0;
 `
 
@@ -198,6 +203,12 @@ const CenterTitle = styled.h1`
 
 const CenterTagsContainer = styled.div`
   margin-top: 8px;
+  display: flex;
+  align-items: center;
+`
+
+const CenterTags = styled(Tag)`
+  margin-right: 4px;
 `
 
 const AuctionInfoContainer = styled.div`

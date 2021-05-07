@@ -7,6 +7,7 @@ import { font } from '../../../style'
 import { getItemPriceUnit } from '../../../util/getItemPriceUnit'
 import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
 import { ExternalLink } from '../../atoms/ExternalLink'
+import { Tag } from '../../atoms/Tag'
 import { BidModal } from '../../molecules/BidModal'
 import { BidButton } from '../../molecules/Button/bid'
 import { StatusDetail } from '../../molecules/Detail'
@@ -97,6 +98,9 @@ export const ItemDetailComponent: React.FC<Props> = () => {
     <>
       <Detail>
         <Title>{item?.name}</Title>
+        {item?.type === 'nftWithPhysicalProduct' && (
+          <Tag>フィジカルアイテムつき</Tag>
+        )}
         <StatusDetail item={item} />
         <BidButton
           label={auctionIsOutOfDate ? '-' : 'PLACE A BID'}
@@ -151,7 +155,7 @@ export const Detail = styled.div`
 
 export const Title = styled.div`
   ${font.lg.h2}
-  height: 2.6em;
+  margin-bottom: 16px;
 `
 
 export const Description = styled.div`

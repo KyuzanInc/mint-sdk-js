@@ -4,6 +4,7 @@ import React, { ReactNode } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
+import { Tag } from '../../atoms/Tag'
 
 export type Media = {
   url: string
@@ -14,10 +15,17 @@ type Props = {
   title?: string
   href: string
   media?: Media
+  withPhysicalProduct?: boolean
   children?: ReactNode
 }
 
-export const Card: React.FC<Props> = ({ href, title, media, children }) => {
+export const Card: React.FC<Props> = ({
+  href,
+  title,
+  media,
+  children,
+  withPhysicalProduct,
+}) => {
   return (
     <Link href={href}>
       <CardBase>
@@ -34,6 +42,7 @@ export const Card: React.FC<Props> = ({ href, title, media, children }) => {
               </LoadingTypography>
             )}
           </Typography>
+          {withPhysicalProduct && <Tag>フィジカルアイテムつき</Tag>}
           <CardAction>{children}</CardAction>
         </CardContent>
       </CardBase>
@@ -69,7 +78,8 @@ const CardContent = styled.div`
   height: 162px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
   padding: 16px 16px 24px 16px;
   border-radius: 0 0 12px 12px;
 `
@@ -79,12 +89,8 @@ const Typography = styled.div`
   height: 2.6em;
   ${font.lg.subtitle1}
   color: ${color.content.dark};
-  margin-bottom: 32px;
   align-items: baseline;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 `
 
 const LoadingTypography = styled.div`
