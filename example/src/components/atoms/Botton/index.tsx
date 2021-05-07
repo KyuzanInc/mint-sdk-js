@@ -6,6 +6,7 @@ import { color, font } from '../../../style'
 type Props = {
   isLoading: boolean
   label: string
+  className?: string
   onClick: () => any
 }
 
@@ -13,9 +14,10 @@ export const PrimaryButton: React.FC<Props> = ({
   label,
   onClick,
   isLoading,
+  className,
 }) => {
   return (
-    <Primary onClick={onClick}>
+    <Primary onClick={onClick} className={className}>
       {isLoading && (
         <Image
           src={'/images/spinner_white.svg'}

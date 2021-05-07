@@ -1,10 +1,13 @@
 import styled from '@emotion/styled'
 import React, { ReactNode, useCallback, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
-import { ItemDetail } from '../../../redux/item'
+import { bidActionCreator } from '../../../redux/transaction'
 import { connectWalletActionCreator } from '../../../redux/wallet'
 import { font } from '../../../style'
+import { getItemPriceUnit } from '../../../util/getitemPriceUnit'
+import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
 import { ExternalLink } from '../../atoms/ExternalLink'
+import { BidModal } from '../../molecules/BidModal'
 import { BidButton } from '../../molecules/Button/bid'
 import { StatusDetail } from '../../molecules/Detail'
 import { WalletModal } from '../../molecules/WalletModal'
@@ -20,12 +23,22 @@ export const ItemDetailComponent: React.FC<Props> = () => {
     return state.app.item.data
   })
 
+  const endDate = item?.endAt ?? new Date()
+  const auctionIsEnded = endDate < new Date()
+  const startDate = item?.startAt ?? new Date()
+  const auctionIsNotStarted = new Date() < startDate
+  const auctionIsOutOfDate = auctionIsEnded || auctionIsNotStarted
+
   const waitingItem = useAppSelector((state) => {
     return state.app.item.meta.waitingItemAction
   })
 
   const walletIsConnect = useAppSelector((state) => {
     return typeof state.app.wallet.data.walletInfo?.address !== 'undefined'
+  })
+
+  const walletInfo = useAppSelector((state) => {
+    return state.app.wallet.data.walletInfo
   })
 
   const waitingWallet = useAppSelector((state) => {
@@ -37,18 +50,44 @@ export const ItemDetailComponent: React.FC<Props> = () => {
     closeWalletModal()
   }, [])
 
-  const [walletModalIsOpen, setWalletModalIsOpen] = useState(false)
+  const [bidPrice, setBidPrice] = useState('')
+  const onChangeInput = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+    (e) => {
+      setBidPrice(e.target.value)
+    },
+    []
+  )
+  const doBid = useCallback(async () => {
+    if (!item) return
+    dispatch(
+      bidActionCreator({
+        itemId: item.itemId,
+        bidPrice: parseFloat(bidPrice),
+      }) as any
+    )
+  }, [item, bidPrice])
 
+  const [walletModalIsOpen, setWalletModalIsOpen] = useState(false)
   const closeWalletModal = useCallback(() => setWalletModalIsOpen(false), [])
   const openWalletModal = useCallback(() => setWalletModalIsOpen(true), [])
+
+  const bidding = useAppSelector((state) => state.app.transaction.meta.bidding)
+  const [bidModalIsOpen, setBidModalIsOpen] = useState(false)
+  const closeBidModal = useCallback(() => setBidModalIsOpen(false), [])
+  const openBidModal = useCallback(() => setBidModalIsOpen(true), [])
 
   const onClick = useCallback(() => {
     if (!walletIsConnect) {
       openWalletModal()
+      return
     }
-    //TODO: onclick event
-    // Place a bid modal
-  }, [walletIsConnect])
+
+    if (auctionIsOutOfDate) {
+      return
+    }
+
+    openBidModal()
+  }, [walletIsConnect, auctionIsOutOfDate])
 
   if (waitingItem) {
     return <LoadingItemDetailComponent />
@@ -59,7 +98,10 @@ export const ItemDetailComponent: React.FC<Props> = () => {
       <Detail>
         <Title>{item?.name}</Title>
         <StatusDetail item={item} />
-        <BidButton label={'PLACE A BID'} onClick={onClick} />
+        <BidButton
+          label={auctionIsOutOfDate ? '-' : 'PLACE A BID'}
+          onClick={onClick}
+        />
         <Description>{item?.description}</Description>
         <ExternalLinkUL>
           <ExternalLinkList>
@@ -85,6 +127,17 @@ export const ItemDetailComponent: React.FC<Props> = () => {
         loading={waitingWallet}
         connectWallet={connectWallet}
         closeModal={closeWalletModal}
+      />
+      <BidModal
+        unit={getItemPriceUnit(item)}
+        minBidPrice={item?.minBidPrice}
+        walletBalance={walletInfo?.balance}
+        isOpen={bidModalIsOpen}
+        loading={bidding}
+        closeModal={closeBidModal}
+        doBid={doBid}
+        bidPrice={bidPrice}
+        onChangeInput={onChangeInput}
       />
     </>
   )
@@ -115,27 +168,3 @@ export const ExternalLinkList = styled.li`
   margin: 16px 0px 0 0;
   width: 100%;
 `
-
-const getOpenSeaLink = (item: ItemDetail) => {
-  const networkId = item?.networkId
-  const contactAddress = item?.mintContractAddress
-  const tokenId = item?.tokenId
-  if (networkId === 1) {
-    return `https://opensea.io/assets/${contactAddress}/${tokenId}`
-  }
-
-  if (networkId === 4) {
-    return `https://testnets.opensea.io/assets/${contactAddress}/${tokenId}`
-  }
-
-  if (networkId === 137) {
-    return `https://matic.opensea.io/`
-  }
-
-  if (networkId === 80001) {
-    // TODO: fix link
-    return ''
-  }
-
-  return ''
-}
