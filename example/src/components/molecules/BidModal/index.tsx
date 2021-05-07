@@ -3,7 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
 import { color, font } from '../../../style'
-import { PrimaryButton as ButtonBase } from '../../atoms/Botton'
+import { PrimaryLoadingButton as ButtonBase } from '../../atoms/LoadingBotton'
 import { Chip } from '../../atoms/Chip'
 
 type Props = {

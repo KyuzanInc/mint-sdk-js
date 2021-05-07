@@ -3,7 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
 import { color, font } from '../../../style'
-import { PrimaryButton } from '../../atoms/Botton'
+import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 
 type Props = {
   isOpen: boolean
@@ -45,7 +45,7 @@ export const WalletModal: React.VFC<Props> = ({
           <ContentRight>
             <ContentRightTitle>ウォレットに接続してください </ContentRightTitle>
             <ContentRightButtonContainer>
-              <PrimaryButton
+              <PrimaryLoadingButton
                 label={'CONNECT'}
                 isLoading={loading}
                 onClick={connectWallet}

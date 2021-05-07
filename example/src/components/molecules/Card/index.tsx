@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React, { ReactNode } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
+import { MediaContent } from '../../atoms/MediaContent'
 
 export type Media = {
   url: string
@@ -21,7 +22,7 @@ export const Card: React.FC<Props> = ({ href, title, media, children }) => {
     <Link href={href}>
       <CardBase>
         <CardMedia>
-          <MediaContent media={media} />
+          <MediaContent height={220} width={264} media={media} />
         </CardMedia>
         <CardContent>
           <Typography>
@@ -37,34 +38,6 @@ export const Card: React.FC<Props> = ({ href, title, media, children }) => {
         </CardContent>
       </CardBase>
     </Link>
-  )
-}
-
-const MediaContent: React.FC<{ media: Media | undefined }> = ({ media }) => {
-  if (!media) {
-    return (
-      <Skeleton
-        height={220}
-        width={264}
-        style={{ top: 0, position: 'absolute' }}
-      />
-    )
-  }
-  const type = media.mimeType.split('/')[0]
-  const src = media.url
-  if (type === 'image') {
-    return <Image src={src} loading="lazy" />
-  }
-  return (
-    <Video
-      src={src}
-      height={'220px'}
-      width={'264px'}
-      autoPlay
-      loop
-      preload="auto"
-      muted
-    />
   )
 }
 
@@ -127,18 +100,4 @@ const CardAction = styled.div`
   align-items: center;
   color: ${color.content.dark};
   align-items: center;
-`
-
-const Image = styled.img`
-  height: 220px;
-  width: 264px;
-  border-radius: 12px 12px 0 0;
-  object-fit: cover;
-`
-
-const Video = styled.video`
-  height: 220px;
-  width: 264px;
-  border-radius: 12px 12px 0 0;
-  object-fit: cover;
 `

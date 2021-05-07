@@ -5,10 +5,15 @@ import { color, font } from '../../../style'
 type Props = {
   label: string
   onClick: () => any
+  className?: string
 }
 
-export const BidButton: React.FC<Props> = ({ label, onClick }) => {
-  return <Primary onClick={onClick}>{label}</Primary>
+export const BidButton: React.FC<Props> = ({ label, onClick, className }) => {
+  return (
+    <Primary className={className} onClick={onClick}>
+      {label}
+    </Primary>
+  )
 }
 
 const ButtonBase = styled.div`

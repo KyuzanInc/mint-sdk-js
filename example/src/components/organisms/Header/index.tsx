@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import { Anchor } from '../../atoms/Anchor'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
-import { PrimaryButton } from '../../atoms/Botton'
+import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { connectWalletActionCreator } from '../../../redux/wallet'
 import { font } from '../../../style'
 
@@ -43,22 +43,26 @@ export const Header: React.FC = () => {
           </Link>
           <WalletSection>
             {isLogin ? (
-              <WalletInfoContainer>
-                <Jazzicon
-                  diameter={44}
-                  seed={jsNumberForAddress(walletInfo?.address)}
-                />
-                <WalletDetail>
-                  <WalletBalance>
-                    {walletInfo?.balance} {walletInfo?.currencyUnit}
-                  </WalletBalance>
-                  <WalletAddress>
-                    {walletInfo?.address.slice(0, 8)}
-                  </WalletAddress>
-                </WalletDetail>
-              </WalletInfoContainer>
+              <Link passHref href={'/me'}>
+                <Anchor>
+                  <WalletInfoContainer>
+                    <Jazzicon
+                      diameter={44}
+                      seed={jsNumberForAddress(walletInfo?.address)}
+                    />
+                    <WalletDetail>
+                      <WalletBalance>
+                        {walletInfo?.balance} {walletInfo?.currencyUnit}
+                      </WalletBalance>
+                      <WalletAddress>
+                        {walletInfo?.address.slice(0, 8)}
+                      </WalletAddress>
+                    </WalletDetail>
+                  </WalletInfoContainer>
+                </Anchor>
+              </Link>
             ) : (
-              <PrimaryButton
+              <PrimaryLoadingButton
                 label={'CONNECT'}
                 isLoading={waitingWallet}
                 onClick={connectWallet}
