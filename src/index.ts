@@ -6,7 +6,6 @@ import { Token } from './types/Token'
 import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
 import * as Agent from 'agentkeepalive'
-
 import * as ethers from 'ethers'
 import Fortmatic from 'fortmatic'
 import { Item } from './types/Item'
@@ -809,6 +808,74 @@ export class MintSDK {
       const network = await this.getProvider().getNetwork()
       return network.chainId
     }
+  }
+
+  public sign = async () => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const msgParams = JSON.stringify({
+      domain: {
+        // Defining the chain aka Rinkeby testnet or Ethereum Main Net
+        chainId: 4,
+        // Give a user friendly name to the specific contract you are signing for.
+        name: 'フィジカルアイテムの発送先情報',
+        // Just let's you know the latest version. Definitely make sure the field name is correct.
+        version: '1',
+      },
+
+      // Defining the message signing data content.
+      message: {
+        /*
+         - Anything you want. Just a JSON Blob that encodes the data you want to send
+         - No required fields
+         - This is DApp Specific
+         - Be as explicit as possible when building out the message schema.
+        */
+        name: '髙橋知成',
+        email: 'tomonari@kyzuan.com',
+        tel: '07039914179',
+        postalCode: '0287302',
+        address: '東京都文京区3-3-4 田中ビル3F',
+        note: 'jdoiwjdeiowdj',
+      },
+      // Refers to the keys of the *types* object below.
+      primaryType: 'ShippingInformation',
+      types: {
+        // TODO: Clarify if EIP712Domain refers to the domain the contract is hosted on
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+        ],
+        // Not an EIP712Domain definition
+        ShippingInformation: [
+          { name: 'name', type: 'string' },
+          { name: 'email', type: 'string' },
+          { name: 'tel', type: 'string' },
+          { name: 'postalCode', type: 'string' },
+          { name: 'address', type: 'string' },
+          { name: 'note', type: 'string' },
+        ],
+      },
+    })
+
+    const wallet = await this.getProvider()
+    const from = await wallet.getSigner().getAddress()
+    const params = [from, msgParams]
+    const method = 'eth_signTypedData_v4'
+    wallet.provider.sendAsync!(
+      {
+        method,
+        params,
+      },
+      (error, result) => {
+        if (error) {
+          console.error(error)
+        }
+        console.log(result)
+      }
+    )
   }
 
   /**
