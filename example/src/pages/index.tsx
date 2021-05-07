@@ -1,14 +1,15 @@
 import styled from '@emotion/styled'
 import React, { useCallback, useEffect } from 'react'
-import { EndedAuctionList } from '../components/organisms/EndedAuctionList'
-import { LiveAuctionList } from '../components/organisms/LiveAuctionList'
-import { LoadingList } from '../components/organisms/LoadingList'
+import { EndedAuctionList } from '../components/organisms/AuctionList/ended'
+import { LiveAuctionList } from '../components/organisms/AuctionList/active'
+import { LoadingList } from '../components/organisms/AuctionList/loading'
 import { useAppDispatch, useAppSelector } from '../redux/getStore'
 import { getItemsActionCreator } from '../redux/items'
 import { getSdk } from '../sdk'
 import { color } from '../style'
+import { NextPage } from 'next'
 
-const Page = () => {
+const Page: NextPage = () => {
   const dispatch = useAppDispatch()
   const items = useAppSelector((state) => {
     return state.app.items.data

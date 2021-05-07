@@ -16,7 +16,7 @@ export type ItemsState = {
   }
 }
 
-export const initialItemState: ItemsState = {
+export const initialItemsState: ItemsState = {
   data: {
     live: [],
     ended: [],
@@ -76,7 +76,7 @@ export const getItemsActionCreator = createAsyncThunk<
 
 export const itemsSlice = createSlice({
   name: 'items',
-  initialState: initialItemState,
+  initialState: initialItemsState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(

@@ -1,3 +1,4 @@
+import { transactionSlice, initialTransactionState } from './transaction/index'
 import { Store, combineReducers, AnyAction, CombinedState } from 'redux'
 import {
   createRouterMiddleware,
@@ -8,16 +9,23 @@ import logger from 'redux-logger'
 import Router from 'next/router'
 import { HYDRATE, createWrapper, MakeStore } from 'next-redux-wrapper'
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import { walletSlice, initialState } from './wallet'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { initialItemState, itemsSlice } from './items'
 import { RouterState } from 'connected-next-router/types'
+import { walletSlice, initialState } from './wallet'
+import { initialItemsState, itemsSlice } from './items'
+import { initialItemState, itemSlice } from './item'
+import { historySlice, initialHistoryState } from './history'
+import { initialMyItemsState, myItemsSlice } from './myItems'
 
 const rootReducer = combineReducers({
   router: routerReducer,
   app: combineReducers({
     wallet: walletSlice.reducer,
+    myItems: myItemsSlice.reducer,
     items: itemsSlice.reducer,
+    item: itemSlice.reducer,
+    history: historySlice.reducer,
+    transaction: transactionSlice.reducer,
   }),
   // ui: combineReducers({
   // }),
@@ -25,7 +33,14 @@ const rootReducer = combineReducers({
 const getInitialState = (asPath?: string) => {
   let preloadedState = {
     router: initialRouterState(),
-    app: { wallet: initialState, items: initialItemState },
+    app: {
+      wallet: initialState,
+      myItems: initialMyItemsState,
+      items: initialItemsState,
+      item: initialItemState,
+      history: initialHistoryState,
+      transaction: initialTransactionState,
+    },
     // ui: {},
   }
   if (asPath) {
@@ -42,7 +57,7 @@ const reducer = (
   state:
     | CombinedState<{
         router: RouterState
-        app: CombinedState<{ wallet: any; items: any }>
+        app: StoreState['app']
       }>
     | undefined,
   action: AnyAction
@@ -73,9 +88,7 @@ const getStore: MakeStore<StoreState> = (context: any) => {
 
   const middlewareList = [
     ...getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ['app/items/get/fulfilled'],
-      },
+      serializableCheck: false,
     }),
     logger,
     createRouterMiddleware(),

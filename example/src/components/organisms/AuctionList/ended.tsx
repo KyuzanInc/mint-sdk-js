@@ -1,28 +1,25 @@
 import { Item } from '@kyuzan/mint-sdk-js'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import {
   ListComponent,
   ListTitle,
   Title,
   CardUL,
   CardList,
-  ActiveStatus,
   EmptyTitle,
 } from '../../atoms/CardList'
-import { ActiveCard } from '../../molecules/Card/ActiveCard'
+import { EndedCard } from '../../molecules/Card/ended'
 
 type Props = {
   items: Item[]
-  children?: ReactNode
 }
 
-export const LiveAuctionList: React.FC<Props> = ({ items }) => {
+export const EndedAuctionList: React.FC<Props> = ({ items }) => {
   if (items.length === 0) {
     return (
       <ListComponent>
         <ListTitle>
-          <ActiveStatus />
-          <Title>Live Auctions</Title>
+          <Title>Ended Auctions</Title>
         </ListTitle>
         <EmptyTitle>No Items</EmptyTitle>
       </ListComponent>
@@ -31,14 +28,13 @@ export const LiveAuctionList: React.FC<Props> = ({ items }) => {
   return (
     <ListComponent>
       <ListTitle>
-        <ActiveStatus />
-        <Title>Live Auctions</Title>
+        <Title>Ended Auctions</Title>
       </ListTitle>
       <CardUL>
         {items.map((item, i) => {
           return (
             <CardList key={i}>
-              <ActiveCard item={item} />
+              <EndedCard item={item} />
             </CardList>
           )
         })}
