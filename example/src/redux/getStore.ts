@@ -1,3 +1,4 @@
+import { transactionSlice, initialTransactionState } from './transaction/index'
 import { Store, combineReducers, AnyAction, CombinedState } from 'redux'
 import {
   createRouterMiddleware,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     items: itemsSlice.reducer,
     item: itemSlice.reducer,
     history: historySlice.reducer,
+    transaction: transactionSlice.reducer,
   }),
   // ui: combineReducers({
   // }),
@@ -34,6 +36,7 @@ const getInitialState = (asPath?: string) => {
       items: initialItemsState,
       item: initialItemState,
       history: initialHistoryState,
+      transaction: initialTransactionState,
     },
     // ui: {},
   }
@@ -51,7 +54,7 @@ const reducer = (
   state:
     | CombinedState<{
         router: RouterState
-        app: CombinedState<{ wallet: any; items: any; item: any; history: any }>
+        app: StoreState['app']
       }>
     | undefined,
   action: AnyAction
