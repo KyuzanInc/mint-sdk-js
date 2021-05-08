@@ -10,7 +10,6 @@ import { color } from '../../style'
 import { ItemDetailComponent } from '../../components/organisms/ItemDetail'
 import { getHistoryActionCreator } from '../../redux/history'
 import { NextPage } from 'next'
-import { CommonMeta } from '../../components/atoms/CommonMeta'
 
 const ItemDetailPage: NextPage = () => {
   const router = useRouter()
@@ -40,7 +39,6 @@ const ItemDetailPage: NextPage = () => {
 
   return (
     <Container>
-      <CommonMeta title={'test'} />
       <MediaContainer>
         <MediaContent media={item?.imageURIHTTP} />
       </MediaContainer>
