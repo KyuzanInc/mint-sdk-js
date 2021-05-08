@@ -5,7 +5,7 @@ export const CommonMeta = ({
   description = 'Mintは、ブランド、クリエイターが独自のNFTショップを簡単に、すばやく構築できるよう、ブロックチェーン・およびバックエンドソリューションを提供するNFT BaaSサービスです',
   ogImage = `images/OGP.png`,
 }) => {
-  const imagePath = window.location.href + `${ogImage}`;
+  const imagePath = window.location.href + `${ogImage}`
   return (
     <Head>
       <title>{title}</title>
