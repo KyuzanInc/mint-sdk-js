@@ -3,7 +3,7 @@ import Head from 'next/head'
 export const CommonMeta = ({
   title = 'Mint デモショップ | あなたのNFTショップ構築に並走します',
   description = 'Mintは、ブランド、クリエイターが独自のNFTショップを簡単に、すばやく構築できるよう、ブロックチェーン・およびバックエンドソリューションを提供するNFT BaaSサービスです',
-  ogImage = 'image/OGP.png',
+  ogImage = 'images/OGP.png',
 }) => {
   return (
     <Head>
