@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { Item, Token } from '@kyuzan/mint-sdk-js'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
 import { getItemChainName } from '../../../util/getItemChainName'
@@ -10,6 +11,7 @@ import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
 import { AuctionInfo } from '../AuctionInfo'
+import { TokenRight } from './TokenRight'
 
 type Props = {
   loading: boolean
@@ -26,6 +28,7 @@ export const CardMyPage: React.VFC<Props> = ({
   onWithdraw,
   withdrawing,
 }) => {
+  const router = useRouter()
   // TODO: 固定価格販売
   if (loading || typeof item === 'undefined') {
     return (
@@ -43,10 +46,6 @@ export const CardMyPage: React.VFC<Props> = ({
     )
   }
   if (isToken(item)) {
-    // TODO
-    // 物理アイテム付きなら
-    // 配送先住所を入力
-    // 配送先住所を確認
     return (
       <Container>
         <MediaContainer>
@@ -67,11 +66,15 @@ export const CardMyPage: React.VFC<Props> = ({
           </AuctionInfoContainer>
         </Center>
         <Right>
-          <Link passHref href={`/items/${item.item.itemId}`}>
-            <Anchor>
-              <ReverseButton isLoading={false} label={'商品を見る'} />
-            </Anchor>
-          </Link>
+          <TokenRight
+            token={item}
+            onViewShipAddress={() => {
+              console.log('todo')
+            }}
+            onWriteShipAddress={() => {
+              router.push(`/me/tokens/${item.item.itemId}/shipping_info`)
+            }}
+          />
         </Right>
       </Container>
     )
@@ -221,7 +224,7 @@ const Right = styled.div`
   align-items: center;
   justify-content: center;
   width: 254px;
-  padding: 32px;
+  padding: 32px 32px 32px 0;
 `
 
 const RightTitleContainer = styled.div`

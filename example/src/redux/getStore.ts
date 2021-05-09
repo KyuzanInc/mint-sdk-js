@@ -1,3 +1,7 @@
+import {
+  initialShippingInfoState,
+  shippingInfoSlice,
+} from './shippingInfo/index'
 import { transactionSlice, initialTransactionState } from './transaction/index'
 import { Store, combineReducers, AnyAction, CombinedState } from 'redux'
 import {
@@ -26,6 +30,7 @@ const rootReducer = combineReducers({
     item: itemSlice.reducer,
     history: historySlice.reducer,
     transaction: transactionSlice.reducer,
+    shippingInfo: shippingInfoSlice.reducer,
   }),
   // ui: combineReducers({
   // }),
@@ -40,6 +45,7 @@ const getInitialState = (asPath?: string) => {
       item: initialItemState,
       history: initialHistoryState,
       transaction: initialTransactionState,
+      shippingInfo: initialShippingInfoState,
     },
     // ui: {},
   }
