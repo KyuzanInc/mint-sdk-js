@@ -1,4 +1,3 @@
-import { sleep } from './../../util/sleep'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { push } from 'connected-next-router'
 import { getSdk } from '../../sdk'
@@ -41,7 +40,13 @@ export const submitShippingInfoActionCreator = createAsyncThunk<
   }
 >('app/shippingInfo/submit', async ({ itemId, data }, thunkApi) => {
   try {
-    console.log(data)
+    await getSdk()!.registerItemShippingInfo({
+      itemId,
+      shippingInfo: {
+        ...data,
+        name: `${data.lastName} ${data.firstName}`,
+      },
+    })
     thunkApi.dispatch(push('/me/shipping_info_success'))
   } catch (err) {
     return thunkApi.rejectWithValue('失敗しました')

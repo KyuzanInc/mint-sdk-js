@@ -1,3 +1,7 @@
+import {
+  DefaultApiFactory,
+  RegisterItemShippingInfoRequestBody as ItemShippingInfo,
+} from './apiClient/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
@@ -27,6 +31,7 @@ export {
   WalletInfo,
   WrongNetworkError,
   CurrencyUnit,
+  ItemShippingInfo,
 }
 
 export class MintSDK {
@@ -69,6 +74,11 @@ export class MintSDK {
    * @ignore
    */
   private axios: AxiosInstance
+
+  /**
+   * @ignore
+   */
+  private apiClient: ReturnType<typeof DefaultApiFactory>
 
   /**
    * @ignore
@@ -133,6 +143,7 @@ export class MintSDK {
         'annapurna-access-token': accessToken,
       },
     })
+    this.apiClient = DefaultApiFactory(undefined, backendBaseUrl, this.axios)
 
     if (this.metamaskProvider) {
       this.metamaskProvider.on('network', (_, oldNetwork) => {
@@ -810,39 +821,34 @@ export class MintSDK {
     }
   }
 
-  public sign = async () => {
+  public registerItemShippingInfo = async (arg: {
+    itemId: string
+    shippingInfo: Omit<
+      ItemShippingInfo,
+      'signedData' | 'chainType' | 'networkId' | 'contractAddress' | 'tokenId'
+    >
+  }) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
-    const msgParams = JSON.stringify({
+
+    const item = await this.getItemById(arg.itemId)
+    const signingData: Omit<ItemShippingInfo, 'signedData'> = {
+      chainType: item.chainType as any,
+      networkId: item.networkId,
+      contractAddress: item.mintContractAddress,
+      tokenId: item.tokenId,
+      ...arg.shippingInfo,
+    }
+    const signDataType = {
       domain: {
-        // Defining the chain aka Rinkeby testnet or Ethereum Main Net
-        chainId: 4,
-        // Give a user friendly name to the specific contract you are signing for.
+        chainId: item.networkId,
         name: 'フィジカルアイテムの発送先情報',
-        // Just let's you know the latest version. Definitely make sure the field name is correct.
         version: '1',
       },
-
-      // Defining the message signing data content.
-      message: {
-        /*
-         - Anything you want. Just a JSON Blob that encodes the data you want to send
-         - No required fields
-         - This is DApp Specific
-         - Be as explicit as possible when building out the message schema.
-        */
-        name: '髙橋知成',
-        email: 'tomonari@kyzuan.com',
-        tel: '07039914179',
-        postalCode: '0287302',
-        address: '東京都文京区3-3-4 田中ビル3F',
-        note: 'jdoiwjdeiowdj',
-      },
-      // Refers to the keys of the *types* object below.
+      message: signingData,
       primaryType: 'ShippingInformation',
       types: {
-        // TODO: Clarify if EIP712Domain refers to the domain the contract is hosted on
         EIP712Domain: [
           { name: 'name', type: 'string' },
           { name: 'version', type: 'string' },
@@ -850,32 +856,63 @@ export class MintSDK {
         ],
         // Not an EIP712Domain definition
         ShippingInformation: [
+          { name: 'chainType', type: 'string' },
+          { name: 'networkId', type: 'int256' },
+          { name: 'contractAddress', type: 'string' },
+          { name: 'tokenId', type: 'int256' },
           { name: 'name', type: 'string' },
           { name: 'email', type: 'string' },
-          { name: 'tel', type: 'string' },
           { name: 'postalCode', type: 'string' },
-          { name: 'address', type: 'string' },
-          { name: 'note', type: 'string' },
+          { name: 'prefecture', type: 'string' },
+          { name: 'city', type: 'string' },
+          { name: 'address1', type: 'string' },
+          { name: 'address2', type: 'string' },
+          { name: 'tel', type: 'string' },
+          { name: 'memo', type: 'string' },
         ],
       },
-    })
-
-    const wallet = await this.getProvider()
-    const from = await wallet.getSigner().getAddress()
-    const params = [from, msgParams]
-    const method = 'eth_signTypedData_v4'
-    wallet.provider.sendAsync!(
-      {
-        method,
-        params,
-      },
-      (error, result) => {
-        if (error) {
-          console.error(error)
-        }
-        console.log(result)
-      }
+    }
+    const signedData = await this.signData({ msgParams: signDataType })
+    // apiへのpost
+    const body = {
+      ...signingData,
+      signedData,
+    }
+    await this.apiClient.registerItemShippingInfo(
+      this.accessToken,
+      item.itemId,
+      body
     )
+  }
+
+  private signData = async (arg: { msgParams: any }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    return new Promise<string>((resolve, reject) => {
+      const msgParams = JSON.stringify(arg.msgParams)
+      const wallet = this.getProvider()
+      wallet
+        .getSigner()
+        .getAddress()
+        .then((from) => {
+          const params = [from, msgParams]
+          const method = 'eth_signTypedData_v4'
+          wallet.provider.sendAsync!(
+            {
+              method,
+              params,
+            },
+            (error, result) => {
+              if (error) {
+                reject(error)
+              }
+              resolve(result.result)
+            }
+          )
+        })
+        .catch(reject)
+    })
   }
 
   /**
