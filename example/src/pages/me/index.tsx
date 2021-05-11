@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/getStore'
 import { color } from '../../style'
 import { NextPage } from 'next'
@@ -15,6 +15,8 @@ import {
   getOwnItemsActionCreator,
 } from '../../redux/myItems'
 import { withDrawItemActionCreator } from '../../redux/transaction'
+import { ShippingInfoModal } from '../../components/molecules/ShippingInfoModal'
+import { getShippingInfoActionCreator } from '../../redux/shippingInfo'
 
 const Page: NextPage = () => {
   const dispatch = useAppDispatch()
@@ -51,6 +53,27 @@ const Page: NextPage = () => {
     dispatch(withDrawItemActionCreator({ itemId }) as any)
   }
 
+  const loadingShippingInfo = useAppSelector(
+    (state) => state.app.shippingInfo.meta.loadingShippingInfo
+  )
+
+  const shippingInfo = useAppSelector(
+    (state) => state.app.shippingInfo.data.shippingInfo
+  )
+
+  const [selectShippingInfoItemId, setSelectShippingInfoItemId] = useState<
+    string | undefined
+  >(undefined)
+
+  const showShippingInfo = (itemId: string) => {
+    setSelectShippingInfoItemId(itemId)
+    dispatch(getShippingInfoActionCreator({ itemId }) as any)
+  }
+
+  const hideShippinngInfo = () => {
+    setSelectShippingInfoItemId(undefined)
+  }
+
   useEffect(() => {
     if (typeof walletInfo?.address === 'undefined') {
       // TODO: モーダル出して、Walletにコネクトしてもらう
@@ -64,53 +87,78 @@ const Page: NextPage = () => {
     )
   }, [walletInfo?.address])
   return (
-    <Container>
-      <InnerContainer>
-        <ListTitle>
-          <ActiveStatus />
-          <Title>Bided Items</Title>
-        </ListTitle>
-        {waitingBidedItems && <CardMyPage loading={true} />}
-        {!waitingBidedItems && bidedItems.length === 0 && (
-          <EmptyTitle>No Items</EmptyTitle>
-        )}
-        {!waitingBidedItems &&
-          bidedItems.length !== 0 &&
-          bidedItems.map((item) => {
-            return (
-              <ItemContainer key={item.itemId}>
-                <CardMyPage
-                  item={item}
-                  loading={false}
-                  userWalletAddress={walletInfo?.address}
-                  onWithdraw={() => withdrawItem(item.itemId)}
-                  withdrawing={withdrawingItemId === item.itemId}
-                />
-              </ItemContainer>
-            )
-          })}
-        <ListTitle>
-          <Title>Collections</Title>
-        </ListTitle>
-        {waitingOwnTokens && <CardMyPage loading={true} />}
-        {!waitingOwnTokens && ownTokens.length === 0 && (
-          <EmptyTitle>No Items</EmptyTitle>
-        )}
-        {!waitingOwnTokens &&
-          ownTokens.length !== 0 &&
-          ownTokens.map((item) => {
-            return (
-              <ItemContainer key={item.item.itemId}>
-                <CardMyPage
-                  item={item}
-                  loading={false}
-                  userWalletAddress={walletInfo?.address}
-                />
-              </ItemContainer>
-            )
-          })}
-      </InnerContainer>
-    </Container>
+    <>
+      <Container>
+        <InnerContainer>
+          <ListTitle>
+            <ActiveStatus />
+            <Title>Bided Items</Title>
+          </ListTitle>
+          {waitingBidedItems && <CardMyPage loading={true} />}
+          {!waitingBidedItems && bidedItems.length === 0 && (
+            <EmptyTitle>No Items</EmptyTitle>
+          )}
+          {!waitingBidedItems &&
+            bidedItems.length !== 0 &&
+            bidedItems.map((item) => {
+              return (
+                <ItemContainer key={item.itemId}>
+                  <CardMyPage
+                    item={item}
+                    loading={false}
+                    userWalletAddress={walletInfo?.address}
+                    onWithdraw={() => withdrawItem(item.itemId)}
+                    withdrawing={withdrawingItemId === item.itemId}
+                  />
+                </ItemContainer>
+              )
+            })}
+          <ListTitle>
+            <Title>Collections</Title>
+          </ListTitle>
+          {waitingOwnTokens && <CardMyPage loading={true} />}
+          {!waitingOwnTokens && ownTokens.length === 0 && (
+            <EmptyTitle>No Items</EmptyTitle>
+          )}
+          {!waitingOwnTokens &&
+            ownTokens.length !== 0 &&
+            ownTokens.map((item) => {
+              return (
+                <ItemContainer key={item.item.itemId}>
+                  <CardMyPage
+                    item={item}
+                    loading={false}
+                    userWalletAddress={walletInfo?.address}
+                    onShowShippingInfo={() => {
+                      showShippingInfo(item.item.itemId)
+                    }}
+                  />
+                </ItemContainer>
+              )
+            })}
+        </InnerContainer>
+      </Container>
+      <ShippingInfoModal
+        isOpen={typeof selectShippingInfoItemId !== 'undefined'}
+        shippingInfo={
+          typeof selectShippingInfoItemId === 'undefined' ||
+          typeof shippingInfo[selectShippingInfoItemId] === 'undefined' ||
+          loadingShippingInfo
+            ? undefined
+            : {
+                name: shippingInfo[selectShippingInfoItemId].name,
+                postalCode: shippingInfo[selectShippingInfoItemId].postalCode,
+                prefecture: shippingInfo[selectShippingInfoItemId].prefecture,
+                city: shippingInfo[selectShippingInfoItemId].city,
+                address1: shippingInfo[selectShippingInfoItemId].address1,
+                address2: shippingInfo[selectShippingInfoItemId].address2,
+                tel: shippingInfo[selectShippingInfoItemId].tel,
+                email: shippingInfo[selectShippingInfoItemId].email,
+              }
+        }
+        closeModal={hideShippinngInfo}
+      />
+    </>
   )
 }
 

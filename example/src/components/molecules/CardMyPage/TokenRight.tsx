@@ -65,7 +65,7 @@ export const TokenRight: React.VFC<Props> = ({
         <ReverseButton
           isLoading={false}
           onClick={onViewShipAddress}
-          label={'配送先の住所を入力する'}
+          label={'配送先の住所を確認する'}
         />
       </Container>
     )
@@ -83,7 +83,7 @@ export const TokenRight: React.VFC<Props> = ({
         <ReverseButton
           isLoading={false}
           onClick={onViewShipAddress}
-          label={'配送先の住所を入力する'}
+          label={'配送先の住所を確認する'}
         />
       </Container>
     )

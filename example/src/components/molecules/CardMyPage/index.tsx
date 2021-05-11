@@ -17,6 +17,7 @@ type Props = {
   loading: boolean
   userWalletAddress?: string
   item?: Item | Token
+  onShowShippingInfo?: () => void
   onWithdraw?: () => void
   withdrawing?: boolean
 }
@@ -26,6 +27,7 @@ export const CardMyPage: React.VFC<Props> = ({
   item,
   userWalletAddress,
   onWithdraw,
+  onShowShippingInfo,
   withdrawing,
 }) => {
   const router = useRouter()
@@ -68,9 +70,7 @@ export const CardMyPage: React.VFC<Props> = ({
         <Right>
           <TokenRight
             token={item}
-            onViewShipAddress={() => {
-              console.log('todo')
-            }}
+            onViewShipAddress={onShowShippingInfo!}
             onWriteShipAddress={() => {
               router.push(`/me/tokens/${item.item.itemId}/shipping_info`)
             }}

@@ -1,6 +1,7 @@
 import {
   DefaultApiFactory,
-  RegisterItemShippingInfoRequestBody as ItemShippingInfo,
+  RegisterItemShippingInfoRequestBody,
+  ItemShippingInfo,
 } from './apiClient/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
@@ -31,6 +32,7 @@ export {
   WalletInfo,
   WrongNetworkError,
   CurrencyUnit,
+  RegisterItemShippingInfoRequestBody,
   ItemShippingInfo,
 }
 
@@ -821,10 +823,25 @@ export class MintSDK {
     }
   }
 
+  /**
+   * 物理アイテム付きのItemの発送先情報を登録
+   * ユーザーに配送先情報を入力してもらうフォームなどを用意して使ってください
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   * - ユーザーが{@link Item}の`type`が`nftWithPhysicalProduct`であること
+   * - {@link Item}が引き出されている or 買われていること（{@link Token}になっていること)
+   * - ユーザーが{@link Item}の`physicalOrderStatus`が`shippingInfoIsBlank`であること
+   * - ユーザーが{@link Token}の所有者であること
+   *
+   * @param arg itemId = {@link Item}のitemId, shippingInfo = 配送先情報
+   * @returns
+   *
+   */
   public registerItemShippingInfo = async (arg: {
     itemId: string
     shippingInfo: Omit<
-      ItemShippingInfo,
+      RegisterItemShippingInfoRequestBody,
       'signedData' | 'chainType' | 'networkId' | 'contractAddress' | 'tokenId'
     >
   }) => {
@@ -833,7 +850,10 @@ export class MintSDK {
     }
 
     const item = await this.getItemById(arg.itemId)
-    const signingData: Omit<ItemShippingInfo, 'signedData'> = {
+    const signingData: Omit<
+      RegisterItemShippingInfoRequestBody,
+      'signedData'
+    > = {
       chainType: item.chainType as any,
       networkId: item.networkId,
       contractAddress: item.mintContractAddress,
@@ -885,6 +905,61 @@ export class MintSDK {
     )
   }
 
+  /**
+   * 物理アイテム付きのItemの入力された発送先情報を取得
+   * {@link Items}セキュリティの観点から、ユーザーのSignが必要になります
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   * - ユーザーが{@link Item}の`type`が`nftWithPhysicalProduct`であること
+   * - {@link Item}が引き出されている or 買われていること（{@link Token}になっていること)
+   * - ユーザーが{@link Item}の`physicalOrderStatus`が`wip`または`ship`であること
+   * - ユーザーが{@link Token}の所有者であること
+   *
+   * @param arg itemId = {@link Item}のitemI
+   * @returns
+   *
+   */
+  public getItemShippingInfo = async (arg: { itemId: string }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const { address } = await this.getWalletInfo()
+
+    const item = await this.getItemById(arg.itemId)
+    const signDataType = {
+      domain: {
+        chainId: item.networkId,
+        name: 'フィジカルアイテムの発送先情報の確認',
+        version: '1',
+      },
+      message: {
+        address,
+      },
+      primaryType: 'WalletAddress',
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+        ],
+        WalletAddress: [{ name: 'address', type: 'string' }],
+      },
+    }
+    const signedData = await this.signData({ msgParams: signDataType })
+
+    const res = await this.apiClient.getItemShippingInfo(
+      this.accessToken,
+      item.itemId,
+      address,
+      signedData
+    )
+    return res.data
+  }
+
+  /**
+   * @ignore
+   */
   private signData = async (arg: { msgParams: any }) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
@@ -979,6 +1054,9 @@ export class MintSDK {
     })
   }
 
+  /**
+   * @ignore
+   */
   private validateNetworkForItem = async (item: Item) => {
     const currentNetwork = await this.getConnectedNetworkId()
     if (currentNetwork !== item.networkId) {

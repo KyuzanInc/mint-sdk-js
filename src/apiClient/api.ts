@@ -43,6 +43,67 @@ export interface InlineResponse200 {
 /**
  * 
  * @export
+ * @interface ItemShippingInfo
+ */
+export interface ItemShippingInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemShippingInfo
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemShippingInfo
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemShippingInfo
+     */
+    postalCode: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemShippingInfo
+     */
+    prefecture: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemShippingInfo
+     */
+    city: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemShippingInfo
+     */
+    address1: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemShippingInfo
+     */
+    address2: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemShippingInfo
+     */
+    tel: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemShippingInfo
+     */
+    memo: string;
+}
+/**
+ * 
+ * @export
  * @interface RegisterItemShippingInfoRequestBody
  */
 export interface RegisterItemShippingInfoRequestBody {
@@ -129,7 +190,7 @@ export interface RegisterItemShippingInfoRequestBody {
      * @type {string}
      * @memberof RegisterItemShippingInfoRequestBody
      */
-    memo?: string;
+    memo: string;
 }
 
 /**
@@ -158,6 +219,61 @@ export enum RegisterItemShippingInfoRequestBodyNetworkIdEnum {
  */
 export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @summary 登録されているフィジカルアイテム付きItemに配送先住所を取得。（個人情報なので、WalletのSignが必要）
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {string} walletAddress 
+         * @param {string} signedData Walletアドレスの文字列にSignしたもの
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemShippingInfo: async (annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'annapurnaAccessToken' is not null or undefined
+            assertParamExists('getItemShippingInfo', 'annapurnaAccessToken', annapurnaAccessToken)
+            // verify required parameter 'itemId' is not null or undefined
+            assertParamExists('getItemShippingInfo', 'itemId', itemId)
+            // verify required parameter 'walletAddress' is not null or undefined
+            assertParamExists('getItemShippingInfo', 'walletAddress', walletAddress)
+            // verify required parameter 'signedData' is not null or undefined
+            assertParamExists('getItemShippingInfo', 'signedData', signedData)
+            const localVarPath = `/v3_items/{itemId}/shipping_info`
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (walletAddress !== undefined) {
+                localVarQueryParameter['walletAddress'] = walletAddress;
+            }
+
+            if (signedData !== undefined) {
+                localVarQueryParameter['signedData'] = signedData;
+            }
+
+            if (annapurnaAccessToken !== undefined && annapurnaAccessToken !== null) {
+                localVarHeaderParameter['annapurna-access-token'] = String(annapurnaAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary フィジカルアイテム付きItemに配送先住所を登録する
@@ -215,6 +331,20 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary 登録されているフィジカルアイテム付きItemに配送先住所を取得。（個人情報なので、WalletのSignが必要）
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {string} walletAddress 
+         * @param {string} signedData Walletアドレスの文字列にSignしたもの
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ItemShippingInfo>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary フィジカルアイテム付きItemに配送先住所を登録する
          * @param {string} annapurnaAccessToken 
          * @param {string} itemId 
@@ -238,6 +368,19 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @summary 登録されているフィジカルアイテム付きItemに配送先住所を取得。（個人情報なので、WalletのSignが必要）
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {string} walletAddress 
+         * @param {string} signedData Walletアドレスの文字列にSignしたもの
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): AxiosPromise<ItemShippingInfo> {
+            return localVarFp.getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary フィジカルアイテム付きItemに配送先住所を登録する
          * @param {string} annapurnaAccessToken 
          * @param {string} itemId 
@@ -258,6 +401,21 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @summary 登録されているフィジカルアイテム付きItemに配送先住所を取得。（個人情報なので、WalletのSignが必要）
+     * @param {string} annapurnaAccessToken 
+     * @param {string} itemId 
+     * @param {string} walletAddress 
+     * @param {string} signedData Walletアドレスの文字列にSignしたもの
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any) {
+        return DefaultApiFp(this.configuration).getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary フィジカルアイテム付きItemに配送先住所を登録する

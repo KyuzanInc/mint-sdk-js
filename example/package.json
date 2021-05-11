@@ -15,7 +15,6 @@
   "dependencies": {
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@kyuzan/mint-sdk-js": "^3.0.1",
     "@reduxjs/toolkit": "^1.5.1",
     "connected-next-router": "^4.0.1",
     "date-fns": "^2.21.2",
