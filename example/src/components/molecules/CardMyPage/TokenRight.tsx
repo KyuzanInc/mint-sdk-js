@@ -18,6 +18,7 @@ export const TokenRight: React.VFC<Props> = ({
   onWriteShipAddress,
   onViewShipAddress,
 }) => {
+  console.log(token)
   const withPhysical = token.item.type === 'nftWithPhysicalProduct'
   if (!withPhysical) {
     return (
@@ -32,7 +33,7 @@ export const TokenRight: React.VFC<Props> = ({
   }
 
   const { physicalOrderStatus } = token.item
-  if (physicalOrderStatus === 'addressIsBlank') {
+  if (physicalOrderStatus === 'shippingInfoIsBlank') {
     return (
       <Container>
         <Image

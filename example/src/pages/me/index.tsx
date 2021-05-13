@@ -49,8 +49,10 @@ const Page: NextPage = () => {
     (state) => state.app.transaction.meta.withdrawingItemId
   )
 
-  const withdrawItem = (itemId: string) => {
-    dispatch(withDrawItemActionCreator({ itemId }) as any)
+  const withdrawItem = async (itemId: string) => {
+    await dispatch(withDrawItemActionCreator({ itemId }) as any)
+    // TODO: おめでとう画面に遷移させる
+    window.location.reload()
   }
 
   const loadingShippingInfo = useAppSelector(

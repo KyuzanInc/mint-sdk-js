@@ -1,5 +1,4 @@
-import { Item } from './Item'
-
+import { Item } from '@kyuzan/mint-sdk-js'
 /**
  * TokenはERC721を表現している
  * Item:Token = 1:1

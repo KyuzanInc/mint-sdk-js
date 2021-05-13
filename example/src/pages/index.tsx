@@ -5,7 +5,6 @@ import { LiveAuctionList } from '../components/organisms/AuctionList/active'
 import { LoadingList } from '../components/organisms/AuctionList/loading'
 import { useAppDispatch, useAppSelector } from '../redux/getStore'
 import { getItemsActionCreator } from '../redux/items'
-import { getSdk } from '../sdk'
 import { color } from '../style'
 import { NextPage } from 'next'
 
@@ -28,15 +27,6 @@ const Page: NextPage = () => {
   return (
     <Container>
       <InnerContainer>
-        <div
-          onClick={() => {
-            console.log('==========')
-            console.log(getSdk())
-            getSdk().sign()
-          }}
-        >
-          sign
-        </div>
         {waitingItems && <LoadingList />}
         {!waitingItems && <LiveAuctionList items={items.live} />}
         {!waitingItems && <EndedAuctionList items={items.ended} />}
