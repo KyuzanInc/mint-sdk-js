@@ -18,7 +18,7 @@ import { Configuration } from "./configuration";
 // @ts-ignore
 import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
 
-export const BASE_PATH = "http://localhost:5500".replace(/\/+$/, "");
+export const BASE_PATH = "http://localhost:5500/annapurna-development/asia-northeast1".replace(/\/+$/, "");
 
 /**
  *
