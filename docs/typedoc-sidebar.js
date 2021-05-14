@@ -8,5 +8,13 @@ module.exports = [
       "api/classes/mintsdk",
       "api/classes/wrongnetworkerror"
     ]
+  },
+  {
+    "type": "category",
+    "label": "Interfaces",
+    "items": [
+      "api/interfaces/itemshippinginfo",
+      "api/interfaces/registeritemshippinginforequestbody"
+    ]
   }
 ];

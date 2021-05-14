@@ -44,7 +44,7 @@ export class MintSDK {
    * @returns etherをBigNumberとしてparseしたもの
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * MintSDK.parseEther('3.2') // BigNumber
    * ```
@@ -60,7 +60,7 @@ export class MintSDK {
    * @returns Ether単位でパースされたstring
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet()  // required
@@ -168,7 +168,7 @@ export class MintSDK {
    * @returns ウォレットが接続されていればtrue
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = await MintSDK.initialize(...)
    * await sdk.isWalletConnect()
@@ -190,7 +190,7 @@ export class MintSDK {
    * ウォレット接続をキャンセルした場合は、Rejectされる
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * await sdk.isWalletConnect() // false
    * await sdk.connectWallet()
@@ -215,7 +215,7 @@ export class MintSDK {
    * **MetaMaskが接続されている場合は何も実行されない**
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = await MintSDK.initialize(...)
    * await sdk.disconnectWallet()
@@ -235,7 +235,7 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet()  // required
    * await sdk.getWalletInfo()
@@ -283,7 +283,7 @@ export class MintSDK {
    * @param txHash {@link ethers.providers.TransactionResponse}のhashプロパティ
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
@@ -309,7 +309,7 @@ export class MintSDK {
    * @param paging
    * @returns
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = await MintSDK.initialize(...)
    * const items = await sdk.getItems()
@@ -342,7 +342,7 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemsByBidderAddress('0x1111......')
    * ```
@@ -365,7 +365,7 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemById('item.itemId')
    * ```
@@ -382,7 +382,7 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemByToken(token)
    * ```
@@ -408,7 +408,7 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemLogs('Item.itemId')
@@ -446,7 +446,7 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...
    * const tokens = await sdk.getTokensByAddress('0x11111...')
    * ```
@@ -470,7 +470,7 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
@@ -530,7 +530,7 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
@@ -591,7 +591,7 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
@@ -652,7 +652,7 @@ export class MintSDK {
    * @returns void
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * sdk.onAccountsChange((accounts: string[]) => {
    *    // some thing
@@ -685,7 +685,7 @@ export class MintSDK {
    * @returns void
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * sdk.onConnect(() => {
    *    // some thing
@@ -718,7 +718,7 @@ export class MintSDK {
    * @returns void
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * sdk.onDisconnect(() => {
    *    // some thing
@@ -750,7 +750,7 @@ export class MintSDK {
    * @returns unix time (ms)
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = MintSDK.initialize(...)
    * await sdk.connectWallet()
@@ -768,7 +768,7 @@ export class MintSDK {
    * @returns trueならばMetaMask
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = MintSDK.initialize(...)
    * await sdk.isInjectedWallet() // true
@@ -784,7 +784,7 @@ export class MintSDK {
    * @returns trueならば適切なネットワーク
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = MintSDK.initialize(...)
    * await sdk.isCorrectNetwork() // true
@@ -807,7 +807,7 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = MintSDK.initialize(...)
    * await sdk.connectWallet()
@@ -1001,11 +1001,11 @@ export class MintSDK {
    * @returns
    *
    * ```typescript
-   * import { MintSDK } from '@KyuzanInc/mint-sdk-js'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = MintSDK.initialize(...)
    * await sdk.connectWallet()
-   * await sdk.getConnectedNetworkId()
+   * await sdk.addEthereumChain(137)
    * ```
    */
   public addEthereumChain = async (networkId: 137 | 80001) => {
@@ -1048,6 +1048,7 @@ export class MintSDK {
         blockExplorerUrls: ['https://explorer-mumbai.maticvigil.com/'],
       },
     }
+    // TODO: Fortmaticだとシカとか、適切なエラーを投げてやればいい
     await (window as any).ethereum.request({
       method: 'wallet_addEthereumChain',
       params: [NETWORK_ID_MAP_CHAIN_PARAMETER[networkId]], // you must have access to the specified account

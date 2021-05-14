@@ -1,6 +1,6 @@
+import { NetworkId } from './NetworkId'
 import { ItemsPhysicalOrderStatus } from './ItemsPhysicalOrderStatus'
 import { ItemsType } from './ItemsType'
-import { NetworkId } from '..'
 
 /**
  * Itemはマスターデータ
@@ -64,6 +64,14 @@ export type Item = {
    * プレビューが設定されていない場合は空配列になる
    * */
   previews: { mimeType: string; url: string }[]
+
+  /**
+   * Itemが所属するネットワーク
+   * 1 === Ethereum メインネットワーク
+   * 4 === Ethereum Rinkebyネットワーク
+   * 137 ===  Polygon メインネットワーク
+   * 80001 === Matic Mumbaiネットワーク
+   */
   networkId: NetworkId
   /**
    * 購入者のウォレットアドレス
@@ -111,10 +119,17 @@ export type Item = {
    * tradeType === 'auction` の時だけ値が入る
    * */
   initialPrice?: number
-  /** @deprecated */
-  signature: string | undefined // TODO: newが終わったら消す
+  /**
+   * @ignore
+   */
   signatureBuyAuction: string | undefined
+  /**
+   * @ignore
+   */
   signatureBidAuction: string | undefined
+  /**
+   * @ignore
+   */
   signatureBuyFixedPrice: string | undefined
   chainType: 'ethereum'
   collectionId: string // uuidv4

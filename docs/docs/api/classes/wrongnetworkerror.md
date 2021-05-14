@@ -32,7 +32,7 @@ hide_title: true
 
 Inherited from: BaseError.constructor
 
-Defined in: [src/Errors.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/0f48adf/src/Errors.ts#L1)
+Defined in: [src/Errors.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b808cfb/src/Errors.ts#L1)
 
 ## Properties
 
@@ -72,7 +72,7 @@ ___
 
 Optional override for formatting stack traces
 
-**`see`** https://github.com/v8/v8/wiki/Stack%20Trace%20API#customizing-stack-traces
+**`see`** https://v8.dev/docs/stack-trace-api#customizing-stack-traces
 
 #### Type declaration:
 
