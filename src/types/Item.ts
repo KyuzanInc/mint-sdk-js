@@ -1,3 +1,5 @@
+import { ItemsPhysicalOrderStatus } from './ItemsPhysicalOrderStatus'
+import { ItemsType } from './ItemsType'
 import { NetworkId } from '..'
 
 /**
@@ -6,6 +8,18 @@ import { NetworkId } from '..'
  * */
 export type Item = {
   itemId: string
+  /**
+   * nftWithPhysicalProduct === 物理アイテム付きアイテム
+   * typeがないものは、ノーマルなNFTアイテム
+   */
+  type?: ItemsType
+  /**
+   * type === 'nftWithPhysicalProduct'だけ値が入る
+   * addressIsBlank: エンドユーザーからの住所登録待ち
+   * wip: Mint管理者側の配送アクション待ち
+   * shipped: 出荷済み
+   */
+  physicalOrderStatus?: ItemsPhysicalOrderStatus
   tradeType: 'fixedPrice' | 'auction'
   /**
    * `Item`に対応するERC721準拠した tokenId

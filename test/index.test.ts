@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers'
-import { MintSDK } from '.'
+import { MintSDK } from '../src'
 // import axios from 'axios'
 
 // jest.mock('axios')

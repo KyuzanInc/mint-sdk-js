@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { Item, Token } from '@kyuzan/mint-sdk-js'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
 import { getItemChainName } from '../../../util/getItemChainName'
@@ -10,11 +11,13 @@ import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
 import { AuctionInfo } from '../AuctionInfo'
+import { TokenRight } from './TokenRight'
 
 type Props = {
   loading: boolean
   userWalletAddress?: string
   item?: Item | Token
+  onShowShippingInfo?: () => void
   onWithdraw?: () => void
   withdrawing?: boolean
 }
@@ -24,8 +27,10 @@ export const CardMyPage: React.VFC<Props> = ({
   item,
   userWalletAddress,
   onWithdraw,
+  onShowShippingInfo,
   withdrawing,
 }) => {
+  const router = useRouter()
   // TODO: 固定価格販売
   if (loading || typeof item === 'undefined') {
     return (
@@ -43,11 +48,6 @@ export const CardMyPage: React.VFC<Props> = ({
     )
   }
   if (isToken(item)) {
-    // 商品を見る
-    // TODO
-    // 物理アイテム付きなら
-    // 配送先住所を入力
-    // 配送先住所を確認
     return (
       <Container>
         <MediaContainer>
@@ -58,18 +58,23 @@ export const CardMyPage: React.VFC<Props> = ({
             <CenterTitle>{item?.name}</CenterTitle>
           </CenterTitleContainer>
           <CenterTagsContainer>
-            <Tag>{getItemChainName(item.item)}</Tag>
+            <CenterTags>{getItemChainName(item.item)}</CenterTags>
+            {item?.item.type === 'nftWithPhysicalProduct' && (
+              <CenterTags>フィジカルアイテムつき</CenterTags>
+            )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
             <AuctionInfo item={item.item} />
           </AuctionInfoContainer>
         </Center>
         <Right>
-          <Link passHref href={`/items/${item.item.itemId}`}>
-            <Anchor>
-              <ReverseButton isLoading={false} label={'商品を見る'} />
-            </Anchor>
-          </Link>
+          <TokenRight
+            token={item}
+            onViewShipAddress={onShowShippingInfo!}
+            onWriteShipAddress={() => {
+              router.push(`/me/tokens/${item.item.itemId}/shipping_info`)
+            }}
+          />
         </Right>
       </Container>
     )
@@ -91,7 +96,10 @@ export const CardMyPage: React.VFC<Props> = ({
             <CenterTitle>{item?.name}</CenterTitle>
           </CenterTitleContainer>
           <CenterTagsContainer>
-            <Tag>{getItemChainName(item)}</Tag>
+            <CenterTags>{getItemChainName(item)}</CenterTags>
+            {item?.type === 'nftWithPhysicalProduct' && (
+              <CenterTags>フィジカルアイテムつき</CenterTags>
+            )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
             <AuctionInfo item={item} />
@@ -186,7 +194,7 @@ const MediaContainer = styled.div`
 `
 
 const Center = styled.div`
-  width: 250px;
+  width: 316px;
   padding: 32px 0;
 `
 
@@ -198,6 +206,12 @@ const CenterTitle = styled.h1`
 
 const CenterTagsContainer = styled.div`
   margin-top: 8px;
+  display: flex;
+  align-items: center;
+`
+
+const CenterTags = styled(Tag)`
+  margin-right: 4px;
 `
 
 const AuctionInfoContainer = styled.div`
@@ -210,7 +224,7 @@ const Right = styled.div`
   align-items: center;
   justify-content: center;
   width: 254px;
-  padding: 32px;
+  padding: 32px 32px 32px 0;
 `
 
 const RightTitleContainer = styled.div`

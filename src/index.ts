@@ -1,3 +1,8 @@
+import {
+  DefaultApiFactory,
+  RegisterItemShippingInfoRequestBody,
+  ItemShippingInfo,
+} from './apiClient/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
@@ -6,7 +11,6 @@ import { Token } from './types/Token'
 import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
 import * as Agent from 'agentkeepalive'
-
 import * as ethers from 'ethers'
 import Fortmatic from 'fortmatic'
 import { Item } from './types/Item'
@@ -28,6 +32,8 @@ export {
   WalletInfo,
   WrongNetworkError,
   CurrencyUnit,
+  RegisterItemShippingInfoRequestBody,
+  ItemShippingInfo,
 }
 
 export class MintSDK {
@@ -70,6 +76,11 @@ export class MintSDK {
    * @ignore
    */
   private axios: AxiosInstance
+
+  /**
+   * @ignore
+   */
+  private apiClient: ReturnType<typeof DefaultApiFactory>
 
   /**
    * @ignore
@@ -134,6 +145,7 @@ export class MintSDK {
         'annapurna-access-token': accessToken,
       },
     })
+    this.apiClient = DefaultApiFactory(undefined, backendBaseUrl, this.axios)
 
     if (this.metamaskProvider) {
       this.metamaskProvider.on('network', (_, oldNetwork) => {
@@ -812,6 +824,173 @@ export class MintSDK {
   }
 
   /**
+   * 物理アイテム付きのItemの発送先情報を登録
+   * ユーザーに配送先情報を入力してもらうフォームなどを用意して使ってください
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   * - ユーザーが{@link Item}の`type`が`nftWithPhysicalProduct`であること
+   * - {@link Item}が引き出されている or 買われていること（{@link Token}になっていること)
+   * - ユーザーが{@link Item}の`physicalOrderStatus`が`shippingInfoIsBlank`であること
+   * - ユーザーが{@link Token}の所有者であること
+   *
+   * @param arg itemId = {@link Item}のitemId, shippingInfo = 配送先情報
+   * @returns
+   *
+   */
+  public registerItemShippingInfo = async (arg: {
+    itemId: string
+    shippingInfo: Omit<
+      RegisterItemShippingInfoRequestBody,
+      'signedData' | 'chainType' | 'networkId' | 'contractAddress' | 'tokenId'
+    >
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const item = await this.getItemById(arg.itemId)
+    const signingData: Omit<
+      RegisterItemShippingInfoRequestBody,
+      'signedData'
+    > = {
+      chainType: item.chainType as any,
+      networkId: item.networkId,
+      contractAddress: item.mintContractAddress,
+      tokenId: item.tokenId,
+      ...arg.shippingInfo,
+    }
+    const signDataType = {
+      domain: {
+        chainId: item.networkId,
+        name: 'フィジカルアイテムの発送先情報',
+        version: '1',
+      },
+      message: signingData,
+      primaryType: 'ShippingInformation',
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+        ],
+        // Not an EIP712Domain definition
+        ShippingInformation: [
+          { name: 'chainType', type: 'string' },
+          { name: 'networkId', type: 'int256' },
+          { name: 'contractAddress', type: 'string' },
+          { name: 'tokenId', type: 'int256' },
+          { name: 'name', type: 'string' },
+          { name: 'email', type: 'string' },
+          { name: 'postalCode', type: 'string' },
+          { name: 'prefecture', type: 'string' },
+          { name: 'city', type: 'string' },
+          { name: 'address1', type: 'string' },
+          { name: 'address2', type: 'string' },
+          { name: 'tel', type: 'string' },
+          { name: 'memo', type: 'string' },
+        ],
+      },
+    }
+    const signedData = await this.signData({ msgParams: signDataType })
+    // apiへのpost
+    const body = {
+      ...signingData,
+      signedData,
+    }
+    await this.apiClient.registerItemShippingInfo(
+      this.accessToken,
+      item.itemId,
+      body
+    )
+  }
+
+  /**
+   * 物理アイテム付きのItemの入力された発送先情報を取得
+   * {@link Items}セキュリティの観点から、ユーザーのSignが必要になります
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   * - ユーザーが{@link Item}の`type`が`nftWithPhysicalProduct`であること
+   * - {@link Item}が引き出されている or 買われていること（{@link Token}になっていること)
+   * - ユーザーが{@link Item}の`physicalOrderStatus`が`wip`または`ship`であること
+   * - ユーザーが{@link Token}の所有者であること
+   *
+   * @param arg itemId = {@link Item}のitemI
+   * @returns
+   *
+   */
+  public getItemShippingInfo = async (arg: { itemId: string }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const { address } = await this.getWalletInfo()
+
+    const item = await this.getItemById(arg.itemId)
+    const signDataType = {
+      domain: {
+        chainId: item.networkId,
+        name: 'フィジカルアイテムの発送先情報の確認',
+        version: '1',
+      },
+      message: {
+        address,
+      },
+      primaryType: 'WalletAddress',
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+        ],
+        WalletAddress: [{ name: 'address', type: 'string' }],
+      },
+    }
+    const signedData = await this.signData({ msgParams: signDataType })
+
+    const res = await this.apiClient.getItemShippingInfo(
+      this.accessToken,
+      item.itemId,
+      address,
+      signedData
+    )
+    return res.data
+  }
+
+  /**
+   * @ignore
+   */
+  private signData = async (arg: { msgParams: any }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    return new Promise<string>((resolve, reject) => {
+      const msgParams = JSON.stringify(arg.msgParams)
+      const wallet = this.getProvider()
+      wallet
+        .getSigner()
+        .getAddress()
+        .then((from) => {
+          const params = [from, msgParams]
+          const method = 'eth_signTypedData_v4'
+          wallet.provider.sendAsync!(
+            {
+              method,
+              params,
+            },
+            (error, result) => {
+              if (error) {
+                reject(error)
+              }
+              resolve(result.result)
+            }
+          )
+        })
+        .catch(reject)
+    })
+  }
+
+  /**
    * 指定したネットワークをウォレットに追加する
    * 137 => Polygon本番ネットワーク
    * 80001 => Polygonテストネットワーク
@@ -875,6 +1054,9 @@ export class MintSDK {
     })
   }
 
+  /**
+   * @ignore
+   */
   private validateNetworkForItem = async (item: Item) => {
     const currentNetwork = await this.getConnectedNetworkId()
     if (currentNetwork !== item.networkId) {

@@ -7,6 +7,8 @@ import { font } from '../../../style'
 import { getItemPriceUnit } from '../../../util/getItemPriceUnit'
 import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
 import { ExternalLink } from '../../atoms/ExternalLink'
+import { Tag } from '../../atoms/Tag'
+import { AboutPhysicalModal } from '../../molecules/AboutPhysicalModal'
 import { BidModal } from '../../molecules/BidModal'
 import { BidButton } from '../../molecules/Button/bid'
 import { StatusDetail } from '../../molecules/Detail'
@@ -76,6 +78,18 @@ export const ItemDetailComponent: React.FC<Props> = () => {
   const closeBidModal = useCallback(() => setBidModalIsOpen(false), [])
   const openBidModal = useCallback(() => setBidModalIsOpen(true), [])
 
+  const [aboutPhysicalModalIsOpen, setAboutPhysicalModalIsOpen] = useState(
+    false
+  )
+  const closePhysicalModal = useCallback(
+    () => setAboutPhysicalModalIsOpen(false),
+    []
+  )
+  const openPhysicalModal = useCallback(
+    () => setAboutPhysicalModalIsOpen(true),
+    []
+  )
+
   const onClick = useCallback(() => {
     if (!walletIsConnect) {
       openWalletModal()
@@ -97,6 +111,14 @@ export const ItemDetailComponent: React.FC<Props> = () => {
     <>
       <Detail>
         <Title>{item?.name}</Title>
+        {item?.type === 'nftWithPhysicalProduct' && (
+          <>
+            <Tag>フィジカルアイテムつき</Tag>
+            <QuestionButton onClick={openPhysicalModal}>
+              フィジカルアイテムつきとは・送料/配送方法について
+            </QuestionButton>
+          </>
+        )}
         <StatusDetail item={item} />
         <BidButton
           label={auctionIsOutOfDate ? '-' : 'PLACE A BID'}
@@ -139,6 +161,10 @@ export const ItemDetailComponent: React.FC<Props> = () => {
         bidPrice={bidPrice}
         onChangeInput={onChangeInput}
       />
+      <AboutPhysicalModal
+        isOpen={aboutPhysicalModalIsOpen}
+        closeModal={closePhysicalModal}
+      />
     </>
   )
 }
@@ -151,7 +177,7 @@ export const Detail = styled.div`
 
 export const Title = styled.div`
   ${font.lg.h2}
-  height: 2.6em;
+  margin-bottom: 16px;
 `
 
 export const Description = styled.div`
@@ -164,7 +190,12 @@ export const ExternalLinkUL = styled.ul`
   flex-direction: column;
 `
 
-export const ExternalLinkList = styled.li`
+const ExternalLinkList = styled.li`
   margin: 16px 0px 0 0;
   width: 100%;
+`
+
+const QuestionButton = styled(Tag)`
+  margin-top: 8px;
+  cursor: pointer;
 `

@@ -31,8 +31,8 @@ export const bidActionCreator = createAsyncThunk<
   try {
     const tx = await getSdk()!.sendTxBid(itemId, bidPrice)
     await tx.wait()
-    // すぐ遷移すると反映されない
-    await sleep(4000)
+    // すぐ遷移するとキャッシュの関係で反映されない
+    await sleep(6000)
     // TODO: サクセス画面に飛ばす
     thunkApi.dispatch(push('/me'))
   } catch (err) {
@@ -50,8 +50,8 @@ export const withDrawItemActionCreator = createAsyncThunk<
   try {
     const tx = await getSdk()!.sendTxMakeSuccessfulBid(itemId, 'unknown')
     await tx.wait()
-    // すぐ遷移すると反映されない
-    await sleep(4000)
+    // すぐ遷移するとキャッシュの関係で反映されない
+    await sleep(6000)
     // TODO: おめでとう画面に遷移させる
   } catch (err) {
     return thunkApi.rejectWithValue('引き出しに失敗しました')

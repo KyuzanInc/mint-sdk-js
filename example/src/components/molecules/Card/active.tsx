@@ -19,6 +19,7 @@ export const ActiveCard: React.FC<Props> = ({ item }) => {
       href={`/items/${item.itemId}`}
       title={item.name}
       media={item.imageURIHTTP}
+      withPhysicalProduct={item.type === 'nftWithPhysicalProduct'}
     >
       <AuctionInfo item={item} onComplete={getItems} />
     </Card>

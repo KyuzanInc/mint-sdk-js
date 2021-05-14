@@ -1,5 +1,4 @@
 import { Item } from './Item'
-
 /**
  * TokenはERC721を表現している
  * Item:Token = 1:1
