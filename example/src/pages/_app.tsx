@@ -6,12 +6,10 @@ import Layout from '../components/Layout'
 import { color } from '../style'
 import { ConnectedRouter } from 'connected-next-router'
 import { wrapper } from '../redux/getStore'
-import { CommonMeta } from '../components/atoms/CommonMeta'
 
 const MyApp: AppComponent = ({ Component, pageProps }) => {
   return (
     <ConnectedRouter>
-      <CommonMeta />
       <Global
         styles={css`
           ${emotionReset}

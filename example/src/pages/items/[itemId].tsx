@@ -9,9 +9,26 @@ import { getItemActionCreator } from '../../redux/item'
 import { color } from '../../style'
 import { ItemDetailComponent } from '../../components/organisms/ItemDetail'
 import { getHistoryActionCreator } from '../../redux/history'
-import { NextPage } from 'next'
+import { NextPage, GetServerSideProps } from 'next'
+import CommonMeta from '../../components/atoms/CommonMeta'
 
-const ItemDetailPage: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const host = context.req.headers.host
+  const baseUrl = `http://${host}`
+  const currentPath = context.req.url
+  return {
+    props: {
+      baseUrl,
+      currentPath,
+    },
+  }
+}
+type Props = {
+  baseUrl: string
+  currentPath: string
+}
+
+const ItemDetailPage: NextPage<Props> = ({ baseUrl, currentPath }: Props) => {
   const router = useRouter()
   const { itemId } = router.query
   const dispatch = useAppDispatch()
@@ -39,6 +56,7 @@ const ItemDetailPage: NextPage = () => {
 
   return (
     <Container>
+      <CommonMeta baseUrl={baseUrl} currentPath={currentPath} />
       <MediaContainer>
         <MediaContent media={item?.imageURIHTTP} />
       </MediaContainer>

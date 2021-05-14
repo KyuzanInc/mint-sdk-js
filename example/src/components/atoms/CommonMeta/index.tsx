@@ -1,10 +1,21 @@
 import Head from 'next/head'
+import React from 'react'
 
-export const CommonMeta = ({
+type Props = {
+  baseUrl?: string
+  title?: string
+  description?: string
+  ogpImagePath?: string
+  currentPath?: string
+}
+
+const CommonMeta: React.FC<Props> = ({
+  baseUrl = '',
   title = 'Mint デモショップ | あなたのNFTショップ構築に並走します',
   description = 'Mintは、ブランド、クリエイターが独自のNFTショップを簡単に、すばやく構築できるよう、ブロックチェーン・およびバックエンドソリューションを提供するNFT BaaSサービスです',
-  ogImage = `${process.env.SITE_URL}/images/OGP.png`,
-}) => {
+  ogpImagePath = 'images/ogp/OGP.png',
+  currentPath = '/',
+}: Props) => {
   return (
     <Head>
       <title>{title}</title>
@@ -15,7 +26,16 @@ export const CommonMeta = ({
         content={description}
         key="og:description"
       />
-      <meta property="og:image" content={ogImage} key="og:image" />
+      <meta
+        property="og:url"
+        content={`${baseUrl}${currentPath}`}
+        key="og:url"
+      />
+      <meta
+        property="og:image"
+        content={`${baseUrl}/${ogpImagePath}`}
+        key="og:image"
+      />
       <meta
         name="twitter:card"
         content="summary_large_image"
@@ -24,3 +44,4 @@ export const CommonMeta = ({
     </Head>
   )
 }
+export default CommonMeta

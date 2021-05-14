@@ -1,4 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import React from 'react'
+import CommonMeta from '../components/atoms/CommonMeta'
 
 class MyDocument extends Document {
   render() {
@@ -12,6 +14,7 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
         </Head>
+        <CommonMeta />
         <body>
           <Main />
           <NextScript />
