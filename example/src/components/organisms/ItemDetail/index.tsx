@@ -1,13 +1,14 @@
 import styled from '@emotion/styled'
 import React, { ReactNode, useCallback, useState } from 'react'
+import Image from 'next/image'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { bidActionCreator } from '../../../redux/transaction'
 import { connectWalletActionCreator } from '../../../redux/wallet'
-import { font } from '../../../style'
+import { color, font } from '../../../style'
 import { getItemPriceUnit } from '../../../util/getItemPriceUnit'
 import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
 import { ExternalLink } from '../../atoms/ExternalLink'
-import { Tag } from '../../atoms/Tag'
+import { Tag as TagBase } from '../../atoms/Tag'
 import { AboutPhysicalModal } from '../../molecules/AboutPhysicalModal'
 import { BidModal } from '../../molecules/BidModal'
 import { BidButton } from '../../molecules/Button/bid'
@@ -112,14 +113,23 @@ export const ItemDetailComponent: React.FC<Props> = () => {
       <Detail>
         <Title>{item?.name}</Title>
         {item?.type === 'nftWithPhysicalProduct' && (
-          <>
-            <Tag>フィジカルアイテムつき</Tag>
-            <QuestionButton onClick={openPhysicalModal}>
-              フィジカルアイテムつきとは・送料/配送方法について
-            </QuestionButton>
-          </>
+          <Tag
+            label={'フィジカルアイテムつき'}
+            iconPath={'/images/cardboard.svg'}
+          />
         )}
         <StatusDetail item={item} />
+        <QuestionButton onClick={openPhysicalModal}>
+          <QuestionIcon>
+            <Image
+              src={'/images/info.svg'}
+              layout={'fixed'}
+              width={16}
+              height={16}
+            />
+          </QuestionIcon>
+          <QuestionText>フィジカルアイテムつきとは</QuestionText>
+        </QuestionButton>
         <BidButton
           label={auctionIsOutOfDate ? '-' : 'PLACE A BID'}
           onClick={onClick}
@@ -169,6 +179,10 @@ export const ItemDetailComponent: React.FC<Props> = () => {
   )
 }
 
+const Tag = styled(TagBase)`
+  width: fit-content;
+`
+
 export const Detail = styled.div`
   width: 426px;
   padding: 64px 0;
@@ -177,7 +191,7 @@ export const Detail = styled.div`
 
 export const Title = styled.div`
   ${font.lg.h2}
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 `
 
 export const Description = styled.div`
@@ -195,7 +209,23 @@ const ExternalLinkList = styled.li`
   width: 100%;
 `
 
-const QuestionButton = styled(Tag)`
-  margin-top: 8px;
+const QuestionButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   cursor: pointer;
+`
+
+const QuestionIcon = styled.div`
+  margin-right: 4px;
+  line-height: 1;
+  height: 16px;
+  width: 16px;
+`
+
+const QuestionText = styled.div`
+  color: ${color.content.middle};
+  ${font.lg.caption};
+  text-decoration: underline;
+  line-height: 1;
 `

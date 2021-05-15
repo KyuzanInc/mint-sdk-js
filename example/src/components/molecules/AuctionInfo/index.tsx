@@ -4,6 +4,9 @@ import { color, font } from '../../../style'
 import Countdown from 'react-countdown'
 import { format } from 'date-fns'
 import { ItemDetail } from '../../../redux/item'
+import Image from 'next/image'
+import { getItemPriceUnit } from '../../../util/getItemPriceUnit'
+import { getNetworkIconPath } from '../../../util/getNetworkIconPath'
 
 type Props = {
   item: ItemDetail
@@ -43,7 +46,15 @@ export const AuctionInfo: React.VFC<Props> = ({ item, onComplete }) => {
         <StatusTitle>{auctionIsEnded ? 'sold for' : 'current bid'}</StatusTitle>
         <StatusValue>
           <Value>{price}</Value>
-          <Unit>ETH</Unit>
+          <Unit>{getItemPriceUnit(item)}</Unit>
+          <Icon>
+            <Image
+              src={getNetworkIconPath(item.networkId)}
+              width={16}
+              height={16}
+              layout={'fixed'}
+            />
+          </Icon>
         </StatusValue>
       </StatusContent>
       <StatusContent>
@@ -174,6 +185,10 @@ const Unit = styled.div`
   align-items: center;
   display: flex;
   margin-left: 2px;
+`
+
+const Icon = styled.div`
+  margin-left: 4px;
 `
 
 const EndedDate = styled.div`

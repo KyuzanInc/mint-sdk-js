@@ -1,11 +1,45 @@
 import styled from '@emotion/styled'
+import React from 'react'
+import Image from 'next/image'
 import { color, font } from '../../../style'
 
-export const Tag = styled.span`
-  ${font.lg.subtitle2}
-  color: ${color.content.middle};
+type Props = {
+  className?: string
+  label: string
+  iconPath?: string
+}
+
+export const Tag: React.VFC<Props> = ({ className, label, iconPath }) => {
+  return (
+    <TagBase className={className}>
+      {iconPath && (
+        <Icon>
+          <Image width={14} height={14} layout={'fixed'} src={iconPath} />
+        </Icon>
+      )}
+      <Label>{label}</Label>
+    </TagBase>
+  )
+}
+
+const TagBase = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   border-radius: 4px;
   background-color: ${color.content.superLight};
-  padding: 4px 10px;
-  display: inline-block;
+  padding: 7px 10px;
+`
+
+const Icon = styled.span`
+  line-height: 1;
+  margin-right: 4px;
+  height: 14px;
+  width: 14px;
+`
+
+const Label = styled.span`
+  ${font.lg.subtitle2}
+  color: ${color.content.middle};
+  line-height: 1;
 `

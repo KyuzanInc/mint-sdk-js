@@ -42,7 +42,12 @@ export const Card: React.FC<Props> = ({
               </LoadingTypography>
             )}
           </Typography>
-          {withPhysicalProduct && <Tag>フィジカルアイテムつき</Tag>}
+          {withPhysicalProduct && (
+            <Tag
+              label={'フィジカルアイテムつき'}
+              iconPath={'/images/cardboard.svg'}
+            ></Tag>
+          )}
           <CardAction>{children}</CardAction>
         </CardContent>
       </CardBase>
@@ -63,6 +68,7 @@ const CardBase = styled.div`
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 12px;
+  overflow: hidden;
 `
 const CardMedia = styled(CardBase)`
   border-radius: 12px 12px 0 0;

@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import React from 'react'
 import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
-import { color, font } from '../../../style'
+import { color } from '../../../style'
 
 type Props = {
   isOpen: boolean
@@ -36,15 +36,12 @@ export const AboutPhysicalModal: React.VFC<Props> = ({
     <Modal isOpen={isOpen} style={customStyles} contentLabel="Wallet">
       <ModalContainer>
         <Content>
-          <ContentTitle>フィジカルアイテムつきとは</ContentTitle>
-          <ContentDescription>
-            NFT所有者がそれに紐づいた物理アイテムを受け取れることができます。
-            NFTを手に入れた後に、所有者は配送先情報を入力することができます。
-          </ContentDescription>
-          <ContentTitle>送料/配送方法について</ContentTitle>
-          <ContentDescription>
-            デモのため実際には配送されません。
-          </ContentDescription>
+          <Image
+            src={'/images/whatIsPhysicalItem.png'}
+            layout={'responsive'}
+            width={784}
+            height={443}
+          />
         </Content>
         <CloseButton onClick={closeModal}>
           <Image
@@ -75,17 +72,6 @@ const Content = styled.div`
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
-`
-
-const ContentTitle = styled.p`
-  ${font.lg.h2};
-  margin-bottom: 16px;
-`
-
-const ContentDescription = styled.p`
-  ${font.lg.body1};
-  margin-bottom: 64px;
-  line-height: 2;
 `
 
 const CloseButton = styled.div`

@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
-import { getItemChainName } from '../../../util/getItemChainName'
 import { Anchor } from '../../atoms/Anchor'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { MediaContent } from '../../atoms/MediaContent'
@@ -58,9 +57,11 @@ export const CardMyPage: React.VFC<Props> = ({
             <CenterTitle>{item?.name}</CenterTitle>
           </CenterTitleContainer>
           <CenterTagsContainer>
-            <CenterTags>{getItemChainName(item.item)}</CenterTags>
             {item?.item.type === 'nftWithPhysicalProduct' && (
-              <CenterTags>フィジカルアイテムつき</CenterTags>
+              <CenterTags
+                label={'フィジカルアイテムつき'}
+                iconPath={'/images/cardboard.svg'}
+              />
             )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
@@ -96,9 +97,11 @@ export const CardMyPage: React.VFC<Props> = ({
             <CenterTitle>{item?.name}</CenterTitle>
           </CenterTitleContainer>
           <CenterTagsContainer>
-            <CenterTags>{getItemChainName(item)}</CenterTags>
             {item?.type === 'nftWithPhysicalProduct' && (
-              <CenterTags>フィジカルアイテムつき</CenterTags>
+              <CenterTags
+                label={'フィジカルアイテムつき'}
+                iconPath={'/images/cardboard.svg'}
+              />
             )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
