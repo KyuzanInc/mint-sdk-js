@@ -6,4 +6,5 @@ export const itemsPhysicalOrderStatusList = [
   'wip', // Mint管理者側の配送アクション待ち
   'shipped', // 出荷済み
 ] as const
-export type ItemsPhysicalOrderStatus = typeof itemsPhysicalOrderStatusList[number]
+export type ItemsPhysicalOrderStatus =
+  typeof itemsPhysicalOrderStatusList[number]

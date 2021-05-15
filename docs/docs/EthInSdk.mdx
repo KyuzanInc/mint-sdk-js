@@ -1,0 +1,45 @@
+---
+title: SDKにおける通貨について
+---
+
+## About ETH と MATIC
+
+通常の NFT ショップなどは ETH は、ether という単位で取引される。（日本円でいうと`円`）
+
+ETH にとって wei が最小単位である。（銭）
+
+`1ether === 1000000000000000000wei`
+
+### ETH in SDK
+
+SDK では基本的には、`number`型を用いて ether 単位で通貨を扱う。
+
+一部、`BigNumber`クラスとして通貨を扱っている。wei を`number`型で扱うと、環境によってはオーバーフローを起こすため、`BigNumber`クラスを用いて表現しているためだ。
+
+SDK では通貨のユーティリティーとして以下を提供している。
+
+- `SDK.formatEther` を用いると、`BigNumber`から ether 単位に変換した`string`を取得できる
+- `SDK.parseEther`を用いると、ether の文字列から`wei`を表現した`BigNumber`を取得できる
+
+## Rinkeby 用の ETH の入手方法
+
+テスト環境で使える ETH の入手方法は以下の通り
+
+1. ウォレットのアドレスをメモ
+1. [https://faucet.rinkeby.io/](https://faucet.rinkeby.io/) のサイトにアクセス
+1. Tweet リンクをクリック
+1. `0x0000.....`部分を 1 でメモしたアドレスに置換する
+1. Tweet
+1. Tweet の URL をコピーしサイトの Input に貼り付ける
+1. Give me Ether ボタンを押す
+1. しばらくすると入金される
+
+## Mumbai 用の MATIC の入手方法
+
+テスト環境で使える MATIC の入手方法は以下の通り
+
+1. ウォレットのアドレスをメモ
+1. [https://faucet.matic.network/](https://faucet.matic.network/) のサイトにアクセス
+1. `Mumbai`を選択
+1. ウォレットアドレスを入力し Submit ボタンを押す
+1. しばらくすると入金される
