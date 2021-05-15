@@ -850,16 +850,14 @@ export class MintSDK {
     }
 
     const item = await this.getItemById(arg.itemId)
-    const signingData: Omit<
-      RegisterItemShippingInfoRequestBody,
-      'signedData'
-    > = {
-      chainType: item.chainType as any,
-      networkId: item.networkId,
-      contractAddress: item.mintContractAddress,
-      tokenId: item.tokenId,
-      ...arg.shippingInfo,
-    }
+    const signingData: Omit<RegisterItemShippingInfoRequestBody, 'signedData'> =
+      {
+        chainType: item.chainType as any,
+        networkId: item.networkId,
+        contractAddress: item.mintContractAddress,
+        tokenId: item.tokenId,
+        ...arg.shippingInfo,
+      }
     const signDataType = {
       domain: {
         chainId: item.networkId,
