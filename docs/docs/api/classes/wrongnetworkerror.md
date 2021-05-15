@@ -32,7 +32,7 @@ hide_title: true
 
 Inherited from: BaseError.constructor
 
-Defined in: [src/Errors.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/3dbabc4/src/Errors.ts#L1)
+Defined in: [src/Errors.ts:1](https://github.com/KyuzanInc/annapurna-sdk-js/blob/47d91d9/src/Errors.ts#L1)
 
 ## Properties
 
