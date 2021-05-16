@@ -6,7 +6,7 @@ import { LoadingList } from '../components/organisms/AuctionList/loading'
 import { useAppDispatch, useAppSelector } from '../redux/getStore'
 import { getItemsActionCreator } from '../redux/items'
 import { color } from '../style'
-import { NextPage, GetServerSideProps } from 'next'
+import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import CommonMeta from '../components/atoms/CommonMeta'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -20,12 +20,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   }
 }
-type Props = {
-  baseUrl: string
-  currentPath: string
-}
 
-const Page: NextPage<Props> = ({ baseUrl, currentPath }: Props) => {
+const Page: NextPage<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ baseUrl, currentPath }) => {
   const dispatch = useAppDispatch()
   const items = useAppSelector((state) => {
     return state.app.items.data

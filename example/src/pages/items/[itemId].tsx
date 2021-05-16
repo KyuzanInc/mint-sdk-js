@@ -9,7 +9,7 @@ import { getItemActionCreator } from '../../redux/item'
 import { color } from '../../style'
 import { ItemDetailComponent } from '../../components/organisms/ItemDetail'
 import { getHistoryActionCreator } from '../../redux/history'
-import { NextPage, GetServerSideProps } from 'next'
+import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import CommonMeta from '../../components/atoms/CommonMeta'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -23,12 +23,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   }
 }
-type Props = {
-  baseUrl: string
-  currentPath: string
-}
 
-const ItemDetailPage: NextPage<Props> = ({ baseUrl, currentPath }: Props) => {
+const ItemDetailPage: NextPage<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ baseUrl, currentPath }) => {
   const router = useRouter()
   const { itemId } = router.query
   const dispatch = useAppDispatch()
