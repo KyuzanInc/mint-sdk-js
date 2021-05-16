@@ -6,9 +6,24 @@ import { LoadingList } from '../components/organisms/AuctionList/loading'
 import { useAppDispatch, useAppSelector } from '../redux/getStore'
 import { getItemsActionCreator } from '../redux/items'
 import { color } from '../style'
-import { NextPage } from 'next'
+import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import CommonMeta from '../components/atoms/CommonMeta'
 
-const Page: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const host = context.req.headers.host
+  const baseUrl = `http://${host}`
+  const currentPath = context.req.url
+  return {
+    props: {
+      baseUrl,
+      currentPath,
+    },
+  }
+}
+
+const Page: NextPage<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ baseUrl, currentPath }) => {
   const dispatch = useAppDispatch()
   const items = useAppSelector((state) => {
     return state.app.items.data
@@ -26,6 +41,7 @@ const Page: NextPage = () => {
   }, [])
   return (
     <Container>
+      <CommonMeta baseUrl={baseUrl} currentPath={currentPath} />
       <InnerContainer>
         {waitingItems && <LoadingList />}
         {!waitingItems && <LiveAuctionList items={items.live} />}
