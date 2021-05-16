@@ -8,6 +8,6 @@ class BaseError extends Error {
 }
 
 /**
- * ネットワークが正しくない
+ * ユーザーのウォレットが接続しているネットワークが正しくない
  */
 export class WrongNetworkError extends BaseError {}

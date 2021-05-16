@@ -3,75 +3,65 @@
 const URL_REPO = 'https://github.com/KyuzanInc/mint-sdk-js'
 
 module.exports = {
-  title: 'MINT SDK',
-  tagline: 'MINT SDK',
-  url: URL_REPO,
+  title: 'Mint Developers',
+  tagline: 'Mint Developers',
+  url: 'https://kyuzaninc.github.io',
   baseUrl: '/mint-sdk-js/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
   organizationName: 'KyuzanInc', // Usually your GitHub org/user name.
   projectName: 'mint-sdk-js', // Usually your repo name.
   themeConfig: {
+    image: 'img/ogp.png',
+    metadatas: [{ name: 'twitter:card', content: 'summary_large_image' }],
     navbar: {
-      title: 'MINT SDK JS',
-      logo: {
-        alt: 'MINT SDK JS',
-        src: 'img/logo.svg',
-      },
+      title: 'Mint Developers',
+
       items: [
         {
           to: 'docs/api',
-          activeBasePath: 'docs',
+          activeBasePath: 'docs/api',
           label: 'Docs',
           position: 'left',
+        },
+        {
+          href: 'https://mintnft.jp',
+          label: 'Mint',
+          position: 'right',
         },
         {
           href: URL_REPO,
           label: 'GitHub',
           position: 'right',
         },
+        {
+          href: 'https://www.npmjs.com/package/@kyuzan/mint-sdk-js',
+          label: 'npm',
+          position: 'right',
+        },
       ],
     },
     footer: {
       style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'API',
-              to: '/docs/api',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'About company',
-              href: 'https://kyuzan.com/',
-            },
-            {
-              label: 'GitHub',
-              href: URL_REPO,
-            },
-          ],
-        },
-      ],
+      logo: {
+        alt: 'Powered by Kyuzan Inc.',
+        src: 'img/logo_footer.svg',
+        href: 'https://kyuzan.com',
+      },
       copyright: `Copyright © ${new Date().getFullYear()} Kyuzan Inc. Built with Docusaurus.`,
     },
   },
   plugins: [
     [
       'docusaurus-plugin-typedoc',
-
       // Plugin / TypeDoc options
       {
         entryPoints: ['../src/index.ts'],
         tsconfig: '../tsconfig.json',
       },
     ],
+    '@docusaurus/plugin-ideal-image',
   ],
   presets: [
     [
@@ -82,14 +72,8 @@ module.exports = {
           // Please change this to your repo.
           editUrl: URL_REPO,
         },
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   editUrl:
-        //     'https://github.com/facebook/docusaurus/edit/master/website/blog/',
-        // },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve('./src/css/index.css'),
         },
       },
     ],

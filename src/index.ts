@@ -1,3 +1,9 @@
+import {
+  DefaultApiFactory,
+  RegisterItemShippingInfoRequestBody,
+  ItemShippingInfo,
+} from './apiClient/api'
+import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
 import { AxiosBody } from './types/AxiosBody'
@@ -5,12 +11,11 @@ import { Token } from './types/Token'
 import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
 import * as Agent from 'agentkeepalive'
-
 import * as ethers from 'ethers'
 import Fortmatic from 'fortmatic'
 import { Item } from './types/Item'
 import { ItemLog } from './types/ItemLog'
-import { NetworkId } from './types/NetworkId'
+import { NetworkId, networkIdMapLabel } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
 import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
@@ -26,9 +31,12 @@ export {
   WalletSetting,
   WalletInfo,
   WrongNetworkError,
+  CurrencyUnit,
+  RegisterItemShippingInfoRequestBody,
+  ItemShippingInfo,
 }
 
-export class AnnapurnaSDK {
+export class MintSDK {
   /**
    * ether(通常のETHと表示される価格)をBigNumberとして返す
    *
@@ -36,9 +44,9 @@ export class AnnapurnaSDK {
    * @returns etherをBigNumberとしてparseしたもの
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * AnnapurnaSDK.parseEther('3.2') // BigNumber
+   * MintSDK.parseEther('3.2') // BigNumber
    * ```
    */
   public static parseEther = (ether: string) => {
@@ -52,17 +60,37 @@ export class AnnapurnaSDK {
    * @returns Ether単位でパースされたstring
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet()  // required
    * const walletInfo = await sdk.getWalletInfo()
-   * AnnapurnaSDK.formatEther(walletInfo.balance) // 3.2
+   * MintSDK.formatEther(walletInfo.balance) // 3.2
    * ```
    */
   public static formatEther = (bg: BigNumber) => {
     return ethers.utils.formatEther(bg)
   }
+
+  /**
+   * @ignore
+   */
+  private axios: AxiosInstance
+
+  /**
+   * @ignore
+   */
+  private apiClient: ReturnType<typeof DefaultApiFactory>
+
+  /**
+   * @ignore
+   */
+  private metamaskProvider: ethers.providers.Web3Provider | null
+
+  /**
+   * @ignore
+   */
+  private fortmatic: WidgetMode
 
   /**
    * @ignore
@@ -80,21 +108,47 @@ export class AnnapurnaSDK {
   private eventConnectCallbacks: Array<() => any> = []
 
   /**
-   * @ignore
+   *
+   * @param accessToken
+   * @param networkId アイテムのネットワークIDを指定
+   * @param walletSetting
    */
-  private constructor(
+  public constructor(
     private accessToken: string,
-    private networkId: NetworkId,
-    private axios: AxiosInstance,
-    private fortmatic: WidgetMode,
-    private metamaskProvider: ethers.providers.Web3Provider | null,
-    private shopContract: {
-      abi: any
-      address: string
+    private networkIds: NetworkId[],
+    walletSetting: WalletSetting,
+    // for Developing SDK
+    devOption?: {
+      backendUrl?: string
+      jsonRPCUrl?: string
     }
   ) {
-    if (metamaskProvider) {
-      metamaskProvider.on('network', (_, oldNetwork) => {
+    this.fortmatic = new Fortmatic(
+      walletSetting.fortmatic.key,
+      devOption?.jsonRPCUrl
+        ? {
+            rpcUrl: devOption.jsonRPCUrl,
+          }
+        : undefined
+    )
+    this.metamaskProvider = (window as any).ethereum
+      ? new ethers.providers.Web3Provider((window as any).ethereum, 'any')
+      : null
+    const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
+    const keepAliveAgent = new Agent.HttpsAgent({
+      keepAlive: true,
+    })
+    this.axios = Axios.create({
+      httpsAgent: keepAliveAgent,
+      baseURL: backendBaseUrl,
+      headers: {
+        'annapurna-access-token': accessToken,
+      },
+    })
+    this.apiClient = DefaultApiFactory(undefined, backendBaseUrl, this.axios)
+
+    if (this.metamaskProvider) {
+      this.metamaskProvider.on('network', (_, oldNetwork) => {
         if (oldNetwork) {
           window.location.reload()
         }
@@ -109,91 +163,14 @@ export class AnnapurnaSDK {
   }
 
   /**
-   * sdkのイシャライズ
-   *
-   * @param accessToken
-   * @param networkId
-   * @param walletSetting
-   * @returns sdkのインスタンス
-   *
-   * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * await AnnapurnaSDK.initialize(YOUR PROJECT ID, YOUR ACCESS TOKEN, { fortmatic: { token: YOUR FORTMATIC TOKEN } })
-   * ```
-   */
-  public static initialize = async (
-    accessToken: string,
-    networkId: NetworkId,
-    walletSetting: WalletSetting,
-    // for Developing SDK
-    devOption?: {
-      backendUrl?: string
-      jsonRPCUrl?: string
-      contractMintAbi?: any
-      contractMintShopAddress?: string
-    }
-  ) => {
-    const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
-    const keepAliveAgent = new Agent.HttpsAgent({
-      keepAlive: true,
-    })
-    const axios = Axios.create({
-      httpsAgent: keepAliveAgent,
-      baseURL: backendBaseUrl,
-      headers: {
-        'annapurna-access-token': accessToken,
-      },
-    })
-
-    const { data } = await axios.get('/v2_projectConfig')
-
-    const fortmatic = new Fortmatic(
-      walletSetting.fortmatic.key,
-      devOption?.jsonRPCUrl
-        ? {
-            rpcUrl: devOption.jsonRPCUrl,
-          }
-        : undefined
-    )
-
-    const metamaskProvider = (window as any).ethereum
-      ? new ethers.providers.Web3Provider((window as any).ethereum, 'any')
-      : null
-
-    const contractShopAbi =
-      devOption?.contractMintAbi ??
-      (networkId === 1
-        ? data.data.contract.mintShopContract.main.abi
-        : data.data.contract.mintShopContract.rinkeby.abi)
-    const contractShopAddress =
-      devOption?.contractMintShopAddress ??
-      (networkId === 1
-        ? data.data.contract.mintShopContract.main.address
-        : data.data.contract.mintShopContract.rinkeby.address)
-
-    const sdk = new AnnapurnaSDK(
-      accessToken,
-      networkId,
-      axios,
-      fortmatic,
-      metamaskProvider,
-      {
-        abi: contractShopAbi,
-        address: contractShopAddress,
-      }
-    )
-    return sdk
-  }
-
-  /**
    * 有効なアカウントがあるの状態を返す
    *
    * @returns ウォレットが接続されていればtrue
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.isWalletConnect()
    * ```
    */
@@ -213,8 +190,8 @@ export class AnnapurnaSDK {
    * ウォレット接続をキャンセルした場合は、Rejectされる
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.isWalletConnect() // false
    * await sdk.connectWallet()
    * await sdk.isWalletConnect()  // true
@@ -238,9 +215,9 @@ export class AnnapurnaSDK {
    * **MetaMaskが接続されている場合は何も実行されない**
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.disconnectWallet()
    * ```
    */
@@ -258,8 +235,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet()  // required
    * await sdk.getWalletInfo()
    * ```
@@ -269,6 +246,9 @@ export class AnnapurnaSDK {
       throw new Error('not LoggedId')
     }
 
+    const networkId = await this.getConnectedNetworkId()
+    const unit = networkId === 137 || networkId === 80001 ? 'MATIC' : 'ETH'
+
     if (this.metamaskProvider) {
       const accounts = await this.metamaskProvider.listAccounts()
       const address = accounts[0]
@@ -276,6 +256,7 @@ export class AnnapurnaSDK {
       return {
         address,
         balance,
+        unit,
       }
     } else {
       const accounts = (await this.fortmatic
@@ -288,6 +269,7 @@ export class AnnapurnaSDK {
       return {
         address,
         balance,
+        unit,
       }
     }
   }
@@ -301,8 +283,8 @@ export class AnnapurnaSDK {
    * @param txHash {@link ethers.providers.TransactionResponse}のhashプロパティ
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxBuyItem('item.itemId')
@@ -327,9 +309,9 @@ export class AnnapurnaSDK {
    * @param paging
    * @returns
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const sdk = await MintSDK.initialize(...)
    * const items = await sdk.getItems()
    * ```
    */
@@ -345,8 +327,8 @@ export class AnnapurnaSDK {
       page: 1,
     }
   ) => {
-    const { data } = await this.axios.get('/v2_items', {
-      params: { networkId: this.networkId, perPage, page },
+    const { data } = await this.axios.get('/v3_items', {
+      params: { networkIds: this.networkIds, perPage, page },
     })
     const items = data.data as Item[]
     const formatItems = items.map(this.formatItem)
@@ -360,16 +342,16 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemsByBidderAddress('0x1111......')
    * ```
    */
   public getItemsByBidderAddress = async (address: string) => {
-    const { data } = await this.axios.get('v2_getItemsByBidderAddress', {
+    const { data } = await this.axios.get('v3_getItemsByBidderAddress', {
       params: {
         address,
-        networkId: this.networkId,
+        networkIds: this.networkIds,
       },
     })
     const items = data.data as Item[]
@@ -383,8 +365,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemById('item.itemId')
    * ```
    */
@@ -400,8 +382,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemByToken(token)
    * ```
    */
@@ -409,7 +391,7 @@ export class AnnapurnaSDK {
     const { data } = await this.axios.get<AxiosBody<Item>>('v2_itemByToken', {
       params: {
         tokenId: token.tokenId,
-        networkId: this.networkId,
+        networkId: token.item.networkId,
         tokenAddress: token.contractAddress,
         mintContractAddress: token.contractAddress,
       },
@@ -426,9 +408,9 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * const sdk = await MintSDK.initialize(...)
    * const item = await sdk.getItemLogs('Item.itemId')
    * ```
    */
@@ -464,14 +446,14 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...
    * const tokens = await sdk.getTokensByAddress('0x11111...')
    * ```
    */
   public getTokensByAddress = async (address: string) => {
-    const { data } = await this.axios.get('v2_tokensByAddress', {
-      params: { address, networkId: this.networkId },
+    const { data } = await this.axios.get('v3_tokensByAddress', {
+      params: { address, networkIds: this.networkIds },
     })
     return data.data as Token[]
   }
@@ -488,8 +470,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxBid('item.itemId', 2)
@@ -506,18 +488,12 @@ export class AnnapurnaSDK {
       throw new Error('Wallet is not connected')
     }
 
-    if (!(await this.isCorrectNetwork())) {
-      throw new WrongNetworkError('Network is not correct')
-    }
-
     const item = await this.getItemById(itemId)
+    await this.validateNetworkForItem(item)
     const wallet = await this.getProvider()
+    const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
-    const shopContract = new ethers.Contract(
-      this.shopContract.address,
-      this.shopContract.abi,
-      signer
-    )
+    const shopContract = new ethers.Contract(address, abi, signer)
     if (item.tradeType !== 'auction') {
       throw new Error("Item's tradeType is not auction")
     }
@@ -554,8 +530,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId', 'jp')
@@ -575,18 +551,12 @@ export class AnnapurnaSDK {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
-
-    if (!(await this.isCorrectNetwork())) {
-      throw new WrongNetworkError('Network is not correct')
-    }
     const item = await this.getItemById(itemId)
+    await this.validateNetworkForItem(item)
     const wallet = await this.getProvider()
+    const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
-    const shopContract = new ethers.Contract(
-      this.shopContract.address,
-      this.shopContract.abi,
-      signer
-    )
+    const shopContract = new ethers.Contract(address, abi, signer)
     if (item.tradeType !== 'auction') {
       throw new Error("Item's tradeType is not auction")
     }
@@ -621,8 +591,8 @@ export class AnnapurnaSDK {
    * @returns
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxBuyItem('item.itemId', 'jp')
@@ -642,17 +612,12 @@ export class AnnapurnaSDK {
       throw new Error('Wallet is not connected')
     }
 
-    if (!(await this.isCorrectNetwork())) {
-      throw new WrongNetworkError('Network is not correct')
-    }
     const item = await this.getItemById(itemId)
+    await this.validateNetworkForItem(item)
     const wallet = await this.getProvider()
+    const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
-    const shopContract = new ethers.Contract(
-      this.shopContract.address,
-      this.shopContract.abi,
-      signer
-    )
+    const shopContract = new ethers.Contract(address, abi, signer)
     if (item.tradeType !== 'fixedPrice') {
       throw new Error("Item's tradeType is not fixedPrice")
     }
@@ -687,8 +652,8 @@ export class AnnapurnaSDK {
    * @returns void
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * sdk.onAccountsChange((accounts: string[]) => {
    *    // some thing
    * })
@@ -720,8 +685,8 @@ export class AnnapurnaSDK {
    * @returns void
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * sdk.onConnect(() => {
    *    // some thing
    * })
@@ -753,8 +718,8 @@ export class AnnapurnaSDK {
    * @returns void
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
-   * const sdk = await AnnapurnaSDK.initialize(...)
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
    * sdk.onDisconnect(() => {
    *    // some thing
    * })
@@ -785,10 +750,10 @@ export class AnnapurnaSDK {
    * @returns unix time (ms)
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = AnnapurnaSDK.initialize(...)
-   * await	sdk.connectWallet()
+   * const sdk = MintSDK.initialize(...)
+   * await sdk.connectWallet()
    * await sdk.getServerUnixTime()  // ex) 1615444120104
    * ```
    */
@@ -803,9 +768,9 @@ export class AnnapurnaSDK {
    * @returns trueならばMetaMask
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = AnnapurnaSDK.initialize(...)
+   * const sdk = MintSDK.initialize(...)
    * await sdk.isInjectedWallet() // true
    * ```
    */
@@ -819,20 +784,282 @@ export class AnnapurnaSDK {
    * @returns trueならば適切なネットワーク
    *
    * ```typescript
-   * import { AnnapurnaSDK } from '@kyuzan/annapurna'
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = AnnapurnaSDK.initialize(...)
+   * const sdk = MintSDK.initialize(...)
    * await sdk.isCorrectNetwork() // true
    * ```
    */
   public isCorrectNetwork = async () => {
     if (this.isInjectedWallet()) {
-      return (
-        parseInt((window as any).ethereum.networkVersion, 10) === this.networkId
+      return this.networkIds.includes(
+        parseInt((window as any).ethereum.networkVersion, 10) as any
       )
     } else {
       const network = await this.getProvider().getNetwork()
-      return network.chainId === this.networkId
+      return this.networkIds.includes(network.chainId as any)
+    }
+  }
+
+  /**
+   * 接続中のネットワークIDを返す
+   *
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * await sdk.connectWallet()
+   * await sdk.getConnectedNetworkId()
+   * ```
+   */
+  public getConnectedNetworkId = async () => {
+    if (this.isInjectedWallet()) {
+      return parseInt((window as any).ethereum.networkVersion, 10)
+    } else {
+      const network = await this.getProvider().getNetwork()
+      return network.chainId
+    }
+  }
+
+  /**
+   * 物理アイテム付きのItemの発送先情報を登録
+   * ユーザーに配送先情報を入力してもらうフォームなどを用意して使ってください
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   * - ユーザーが{@link Item}の`type`が`nftWithPhysicalProduct`であること
+   * - {@link Item}が引き出されている or 買われていること（{@link Token}になっていること)
+   * - ユーザーが{@link Item}の`physicalOrderStatus`が`shippingInfoIsBlank`であること
+   * - ユーザーが{@link Token}の所有者であること
+   *
+   * @param arg itemId = {@link Item}のitemId, shippingInfo = 配送先情報
+   * @returns
+   *
+   */
+  public registerItemShippingInfo = async (arg: {
+    itemId: string
+    shippingInfo: Omit<
+      RegisterItemShippingInfoRequestBody,
+      'signedData' | 'chainType' | 'networkId' | 'contractAddress' | 'tokenId'
+    >
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const item = await this.getItemById(arg.itemId)
+    const signingData: Omit<RegisterItemShippingInfoRequestBody, 'signedData'> =
+      {
+        chainType: item.chainType as any,
+        networkId: item.networkId,
+        contractAddress: item.mintContractAddress,
+        tokenId: item.tokenId,
+        ...arg.shippingInfo,
+      }
+    const signDataType = {
+      domain: {
+        chainId: item.networkId,
+        name: 'フィジカルアイテムの発送先情報',
+        version: '1',
+      },
+      message: signingData,
+      primaryType: 'ShippingInformation',
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+        ],
+        // Not an EIP712Domain definition
+        ShippingInformation: [
+          { name: 'chainType', type: 'string' },
+          { name: 'networkId', type: 'int256' },
+          { name: 'contractAddress', type: 'string' },
+          { name: 'tokenId', type: 'int256' },
+          { name: 'name', type: 'string' },
+          { name: 'email', type: 'string' },
+          { name: 'postalCode', type: 'string' },
+          { name: 'prefecture', type: 'string' },
+          { name: 'city', type: 'string' },
+          { name: 'address1', type: 'string' },
+          { name: 'address2', type: 'string' },
+          { name: 'tel', type: 'string' },
+          { name: 'memo', type: 'string' },
+        ],
+      },
+    }
+    const signedData = await this.signData({ msgParams: signDataType })
+    // apiへのpost
+    const body = {
+      ...signingData,
+      signedData,
+    }
+    await this.apiClient.registerItemShippingInfo(
+      this.accessToken,
+      item.itemId,
+      body
+    )
+  }
+
+  /**
+   * 物理アイテム付きのItemの入力された発送先情報を取得
+   * {@link Items}セキュリティの観点から、ユーザーのSignが必要になります
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   * - ユーザーが{@link Item}の`type`が`nftWithPhysicalProduct`であること
+   * - {@link Item}が引き出されている or 買われていること（{@link Token}になっていること)
+   * - ユーザーが{@link Item}の`physicalOrderStatus`が`wip`または`ship`であること
+   * - ユーザーが{@link Token}の所有者であること
+   *
+   * @param arg itemId = {@link Item}のitemI
+   * @returns
+   *
+   */
+  public getItemShippingInfo = async (arg: { itemId: string }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const { address } = await this.getWalletInfo()
+
+    const item = await this.getItemById(arg.itemId)
+    const signDataType = {
+      domain: {
+        chainId: item.networkId,
+        name: 'フィジカルアイテムの発送先情報の確認',
+        version: '1',
+      },
+      message: {
+        address,
+      },
+      primaryType: 'WalletAddress',
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+        ],
+        WalletAddress: [{ name: 'address', type: 'string' }],
+      },
+    }
+    const signedData = await this.signData({ msgParams: signDataType })
+
+    const res = await this.apiClient.getItemShippingInfo(
+      this.accessToken,
+      item.itemId,
+      address,
+      signedData
+    )
+    return res.data
+  }
+
+  /**
+   * @ignore
+   */
+  private signData = async (arg: { msgParams: any }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    return new Promise<string>((resolve, reject) => {
+      const msgParams = JSON.stringify(arg.msgParams)
+      const wallet = this.getProvider()
+      wallet
+        .getSigner()
+        .getAddress()
+        .then((from) => {
+          const params = [from, msgParams]
+          const method = 'eth_signTypedData_v4'
+          wallet.provider.sendAsync!(
+            {
+              method,
+              params,
+            },
+            (error, result) => {
+              if (error) {
+                reject(error)
+              }
+              resolve(result.result)
+            }
+          )
+        })
+        .catch(reject)
+    })
+  }
+
+  /**
+   * 指定したネットワークをウォレットに追加する
+   * 137 => Polygon本番ネットワーク
+   * 80001 => Polygonテストネットワーク
+   *
+   * **Required**
+   * sdk.isInjectedWallet() => trueの場合のみ（MetaMaskのみ使える）
+   *
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * await sdk.connectWallet()
+   * await sdk.addEthereumChain(137)
+   * ```
+   */
+  public addEthereumChain = async (networkId: 137 | 80001) => {
+    type AddEthereumChainParameter = {
+      chainId: string // A 0x-prefixed hexadecimal string
+      chainName: string
+      nativeCurrency: {
+        name: string
+        symbol: string // 2-6 characters long
+        decimals: 18
+      }
+      rpcUrls: string[]
+      blockExplorerUrls?: string[]
+      iconUrls?: string[] // Currently ignored.
+    }
+    const NETWORK_ID_MAP_CHAIN_PARAMETER: Record<
+      137 | 80001,
+      AddEthereumChainParameter
+    > = {
+      137: {
+        chainId: '0x89',
+        chainName: 'Matic Network',
+        nativeCurrency: {
+          name: 'MATIC',
+          symbol: 'MATIC',
+          decimals: 18,
+        },
+        rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
+        blockExplorerUrls: ['https://explorer-mainnet.maticvigil.com/'],
+      },
+      80001: {
+        chainId: '0x13881',
+        chainName: 'Mumbai',
+        nativeCurrency: {
+          name: 'MATIC',
+          symbol: 'MATIC',
+          decimals: 18,
+        },
+        rpcUrls: ['https://rpc-mumbai.matic.today'],
+        blockExplorerUrls: ['https://explorer-mumbai.maticvigil.com/'],
+      },
+    }
+    // TODO: Fortmaticだとシカとか、適切なエラーを投げてやればいい
+    await (window as any).ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [NETWORK_ID_MAP_CHAIN_PARAMETER[networkId]], // you must have access to the specified account
+    })
+  }
+
+  /**
+   * @ignore
+   */
+  private validateNetworkForItem = async (item: Item) => {
+    const currentNetwork = await this.getConnectedNetworkId()
+    if (currentNetwork !== item.networkId) {
+      throw new WrongNetworkError('Network is not correct')
     }
   }
 
@@ -845,6 +1072,20 @@ export class AnnapurnaSDK {
     } else {
       const provider = this.fortmatic.getProvider()
       return new ethers.providers.Web3Provider(provider as any)
+    }
+  }
+
+  /**
+   * @ignore
+   */
+  private getMintShopContractInfo = async (networkId: NetworkId) => {
+    const { data } = await this.axios.get('/v2_projectConfig')
+    const networkLabel = networkIdMapLabel[networkId]
+    const abi = data.data.contract.mintShopContract[networkLabel].abi
+    const address = data.data.contract.mintShopContract[networkLabel].address
+    return {
+      abi,
+      address,
     }
   }
 
