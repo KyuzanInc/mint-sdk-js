@@ -1,3 +1,4 @@
+import { ItemTradeType } from './ItemTradeType'
 import { NetworkId } from './NetworkId'
 import { ItemsPhysicalOrderStatus } from './ItemsPhysicalOrderStatus'
 import { ItemsType } from './ItemsType'
@@ -20,7 +21,7 @@ export type Item = {
    * shipped: 出荷済み
    */
   physicalOrderStatus?: ItemsPhysicalOrderStatus
-  tradeType: 'fixedPrice' | 'auction'
+  tradeType: ItemTradeType
   /**
    * `Item`に対応するERC721準拠した tokenId
    * `Item`が買われた時などに、生成されるTokenの tokenId

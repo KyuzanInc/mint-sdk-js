@@ -29,10 +29,10 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 export interface InlineResponse200 {
     /**
      * 
-     * @type {ItemShippingInfo}
+     * @type {Array<Item>}
      * @memberof InlineResponse200
      */
-    data: ItemShippingInfo;
+    data: Array<Item>;
     /**
      * 
      * @type {object}
@@ -48,17 +48,279 @@ export interface InlineResponse200 {
 export interface InlineResponse2001 {
     /**
      * 
-     * @type {string}
+     * @type {ItemShippingInfo}
      * @memberof InlineResponse2001
      */
-    data?: string;
+    data: ItemShippingInfo;
     /**
      * 
      * @type {object}
      * @memberof InlineResponse2001
      */
+    meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2002
+ */
+export interface InlineResponse2002 {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2002
+     */
+    data?: string;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse2002
+     */
     meta?: object;
 }
+/**
+ * 
+ * @export
+ * @interface Item
+ */
+export interface Item {
+    /**
+     * 
+     * @type {string}
+     * @memberof Item
+     */
+    chainType: ItemChainTypeEnum;
+    /**
+     * 
+     * @type {ItemOpenStatus}
+     * @memberof Item
+     */
+    openStatus: ItemOpenStatus;
+    /**
+     * 
+     * @type {string}
+     * @memberof Item
+     */
+    itemId: string;
+    /**
+     * 
+     * @type {ItemType}
+     * @memberof Item
+     */
+    type?: ItemType;
+    /**
+     * 
+     * @type {PhysicalOrderStatus}
+     * @memberof Item
+     */
+    physicalOrderStatus?: PhysicalOrderStatus;
+    /**
+     * memoがある時だけ値がある。管理者だけみれる。
+     * @type {string}
+     * @memberof Item
+     */
+    orderMemo?: string;
+    /**
+     * 
+     * @type {TradeType}
+     * @memberof Item
+     */
+    tradeType: TradeType;
+    /**
+     * 
+     * @type {number}
+     * @memberof Item
+     */
+    tokenId: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Item
+     */
+    collectionId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Item
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Item
+     */
+    description: string;
+    /**
+     * NFTのMetadata（JSON）が収まっているU
+     * @type {string}
+     * @memberof Item
+     */
+    tokenURI: string;
+    /**
+     * tokenURIのHTTP Gateway経由のURL
+     * @type {string}
+     * @memberof Item
+     */
+    tokenURIHTTP: string;
+    /**
+     * 画像や動画などのデータが収まっている
+     * @type {string}
+     * @memberof Item
+     */
+    imageURI: string;
+    /**
+     * 
+     * @type {Media}
+     * @memberof Item
+     */
+    imageURIHTTP: Media;
+    /**
+     * Itemのプレビュー用URL
+     * @type {Array<Media>}
+     * @memberof Item
+     */
+    previews: Array<Media>;
+    /**
+     * Itemの作成者ウォレットアドレス
+     * @type {string}
+     * @memberof Item
+     */
+    authorAddress: string;
+    /**
+     * 
+     * @type {NetworkId}
+     * @memberof Item
+     */
+    networkId: NetworkId;
+    /**
+     * tradeType === fixedPriceの時に値が入る
+     * @type {string}
+     * @memberof Item
+     */
+    signatureBuyAuction?: string;
+    /**
+     * tradeType === auctionの時に値が入る
+     * @type {string}
+     * @memberof Item
+     */
+    signatureBidAuction?: string;
+    /**
+     * tradeType === auctionの時に値が入る
+     * @type {string}
+     * @memberof Item
+     */
+    signatureBuyFixedPrice?: string;
+    /**
+     * Itemが引き出されたり買われたりして、NFTが発行されると値が入る
+     * @type {string}
+     * @memberof Item
+     */
+    buyerAddress?: string;
+    /**
+     * tradeType === fixedPriceの時に値が入る。単位はETH。
+     * @type {number}
+     * @memberof Item
+     */
+    price?: number;
+    /**
+     * 最小入札価格。tradeType === auctionの時に値が入る。単位はETH。
+     * @type {number}
+     * @memberof Item
+     */
+    minBidPrice?: number;
+    /**
+     * tradeType === auctionの時に値が入る。currentPrice * minBidPercentage === minBidPrice
+     * @type {number}
+     * @memberof Item
+     */
+    minBidPercentage?: number;
+    /**
+     * 最高入札価格。tradeType === auctionの時に値が入る。単位はETH。
+     * @type {number}
+     * @memberof Item
+     */
+    currentPrice?: number;
+    /**
+     * 最高入札者。tradeType === auctionの時に値が入る。
+     * @type {string}
+     * @memberof Item
+     */
+    currentBidderAddress?: string;
+    /**
+     * オークション開始日時。tradeType === auctionの時に値が入る。
+     * @type {any}
+     * @memberof Item
+     */
+    startAt?: any | null;
+    /**
+     * オークション終了日時。tradeType === auctionの時に値が入る。
+     * @type {any}
+     * @memberof Item
+     */
+    endAt?: any | null;
+    /**
+     * オークション開始価格。tradeType === auctionの時に値が入る。単位はETH
+     * @type {number}
+     * @memberof Item
+     */
+    initialPrice?: number;
+    /**
+     * 作者名
+     * @type {Array<string>}
+     * @memberof Item
+     */
+    createdBy: Array<string>;
+    /**
+     * 任意のTag
+     * @type {Array<string>}
+     * @memberof Item
+     */
+    tags: Array<string>;
+    /**
+     * 作成年
+     * @type {string}
+     * @memberof Item
+     */
+    yearCreated: string;
+    /**
+     * トークンコントラクト。
+     * @type {string}
+     * @memberof Item
+     */
+    mintContractAddress: string;
+    /**
+     * Shopコントラクト
+     * @type {string}
+     * @memberof Item
+     */
+    mintShopContractAddress: string;
+    /**
+     * 手数料。MintShopコントラクトに支払われる
+     * @type {number}
+     * @memberof Item
+     */
+    feeRatePermill: number;
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum ItemChainTypeEnum {
+    Ethereum = 'ethereum'
+}
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum ItemOpenStatus {
+    Open = 'open',
+    Close = 'close',
+    Withdrawal = 'withdrawal'
+}
+
 /**
  * 
  * @export
@@ -121,6 +383,59 @@ export interface ItemShippingInfo {
     memo: string;
 }
 /**
+ * typeがないものは、ノーマルなnft
+ * @export
+ * @enum {string}
+ */
+export enum ItemType {
+    Nft = 'nft',
+    NftWithPhysicalProduct = 'nftWithPhysicalProduct'
+}
+
+/**
+ * 
+ * @export
+ * @interface Media
+ */
+export interface Media {
+    /**
+     * 
+     * @type {string}
+     * @memberof Media
+     */
+    url: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Media
+     */
+    mimeType: string;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum NetworkId {
+    NUMBER_1 = 1,
+    NUMBER_4 = 4,
+    NUMBER_80001 = 80001,
+    NUMBER_137 = 137,
+    NUMBER_31337 = 31337
+}
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum PhysicalOrderStatus {
+    ShippingInfoIsBlank = 'shippingInfoIsBlank',
+    Wip = 'wip',
+    Shipped = 'shipped'
+}
+
+/**
  * 
  * @export
  * @interface RegisterItemShippingInfoRequestBody
@@ -140,10 +455,10 @@ export interface RegisterItemShippingInfoRequestBody {
     chainType: RegisterItemShippingInfoRequestBodyChainTypeEnum;
     /**
      * 
-     * @type {number}
+     * @type {NetworkId}
      * @memberof RegisterItemShippingInfoRequestBody
      */
-    networkId: RegisterItemShippingInfoRequestBodyNetworkIdEnum;
+    networkId: NetworkId;
     /**
      * 
      * @type {string}
@@ -219,16 +534,15 @@ export interface RegisterItemShippingInfoRequestBody {
 export enum RegisterItemShippingInfoRequestBodyChainTypeEnum {
     Ethereum = 'ethereum'
 }
+
 /**
-    * @export
-    * @enum {string}
-    */
-export enum RegisterItemShippingInfoRequestBodyNetworkIdEnum {
-    NUMBER_1 = 1,
-    NUMBER_4 = 4,
-    NUMBER_80001 = 80001,
-    NUMBER_137 = 137,
-    NUMBER_31337 = 31337
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum TradeType {
+    FixedPrice = 'fixedPrice',
+    Auction = 'auction'
 }
 
 
@@ -238,6 +552,85 @@ export enum RegisterItemShippingInfoRequestBodyNetworkIdEnum {
  */
 export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @summary アイテムを返す
+         * @param {string} annapurnaAccessToken 
+         * @param {Array<string> | string} networkIds 
+         * @param {ItemType} [itemType] 
+         * @param {TradeType} [tradeType] 
+         * @param {'true' | 'false'} [onSale] 
+         * @param {string} [perPage] 
+         * @param {string} [page] 
+         * @param {'endAt' | 'startAt' | 'price'} [sortBy] 
+         * @param {'asc' | 'desc'} [order] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemList: async (annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price', order?: 'asc' | 'desc', options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'annapurnaAccessToken' is not null or undefined
+            assertParamExists('getItemList', 'annapurnaAccessToken', annapurnaAccessToken)
+            // verify required parameter 'networkIds' is not null or undefined
+            assertParamExists('getItemList', 'networkIds', networkIds)
+            const localVarPath = `/v3_items`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (networkIds !== undefined) {
+                localVarQueryParameter['networkIds'] = networkIds;
+            }
+
+            if (itemType !== undefined) {
+                localVarQueryParameter['itemType'] = itemType;
+            }
+
+            if (tradeType !== undefined) {
+                localVarQueryParameter['tradeType'] = tradeType;
+            }
+
+            if (onSale !== undefined) {
+                localVarQueryParameter['onSale'] = onSale;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (sortBy !== undefined) {
+                localVarQueryParameter['sortBy'] = sortBy;
+            }
+
+            if (order !== undefined) {
+                localVarQueryParameter['order'] = order;
+            }
+
+            if (annapurnaAccessToken !== undefined && annapurnaAccessToken !== null) {
+                localVarHeaderParameter['annapurna-access-token'] = String(annapurnaAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary 登録されているフィジカルアイテム付きItemに配送先住所を取得。（個人情報なので、WalletのSignが必要）
@@ -350,6 +743,25 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary アイテムを返す
+         * @param {string} annapurnaAccessToken 
+         * @param {Array<string> | string} networkIds 
+         * @param {ItemType} [itemType] 
+         * @param {TradeType} [tradeType] 
+         * @param {'true' | 'false'} [onSale] 
+         * @param {string} [perPage] 
+         * @param {string} [page] 
+         * @param {'endAt' | 'startAt' | 'price'} [sortBy] 
+         * @param {'asc' | 'desc'} [order] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price', order?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemList(annapurnaAccessToken, networkIds, itemType, tradeType, onSale, perPage, page, sortBy, order, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary 登録されているフィジカルアイテム付きItemに配送先住所を取得。（個人情報なので、WalletのSignが必要）
          * @param {string} annapurnaAccessToken 
          * @param {string} itemId 
@@ -358,7 +770,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+        async getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -371,7 +783,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+        async registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.registerItemShippingInfo(annapurnaAccessToken, itemId, registerItemShippingInfoRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -387,6 +799,24 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @summary アイテムを返す
+         * @param {string} annapurnaAccessToken 
+         * @param {Array<string> | string} networkIds 
+         * @param {ItemType} [itemType] 
+         * @param {TradeType} [tradeType] 
+         * @param {'true' | 'false'} [onSale] 
+         * @param {string} [perPage] 
+         * @param {string} [page] 
+         * @param {'endAt' | 'startAt' | 'price'} [sortBy] 
+         * @param {'asc' | 'desc'} [order] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price', order?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse200> {
+            return localVarFp.getItemList(annapurnaAccessToken, networkIds, itemType, tradeType, onSale, perPage, page, sortBy, order, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 登録されているフィジカルアイテム付きItemに配送先住所を取得。（個人情報なので、WalletのSignが必要）
          * @param {string} annapurnaAccessToken 
          * @param {string} itemId 
@@ -395,7 +825,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): AxiosPromise<InlineResponse200> {
+        getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): AxiosPromise<InlineResponse2001> {
             return localVarFp.getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options).then((request) => request(axios, basePath));
         },
         /**
@@ -407,7 +837,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): AxiosPromise<InlineResponse2001> {
+        registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): AxiosPromise<InlineResponse2002> {
             return localVarFp.registerItemShippingInfo(annapurnaAccessToken, itemId, registerItemShippingInfoRequestBody, options).then((request) => request(axios, basePath));
         },
     };
@@ -420,6 +850,26 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @summary アイテムを返す
+     * @param {string} annapurnaAccessToken 
+     * @param {Array<string> | string} networkIds 
+     * @param {ItemType} [itemType] 
+     * @param {TradeType} [tradeType] 
+     * @param {'true' | 'false'} [onSale] 
+     * @param {string} [perPage] 
+     * @param {string} [page] 
+     * @param {'endAt' | 'startAt' | 'price'} [sortBy] 
+     * @param {'asc' | 'desc'} [order] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price', order?: 'asc' | 'desc', options?: any) {
+        return DefaultApiFp(this.configuration).getItemList(annapurnaAccessToken, networkIds, itemType, tradeType, onSale, perPage, page, sortBy, order, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary 登録されているフィジカルアイテム付きItemに配送先住所を取得。（個人情報なので、WalletのSignが必要）

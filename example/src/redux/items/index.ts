@@ -29,27 +29,6 @@ export const initialItemsState: ItemsState = {
 }
 
 // AsyncAction
-export const initialItemActionCreator = createAsyncThunk(
-  'app/items/init',
-  async () => {
-    if (getSdk()) {
-      const items = await getSdk()?.getItems()
-      const now = new Date()
-      const live = items?.filter((item) => item.endAt && now < item.endAt) ?? []
-      const ended =
-        items?.filter((item) => item.endAt && now >= item.endAt) ?? []
-      return {
-        live,
-        ended,
-      }
-    } else {
-      return {
-        live: [],
-        ended: [],
-      }
-    }
-  }
-)
 
 export const getItemsActionCreator = createAsyncThunk<
   ItemsInfo,
@@ -59,15 +38,21 @@ export const getItemsActionCreator = createAsyncThunk<
   }
 >('app/items/get', async (_, thunkApi) => {
   try {
-    const items = await getSdk()!.getItems()
-    const now = new Date()
-    const live = items?.filter((item) => item.endAt && now < item.endAt) ?? []
-    const ended = items?.filter((item) => item.endAt && now >= item.endAt) ?? []
+    const [live, ended] = await Promise.all([
+      getSdk()?.getItems({
+        onSale: 'true',
+        perPage: 1000,
+        page: 1,
+        sort: { sortBy: 'endAt', order: 'asc' },
+      }),
+      getSdk()?.getItems({ onSale: 'false', perPage: 1000, page: 1 }),
+    ])
     return {
-      live,
-      ended,
+      live: live ?? [],
+      ended: ended ?? [],
     }
   } catch (err) {
+    console.error(err)
     return thunkApi.rejectWithValue('Itemを取得できませんでした')
   }
 })
@@ -79,22 +64,6 @@ export const itemsSlice = createSlice({
   initialState: initialItemsState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(
-      initialItemActionCreator.fulfilled,
-      (state, { payload }) => {
-        if (typeof payload === 'undefined') {
-          state.data = {
-            live: [],
-            ended: [],
-          }
-        } else {
-          state.data = {
-            live: payload.live,
-            ended: payload.ended,
-          }
-        }
-      }
-    )
     builder.addCase(getItemsActionCreator.pending, (state) => {
       state.meta.waitingItemAction = true
     })
