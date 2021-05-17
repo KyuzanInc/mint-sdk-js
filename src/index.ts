@@ -316,11 +316,12 @@ export class MintSDK {
    * @returns
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   *
    * const sdk = await MintSDK.initialize(...)
-   * const items = await sdk.getItems()
+   *
+   * const items = await sdk.getItems({ onSale: 'true' })
    * ```
    */
+
   public getItems = async (
     {
       perPage,
@@ -879,16 +880,14 @@ export class MintSDK {
     }
 
     const item = await this.getItemById(arg.itemId)
-    const signingData: Omit<
-      RegisterItemShippingInfoRequestBody,
-      'signedData'
-    > = {
-      chainType: item.chainType as any,
-      networkId: item.networkId,
-      contractAddress: item.mintContractAddress,
-      tokenId: item.tokenId,
-      ...arg.shippingInfo,
-    }
+    const signingData: Omit<RegisterItemShippingInfoRequestBody, 'signedData'> =
+      {
+        chainType: item.chainType as any,
+        networkId: item.networkId,
+        contractAddress: item.mintContractAddress,
+        tokenId: item.tokenId,
+        ...arg.shippingInfo,
+      }
     const signDataType = {
       domain: {
         chainId: item.networkId,

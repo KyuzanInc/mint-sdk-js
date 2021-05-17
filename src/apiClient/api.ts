@@ -562,12 +562,12 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {'true' | 'false'} [onSale] 
          * @param {string} [perPage] 
          * @param {string} [page] 
-         * @param {'endAt' | 'startAt' | 'price'} [sortBy] 
+         * @param {'endAt' | 'startAt' | 'price' | 'tokenId'} [sortBy] 
          * @param {'asc' | 'desc'} [order] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemList: async (annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price', order?: 'asc' | 'desc', options: any = {}): Promise<RequestArgs> => {
+        getItemList: async (annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'annapurnaAccessToken' is not null or undefined
             assertParamExists('getItemList', 'annapurnaAccessToken', annapurnaAccessToken)
             // verify required parameter 'networkIds' is not null or undefined
@@ -751,12 +751,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {'true' | 'false'} [onSale] 
          * @param {string} [perPage] 
          * @param {string} [page] 
-         * @param {'endAt' | 'startAt' | 'price'} [sortBy] 
+         * @param {'endAt' | 'startAt' | 'price' | 'tokenId'} [sortBy] 
          * @param {'asc' | 'desc'} [order] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price', order?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+        async getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemList(annapurnaAccessToken, networkIds, itemType, tradeType, onSale, perPage, page, sortBy, order, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -807,12 +807,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {'true' | 'false'} [onSale] 
          * @param {string} [perPage] 
          * @param {string} [page] 
-         * @param {'endAt' | 'startAt' | 'price'} [sortBy] 
+         * @param {'endAt' | 'startAt' | 'price' | 'tokenId'} [sortBy] 
          * @param {'asc' | 'desc'} [order] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price', order?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse200> {
+        getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse200> {
             return localVarFp.getItemList(annapurnaAccessToken, networkIds, itemType, tradeType, onSale, perPage, page, sortBy, order, options).then((request) => request(axios, basePath));
         },
         /**
@@ -860,13 +860,13 @@ export class DefaultApi extends BaseAPI {
      * @param {'true' | 'false'} [onSale] 
      * @param {string} [perPage] 
      * @param {string} [page] 
-     * @param {'endAt' | 'startAt' | 'price'} [sortBy] 
+     * @param {'endAt' | 'startAt' | 'price' | 'tokenId'} [sortBy] 
      * @param {'asc' | 'desc'} [order] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price', order?: 'asc' | 'desc', options?: any) {
+    public getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any) {
         return DefaultApiFp(this.configuration).getItemList(annapurnaAccessToken, networkIds, itemType, tradeType, onSale, perPage, page, sortBy, order, options).then((request) => request(this.axios, this.basePath));
     }
 
