@@ -1,7 +1,12 @@
 name: deploy-demosite-prod
 
-# クリックによってデプロイ
-on: workflow_dispatch
+# exampleフォルダ配下のソースが変更されてmasterにpushされたら実行
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'example/**'
 
 jobs:
   # This workflow contains a single job called "build"
