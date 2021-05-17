@@ -351,7 +351,7 @@ export class MintSDK {
        */
       page: number
       /**
-       * endAt/startAtはオークションの場合に有効で、終了・開始時間で並び替えを行う。`price`は固定価格販売の場合のみ有効
+       * `'endAt','startAt'`はオークションの場合に有効で、オークションの終了・開始時間でsortを行います。`price`は固定価格販売の場合のみ有効です。
        */
       sort?: {
         sortBy: 'endAt' | 'startAt' | 'price'
