@@ -42,10 +42,17 @@ export const getItemsActionCreator = createAsyncThunk<
       getSdk()?.getItems({
         onSale: 'true',
         perPage: 1000,
+        networkId: [4, 80001],
         page: 1,
-        sort: { sortBy: 'endAt', order: 'asc' },
+        sort: { sortBy: 'endAt', order: 'desc' },
       }),
-      getSdk()?.getItems({ onSale: 'false', perPage: 1000, page: 1 }),
+      getSdk()?.getItems({
+        onSale: 'false',
+        networkId: [4, 80001],
+        perPage: 1000,
+        page: 1,
+        sort: { sortBy: 'endAt', order: 'desc' },
+      }),
     ])
     return {
       live: live ?? [],
