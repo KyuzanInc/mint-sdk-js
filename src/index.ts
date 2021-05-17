@@ -341,7 +341,7 @@ export class MintSDK {
       networkId?: NetworkId[]
       itemType?: ItemsType
       tradeType?: ItemTradeType
-      onSale?: 'true' | 'false'
+      onSale?: boolean
     } = {
       perPage: 30,
       page: 1,
@@ -354,7 +354,7 @@ export class MintSDK {
         : this.networkIds.map((id) => id.toString()),
       itemType ? (itemType as ItemType) : undefined,
       tradeType ? (tradeType as TradeType) : undefined,
-      onSale ? onSale : undefined,
+      typeof onSale !== 'undefined' ? (onSale ? 'true' : 'false') : undefined,
       perPage.toString(),
       page.toString(),
       sort ? sort.sortBy : undefined,
