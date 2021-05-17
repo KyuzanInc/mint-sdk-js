@@ -2,6 +2,8 @@ import {
   DefaultApiFactory,
   RegisterItemShippingInfoRequestBody,
   ItemShippingInfo,
+  ItemType,
+  TradeType,
 } from './apiClient/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
@@ -20,10 +22,14 @@ import { BigNumber } from './types/BigNumber'
 import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
 import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
+import { ItemsType } from './types/ItemsType'
+import { ItemTradeType } from './types/ItemTradeType'
 
 export {
   Item,
   ItemLog,
+  ItemTradeType,
+  ItemsType,
   Residence,
   NetworkId,
   BigNumber,
@@ -310,26 +316,50 @@ export class MintSDK {
    * @returns
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   *
    * const sdk = await MintSDK.initialize(...)
-   * const items = await sdk.getItems()
+   *
+   * const items = await sdk.getItems({ onSale: 'true' })
    * ```
    */
+
   public getItems = async (
     {
       perPage,
       page,
+      networkId,
+      itemType,
+      tradeType,
+      onSale,
+      sort,
     }: {
       perPage: number
       page: number
+      sort?: {
+        sortBy: 'endAt' | 'startAt' | 'price'
+        order: 'asc' | 'desc'
+      }
+      networkId?: NetworkId[]
+      itemType?: ItemsType
+      tradeType?: ItemTradeType
+      onSale?: 'true' | 'false'
     } = {
       perPage: 30,
       page: 1,
     }
   ) => {
-    const { data } = await this.axios.get('/v3_items', {
-      params: { networkIds: this.networkIds, perPage, page },
-    })
+    const { data } = await this.apiClient.getItemList(
+      this.accessToken,
+      networkId
+        ? networkId.map((id) => id.toString())
+        : this.networkIds.map((id) => id.toString()),
+      itemType ? (itemType as ItemType) : undefined,
+      tradeType ? (tradeType as TradeType) : undefined,
+      onSale ? onSale : undefined,
+      perPage.toString(),
+      page.toString(),
+      sort ? sort.sortBy : undefined,
+      sort ? sort.order : undefined
+    )
     const items = data.data as Item[]
     const formatItems = items.map(this.formatItem)
     return formatItems
