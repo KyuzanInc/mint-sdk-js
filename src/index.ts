@@ -310,7 +310,16 @@ export class MintSDK {
   }
 
   /**
-   * 公開中のアイテムを取得
+   * 公開中(Items.openStatus === 'open')のアイテムを取得
+   * ステータスの変更は管理画面から行えます。
+   *
+   * #### 制限事項
+   *
+   * 次の制限事項に注意してください。
+   *
+   * - `tradeType === 'fixedPrice'`を指定した場合、`'endAt' | 'startAt'`によるsortは行えません
+   * - `tradeType === 'auction'`を指定した場合、`price`によるsortは行えません
+   * - `onSale`を指定した場合、`startAt`によるsortは行えません
    *
    * @param paging
    * @returns
@@ -318,7 +327,7 @@ export class MintSDK {
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    *
-   * const items = await sdk.getItems({ onSale: 'true' })
+   * const items = await sdk.getItems({ onSale: true })
    * ```
    */
 
@@ -332,16 +341,32 @@ export class MintSDK {
       onSale,
       sort,
     }: {
+      /**
+       * 1ページあたりのアイテム数。
+       * デフォルトは30。
+       */
       perPage: number
+      /**
+       * ページ数。
+       */
       page: number
+      /**
+       * `'endAt','startAt'`はオークションの場合に有効で、オークションの終了・開始時間でsortを行います。`price`は固定価格販売の場合のみ有効です。
+       */
       sort?: {
         sortBy: 'endAt' | 'startAt' | 'price'
         order: 'asc' | 'desc'
       }
+      /**
+       * 指定しなければ、コンストラクターの値が使われます
+       */
       networkId?: NetworkId[]
       itemType?: ItemsType
       tradeType?: ItemTradeType
-      onSale?: 'true' | 'false'
+      /**
+       *
+       */
+      onSale?: boolean
     } = {
       perPage: 30,
       page: 1,
@@ -354,7 +379,7 @@ export class MintSDK {
         : this.networkIds.map((id) => id.toString()),
       itemType ? (itemType as ItemType) : undefined,
       tradeType ? (tradeType as TradeType) : undefined,
-      onSale ? onSale : undefined,
+      typeof onSale !== 'undefined' ? (onSale ? 'true' : 'false') : undefined,
       perPage.toString(),
       page.toString(),
       sort ? sort.sortBy : undefined,
