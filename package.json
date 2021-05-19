@@ -28,7 +28,7 @@
   "files": [
     "dist"
   ],
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "publishConfig": {
     "access": "public"
   },
@@ -36,11 +36,10 @@
     "dev": "run-p watch:*",
     "doc:deploy": "cd ./docs && npm run deploy",
     "doc:serve": "cd ./docs && npm run start",
-    "build:develop": "npm run clean && node build.ts development && tsc --project tsconfig.json --emitDeclarationOnly",
-    "build:production": "npm run clean && npm run type:check && node build.ts production && tsc --project tsconfig.json --emitDeclarationOnly",
+    "build:develop": "tsc --project tsconfig.json",
+    "build:production": "tsc --project tsconfig.json",
     "clean": "rimraf dist",
-    "watch:typeCheck": "tsc --watch -noEmit --project tsconfig.json",
-    "watch:build": "node build.ts development w",
+    "watch:build": "tsc --watch --project tsconfig.json",
     "format:fix": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
     "lint:check": "eslint src --ext ts",
