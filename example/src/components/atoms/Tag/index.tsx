@@ -26,6 +26,7 @@ const TagBase = styled.span`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  width: fit-content;
   border-radius: 4px;
   background-color: ${color.content.superLight};
   padding: 7px 10px;

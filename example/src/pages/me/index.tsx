@@ -63,9 +63,8 @@ const Page: NextPage = () => {
     (state) => state.app.shippingInfo.data.shippingInfo
   )
 
-  const [selectShippingInfoItemId, setSelectShippingInfoItemId] = useState<
-    string | undefined
-  >(undefined)
+  const [selectShippingInfoItemId, setSelectShippingInfoItemId] =
+    useState<string | undefined>(undefined)
 
   const showShippingInfo = (itemId: string) => {
     setSelectShippingInfoItemId(itemId)

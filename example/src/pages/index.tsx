@@ -21,35 +21,34 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-const Page: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ baseUrl, currentPath }) => {
-  const dispatch = useAppDispatch()
-  const items = useAppSelector((state) => {
-    return state.app.items.data
-  })
+const Page: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> =
+  ({ baseUrl, currentPath }) => {
+    const dispatch = useAppDispatch()
+    const items = useAppSelector((state) => {
+      return state.app.items.data
+    })
 
-  const waitingItems = useAppSelector((state) => {
-    return state.app.items.meta.waitingItemAction
-  })
-  const getItems = useCallback(() => {
-    dispatch(getItemsActionCreator() as any)
-  }, [])
+    const waitingItems = useAppSelector((state) => {
+      return state.app.items.meta.waitingItemAction
+    })
+    const getItems = useCallback(() => {
+      dispatch(getItemsActionCreator() as any)
+    }, [])
 
-  useEffect(() => {
-    getItems()
-  }, [])
-  return (
-    <Container>
-      <CommonMeta baseUrl={baseUrl} currentPath={currentPath} />
-      <InnerContainer>
-        {waitingItems && <LoadingList />}
-        {!waitingItems && <LiveAuctionList items={items.live} />}
-        {!waitingItems && <EndedAuctionList items={items.ended} />}
-      </InnerContainer>
-    </Container>
-  )
-}
+    useEffect(() => {
+      getItems()
+    }, [])
+    return (
+      <Container>
+        <CommonMeta baseUrl={baseUrl} currentPath={currentPath} />
+        <InnerContainer>
+          {waitingItems && <LoadingList />}
+          {!waitingItems && <LiveAuctionList items={items.live} />}
+          {!waitingItems && <EndedAuctionList items={items.ended} />}
+        </InnerContainer>
+      </Container>
+    )
+  }
 
 export default Page
 

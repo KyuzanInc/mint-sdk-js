@@ -10,7 +10,9 @@
     "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"./src/**/*.{ts,tsx}\"",
     "lint:check": "eslint src --ext ts,tsx --resolve-plugins-relative-to ./example",
-    "lint:fix": "eslint src --ext ts,tsx --fix --resolve-plugins-relative-to ./example"
+    "lint:fix": "eslint src --ext ts,tsx --fix --resolve-plugins-relative-to ./example",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@emotion/react": "^11.4.0",
@@ -36,18 +38,25 @@
     "vercel": "^22.0.1"
   },
   "devDependencies": {
-    "@types/node": "^12.20.12",
-    "@types/react": "^17.0.5",
-    "@types/react-dom": "^17.0.3",
+    "@babel/core": "^7.13.14",
+    "@storybook/addon-actions": "^6.2.3",
+    "@storybook/addon-essentials": "^6.2.3",
+    "@storybook/addon-links": "^6.2.3",
+    "@storybook/react": "^6.2.3",
+    "@types/axios": "^0.14.0",
+    "@types/node": "^12.20.13",
+    "@types/react": "^17.0.6",
+    "@types/react-dom": "^17.0.5",
     "@types/react-modal": "^3.12.0",
     "@types/react-redux": "^7.1.16",
     "@types/redux-logger": "^3.0.8",
-    "@typescript-eslint/eslint-plugin": "^4.22.1",
-    "@typescript-eslint/parser": "^4.22.1",
-    "eslint": "^7.25.0",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.2.1",
+    "prettier": "^2.3.0",
     "typescript": "^4.2.4"
   },
   "license": "MIT"
