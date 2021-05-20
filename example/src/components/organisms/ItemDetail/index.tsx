@@ -79,9 +79,8 @@ export const ItemDetailComponent: React.FC<Props> = () => {
   const closeBidModal = useCallback(() => setBidModalIsOpen(false), [])
   const openBidModal = useCallback(() => setBidModalIsOpen(true), [])
 
-  const [aboutPhysicalModalIsOpen, setAboutPhysicalModalIsOpen] = useState(
-    false
-  )
+  const [aboutPhysicalModalIsOpen, setAboutPhysicalModalIsOpen] =
+    useState(false)
   const closePhysicalModal = useCallback(
     () => setAboutPhysicalModalIsOpen(false),
     []
