@@ -117,6 +117,9 @@ export const ItemDetailComponent: React.FC<Props> = () => {
             iconPath={'/images/cardboard.svg'}
           />
         )}
+        {item?.tradeType === 'autoExtensionAuction' && (
+          <Tag label={'自動延長オークション'} />
+        )}
         <StatusDetail item={item} />
         <QuestionButton onClick={openPhysicalModal}>
           <QuestionIcon>
