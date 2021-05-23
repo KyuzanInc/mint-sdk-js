@@ -1,14 +1,15 @@
 import React, { useCallback, useState } from 'react'
-import { Item } from '@kyuzan/mint-sdk-js'
 import { LiveStatus } from './active'
 import { EndedStatus } from './ended'
 
 type Props = {
-  item?: Item
+  endAt: Date
+  price: number
+  unit: string
 }
 
-export const StatusDetail: React.FC<Props> = ({ item }) => {
-  const endDate = item?.endAt ?? new Date()
+export const StatusDetail: React.FC<Props> = ({ endAt, price, unit }) => {
+  const endDate = endAt ?? new Date()
   const initialState = endDate < new Date()
   const [isEnded, setIsEnded] = useState(initialState)
   const updateTime = useCallback(() => {
@@ -16,8 +17,15 @@ export const StatusDetail: React.FC<Props> = ({ item }) => {
   }, [])
   return (
     <>
-      {!isEnded && <LiveStatus item={item} onComplete={updateTime} />}
-      {isEnded && <EndedStatus item={item} />}
+      {!isEnded && (
+        <LiveStatus
+          endAt={endDate}
+          price={price}
+          unit={unit}
+          onComplete={updateTime}
+        />
+      )}
+      {isEnded && <EndedStatus endAt={endAt} unit={unit} price={price} />}
     </>
   )
 }

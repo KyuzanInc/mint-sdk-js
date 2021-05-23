@@ -15,7 +15,14 @@ export const EndedCard: React.FC<Props> = ({ item }) => {
       media={item.imageURIHTTP}
       withPhysicalProduct={item.type === 'nftWithPhysicalProduct'}
     >
-      <AuctionInfo item={item} />
+      <AuctionInfo
+        startAt={item.startAt}
+        endAt={item.endAt}
+        tradeType={item.tradeType}
+        networkId={item.networkId}
+        initialPrice={item.initialPrice}
+        currentPrice={item.currentPrice}
+      />
     </Card>
   )
 }

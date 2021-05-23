@@ -16,14 +16,6 @@
     "sourceMap": true,
     "strict": true,
     "moduleResolution": "node",
-    "baseUrl": "./src",
-    "paths": {
-      "*": [
-        "*"
-      ]
-    },
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "baseUrl": "./src"
   }
 }
