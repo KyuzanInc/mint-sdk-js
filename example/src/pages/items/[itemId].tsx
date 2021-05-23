@@ -1,8 +1,6 @@
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect } from 'react'
-import Skeleton from 'react-loading-skeleton'
-import { Media } from '../../components/molecules/Card'
 import { HistoryComponent } from '../../components/organisms/History'
 import { useAppDispatch, useAppSelector } from '../../redux/getStore'
 import { getItemActionCreator } from '../../redux/item'
@@ -11,6 +9,7 @@ import { ItemDetailComponent } from '../../components/organisms/ItemDetail'
 import { getHistoryActionCreator } from '../../redux/history'
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import CommonMeta from '../../components/atoms/CommonMeta'
+import { MediaContent } from '../../components/atoms/MediaContent'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const host = context.req.headers.host
@@ -56,7 +55,9 @@ const ItemDetailPage: NextPage<
     <Container>
       <CommonMeta baseUrl={baseUrl} currentPath={currentPath} />
       <MediaContainer>
-        <MediaContent media={item?.imageURIHTTP} />
+        <MediaInner>
+          <MediaContent media={item?.imageURIHTTP} height={480} />
+        </MediaInner>
       </MediaContainer>
       <DetailContainer>
         <ItemDetailComponent />
@@ -67,22 +68,6 @@ const ItemDetailPage: NextPage<
 }
 
 export default ItemDetailPage
-
-const MediaContent: React.FC<{ media: Media | undefined }> = ({ media }) => {
-  const waitingItem = useAppSelector((state) => {
-    return state.app.item.meta.waitingItemAction
-  })
-
-  if (waitingItem || !media) {
-    return <Skeleton height={480} width={1440} />
-  }
-  const type = media.mimeType.split('/')[0]
-  const src = media.url
-  if (type === 'image') {
-    return <Image src={src} loading="lazy" />
-  }
-  return <Video src={src} height={'480px'} autoPlay loop preload="auto" muted />
-}
 
 const Container = styled.div`
   background: ${color.white};
@@ -97,6 +82,12 @@ const MediaContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  margin: 0 auto;
+`
+
+const MediaInner = styled.div`
+  max-width: 1440px;
+  margin: 0 auto;
 `
 
 const DetailContainer = styled.div`
@@ -105,12 +96,4 @@ const DetailContainer = styled.div`
   justify-content: center;
   width: 100%;
   padding: 0 150px;
-`
-const Image = styled.img`
-  object-fit: cover;
-  height: 480px;
-`
-
-const Video = styled.video`
-  object-fit: cover;
 `

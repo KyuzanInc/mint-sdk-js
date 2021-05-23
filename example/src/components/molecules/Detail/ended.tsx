@@ -1,10 +1,8 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { Item } from '@kyuzan/mint-sdk-js'
 import { color } from '../../../style'
 import { format } from 'date-fns'
 import {
-  getPrice,
   StatusContainer,
   PriceContent,
   StatusTitle,
@@ -15,12 +13,13 @@ import {
 } from './active'
 
 type Props = {
-  item?: Item
+  endAt: Date
+  price: number
+  unit: string
 }
 
-export const EndedStatus: React.FC<Props> = ({ item }) => {
-  const price = getPrice(item)
-  const target = item?.endAt ?? new Date()
+export const EndedStatus: React.FC<Props> = ({ price, endAt, unit }) => {
+  const target = endAt ?? new Date()
   const date = format(target, 'yyyy.MM.dd HH:mm')
   return (
     <StatusContainer>
@@ -28,7 +27,7 @@ export const EndedStatus: React.FC<Props> = ({ item }) => {
         <StatusTitle>sold for</StatusTitle>
         <StatusValue>
           <Value>{price}</Value>
-          <Unit>ETH</Unit>
+          <Unit>{unit}</Unit>
         </StatusValue>
       </PriceContent>
       <TimeContent>
@@ -44,7 +43,6 @@ const EndedStatusValue = styled.div`
   font-size: 30px;
   line-height: 1.3;
   color: ${color.content.dark};
-  margin: 16px 0px;
   display: flex;
   align-items: center;
 `

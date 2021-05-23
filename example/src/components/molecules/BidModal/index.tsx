@@ -5,8 +5,14 @@ import Modal, { Styles } from 'react-modal'
 import { color, font } from '../../../style'
 import { PrimaryLoadingButton as ButtonBase } from '../../atoms/LoadingBotton'
 import { Chip } from '../../atoms/Chip'
+import { MediaContent } from '../../atoms/MediaContent'
+import { StatusDetail } from '../Detail'
 
 type Props = {
+  itemName: string
+  endAt: Date
+  price: number
+  media: { url: string; mimeType: string } | undefined
   minBidPrice: number | undefined
   walletBalance: string | undefined
   isOpen: boolean
@@ -47,51 +53,66 @@ export const BidModal: React.VFC<Props> = ({
   bidPrice,
   onChangeInput,
   doBid,
+  media,
+  endAt,
+  price,
+  itemName,
 }) => {
   return (
     <Modal isOpen={isOpen} style={customStyles} contentLabel="Wallet">
       <ModalContainer>
         <Content>
-          <ContentTitle>Place a Bid </ContentTitle>
-          <PriceRangeContainer>
-            <PriceRangeItem>
-              <PriceRangeTitle>MIN</PriceRangeTitle>
-              <PriceRangeSubTitle>You must bid at least</PriceRangeSubTitle>
-              <PriceRangePrice>
-                {minBidPrice}
-                {unit}
-              </PriceRangePrice>
-            </PriceRangeItem>
-            <Image
-              src={'/images/arrows.svg'}
-              width={32}
-              height={16}
-              layout={'fixed'}
-            />
-            <PriceRangeItem>
-              <PriceRangeTitle>MAX</PriceRangeTitle>
-              <PriceRangeSubTitle>Your Balance</PriceRangeSubTitle>
-              <PriceRangePrice>
-                {walletBalance}
-                {unit}
-              </PriceRangePrice>
-            </PriceRangeItem>
-          </PriceRangeContainer>
-          <InputPriceContainer>
-            <InputPrice
-              type={'number'}
-              value={bidPrice}
-              onChange={onChangeInput}
-            />
-            <InputUnit>{unit}</InputUnit>
-          </InputPriceContainer>
-          <ContentButtonContainer>
-            <BidButton
-              label={loading ? '取引処理中です' : 'PLACE A BID'}
-              isLoading={loading}
-              onClick={doBid}
-            />
-          </ContentButtonContainer>
+          <Left>
+            <MediaContainer>
+              <MediaContent media={media} height={254} />
+            </MediaContainer>
+            <InfoContainer>
+              <ItemName>{itemName}</ItemName>
+              <StatusDetail endAt={endAt} price={price} unit={unit} />
+            </InfoContainer>
+          </Left>
+          <Right>
+            <ContentTitle>Place a Bid </ContentTitle>
+            <PriceRangeContainer>
+              <PriceRangeItem>
+                <PriceRangeTitle>MIN</PriceRangeTitle>
+                <PriceRangeSubTitle>You must bid at least</PriceRangeSubTitle>
+                <PriceRangePrice>
+                  {minBidPrice}
+                  {unit}
+                </PriceRangePrice>
+              </PriceRangeItem>
+              <Image
+                src={'/images/arrows.svg'}
+                width={32}
+                height={16}
+                layout={'fixed'}
+              />
+              <PriceRangeItem>
+                <PriceRangeTitle>MAX</PriceRangeTitle>
+                <PriceRangeSubTitle>Your Balance</PriceRangeSubTitle>
+                <PriceRangePrice>
+                  {walletBalance}
+                  {unit}
+                </PriceRangePrice>
+              </PriceRangeItem>
+            </PriceRangeContainer>
+            <InputPriceContainer>
+              <InputPrice
+                type={'number'}
+                value={bidPrice}
+                onChange={onChangeInput}
+              />
+              <InputUnit>{unit}</InputUnit>
+            </InputPriceContainer>
+            <ContentButtonContainer>
+              <BidButton
+                label={loading ? '取引処理中です' : 'PLACE A BID'}
+                isLoading={loading}
+                onClick={doBid}
+              />
+            </ContentButtonContainer>
+          </Right>
         </Content>
         <CloseButton onClick={closeModal}>
           <Image
@@ -114,14 +135,40 @@ const ModalContainer = styled.div`
 `
 
 const Content = styled.div`
-  width: 400px;
   border-radius: 16px;
   overflow: hidden;
   background: ${color.white};
-  padding: 40px;
+  display: flex;
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+`
+
+const Left = styled.div`
+  background-color: ${color.background.bague};
+  padding: 40px;
+  max-width: 600px;
+`
+
+const MediaContainer = styled.div`
+  margin: 0 auto;
+`
+
+const InfoContainer = styled.div`
+  background-color: ${color.white};
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 8px;
+`
+
+const ItemName = styled.p`
+  ${font.lg.subtitle1}
+  margin-bottom: 16px;
+`
+
+const Right = styled.div`
+  padding: 40px;
+  width: 440px;
 `
 
 const ContentTitle = styled.p`
