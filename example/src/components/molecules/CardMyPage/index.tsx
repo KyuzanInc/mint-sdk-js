@@ -35,7 +35,7 @@ export const CardMyPage: React.VFC<Props> = ({
     return (
       <Container>
         <MediaContainer>
-          <MediaContent media={item?.previews[0]} width={240} height={240} />
+          <MediaContent media={item?.previews[0]} height={240} />
         </MediaContainer>
         <Center>
           <Skeleton width={240} height={160} />
@@ -50,7 +50,7 @@ export const CardMyPage: React.VFC<Props> = ({
     return (
       <Container>
         <MediaContainer>
-          <MediaContent media={item?.previews[0]} width={240} height={240} />
+          <MediaContent media={item?.previews[0]} height={240} />
         </MediaContainer>
         <Center>
           <CenterTitleContainer>
@@ -97,7 +97,7 @@ export const CardMyPage: React.VFC<Props> = ({
     return (
       <Container>
         <MediaContainer>
-          <MediaContent media={item?.previews[0]} width={240} height={240} />
+          <MediaContent media={item?.previews[0]} height={240} />
         </MediaContainer>
         <Center>
           <CenterTitleContainer>

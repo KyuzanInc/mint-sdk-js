@@ -30,7 +30,7 @@ export const Card: React.FC<Props> = ({
     <Link href={href}>
       <CardBase>
         <CardMedia>
-          <MediaContent height={220} width={264} media={media} />
+          <MediaContent height={220} media={media} />
         </CardMedia>
         <CardContent>
           <Typography>

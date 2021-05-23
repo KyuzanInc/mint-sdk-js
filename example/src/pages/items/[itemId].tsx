@@ -56,7 +56,7 @@ const ItemDetailPage: NextPage<
       <CommonMeta baseUrl={baseUrl} currentPath={currentPath} />
       <MediaContainer>
         <MediaInner>
-          <MediaContent media={item?.imageURIHTTP} width={1440} height={480}/>
+          <MediaContent media={item?.imageURIHTTP} height={480} />
         </MediaInner>
       </MediaContainer>
       <DetailContainer>

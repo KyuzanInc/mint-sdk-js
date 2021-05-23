@@ -15,6 +15,7 @@ import { BidButton } from '../../molecules/Button/bid'
 import { StatusDetail } from '../../molecules/Detail'
 import { WalletModal } from '../../molecules/WalletModal'
 import { LoadingItemDetailComponent } from './loading'
+import { getItemPrice } from '../../../util/getItemPrice'
 
 type Props = {
   children?: ReactNode
@@ -117,7 +118,12 @@ export const ItemDetailComponent: React.FC<Props> = () => {
             iconPath={'/images/cardboard.svg'}
           />
         )}
-        <StatusDetail item={item} />
+        <TradeInfoContainer>
+          <StatusDetail
+            price={getItemPrice(item)}
+            endAt={item?.endAt ?? new Date()}
+          />
+        </TradeInfoContainer>
         <QuestionButton onClick={openPhysicalModal}>
           <QuestionIcon>
             <Image
@@ -160,6 +166,7 @@ export const ItemDetailComponent: React.FC<Props> = () => {
         closeModal={closeWalletModal}
       />
       <BidModal
+        media={item?.imageURIHTTP}
         unit={getItemPriceUnit(item)}
         minBidPrice={item?.minBidPrice}
         walletBalance={walletInfo?.balance}
@@ -198,7 +205,11 @@ export const Description = styled.div`
   min-height: 192px;
 `
 
-export const ExternalLinkUL = styled.ul`
+const TradeInfoContainer = styled.div`
+  margin: 32px 0;
+`
+
+const ExternalLinkUL = styled.ul`
   display: flex;
   flex-direction: column;
 `

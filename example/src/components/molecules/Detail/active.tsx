@@ -1,11 +1,11 @@
 import React from 'react'
 import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
-import { Item } from '@kyuzan/mint-sdk-js'
 import { color, font } from '../../../style'
 
 type LiveProps = {
-  item?: Item
+  endAt: Date
+  price: number
   onComplete: () => void
 }
 
@@ -49,8 +49,11 @@ const renderer = ({
   }
 }
 
-export const LiveStatus: React.FC<LiveProps> = ({ item, onComplete }) => {
-  const price = getPrice(item)
+export const LiveStatus: React.FC<LiveProps> = ({
+  price,
+  endAt,
+  onComplete,
+}) => {
   return (
     <StatusContainer>
       <PriceContent>
@@ -63,7 +66,7 @@ export const LiveStatus: React.FC<LiveProps> = ({ item, onComplete }) => {
       <TimeContent>
         <StatusTitle>ending in</StatusTitle>
         <Countdown
-          date={item?.endAt ?? 0 - Date.now()}
+          date={endAt ?? 0 - Date.now()}
           renderer={renderer}
           onComplete={onComplete}
         />
@@ -72,52 +75,40 @@ export const LiveStatus: React.FC<LiveProps> = ({ item, onComplete }) => {
   )
 }
 
-export const getPrice = (item?: Item) => {
-  let price = item?.currentPrice || item?.initialPrice || 0
-  if (price < 0.01) {
-    price = 0.01
-  } else {
-    price = Math.round(price * 100) / 100
-  }
-  return price
-}
-
 export const StatusContainer = styled.div`
-  margin-top: 32px;
   display: flex;
+  background: ${color.white};
 `
 
 export const Time = styled.div`
   ${font.lg.h2}
   color: ${color.content.dark};
+  margin-right: 4px;
 `
 
 export const TimeUnit = styled.div`
   ${font.lg.label}
   color: ${color.content.dark};
-  margin: 6px;
+  margin-right: 4px;
 `
 
 export const PriceContent = styled.div`
-  background: ${color.white};
-  padding: 0px 24px 0px 8px;
+  margin-right: 24px;
 `
 
 export const TimeContent = styled.div`
   background: ${color.white};
-  padding: 0px 24px;
 `
 
 export const StatusTitle = styled.div`
   color: ${color.content.dark};
   ${font.lg.label}
-  padding: 0 10px 0 0;
+  margin-bottom: 16px;
 `
 
 export const StatusValue = styled.div`
   ${font.lg.h2}
   color: ${color.content.dark};
-  margin: 16px 0px;
   display: flex;
   align-items: center;
 `
