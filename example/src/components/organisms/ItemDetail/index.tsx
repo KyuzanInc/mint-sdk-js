@@ -32,6 +32,7 @@ export const ItemDetailComponent: React.FC<Props> = () => {
   const startDate = item?.startAt ?? new Date()
   const auctionIsNotStarted = new Date() < startDate
   const auctionIsOutOfDate = auctionIsEnded || auctionIsNotStarted
+  const unit = getItemPriceUnit(item)
 
   const waitingItem = useAppSelector((state) => {
     return state.app.item.meta.waitingItemAction
@@ -120,6 +121,7 @@ export const ItemDetailComponent: React.FC<Props> = () => {
         )}
         <TradeInfoContainer>
           <StatusDetail
+            unit={unit}
             price={getItemPrice(item)}
             endAt={item?.endAt ?? new Date()}
           />
@@ -166,6 +168,9 @@ export const ItemDetailComponent: React.FC<Props> = () => {
         closeModal={closeWalletModal}
       />
       <BidModal
+        itemName={item?.name ?? ''}
+        price={getItemPrice(item)}
+        endAt={endDate}
         media={item?.imageURIHTTP}
         unit={getItemPriceUnit(item)}
         minBidPrice={item?.minBidPrice}

@@ -15,9 +15,10 @@ import {
 type Props = {
   endAt: Date
   price: number
+  unit: string
 }
 
-export const EndedStatus: React.FC<Props> = ({ price, endAt }) => {
+export const EndedStatus: React.FC<Props> = ({ price, endAt, unit }) => {
   const target = endAt ?? new Date()
   const date = format(target, 'yyyy.MM.dd HH:mm')
   return (
@@ -26,7 +27,7 @@ export const EndedStatus: React.FC<Props> = ({ price, endAt }) => {
         <StatusTitle>sold for</StatusTitle>
         <StatusValue>
           <Value>{price}</Value>
-          <Unit>ETH</Unit>
+          <Unit>{unit}</Unit>
         </StatusValue>
       </PriceContent>
       <TimeContent>

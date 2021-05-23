@@ -5,9 +5,10 @@ import { EndedStatus } from './ended'
 type Props = {
   endAt: Date
   price: number
+  unit: string
 }
 
-export const StatusDetail: React.FC<Props> = ({ endAt, price }) => {
+export const StatusDetail: React.FC<Props> = ({ endAt, price, unit }) => {
   const endDate = endAt ?? new Date()
   const initialState = endDate < new Date()
   const [isEnded, setIsEnded] = useState(initialState)
@@ -17,9 +18,14 @@ export const StatusDetail: React.FC<Props> = ({ endAt, price }) => {
   return (
     <>
       {!isEnded && (
-        <LiveStatus endAt={endDate} price={price} onComplete={updateTime} />
+        <LiveStatus
+          endAt={endDate}
+          price={price}
+          unit={unit}
+          onComplete={updateTime}
+        />
       )}
-      {isEnded && <EndedStatus endAt={endAt} price={price} />}
+      {isEnded && <EndedStatus endAt={endAt} unit={unit} price={price} />}
     </>
   )
 }

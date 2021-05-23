@@ -68,7 +68,7 @@ export const BidModal: React.VFC<Props> = ({
             </MediaContainer>
             <InfoContainer>
               <ItemName>{itemName}</ItemName>
-              <StatusDetail endAt={endAt} price={price} />
+              <StatusDetail endAt={endAt} price={price} unit={unit} />
             </InfoContainer>
           </Left>
           <Right>
@@ -147,10 +147,12 @@ const Content = styled.div`
 const Left = styled.div`
   background-color: ${color.background.bague};
   padding: 40px;
-  max-width: 400px;
+  max-width: 600px;
 `
 
-const MediaContainer = styled.div``
+const MediaContainer = styled.div`
+  margin: 0 auto;
+`
 
 const InfoContainer = styled.div`
   background-color: ${color.white};

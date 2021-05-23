@@ -6,6 +6,7 @@ import { color, font } from '../../../style'
 type LiveProps = {
   endAt: Date
   price: number
+  unit: string
   onComplete: () => void
 }
 
@@ -51,6 +52,7 @@ const renderer = ({
 
 export const LiveStatus: React.FC<LiveProps> = ({
   price,
+  unit,
   endAt,
   onComplete,
 }) => {
@@ -60,7 +62,7 @@ export const LiveStatus: React.FC<LiveProps> = ({
         <StatusTitle>current bid</StatusTitle>
         <StatusValue>
           <Value>{price}</Value>
-          <Unit>ETH</Unit>
+          <Unit>{unit}</Unit>
         </StatusValue>
       </PriceContent>
       <TimeContent>
