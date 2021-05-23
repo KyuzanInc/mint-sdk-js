@@ -35,7 +35,7 @@ export const CardMyPage: React.VFC<Props> = ({
     return (
       <Container>
         <MediaContainer>
-          <MediaContent media={item?.previews[0]} width={240} height={240} />
+          <MediaContent media={item?.previews[0]} height={240} />
         </MediaContainer>
         <Center>
           <Skeleton width={240} height={160} />
@@ -50,7 +50,7 @@ export const CardMyPage: React.VFC<Props> = ({
     return (
       <Container>
         <MediaContainer>
-          <MediaContent media={item?.previews[0]} width={240} height={240} />
+          <MediaContent media={item?.previews[0]} height={240} />
         </MediaContainer>
         <Center>
           <CenterTitleContainer>
@@ -65,7 +65,14 @@ export const CardMyPage: React.VFC<Props> = ({
             )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
-            <AuctionInfo item={item.item} />
+            <AuctionInfo
+              startAt={item.item.startAt}
+              endAt={item.item.endAt}
+              tradeType={item.item.tradeType}
+              networkId={item.item.networkId}
+              initialPrice={item.item.initialPrice}
+              currentPrice={item.item.currentPrice}
+            />
           </AuctionInfoContainer>
         </Center>
         <Right>
@@ -90,7 +97,7 @@ export const CardMyPage: React.VFC<Props> = ({
     return (
       <Container>
         <MediaContainer>
-          <MediaContent media={item?.previews[0]} width={240} height={240} />
+          <MediaContent media={item?.previews[0]} height={240} />
         </MediaContainer>
         <Center>
           <CenterTitleContainer>
@@ -105,7 +112,14 @@ export const CardMyPage: React.VFC<Props> = ({
             )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
-            <AuctionInfo item={item} />
+            <AuctionInfo
+              startAt={item.startAt}
+              endAt={item.endAt}
+              tradeType={item.tradeType}
+              networkId={item.networkId}
+              initialPrice={item.initialPrice}
+              currentPrice={item.currentPrice}
+            />
           </AuctionInfoContainer>
         </Center>
         <Right>
