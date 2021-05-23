@@ -3,13 +3,18 @@ import React from 'react'
 import { color, font } from '../../../style'
 import Countdown from 'react-countdown'
 import { format } from 'date-fns'
-import { ItemDetail } from '../../../redux/item'
 import Image from 'next/image'
-import { getItemPriceUnit } from '../../../util/getItemPriceUnit'
+import { getPriceUnit } from '../../../util/getItemPriceUnit'
 import { getNetworkIconPath } from '../../../util/getNetworkIconPath'
+import { NetworkId, ItemTradeType } from '@kyuzan/mint-sdk-js'
 
 type Props = {
-  item: ItemDetail
+  tradeType: ItemTradeType
+  networkId: NetworkId
+  startAt?: Date
+  endAt?: Date
+  initialPrice?: number
+  currentPrice?: number
   onComplete?: () => void
 }
 
@@ -26,14 +31,18 @@ type FormattedProps = {
   formatted: any
 }
 
-export const AuctionInfo: React.VFC<Props> = ({ item, onComplete }) => {
-  if (!item) return null
+export const AuctionInfo: React.VFC<Props> = ({
+  endAt,
+  initialPrice,
+  currentPrice,
+  networkId,
+  onComplete,
+}) => {
   const endDate =
-    (typeof item.endAt === 'string' ? new Date(item.endAt) : item.endAt) ??
-    new Date()
+    (typeof endAt === 'string' ? new Date(endAt) : endAt) ?? new Date()
   const auctionIsEnded = endDate < new Date()
   const formattedEndDate = format(endDate, 'yyyy.MM.dd HH:mm')
-  let price = item.currentPrice || item.initialPrice || 0
+  let price = currentPrice || initialPrice || 0
   if (price < 0.01) {
     price = 0.01
   } else {
@@ -46,10 +55,10 @@ export const AuctionInfo: React.VFC<Props> = ({ item, onComplete }) => {
         <StatusTitle>{auctionIsEnded ? 'sold for' : 'current bid'}</StatusTitle>
         <StatusValue>
           <Value>{price}</Value>
-          <Unit>{getItemPriceUnit(item)}</Unit>
+          <Unit>{getPriceUnit(networkId)}</Unit>
           <Icon>
             <Image
-              src={getNetworkIconPath(item.networkId)}
+              src={getNetworkIconPath(networkId)}
               width={16}
               height={16}
               layout={'fixed'}
@@ -65,7 +74,7 @@ export const AuctionInfo: React.VFC<Props> = ({ item, onComplete }) => {
           </StatusValue>
         ) : (
           <Countdown
-            date={item.endAt ?? 0 - Date.now()}
+            date={endAt ?? 0 - Date.now()}
             renderer={renderer}
             onComplete={onComplete}
           />

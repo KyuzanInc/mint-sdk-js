@@ -65,7 +65,14 @@ export const CardMyPage: React.VFC<Props> = ({
             )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
-            <AuctionInfo item={item.item} />
+            <AuctionInfo
+              startAt={item.item.startAt}
+              endAt={item.item.endAt}
+              tradeType={item.item.tradeType}
+              networkId={item.item.networkId}
+              initialPrice={item.item.initialPrice}
+              currentPrice={item.item.currentPrice}
+            />
           </AuctionInfoContainer>
         </Center>
         <Right>
@@ -105,7 +112,14 @@ export const CardMyPage: React.VFC<Props> = ({
             )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
-            <AuctionInfo item={item} />
+            <AuctionInfo
+              startAt={item.startAt}
+              endAt={item.endAt}
+              tradeType={item.tradeType}
+              networkId={item.networkId}
+              initialPrice={item.initialPrice}
+              currentPrice={item.currentPrice}
+            />
           </AuctionInfoContainer>
         </Center>
         <Right>

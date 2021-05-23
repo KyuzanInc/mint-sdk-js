@@ -70,12 +70,10 @@ const CardBase = styled.div`
   border-radius: 12px;
   overflow: hidden;
 `
-const CardMedia = styled(CardBase)`
-  border-radius: 12px 12px 0 0;
-  background: ${color.white};
+const CardMedia = styled.div`
+  background: ${color.background.bague};
   height: 220px;
   width: 100%;
-  position: relative;
 `
 
 const CardContent = styled.div`

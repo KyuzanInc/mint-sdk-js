@@ -5,6 +5,7 @@ import Skeleton from 'react-loading-skeleton'
 type Props = {
   width: number
   height: number
+  waitingItem?: boolean
   media:
     | {
         url: string
@@ -13,26 +14,21 @@ type Props = {
     | undefined
 }
 
-export const MediaContent: React.VFC<Props> = ({ media, height, width }) => {
-  if (!media) {
+export const MediaContent: React.VFC<Props> = ({ waitingItem, media, height }) => {
+  if (!media || waitingItem) {
     return (
-      <Skeleton
-        height={height}
-        width={width}
-        style={{ top: 0, position: 'absolute' }}
-      />
+      <Skeleton height={height} />
     )
   }
   const type = media.mimeType.split('/')[0]
   const src = media.url
   if (type === 'image') {
-    return <Image src={src} loading="lazy" height={height} width={width} />
+    return <Image src={src} loading="lazy" height={height} />
   }
   return (
     <Video
       src={src}
       height={height}
-      width={width}
       autoPlay
       loop
       preload="auto"
@@ -41,14 +37,14 @@ export const MediaContent: React.VFC<Props> = ({ media, height, width }) => {
   )
 }
 
-const Image = styled.img<{ width: number; height: number }>`
+const Image = styled.img<{ height: number }>`
   height: ${({ height }) => `${height}px`};
-  width: ${({ width }) => `${width}px`};
+  width: 100%;
   object-fit: cover;
 `
 
-const Video = styled.video<{ width: number; height: number }>`
+const Video = styled.video<{ height: number }>`
   height: ${({ height }) => `${height}px`};
-  width: ${({ width }) => `${width}px`};
+  width: 100%;
   object-fit: cover;
 `

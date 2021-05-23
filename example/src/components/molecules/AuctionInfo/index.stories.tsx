@@ -1,9 +1,28 @@
+import { action } from '@storybook/addon-actions'
+import { addDays, subDays } from 'date-fns'
 import React from 'react'
 import { AuctionInfo } from '.'
-import { fixtureAuctionEnd, fixtureAuctionItem } from './fixture'
 
-export const Live: React.VFC = () => <AuctionInfo item={fixtureAuctionItem} />
-export const End: React.VFC = () => <AuctionInfo item={fixtureAuctionEnd} />
+export const Live: React.VFC = () => (
+  <AuctionInfo
+    startAt={new Date()}
+    endAt={addDays(new Date(), 10)}
+    networkId={1}
+    initialPrice={1}
+    currentPrice={21.1}
+    onComplete={action('onComplete')}
+  />
+)
+export const End: React.VFC = () => (
+  <AuctionInfo
+    startAt={new Date()}
+    endAt={subDays(new Date(), 10)}
+    networkId={1}
+    initialPrice={1}
+    currentPrice={21.1}
+    onComplete={action('onComplete')}
+  />
+)
 
 export default {
   title: 'molecules/AuctionInfo',
