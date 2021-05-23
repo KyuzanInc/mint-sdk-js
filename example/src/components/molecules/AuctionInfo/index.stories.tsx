@@ -5,6 +5,7 @@ import { AuctionInfo } from '.'
 
 export const Live: React.VFC = () => (
   <AuctionInfo
+    tradeType={'auction'}
     startAt={new Date()}
     endAt={addDays(new Date(), 10)}
     networkId={1}
@@ -15,6 +16,7 @@ export const Live: React.VFC = () => (
 )
 export const End: React.VFC = () => (
   <AuctionInfo
+    tradeType={'auction'}
     startAt={new Date()}
     endAt={subDays(new Date(), 10)}
     networkId={1}
