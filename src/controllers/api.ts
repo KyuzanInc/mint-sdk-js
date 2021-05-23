@@ -1,10 +1,21 @@
 import Axios, { AxiosInstance } from 'axios'
-import { DefaultApiFactory, TradeType, Item as APIItem } from '../apiClient/api'
+import {
+  DefaultApiFactory,
+  TradeType,
+  Item as APIItem,
+  RegisterItemShippingInfoRequestBody,
+} from '../apiClient/api'
 import { NetworkId, networkIdMapLabel } from '../types/NetworkId'
 import { ItemsType } from '../types/ItemsType'
 import { ItemTradeType } from '../types/ItemTradeType'
 import { Item } from '../types/Item'
+import { ItemLog } from '../types/ItemLog'
+import { Token } from '../types/Token'
+import { Residence } from '../types/Residence'
+import { AxiosBody } from '../types/AxiosBody'
 import { BACKEND_URL } from '../constants/index'
+
+type ValueOf<T> = T[keyof T]
 
 type GetItemsArgs = {
   /**
@@ -33,6 +44,14 @@ type GetItemsArgs = {
    *
    */
   onSale?: boolean
+}
+
+type APIItemLog = {
+  type: 'bought' | 'bid'
+  accountAddress: string
+  price: number // only 'bid' and 'bought'
+  createAt: Date
+  transactionHash: string
 }
 
 export class APIController {
@@ -95,13 +114,136 @@ export class APIController {
   }
 
   public async getItemsByBidderAddress(address: string) {
-    const resp = await this.axios.get('v3_getItemsByBidderAddress', {
+    const resp = await this.axios.get<AxiosBody<APIItem[]>>(
+      'v3_getItemsByBidderAddress',
+      {
+        params: {
+          address,
+          networkIds: this.networkIds,
+        },
+      }
+    )
+    return resp.data.data.map(this.formatItem)
+  }
+
+  public async getItemById(itemId: string) {
+    const resp = await this.axios.get<AxiosBody<APIItem>>('v2_item', {
+      params: { itemId },
+    })
+    return this.formatItem(resp.data.data)
+  }
+
+  public async getItemByToken(token: Token) {
+    const resp = await this.axios.get<AxiosBody<APIItem>>('v2_itemByToken', {
       params: {
-        address,
-        networkIds: this.networkIds,
+        tokenId: token.tokenId,
+        networkId: token.item.networkId,
+        tokenAddress: token.contractAddress,
+        mintContractAddress: token.contractAddress,
       },
     })
-    return resp.data.data.map(this.formatItem)
+    return this.formatItem(resp.data.data)
+  }
+
+  public async getItemLogs(
+    itemId: string,
+    paging = {
+      perPage: 30,
+      page: 1,
+    }
+  ): Promise<ItemLog[]> {
+    const params = { itemId, page: paging.page, perPage: paging.perPage }
+    const resp = await this.axios.get<AxiosBody<APIItemLog[]>>('v2_itemLogs', {
+      params,
+    })
+    const logs = resp.data.data
+    return logs.map((l) => ({
+      ...l,
+      createAt: new Date(l.createAt),
+    }))
+  }
+
+  public async getTokensByAddress(address: string) {
+    const params = { address, networkIds: this.networkIds }
+    const resp = await this.axios.get<AxiosBody<Token[]>>(
+      'v3_tokensByAddress',
+      { params }
+    )
+    return resp.data.data
+  }
+
+  public async getItemShippingInfo(
+    annapurnaAccessToken: string,
+    itemId: string,
+    walletAddress: string,
+    signedData: string,
+    options?: any
+  ) {
+    return await this.openAPIClient.getItemShippingInfo(
+      annapurnaAccessToken,
+      itemId,
+      walletAddress,
+      signedData,
+      options
+    )
+  }
+
+  public async getServerUnixTime(): Promise<number> {
+    const resp = await this.axios.get<AxiosBody<number>>('serverSideTime')
+    return resp.data.data
+  }
+
+  public async getMintShopContractInfo(networkId: NetworkId) {
+    const resp = await this.axios.get<
+      AxiosBody<{
+        contract: {
+          mintShopContract: {
+            [k in typeof networkIdMapLabel[keyof typeof networkIdMapLabel]]: {
+              abi: string
+              address: string
+            }
+          }
+        }
+      }>
+    >('/v2_projectConfig')
+    // @ts-ignore
+    const networkLabel = networkIdMapLabel[networkId]
+    const abi: string =
+      // @ts-ignore
+      resp.data.data.contract.mintShopContract[networkLabel].abi
+    const address: string =
+      // @ts-ignore
+      resp.data.data.contract.mintShopContract[networkLabel].address
+    return {
+      abi,
+      address,
+    }
+  }
+
+  public async registerTransactionRecepit(
+    txHash: string,
+    itemId: string,
+    residence: Residence
+  ): Promise<void> {
+    await this.axios.post('/v2_registerTransactionReceiptsApp', {
+      txHash,
+      itemId,
+      residence,
+    })
+  }
+
+  public async registerItemShoppingInfo(
+    annapurnaAccessToken: string,
+    itemId: string,
+    registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody,
+    options?: any
+  ) {
+    return this.openAPIClient.registerItemShippingInfo(
+      annapurnaAccessToken,
+      itemId,
+      registerItemShippingInfoRequestBody,
+      options
+    )
   }
 
   private formatItem(item: APIItem): Item {
