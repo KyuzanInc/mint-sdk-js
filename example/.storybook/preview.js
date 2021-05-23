@@ -1,12 +1,13 @@
 import React from 'react'
-import * as nextImage from 'next/image';
+import * as nextImage from 'next/image'
 import emotionReset from 'emotion-reset'
 import { color } from '../src/style/index'
 import { Global, css } from '@emotion/react'
 
+// next/imageがStorybookでは動かないので、imgに置換
 Object.defineProperty(nextImage, 'default', {
   configurable: true,
-  value: props => <img {...props} />
+  value: (props) => <img {...props} />,
 })
 
 export const decorators = [
