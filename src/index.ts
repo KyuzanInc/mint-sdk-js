@@ -549,7 +549,7 @@ export class MintSDK {
     const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(address, abi, signer)
-    if (item.tradeType !== 'auction') {
+    if (item.tradeType === 'fixedPrice') {
       throw new Error("Item's tradeType is not auction")
     }
     const initialPrice = ethers.utils
@@ -558,6 +558,10 @@ export class MintSDK {
     const price = ethers.utils.parseEther(String(bidPrice)).toString()
     const startAt = item.startAt!.getTime() / 1000
     const endAt = item.endAt!.getTime() / 1000
+    const sign = await this.apiClient.getItemSignedDataBidAuction(
+      this.accessToken,
+      itemId
+    )
     return (await shopContract.bidAuction(
       item.mintContractAddress,
       item.tokenId,
@@ -565,7 +569,7 @@ export class MintSDK {
       startAt,
       endAt,
       price,
-      item.signatureBidAuction,
+      sign.data.data.signedData,
       {
         value: price,
       }
@@ -574,11 +578,11 @@ export class MintSDK {
 
   /**
    * オークションで勝利したアイテムを引き出すトランザクションを発行
-   * ユーザーの居住地を問うUIを合わせて実装必要
-   * 消費税に関する会計処理などがスムーズに行えます
+   * ユーザーの居住地を問うUIを合わせて実装必要です。居住地を設定することで消費税に関する会計処理などがスムーズに行えます
    *
    * **Required**
    * - ウォレットに接続していること
+   * - **自動延長オークションは、オークション終了５分以降に引き出し可能です**
    *
    * @param itemId {@link Item}のitemId
    * @param userResidence {@link Residence} 購入者の居住地を指定する
@@ -612,9 +616,13 @@ export class MintSDK {
     const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(address, abi, signer)
-    if (item.tradeType !== 'auction') {
+    if (item.tradeType === 'fixedPrice') {
       throw new Error("Item's tradeType is not auction")
     }
+    const sign = await this.apiClient.getItemSignedDataBuyAuction(
+      this.accessToken,
+      itemId
+    )
     const tx = (await shopContract.buyAuction(
       item.mintContractAddress,
       item.tokenId,
@@ -622,7 +630,7 @@ export class MintSDK {
       item.authorAddress,
       item.endAt!.getTime() / 1000,
       item.feeRatePermill,
-      item.signatureBuyAuction
+      sign.data.data.signedData
     )) as ethers.providers.TransactionResponse
     const hash = tx.hash
     await this.axios.post('/v2_registerTransactionReceiptsApp', {
