@@ -2,7 +2,11 @@ name: deploy-docs
 
 # クリックによってデプロイ
 # TODO: multi_networkがmainにマージされたら、masterにpushしたらにする
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['npm_publish']
+    types: [completed]
 
 jobs:
   # This workflow contains a single job called "build"
@@ -39,4 +43,3 @@ jobs:
       - run: npm run doc:deploy
         env:
           GIT_USER: ${{ github.actor }}:${{ github.token }}
-
