@@ -1,9 +1,9 @@
 import React from 'react'
 import { CardMyPage } from '.'
 import { action } from '@storybook/addon-actions'
-import { Item } from '../../../../../dist'
 import { addDays } from 'date-fns/esm'
 import { subDays, subMinutes } from 'date-fns'
+import { Item } from '@kyuzan/mint-sdk-js'
 
 export const Losing: React.VFC = () => (
   <CardMyPage
