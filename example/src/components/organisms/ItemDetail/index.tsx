@@ -16,6 +16,7 @@ import { StatusDetail } from '../../molecules/Detail'
 import { WalletModal } from '../../molecules/WalletModal'
 import { LoadingItemDetailComponent } from './loading'
 import { getItemPrice } from '../../../util/getItemPrice'
+import { AboutAutoExtensionAuctionModal } from '../../molecules/AboutAutoExtensionAuctionModal'
 
 type Props = {
   children?: ReactNode
@@ -92,6 +93,19 @@ export const ItemDetailComponent: React.FC<Props> = () => {
     []
   )
 
+  const [
+    aboutAutoExtensionAuctionModalIsOpen,
+    setAboutAutoExtensionAuctionModalIsOpen,
+  ] = useState(false)
+  const closeAutoExtensionModal = useCallback(
+    () => setAboutAutoExtensionAuctionModalIsOpen(false),
+    []
+  )
+  const openAutoExtensionModal = useCallback(
+    () => setAboutAutoExtensionAuctionModalIsOpen(true),
+    []
+  )
+
   const onClick = useCallback(() => {
     if (!walletIsConnect) {
       openWalletModal()
@@ -129,17 +143,35 @@ export const ItemDetailComponent: React.FC<Props> = () => {
             endAt={item?.endAt ?? new Date()}
           />
         </TradeInfoContainer>
-        <QuestionButton onClick={openPhysicalModal}>
-          <QuestionIcon>
-            <Image
-              src={'/images/info.svg'}
-              layout={'fixed'}
-              width={16}
-              height={16}
-            />
-          </QuestionIcon>
-          <QuestionText>フィジカルアイテムつきとは</QuestionText>
-        </QuestionButton>
+
+        {item?.type === 'nftWithPhysicalProduct' && (
+          <QuestionButton onClick={openPhysicalModal}>
+            <QuestionIcon>
+              <Image
+                src={'/images/info.svg'}
+                layout={'fixed'}
+                width={16}
+                height={16}
+              />
+            </QuestionIcon>
+            <QuestionText>フィジカルアイテムつきとは</QuestionText>
+          </QuestionButton>
+        )}
+
+        {item?.tradeType === 'autoExtensionAuction' && (
+          <QuestionButton onClick={openAutoExtensionModal}>
+            <QuestionIcon>
+              <Image
+                src={'/images/info.svg'}
+                layout={'fixed'}
+                width={16}
+                height={16}
+              />
+            </QuestionIcon>
+            <QuestionText>自動延長オークション</QuestionText>
+          </QuestionButton>
+        )}
+
         <BidButton
           label={auctionIsOutOfDate ? '-' : 'PLACE A BID'}
           onClick={onClick}
@@ -188,6 +220,10 @@ export const ItemDetailComponent: React.FC<Props> = () => {
       <AboutPhysicalModal
         isOpen={aboutPhysicalModalIsOpen}
         closeModal={closePhysicalModal}
+      />
+      <AboutAutoExtensionAuctionModal
+        isOpen={aboutAutoExtensionAuctionModalIsOpen}
+        closeModal={closeAutoExtensionModal}
       />
     </>
   )

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { Item, Token } from '@kyuzan/mint-sdk-js'
+import { differenceInMinutes } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -93,6 +94,8 @@ export const CardMyPage: React.VFC<Props> = ({
     const winning = !auctionIsEnd && userIsHighestBidder
     const losing = !auctionIsEnd && !userIsHighestBidder
     const won = auctionIsEnd && userIsHighestBidder
+    const not5minFromEndAt = differenceInMinutes(new Date(), item.endAt!) < 5
+    const waitWithDraw = won && not5minFromEndAt
 
     return (
       <Container>
@@ -167,7 +170,21 @@ export const CardMyPage: React.VFC<Props> = ({
               </Link>
             </>
           )}
-          {won && (
+          {waitWithDraw && (
+            <>
+              <RightTitleContainer>
+                <WonTitle>受け取り待ち</WonTitle>
+              </RightTitleContainer>
+              <WonDescription>
+                おめとうございます。オークションに競り勝ち、NFTを勝ち取りました。オークション終了5分以降に下のボタンからNFTを受け取れます。
+              </WonDescription>
+              <DisabledButton
+                isLoading={withdrawing!}
+                label={'NFTを受け取る'}
+              />
+            </>
+          )}
+          {won && !waitWithDraw && (
             <>
               <RightTitleContainer>
                 <WonTitle>受け取り待ち</WonTitle>
@@ -290,4 +307,11 @@ const ReverseButton = styled(PrimaryLoadingButton)`
 const PrimaryButton = styled(PrimaryLoadingButton)`
   margin-top: 32px;
   width: 100%;
+`
+
+const DisabledButton = styled(PrimaryLoadingButton)`
+  background-color: ${color.content.middle};
+  margin-top: 32px;
+  width: 100%;
+  cursor: not-allowed;
 `

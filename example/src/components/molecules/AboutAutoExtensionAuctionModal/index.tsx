@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import React from 'react'
 import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
-import { color } from '../../../style'
+import { color, font } from '../../../style'
 
 type Props = {
   isOpen: boolean
@@ -28,7 +28,7 @@ const customStyles: Styles = {
   },
 }
 
-export const AboutPhysicalModal: React.VFC<Props> = ({
+export const AboutAutoExtensionAuctionModal: React.VFC<Props> = ({
   closeModal,
   isOpen,
 }) => {
@@ -40,12 +40,10 @@ export const AboutPhysicalModal: React.VFC<Props> = ({
     >
       <ModalContainer>
         <Content>
-          <Image
-            src={'/images/whatIsPhysicalItem.png'}
-            layout={'responsive'}
-            width={784}
-            height={443}
-          />
+          <Title>自動延長オークションとは</Title>
+          <Description>
+            オークション終了5分以内に最高値を更新する入札があった場合は、オークションの終了時間が5分延長されます。
+          </Description>
         </Content>
         <CloseButton onClick={closeModal}>
           <Image
@@ -77,6 +75,16 @@ const Content = styled.div`
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+`
+
+const Title = styled.p`
+  ${font.lg.subtitle1}
+  margin-bottom: 24px;
+`
+
+const Description = styled.p`
+  ${font.lg.body1}
+  line-height: 1.6;
 `
 
 const CloseButton = styled.div`
