@@ -16,7 +16,7 @@ export const getSdk = () => {
       },
       {
         backendUrl:
-          'http://localhost:5500/annapurna-development/asia-northeast1',
+          'https://asia-northeast1-annapurna-development.cloudfunctions.net',
       }
     )
   }

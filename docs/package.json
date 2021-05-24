@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "TYPEDOC_WATCH=true docusaurus start",
+    "start": "TYPEDOC_WATCH=true docusaurus start --port=7000",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "GIT_USER=tomonari-t docusaurus deploy",
