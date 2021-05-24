@@ -768,7 +768,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5minいじようあ
+         * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5min以上立つ必要がある
          * @param {string} annapurnaAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -909,7 +909,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5minいじようあ
+         * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5min以上立つ必要がある
          * @param {string} annapurnaAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -986,7 +986,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5minいじようあ
+         * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5min以上立つ必要がある
          * @param {string} annapurnaAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -1067,7 +1067,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5minいじようあ
+     * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5min以上立つ必要がある
      * @param {string} annapurnaAccessToken 
      * @param {string} itemId 
      * @param {*} [options] Override http request option.
