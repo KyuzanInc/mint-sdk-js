@@ -15,8 +15,7 @@ const Layout = ({ children }: Props) => {
   useEffect(() => {
     dispatch(initialWalletActionCreator() as any)
     const sdk = getSdk()
-    sdk?.onAccountsChange(async (accounts) => {
-      console.log(accounts)
+    sdk?.onAccountsChange(async () => {
       if (await sdk.isWalletConnect()) {
         const walletInfo = await sdk.getWalletInfo()
         dispatch(

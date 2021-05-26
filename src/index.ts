@@ -582,7 +582,7 @@ export class MintSDK {
    *
    * **Required**
    * - ウォレットに接続していること
-   * - **自動延長オークションは、オークション終了５分以降に引き出し可能です**
+   * - **自動延長オークションは、`withdrawableAt`以降に引き出し可能です**
    *
    * @param itemId {@link Item}のitemId
    * @param userResidence {@link Residence} 購入者の居住地を指定する
