@@ -1,4 +1,4 @@
-name: npm_publish
+name: npm-publish
 
 on: workflow_dispatch
 jobs:
@@ -14,8 +14,6 @@ jobs:
       - name: install
         run: |
           npm ci
-      - name: bump version
-        run: ./bin/bump_version.sh
       - name: test
         run: npm run test
       - name: build
