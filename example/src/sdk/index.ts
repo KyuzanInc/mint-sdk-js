@@ -6,19 +6,11 @@ export const getSdk = () => {
   if (typeof window === 'undefined') return null
 
   if (typeof sdk === 'undefined') {
-    sdk = new MintSDK(
-      '4bdaee8f-8e23-4913-9858-7a10dd7be877',
-      [4, 80001],
-      {
-        fortmatic: {
-          key: DEMO_FORTMATIC_KEY,
-        },
+    sdk = new MintSDK('d3fae7e8-1f5f-4c36-b774-03c082f54b7c', [4, 80001], {
+      fortmatic: {
+        key: DEMO_FORTMATIC_KEY,
       },
-      {
-        backendUrl:
-          'http://localhost:5500/annapurna-development/asia-northeast1',
-      }
-    )
+    })
   }
 
   return sdk
