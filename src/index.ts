@@ -1160,6 +1160,10 @@ export class MintSDK {
       ...item,
       startAt: item.startAt ? new Date(item.startAt) : undefined,
       endAt: item.endAt ? new Date(item.endAt) : undefined,
+      defaultEndAt: item.defaultEndAt ? new Date(item.defaultEndAt) : undefined,
+      withdrawableAt: item.withdrawableAt
+        ? new Date(item.withdrawableAt)
+        : undefined,
     } as Item
   }
 
