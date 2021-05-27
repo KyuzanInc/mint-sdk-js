@@ -13,7 +13,7 @@ const options = {
   format: 'cjs',
   watch: argv[3] === 'w',
   sourcemap: !isProduction,
-  outdir: path.resolve(__dirname, 'dist'),
+  outdir: path.resolve(__dirname, 'lib'),
   tsconfig: path.resolve(__dirname, 'tsconfig.json'),
 }
 
