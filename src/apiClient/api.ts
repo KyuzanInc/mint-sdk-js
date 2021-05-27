@@ -48,10 +48,10 @@ export interface InlineResponse200 {
 export interface InlineResponse2001 {
     /**
      * 
-     * @type {ItemShippingInfo}
+     * @type {InlineResponse2001Data}
      * @memberof InlineResponse2001
      */
-    data: ItemShippingInfo;
+    data: InlineResponse2001Data;
     /**
      * 
      * @type {object}
@@ -62,19 +62,51 @@ export interface InlineResponse2001 {
 /**
  * 
  * @export
+ * @interface InlineResponse2001Data
+ */
+export interface InlineResponse2001Data {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2001Data
+     */
+    signedData: string;
+}
+/**
+ * 
+ * @export
  * @interface InlineResponse2002
  */
 export interface InlineResponse2002 {
     /**
      * 
-     * @type {string}
+     * @type {ItemShippingInfo}
      * @memberof InlineResponse2002
+     */
+    data: ItemShippingInfo;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse2002
+     */
+    meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2003
+ */
+export interface InlineResponse2003 {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2003
      */
     data?: string;
     /**
      * 
      * @type {object}
-     * @memberof InlineResponse2002
+     * @memberof InlineResponse2003
      */
     meta?: object;
 }
@@ -199,13 +231,13 @@ export interface Item {
      */
     signatureBuyAuction?: string;
     /**
-     * tradeType === auctionの時に値が入る
+     * tradeType === auctionの時に値が入る。`/sign_bid_auction`で取得するに移行中
      * @type {string}
      * @memberof Item
      */
     signatureBidAuction?: string;
     /**
-     * tradeType === auctionの時に値が入る
+     * tradeType === auctionの時に値が入る。`/sign_buy_auction`で取得するに移行中
      * @type {string}
      * @memberof Item
      */
@@ -247,17 +279,29 @@ export interface Item {
      */
     currentBidderAddress?: string;
     /**
-     * オークション開始日時。tradeType === auctionの時に値が入る。
+     * オークション開始日時。tradeType === auction | autoExtensionAuction の時に値が入る。
      * @type {any}
      * @memberof Item
      */
     startAt?: any | null;
     /**
-     * オークション終了日時。tradeType === auctionの時に値が入る。
+     * オークション終了日時。tradeType === auction | autoExtensionAuction の時に値が入る。
      * @type {any}
      * @memberof Item
      */
     endAt?: any | null;
+    /**
+     * オークション初期終了日時。tradeType === autoExtensionAuction の時に値が入る。
+     * @type {any}
+     * @memberof Item
+     */
+    defaultEndAt?: any | null;
+    /**
+     * 引き出し可能開始日時。tradeType === autoExtensionAuction の時に値が入る。
+     * @type {any}
+     * @memberof Item
+     */
+    withdrawableAt?: any | null;
     /**
      * オークション開始価格。tradeType === auctionの時に値が入る。単位はETH
      * @type {number}
@@ -542,7 +586,8 @@ export enum RegisterItemShippingInfoRequestBodyChainTypeEnum {
  */
 export enum TradeType {
     FixedPrice = 'fixedPrice',
-    Auction = 'auction'
+    Auction = 'auction',
+    AutoExtensionAuction = 'autoExtensionAuction'
 }
 
 
@@ -688,6 +733,88 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary アイテムのBidAuction用のSignを取得。自動延長の場合は、バリデーションあり。終了後5minで引き出せる。
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemSignedDataBidAuction: async (annapurnaAccessToken: string, itemId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'annapurnaAccessToken' is not null or undefined
+            assertParamExists('getItemSignedDataBidAuction', 'annapurnaAccessToken', annapurnaAccessToken)
+            // verify required parameter 'itemId' is not null or undefined
+            assertParamExists('getItemSignedDataBidAuction', 'itemId', itemId)
+            const localVarPath = `/v3_items/{itemId}/sign_bid_auction`
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (annapurnaAccessToken !== undefined && annapurnaAccessToken !== null) {
+                localVarHeaderParameter['annapurna-access-token'] = String(annapurnaAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5min以上立つ必要がある
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemSignedDataBuyAuction: async (annapurnaAccessToken: string, itemId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'annapurnaAccessToken' is not null or undefined
+            assertParamExists('getItemSignedDataBuyAuction', 'annapurnaAccessToken', annapurnaAccessToken)
+            // verify required parameter 'itemId' is not null or undefined
+            assertParamExists('getItemSignedDataBuyAuction', 'itemId', itemId)
+            const localVarPath = `/v3_items/{itemId}/sign_buy_auction`
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (annapurnaAccessToken !== undefined && annapurnaAccessToken !== null) {
+                localVarHeaderParameter['annapurna-access-token'] = String(annapurnaAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary フィジカルアイテム付きItemに配送先住所を登録する
          * @param {string} annapurnaAccessToken 
          * @param {string} itemId 
@@ -770,8 +897,32 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+        async getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary アイテムのBidAuction用のSignを取得。自動延長の場合は、バリデーションあり。終了後5minで引き出せる。
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemSignedDataBidAuction(annapurnaAccessToken, itemId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5min以上立つ必要がある
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemSignedDataBuyAuction(annapurnaAccessToken, itemId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -783,7 +934,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+        async registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.registerItemShippingInfo(annapurnaAccessToken, itemId, registerItemShippingInfoRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -825,8 +976,30 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): AxiosPromise<InlineResponse2001> {
+        getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): AxiosPromise<InlineResponse2002> {
             return localVarFp.getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary アイテムのBidAuction用のSignを取得。自動延長の場合は、バリデーションあり。終了後5minで引き出せる。
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2001> {
+            return localVarFp.getItemSignedDataBidAuction(annapurnaAccessToken, itemId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5min以上立つ必要がある
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2001> {
+            return localVarFp.getItemSignedDataBuyAuction(annapurnaAccessToken, itemId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -837,7 +1010,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): AxiosPromise<InlineResponse2002> {
+        registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): AxiosPromise<InlineResponse2003> {
             return localVarFp.registerItemShippingInfo(annapurnaAccessToken, itemId, registerItemShippingInfoRequestBody, options).then((request) => request(axios, basePath));
         },
     };
@@ -883,6 +1056,32 @@ export class DefaultApi extends BaseAPI {
      */
     public getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any) {
         return DefaultApiFp(this.configuration).getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary アイテムのBidAuction用のSignを取得。自動延長の場合は、バリデーションあり。終了後5minで引き出せる。
+     * @param {string} annapurnaAccessToken 
+     * @param {string} itemId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any) {
+        return DefaultApiFp(this.configuration).getItemSignedDataBidAuction(annapurnaAccessToken, itemId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary アイテムのBuyAuction用のSignを取得。自動延長の場合は、バリデーションあり。引き出しには終了時刻から5min以上立つ必要がある
+     * @param {string} annapurnaAccessToken 
+     * @param {string} itemId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any) {
+        return DefaultApiFp(this.configuration).getItemSignedDataBuyAuction(annapurnaAccessToken, itemId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
