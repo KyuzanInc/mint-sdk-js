@@ -6,6 +6,8 @@ import { addDays, subDays } from 'date-fns'
 
 export const Basic: React.VFC = () => (
   <Presentation
+    connectingWallet={false}
+    onConnectWallet={action('onConnectWallet')}
     waitingBidedItems={false}
     waitingOwnTokens={false}
     bidedItems={[doneItem, winItem, loseItem]}
@@ -21,8 +23,29 @@ export const Basic: React.VFC = () => (
   />
 )
 
+export const NoWalletAddress: React.VFC = () => (
+  <Presentation
+    connectingWallet={false}
+    onConnectWallet={action('onConnectWallet')}
+    waitingBidedItems={false}
+    waitingOwnTokens={false}
+    bidedItems={[]}
+    handleWithdrawItem={action('handleWithdrawItem')}
+    handleHideShippingInfo={action('handleHideShippingInfo')}
+    showShippingInfo={action('showShippingInfo')}
+    userWalletAddress={undefined}
+    withdrawingItemId={'test'}
+    ownTokens={[]}
+    showShippingInfoModal={false}
+    shippingInfo={undefined}
+    loadingShippingInfo={false}
+  />
+)
+
 export const Loading: React.VFC = () => (
   <Presentation
+    connectingWallet={false}
+    onConnectWallet={action('onConnectWallet')}
     waitingBidedItems={true}
     waitingOwnTokens={true}
     bidedItems={[]}
@@ -40,6 +63,8 @@ export const Loading: React.VFC = () => (
 
 export const ShowShippingInfo: React.VFC = () => (
   <Presentation
+    connectingWallet={false}
+    onConnectWallet={action('onConnectWallet')}
     waitingBidedItems={false}
     waitingOwnTokens={false}
     bidedItems={[doneItem, winItem, loseItem]}

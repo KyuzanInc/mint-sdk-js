@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import {
   getBidedActionCreator,
@@ -6,11 +6,18 @@ import {
 } from '../../../redux/myItems'
 import { getShippingInfoActionCreator } from '../../../redux/shippingInfo'
 import { withDrawItemActionCreator } from '../../../redux/transaction'
+import { connectWalletActionCreator } from '../../../redux/wallet'
 import { Presentation } from './presentation'
 
 export const Container: React.VFC = () => {
   const dispatch = useAppDispatch()
 
+  const connectWallet = useCallback(() => {
+    dispatch(connectWalletActionCreator() as any)
+  }, [])
+  const connectingWallet = useAppSelector(
+    (state) => state.app.wallet.meta.waitingWalletAction
+  )
   const walletInfo = useAppSelector((state) => state.app.wallet.data.walletInfo)
 
   const bidedItems = useAppSelector((state) => {
@@ -67,7 +74,6 @@ export const Container: React.VFC = () => {
 
   useEffect(() => {
     if (typeof walletInfo?.address === 'undefined') {
-      // TODO: モーダル出して、Walletにコネクトしてもらう
       return
     }
     dispatch(
@@ -79,13 +85,15 @@ export const Container: React.VFC = () => {
   }, [walletInfo?.address])
   return (
     <Presentation
+      connectingWallet={connectingWallet}
+      onConnectWallet={connectWallet}
       waitingBidedItems={waitingBidedItems}
       waitingOwnTokens={waitingOwnTokens}
       bidedItems={bidedItems}
       handleWithdrawItem={withdrawItem}
       handleHideShippingInfo={hideShippinngInfo}
       showShippingInfo={showShippingInfo}
-      userWalletAddress={walletInfo?.address ?? ''}
+      userWalletAddress={walletInfo?.address}
       withdrawingItemId={withdrawingItemId}
       ownTokens={ownTokens}
       showShippingInfoModal={typeof selectShippingInfoItemId !== 'undefined'}

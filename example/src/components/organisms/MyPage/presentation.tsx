@@ -10,6 +10,7 @@ import {
 } from '../../atoms/CardList'
 import { CardMyPage } from '../../molecules/CardMyPage'
 import { ShippingInfoModal } from '../../molecules/ShippingInfoModal'
+import { WalletModal } from '../../molecules/WalletModal'
 
 type Props = {
   waitingBidedItems: boolean
@@ -19,11 +20,13 @@ type Props = {
   handleWithdrawItem: (itemId: string) => void
   handleHideShippingInfo: () => void
   showShippingInfo: (itemId: string) => void
-  userWalletAddress: string
+  userWalletAddress: string | undefined
   withdrawingItemId: string | undefined
   ownTokens: Token[]
   shippingInfo: ItemShippingInfo | undefined
   loadingShippingInfo: boolean
+  onConnectWallet: () => void
+  connectingWallet: boolean
 }
 
 export const Presentation: React.VFC<Props> = ({
@@ -39,6 +42,8 @@ export const Presentation: React.VFC<Props> = ({
   ownTokens,
   shippingInfo,
   loadingShippingInfo,
+  onConnectWallet,
+  connectingWallet,
 }) => {
   return (
     <>
@@ -109,6 +114,11 @@ export const Presentation: React.VFC<Props> = ({
               }
         }
         closeModal={handleHideShippingInfo}
+      />
+      <WalletModal
+        isOpen={typeof userWalletAddress === 'undefined'}
+        connectWallet={onConnectWallet}
+        loading={connectingWallet}
       />
     </>
   )
