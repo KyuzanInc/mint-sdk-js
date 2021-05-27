@@ -94,7 +94,10 @@ export const CardMyPage: React.VFC<Props> = ({
     const winning = !auctionIsEnd && userIsHighestBidder
     const losing = !auctionIsEnd && !userIsHighestBidder
     const won = auctionIsEnd && userIsHighestBidder
-    const not5minFromEndAt = isBefore(new Date(), item.withdrawableAt!)
+    const not5minFromEndAt = isBefore(
+      new Date(),
+      new Date(item.withdrawableAt!)
+    )
     const waitWithDraw = won && not5minFromEndAt
 
     return (
