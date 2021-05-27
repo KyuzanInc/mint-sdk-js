@@ -1,0 +1,26 @@
+name: npm-publish
+
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Setup .npmrc file to publish to GitHub Packages
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: install
+        run: |
+          npm ci
+      - name: test
+        run: npm run test
+      - name: build
+        run: npm run build:production
+      - name: bump version
+        run: ./bin/bump_version.sh
+      - name: publish
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

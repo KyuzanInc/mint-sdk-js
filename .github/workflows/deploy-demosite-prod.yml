@@ -7,6 +7,10 @@ on:
       - main
     paths:
       - 'example/**'
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['npm_publish']
+    types: [completed]
 
 jobs:
   # This workflow contains a single job called "build"
@@ -50,4 +54,3 @@ jobs:
           vercel-project-id: prj_UV4Xn3uNrX6Y1eFgwJyWka3lgPRv #Required
           vercel-args: '--prod'
           working-directory: ./example
-
