@@ -52,10 +52,6 @@ export const Container: React.VFC = () => {
     window.location.reload()
   }
 
-  const loadingShippingInfo = useAppSelector(
-    (state) => state.app.shippingInfo.meta.loadingShippingInfo
-  )
-
   const shippingInfo = useAppSelector(
     (state) => state.app.shippingInfo.data.shippingInfo
   )
@@ -102,7 +98,6 @@ export const Container: React.VFC = () => {
           ? shippingInfo[selectShippingInfoItemId]
           : undefined
       }
-      loadingShippingInfo={loadingShippingInfo}
     />
   )
 }

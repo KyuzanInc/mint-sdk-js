@@ -24,7 +24,6 @@ type Props = {
   withdrawingItemId: string | undefined
   ownTokens: Token[]
   shippingInfo: ItemShippingInfo | undefined
-  loadingShippingInfo: boolean
   onConnectWallet: () => void
   connectingWallet: boolean
 }
@@ -41,7 +40,6 @@ export const Presentation: React.VFC<Props> = ({
   withdrawingItemId,
   ownTokens,
   shippingInfo,
-  loadingShippingInfo,
   onConnectWallet,
   connectingWallet,
 }) => {
@@ -99,20 +97,7 @@ export const Presentation: React.VFC<Props> = ({
       </Container>
       <ShippingInfoModal
         isOpen={showShippingInfoModal}
-        shippingInfo={
-          loadingShippingInfo || typeof shippingInfo === 'undefined'
-            ? undefined
-            : {
-                name: shippingInfo.name,
-                postalCode: shippingInfo.postalCode,
-                prefecture: shippingInfo.prefecture,
-                city: shippingInfo.city,
-                address1: shippingInfo.address1,
-                address2: shippingInfo.address2,
-                tel: shippingInfo.tel,
-                email: shippingInfo.email,
-              }
-        }
+        shippingInfo={shippingInfo}
         closeModal={handleHideShippingInfo}
       />
       <WalletModal

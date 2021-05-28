@@ -19,7 +19,6 @@ export const Basic: React.VFC = () => (
     ownTokens={[token]}
     showShippingInfoModal={false}
     shippingInfo={undefined}
-    loadingShippingInfo={false}
   />
 )
 
@@ -38,7 +37,6 @@ export const NoWalletAddress: React.VFC = () => (
     ownTokens={[]}
     showShippingInfoModal={false}
     shippingInfo={undefined}
-    loadingShippingInfo={false}
   />
 )
 
@@ -57,7 +55,6 @@ export const Loading: React.VFC = () => (
     ownTokens={[]}
     showShippingInfoModal={false}
     shippingInfo={undefined}
-    loadingShippingInfo={false}
   />
 )
 
@@ -86,7 +83,6 @@ export const ShowShippingInfo: React.VFC = () => (
       tel: '00000000000',
       memo: 'memo',
     }}
-    loadingShippingInfo={false}
   />
 )
 
