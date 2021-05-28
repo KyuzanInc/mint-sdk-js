@@ -14,8 +14,6 @@ jobs:
       - name: install
         run: |
           npm ci
-      - name: test
-        run: npm run test
       - name: build
         run: npm run build:production
       - name: bump version
