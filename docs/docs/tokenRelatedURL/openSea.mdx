@@ -2,16 +2,15 @@
 title: OpenSeaのNFTページURL生成方法
 ---
 
-発行したNFTのOpenSeaページを提示して、ユーザーにNFTの２次流通をしやすくさせたり、NFTの発行証明を提示することができます。
+発行した NFT の OpenSea ページを提示して、ユーザーに NFT の２次流通をしやすくさせたり、NFT の発行証明を提示することができます。
 
 - `コントラクトアドレス`は、`Item.mintContractAddress`です
 - `tokenId`は、`Item.tokenId`です
 
-`tradeType=fixedPrice`または`tradeType=auction`の`Item`は、買われるか引出されるまでNFTは発行されません。
+`tradeType=fixedPrice`または`tradeType=auction`の`Item`は、買われるか引出されるまで NFT は発行されません。
 `Item.buyerAddress`の値を見ることで、`Item`が"買われた"または"引出された"を判断することができます。
 
-
-## OpenSeaのNFTページURL生成方法
+## OpenSea の NFT ページ URL 生成方法
 
 ### Mainnet(NetworkId=1)
 
@@ -32,4 +31,15 @@ https://matic.opensea.io/[コントラクトアドレス]/[tokenId]
 ```
 
 ### Mumbai(NetworkId=80001)
-こちらはリンクが存在しないため、なしになります。
+
+`/matic`が追加されます。
+
+```typescript
+https://testnets.opensea.io/assets/matic/[コントラクトアドレス]/[tokenId]
+```
+
+### Mainnet(NetworkId=137)
+
+```typescript
+https://matic.opensea.io/matic/[コントラクトアドレス]/[tokenId]
+```

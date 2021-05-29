@@ -2,6 +2,9 @@
 title: NFTの発行から販売
 ---
 
+import Image from '@theme/IdealImage'
+import useBaseUrl from '@docusaurus/useBaseUrl'
+
 このチュートリアルを終えると、Rinkeby ネットワークでの NFT のオークション取引を一通り行うことができます。
 
 ## 0.事前に必要なこと
@@ -31,20 +34,85 @@ const sdk = new MintSDK({
 })
 ```
 
-## 3. アイテム を取得する
+## 3. アイテム リスト を取得する
 
-以下のメソッドで、公開されているアイテムを取得することができます。
+<img alt="Item List" src={useBaseUrl('/img/tutorial/items.png')} />
 
 ```jsx
 const items = sdk.getItems()
 ```
 
+## 3. アイテムの個別取得とアイテムの入札などのヒストリー取得
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/item_detail.png')} />
+
+```jsx
+const item = sdk.getItemById('hoo')
+```
+
+### アイテムの入札などのヒストリー取得
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/history.png')} />
+
+```jsx
+const itemLogs = sdk.getItemLogs('hoo')
+```
+
 ## 4. アイテムに入札する
+
+アイテムの入札などには、ユーザーにウォレットに接続してもらう必要があります。
+
+### ウォレットへ接続
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/connect_wallet.png')} />
+
+```jsx
+await sdk.isWalletConnect() // false
+await sdk.connectWallet()
+await sdk.isWalletConnect() // true
+```
+
+### 入札
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/bid_modal.png')} />
+
+```jsx
+await sdk.sendTxBid('itemId', 2)
+```
 
 ## 5. アイテムを引き出す
 
-## 6. ユーザーが Bid したアイテムを取得する
+オークションに関しては、勝者が引き出すというステップが必要になります。
 
-## 7. ユーザーが所有しているアイテムを取得する
+### 入札中アイテムの取得
 
-## 8. オークションアイテムの状態に応じて UI を変える
+<img alt="Item List" src={useBaseUrl('/img/tutorial/items_bidding.png')} />
+
+```jsx
+const items = await sdk.getItemsByBidderAddress('0x1111......')
+```
+
+### ユーザーがオークションに勝っているかの判定
+
+`Item.currentBidderAddress`とユーザーのウォレットアドレスを比較して判定ができます。
+
+```jsx
+await sdk.connectWallet() // required
+const { address } = await sdk.getWalletInfo()
+
+address === item.currentBidderAddress // オークションに勝っている
+```
+
+アイテムの引き出しは以下のメソッドで行えます。
+
+```jsx
+await sdk.sendTxMakeSuccessfulBid('itemId')
+```
+
+### Mint で獲得したアイテムの取得
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/items_collection.png')} />
+
+```jsx
+const tokens = await sdk.getTokensByAddress('0x11111...')
+```
