@@ -16,7 +16,7 @@ export const CardSuccessPage: React.VFC<Props> = ({ item }) => {
         <MediaContent media={item?.previews[0]} height={520} />
       </MediaContainer>
       <Right>
-        <CardContent url={''} />
+        <CardContent url={''} tweetUrl={''} />
       </Right>
     </Container>
   )

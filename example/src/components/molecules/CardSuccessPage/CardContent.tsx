@@ -3,12 +3,14 @@ import Link from 'next/link'
 import React from 'react'
 import { font } from '../../../style'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
+import { TwitterButton } from '../../atoms/TwitterButton'
 
 type Props = {
   url: string
+  tweetUrl: string
 }
 
-export const CardContent: React.VFC<Props> = ({ url }) => {
+export const CardContent: React.VFC<Props> = ({ url, tweetUrl }) => {
   return (
     <Container>
       <Typography>Congratulation on getting your NFT !</Typography>
@@ -18,13 +20,18 @@ export const CardContent: React.VFC<Props> = ({ url }) => {
         NFTは購入完了処理後、あなたのウォレットで確認できるようになります。
         <br />
       </Description>
-      <Link passHref href={url}>
-        <MyPageButton
-          isLoading={false}
-          onClick={() => {}}
-          label={'マイページへ'}
-        />
-      </Link>
+      <ButtonList>
+        <Link passHref href={url}>
+          <MyPageButton
+            isLoading={false}
+            onClick={() => {}}
+            label={'マイページへ'}
+          />
+        </Link>
+        <Link href={tweetUrl}>
+          <TwitterButton />
+        </Link>
+      </ButtonList>
     </Container>
   )
 }
@@ -52,8 +59,13 @@ const Description = styled.div`
   padding: 64px 0;
 `
 
+const ButtonList = styled.div`
+  display: flex;
+  flex-direction: colum;
+`
+
 const MyPageButton = styled(PrimaryLoadingButton)`
   width: 290px;
   text-align: center;
-  margin: auto;
+  margin-right: 16px;
 `
