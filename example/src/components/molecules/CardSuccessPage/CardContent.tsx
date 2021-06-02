@@ -22,13 +22,9 @@ export const CardContent: React.VFC<Props> = ({ url, tweetUrl }) => {
       </Description>
       <ButtonList>
         <Link passHref href={url}>
-          <MyPageButton
-            isLoading={false}
-            onClick={() => {}}
-            label={'マイページへ'}
-          />
+          <MyPageButton isLoading={false} label={'マイページへ'} />
         </Link>
-        <Link href={tweetUrl}>
+        <Link passHref href={tweetUrl}>
           <TwitterButton />
         </Link>
       </ButtonList>

@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Image from 'next/image'
-import { color, font } from '../../../style'
 
 type Props = {
   className?: string
@@ -32,6 +31,7 @@ const ButtonBase = styled.a`
   box-sizing: border-box;
   border-radius: 22px;
   padding: 10px 13px;
+  cursor: pointer;
 `
 
 const Icon = styled.span`
