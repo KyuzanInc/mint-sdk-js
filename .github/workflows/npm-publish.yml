@@ -19,7 +19,7 @@ jobs:
       - name: set-name
         run: git config --global user.name "Github Action Bot"
       - name: set-email
-        run: git config --global user.email "reona.nagafuchi@gmail.com"
+        run: git config --global user.email "github-action-ci@kyuzan.com"
       - name: bump version
         run: ./bin/bump_version.sh
         env:
