@@ -17,7 +17,7 @@ jobs:
       - name: build
         run: npm run build:production
       - name: set-name
-        run: git config --global user.name "ReonaN"
+        run: git config --global user.name "Github Action Bot"
       - name: set-email
         run: git config --global user.email "reona.nagafuchi@gmail.com"
       - name: bump version
