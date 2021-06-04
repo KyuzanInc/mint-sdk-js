@@ -188,6 +188,12 @@ export interface InlineResponse2002Data {
      * @memberof InlineResponse2002Data
      */
     imgId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2002Data
+     */
+    signedUrl: string;
 }
 /**
  * 

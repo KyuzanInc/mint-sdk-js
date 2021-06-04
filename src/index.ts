@@ -1019,6 +1019,132 @@ export class MintSDK {
   }
 
   /**
+   * ユーザーのウォレットアドレスの画像や表示名を取得できる
+   * 設定されていない場合は、各項目空文字が入っています
+   *
+   * @param
+   * @returns
+   *
+   */
+  public getAccountInfo = async (arg: { walletAddress: string }) => {
+    const res = await this.apiClient.getAccountInfo(
+      this.accessToken,
+      arg.walletAddress
+    )
+    return res.data.data
+  }
+
+  /**
+   * ユーザーのウォレットアドレスの画像や表示名を設定できる
+   * 全ての項目は optionalです。設定しない場合は空文字を入れてください
+   * `avatarImgId`は`sdk.uploadImg`の返り値です
+   *
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * await sdk.connectWallet()
+   * const imgId = await sdk.uploadAvatarImg()
+   * await sdk.updateAccountInfo({ imgId, .... })
+   * ```
+   */
+  public updateAccountInfo = async (arg: {
+    avatarImgId: string
+    displayName: string
+    bio: string
+    twitterAccountName: string
+    instagramAccountName: string
+    homepageUrl: string
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const networkId = await this.getConnectedNetworkId()
+    const signDataType = {
+      domain: {
+        chainId: networkId,
+        name: 'アカウント情報の更新',
+        version: '1',
+      },
+      message: {
+        avatarImgId: arg.avatarImgId,
+        displayName: arg.displayName,
+        bio: arg.bio,
+        twitterAccountName: arg.twitterAccountName,
+        instagramAccountName: arg.instagramAccountName,
+        homepageUrl: arg.homepageUrl,
+      },
+      primaryType: 'AccountInfo',
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+        ],
+        AccountInfo: [
+          { name: 'avatarImgId', type: 'string' },
+          { name: 'displayName', type: 'string' },
+          { name: 'bio', type: 'string' },
+          { name: 'twitterAccountName', type: 'string' },
+          { name: 'instagramAccountName', type: 'string' },
+          { name: 'homepageUrl', type: 'string' },
+        ],
+      },
+    }
+
+    const signedData = await this.signData({ msgParams: signDataType })
+    await this.apiClient.createAccountInfo(this.accessToken, {
+      signedData,
+      networkId,
+      avatarImgId: arg.avatarImgId,
+      displayName: arg.displayName,
+      bio: arg.bio,
+      twitterAccountName: arg.twitterAccountName,
+      instagramAccountName: arg.instagramAccountName,
+      homepageUrl: arg.homepageUrl,
+    })
+  }
+
+  /**
+   * `sdk.updateAccountInfo`の引数の`imgId`を取得できる
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * await sdk.connectWallet()
+   * const imgId = await sdk.uploadAccountInfoAvatar(...)
+   * ```
+   */
+  public uploadAccountInfoAvatar = async (arg: { file: File }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const res = await this.apiClient.getAvatarSignedUrlToUpload(
+      this.accessToken
+    )
+    await this.uploadData({
+      signedUrl: res.data.data.signedUrl,
+      file: arg.file,
+    })
+    return res.data.data.imgId
+  }
+
+  /**
    * @ignore
    */
   private signData = async (arg: { msgParams: any }) => {
@@ -1049,6 +1175,17 @@ export class MintSDK {
         })
         .catch(reject)
     })
+  }
+
+  /**
+   * signedUrlを用いてFileをアップロード
+   * @ignore
+   */
+  private uploadData = async (arg: { signedUrl: string; file: File }) => {
+    const axios = Axios.create({
+      headers: { 'Content-Type': 'application/octet-stream' },
+    })
+    await axios.put(arg.signedUrl, arg.file)
   }
 
   /**
