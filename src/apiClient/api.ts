@@ -22,6 +22,104 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from './base';
 
 /**
+ * 設定されていない場合は、空文字
+ * @export
+ * @interface AccountInfo
+ */
+export interface AccountInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountInfo
+     */
+    avatarImgUrl: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountInfo
+     */
+    displayName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountInfo
+     */
+    bio: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountInfo
+     */
+    twitterAccountName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountInfo
+     */
+    instagramAccountName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountInfo
+     */
+    homepageUrl: string;
+}
+/**
+ * 設定されていない場合は、空文字
+ * @export
+ * @interface CreateAccountsInfoRequestBody
+ */
+export interface CreateAccountsInfoRequestBody {
+    /**
+     * 以下の項目データにSign(V4)したもの
+     * @type {string}
+     * @memberof CreateAccountsInfoRequestBody
+     */
+    signedData: string;
+    /**
+     * 
+     * @type {NetworkId}
+     * @memberof CreateAccountsInfoRequestBody
+     */
+    networkId: NetworkId;
+    /**
+     * GetAvatarSignedUrlのレスポンスのimgId
+     * @type {string}
+     * @memberof CreateAccountsInfoRequestBody
+     */
+    avatarImgId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAccountsInfoRequestBody
+     */
+    displayName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAccountsInfoRequestBody
+     */
+    bio: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAccountsInfoRequestBody
+     */
+    twitterAccountName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAccountsInfoRequestBody
+     */
+    instagramAccountName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAccountsInfoRequestBody
+     */
+    homepageUrl: string;
+}
+/**
  * 
  * @export
  * @interface InlineResponse200
@@ -29,10 +127,10 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 export interface InlineResponse200 {
     /**
      * 
-     * @type {Array<Item>}
+     * @type {string}
      * @memberof InlineResponse200
      */
-    data: Array<Item>;
+    data: string;
     /**
      * 
      * @type {object}
@@ -48,29 +146,16 @@ export interface InlineResponse200 {
 export interface InlineResponse2001 {
     /**
      * 
-     * @type {InlineResponse2001Data}
+     * @type {AccountInfo}
      * @memberof InlineResponse2001
      */
-    data: InlineResponse2001Data;
+    data: AccountInfo;
     /**
      * 
      * @type {object}
      * @memberof InlineResponse2001
      */
     meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2001Data
- */
-export interface InlineResponse2001Data {
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse2001Data
-     */
-    signedData: string;
 }
 /**
  * 
@@ -80,10 +165,10 @@ export interface InlineResponse2001Data {
 export interface InlineResponse2002 {
     /**
      * 
-     * @type {ItemShippingInfo}
+     * @type {InlineResponse2002Data}
      * @memberof InlineResponse2002
      */
-    data: ItemShippingInfo;
+    data: InlineResponse2002Data;
     /**
      * 
      * @type {object}
@@ -94,19 +179,102 @@ export interface InlineResponse2002 {
 /**
  * 
  * @export
+ * @interface InlineResponse2002Data
+ */
+export interface InlineResponse2002Data {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2002Data
+     */
+    imgId: string;
+}
+/**
+ * 
+ * @export
  * @interface InlineResponse2003
  */
 export interface InlineResponse2003 {
     /**
      * 
-     * @type {string}
+     * @type {Array<Item>}
      * @memberof InlineResponse2003
+     */
+    data: Array<Item>;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse2003
+     */
+    meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2004
+ */
+export interface InlineResponse2004 {
+    /**
+     * 
+     * @type {InlineResponse2004Data}
+     * @memberof InlineResponse2004
+     */
+    data: InlineResponse2004Data;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse2004
+     */
+    meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2004Data
+ */
+export interface InlineResponse2004Data {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2004Data
+     */
+    signedData: string;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2005
+ */
+export interface InlineResponse2005 {
+    /**
+     * 
+     * @type {ItemShippingInfo}
+     * @memberof InlineResponse2005
+     */
+    data: ItemShippingInfo;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse2005
+     */
+    meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2006
+ */
+export interface InlineResponse2006 {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2006
      */
     data?: string;
     /**
      * 
      * @type {object}
-     * @memberof InlineResponse2003
+     * @memberof InlineResponse2006
      */
     meta?: object;
 }
@@ -599,6 +767,129 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
+         * @summary ウォレットのプロフィール新規作成と更新
+         * @param {string} annapurnaAccessToken 
+         * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createAccountInfo: async (annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'annapurnaAccessToken' is not null or undefined
+            assertParamExists('createAccountInfo', 'annapurnaAccessToken', annapurnaAccessToken)
+            const localVarPath = `/v3_accounts`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (annapurnaAccessToken !== undefined && annapurnaAccessToken !== null) {
+                localVarHeaderParameter['annapurna-access-token'] = String(annapurnaAccessToken);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createAccountsInfoRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary ウォレットのプロフィールの取得
+         * @param {string} annapurnaAccessToken 
+         * @param {string} wallerAddress 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAccountInfo: async (annapurnaAccessToken: string, wallerAddress: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'annapurnaAccessToken' is not null or undefined
+            assertParamExists('getAccountInfo', 'annapurnaAccessToken', annapurnaAccessToken)
+            // verify required parameter 'wallerAddress' is not null or undefined
+            assertParamExists('getAccountInfo', 'wallerAddress', wallerAddress)
+            const localVarPath = `/v3_accounts/{wallerAddress}`
+                .replace(`{${"wallerAddress"}}`, encodeURIComponent(String(wallerAddress)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (annapurnaAccessToken !== undefined && annapurnaAccessToken !== null) {
+                localVarHeaderParameter['annapurna-access-token'] = String(annapurnaAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary ウォレットのプロフィール画像のアップロードURLの取得
+         * @param {string} annapurnaAccessToken 
+         * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAvatarSignedUrlToUpload: async (annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'annapurnaAccessToken' is not null or undefined
+            assertParamExists('getAvatarSignedUrlToUpload', 'annapurnaAccessToken', annapurnaAccessToken)
+            const localVarPath = `/v3_accounts/avatar`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (annapurnaAccessToken !== undefined && annapurnaAccessToken !== null) {
+                localVarHeaderParameter['annapurna-access-token'] = String(annapurnaAccessToken);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createAccountsInfoRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary アイテムを返す
          * @param {string} annapurnaAccessToken 
          * @param {Array<string> | string} networkIds 
@@ -870,6 +1161,42 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary ウォレットのプロフィール新規作成と更新
+         * @param {string} annapurnaAccessToken 
+         * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createAccountInfo(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createAccountInfo(annapurnaAccessToken, createAccountsInfoRequestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary ウォレットのプロフィールの取得
+         * @param {string} annapurnaAccessToken 
+         * @param {string} wallerAddress 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAccountInfo(annapurnaAccessToken: string, wallerAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAccountInfo(annapurnaAccessToken, wallerAddress, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary ウォレットのプロフィール画像のアップロードURLの取得
+         * @param {string} annapurnaAccessToken 
+         * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAvatarSignedUrlToUpload(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAvatarSignedUrlToUpload(annapurnaAccessToken, createAccountsInfoRequestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary アイテムを返す
          * @param {string} annapurnaAccessToken 
          * @param {Array<string> | string} networkIds 
@@ -883,7 +1210,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+        async getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemList(annapurnaAccessToken, networkIds, itemType, tradeType, onSale, perPage, page, sortBy, order, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -897,7 +1224,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+        async getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -909,7 +1236,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+        async getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemSignedDataBidAuction(annapurnaAccessToken, itemId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -921,7 +1248,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+        async getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemSignedDataBuyAuction(annapurnaAccessToken, itemId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -934,7 +1261,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
+        async registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.registerItemShippingInfo(annapurnaAccessToken, itemId, registerItemShippingInfoRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -950,6 +1277,39 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @summary ウォレットのプロフィール新規作成と更新
+         * @param {string} annapurnaAccessToken 
+         * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createAccountInfo(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any): AxiosPromise<InlineResponse200> {
+            return localVarFp.createAccountInfo(annapurnaAccessToken, createAccountsInfoRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary ウォレットのプロフィールの取得
+         * @param {string} annapurnaAccessToken 
+         * @param {string} wallerAddress 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAccountInfo(annapurnaAccessToken: string, wallerAddress: string, options?: any): AxiosPromise<InlineResponse2001> {
+            return localVarFp.getAccountInfo(annapurnaAccessToken, wallerAddress, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary ウォレットのプロフィール画像のアップロードURLの取得
+         * @param {string} annapurnaAccessToken 
+         * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAvatarSignedUrlToUpload(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any): AxiosPromise<InlineResponse2002> {
+            return localVarFp.getAvatarSignedUrlToUpload(annapurnaAccessToken, createAccountsInfoRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary アイテムを返す
          * @param {string} annapurnaAccessToken 
          * @param {Array<string> | string} networkIds 
@@ -963,7 +1323,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse200> {
+        getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse2003> {
             return localVarFp.getItemList(annapurnaAccessToken, networkIds, itemType, tradeType, onSale, perPage, page, sortBy, order, options).then((request) => request(axios, basePath));
         },
         /**
@@ -976,7 +1336,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): AxiosPromise<InlineResponse2002> {
+        getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): AxiosPromise<InlineResponse2005> {
             return localVarFp.getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options).then((request) => request(axios, basePath));
         },
         /**
@@ -987,7 +1347,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2001> {
+        getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2004> {
             return localVarFp.getItemSignedDataBidAuction(annapurnaAccessToken, itemId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -998,7 +1358,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2001> {
+        getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2004> {
             return localVarFp.getItemSignedDataBuyAuction(annapurnaAccessToken, itemId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1010,7 +1370,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): AxiosPromise<InlineResponse2003> {
+        registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): AxiosPromise<InlineResponse2006> {
             return localVarFp.registerItemShippingInfo(annapurnaAccessToken, itemId, registerItemShippingInfoRequestBody, options).then((request) => request(axios, basePath));
         },
     };
@@ -1023,6 +1383,45 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @summary ウォレットのプロフィール新規作成と更新
+     * @param {string} annapurnaAccessToken 
+     * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public createAccountInfo(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any) {
+        return DefaultApiFp(this.configuration).createAccountInfo(annapurnaAccessToken, createAccountsInfoRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary ウォレットのプロフィールの取得
+     * @param {string} annapurnaAccessToken 
+     * @param {string} wallerAddress 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getAccountInfo(annapurnaAccessToken: string, wallerAddress: string, options?: any) {
+        return DefaultApiFp(this.configuration).getAccountInfo(annapurnaAccessToken, wallerAddress, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary ウォレットのプロフィール画像のアップロードURLの取得
+     * @param {string} annapurnaAccessToken 
+     * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getAvatarSignedUrlToUpload(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any) {
+        return DefaultApiFp(this.configuration).getAvatarSignedUrlToUpload(annapurnaAccessToken, createAccountsInfoRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary アイテムを返す
