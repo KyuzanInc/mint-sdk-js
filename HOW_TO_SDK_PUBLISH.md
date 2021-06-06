@@ -1,29 +1,36 @@
-# SDK のpackage 公開方法
+# SDK の package 公開方法
 
-GithubActionでの公開方法を行うと簡単です。
+GithubAction での公開方法を行うと簡単です。
 
 ## Github Action の実行
 
 1. [Github Actions](https://github.com/KyuzanInc/mint-sdk-js/actions)から`npm-publish`を選択
 2. `run workflow`で、`main`ブランチを選択し実行
-3. 自動でnpm package 公開までアクションが実行されます。
+3. 自動で npm package 公開までアクションが実行されます。
 
-## 公開までのAction実行詳細・注意点
+## 公開までの Action 実行詳細・注意点
 
 ### npm publish の公開バージョンについて
 
-バージョンは実行したブランチのルートのpackage.jsonに記されるバージョンで公開をおこないます。
+publish のステップでは、action のきっかけとなる最新 commit から最後に publish されたすべての commit を調べます。
+commit メッセージに基づいてリリースのバージョンのインクリメントを決めています
 
-すでに指定versionでpackageが公開されている場合、**patch version**を1つ挙げて公開します。
+- mejer version: commit メッセージまたは説明に "BREAKING CHANGE" という文字がある
 
-minor version, major version を上げる際はpackage.jsonのバージョン変更をおこなってください。
+- minor version: commit メッセージまたは説明に "feat" という文字がある
 
-### Tagについて
+- patch version: 上記以外
 
-package公開する際に公開するバージョンでタグを切るように設定しています。
+### Tag について
+
+package 公開した際に公開するバージョンでタグを切るように設定しています。
 
 ### docs と demo site のデプロイ
 
-SDKのpackageが公開成功した場合、最新のSDKを使うようにdocsとdemo(example)のデプロイActionが実行されます。
+SDK の package が公開成功した場合、最新の SDK を使うように docs と demo(example)のデプロイ Action が実行されます。
 
 トリガーについては`workflows`の各アクション詳細を確認してください。
+
+### 参考
+
+https://github.com/marketplace/actions/automated-releases-for-npm-packages
