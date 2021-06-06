@@ -18,7 +18,6 @@ export const TokenRight: React.VFC<Props> = ({
   onWriteShipAddress,
   onViewShipAddress,
 }) => {
-  console.log(token)
   const withPhysical = token.item.type === 'nftWithPhysicalProduct'
   if (!withPhysical) {
     return (

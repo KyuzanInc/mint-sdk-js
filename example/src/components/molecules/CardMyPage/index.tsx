@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Item, Token } from '@kyuzan/mint-sdk-js'
-import { differenceInMinutes } from 'date-fns'
+import { isBefore } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -94,7 +94,10 @@ export const CardMyPage: React.VFC<Props> = ({
     const winning = !auctionIsEnd && userIsHighestBidder
     const losing = !auctionIsEnd && !userIsHighestBidder
     const won = auctionIsEnd && userIsHighestBidder
-    const not5minFromEndAt = differenceInMinutes(new Date(), item.endAt!) < 5
+    const not5minFromEndAt = isBefore(
+      new Date(),
+      new Date(item.withdrawableAt!)
+    )
     const waitWithDraw = won && not5minFromEndAt
 
     return (

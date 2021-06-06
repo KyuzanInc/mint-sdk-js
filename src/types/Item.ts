@@ -86,35 +86,46 @@ export type Item = {
   price?: number
   /**
    * アイテムの現在の入札価格。単位は`ether`。
-   * tradeType === 'auction` の時だけ値が入る
+   * tradeType === 'auction or autoExtensionAuction` の時だけ値が入る
    * */
-  currentPrice?: number // only 'auction'  ether
+  currentPrice?: number
   /**
    * アイテムの最新の入札者ウォレットアドレス。
-   * tradeType === 'auction` の時だけ値が入る
+   * tradeType === 'auction or autoExtensionAuction` の時だけ値が入る
    * */
   currentBidderAddress?: string | null
   /**
    * アイテムの最新の最低入札価格
-   * tradeType === 'auction` の時だけ値が入る
+   * tradeType === 'auction or autoExtensionAuction` の時だけ値が入る
    * */
   minBidPrice?: number
   /**
    * アイテムの最低入札価格比
    * `currentPrice * minBidPercentage`でminBidPriceが求められる
-   * tradeType === 'auction` の時だけ値が入る
+   * tradeType === 'auction or autoExtensionAuction` の時だけ値が入る
    * */
   minBidPercentage?: number
   /**
    * オークション開始日時
-   * tradeType === 'auction` の時だけ値が入る
+   * tradeType === 'auction or autoExtensionAuction' の時だけ値が入る
    * */
   startAt?: Date
   /**
    * オークション終了日時
-   * tradeType === 'auction` の時だけ値が入る
+   * autoExtensionAuctionの場合は更新される
+   * tradeType === 'auction or autoExtensionAuction` の時だけ値が入る
    * */
   endAt?: Date
+  /**
+   * オークション初期終了日時
+   * tradeType === 'auction or autoExtensionAuction` の時だけ値が入る
+   * */
+  defaultEndAt?: Date // only 'autoExtensionAuction'
+  /**
+   * 引き出し可能日時。この日時以降、`sendTxMakeSuccessfulBid`を呼ぶことでToken引き出すことができる
+   * tradeType === 'autoExtensionAuction` の時だけ値が入る
+   * */
+  withdrawableAt?: Date // only 'autoExtensionAuction'
   /**
    * オークション開始価格
    * tradeType === 'auction` の時だけ値が入る

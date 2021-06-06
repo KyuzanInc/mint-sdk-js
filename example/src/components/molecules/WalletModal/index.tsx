@@ -7,7 +7,7 @@ import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 
 type Props = {
   isOpen: boolean
-  closeModal: () => void
+  closeModal?: () => void
   connectWallet: () => void
   loading: boolean
 }
@@ -53,14 +53,16 @@ export const WalletModal: React.VFC<Props> = ({
             </ContentRightButtonContainer>
           </ContentRight>
         </Content>
-        <CloseButton onClick={closeModal}>
-          <Image
-            src={'/images/close_button.svg'}
-            width={64}
-            layout={'fixed'}
-            height={64}
-          />
-        </CloseButton>
+        {closeModal && (
+          <CloseButton onClick={closeModal}>
+            <Image
+              src={'/images/close_button.svg'}
+              width={64}
+              layout={'fixed'}
+              height={64}
+            />
+          </CloseButton>
+        )}
       </ModalContainer>
     </Modal>
   )

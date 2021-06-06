@@ -582,7 +582,7 @@ export class MintSDK {
    *
    * **Required**
    * - ウォレットに接続していること
-   * - **自動延長オークションは、オークション終了５分以降に引き出し可能です**
+   * - **自動延長オークションは、`withdrawableAt`以降に引き出し可能です**
    *
    * @param itemId {@link Item}のitemId
    * @param userResidence {@link Residence} 購入者の居住地を指定する
@@ -1160,6 +1160,10 @@ export class MintSDK {
       ...item,
       startAt: item.startAt ? new Date(item.startAt) : undefined,
       endAt: item.endAt ? new Date(item.endAt) : undefined,
+      defaultEndAt: item.defaultEndAt ? new Date(item.defaultEndAt) : undefined,
+      withdrawableAt: item.withdrawableAt
+        ? new Date(item.withdrawableAt)
+        : undefined,
     } as Item
   }
 

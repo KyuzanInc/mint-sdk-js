@@ -1,7 +1,7 @@
 {
   "name": "@kyuzan/mint-sdk-js",
   "description": "MINT NFT Platform Client SDK",
-  "version": "3.3.0",
+  "version": "3.3.7",
   "dependencies": {
     "agentkeepalive": "^4.1.4",
     "axios": "^0.21.1",
@@ -26,9 +26,9 @@
     "typescript": "^4.2.4"
   },
   "files": [
-    "dist"
+    "lib"
   ],
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "publishConfig": {
     "access": "public"
   },
@@ -38,7 +38,7 @@
     "doc:serve": "cd ./docs && npm run start",
     "build:develop": "npm run clean && node build.ts development && tsc --project tsconfig.json --emitDeclarationOnly",
     "build:production": "npm run clean && npm run type:check && node build.ts production && tsc --project tsconfig.json --emitDeclarationOnly",
-    "clean": "rimraf dist",
+    "clean": "rimraf lib",
     "watch:typeCheck": "tsc --watch -noEmit --project tsconfig.json",
     "watch:build": "node build.ts development w",
     "format:fix": "prettier --write \"src/**/*.ts\"",

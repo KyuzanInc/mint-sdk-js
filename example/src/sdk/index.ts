@@ -1,4 +1,4 @@
-import { DEMO_ACCESS_KEY, DEMO_FORTMATIC_KEY } from './../constants'
+import { DEMO_FORTMATIC_KEY, DEMO_ACCESS_KEY } from './../constants'
 import { MintSDK } from '@kyuzan/mint-sdk-js'
 
 let sdk: MintSDK | undefined = undefined

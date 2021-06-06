@@ -297,6 +297,12 @@ export interface Item {
      */
     defaultEndAt?: any | null;
     /**
+     * 引き出し可能開始日時。tradeType === autoExtensionAuction の時に値が入る。
+     * @type {any}
+     * @memberof Item
+     */
+    withdrawableAt?: any | null;
+    /**
      * オークション開始価格。tradeType === auctionの時に値が入る。単位はETH
      * @type {number}
      * @memberof Item
