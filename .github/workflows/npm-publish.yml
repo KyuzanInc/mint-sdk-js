@@ -1,12 +1,15 @@
 name: npm-publish
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 jobs:
   npm-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # Setup .npmrc file to publish to GitHub Packages
       - uses: actions/setup-node@v2
         with:
           node-version: '12.x'
@@ -16,20 +19,9 @@ jobs:
           npm ci
       - name: build
         run: npm run build:production
-#       - name: 'Automated Version Bump'
-#         id: version-bump
-#         uses: 'phips28/gh-action-bump-version@master'
-#         with:
-#           tag-prefix: 'v'
-#           target-branch: 'main'
-#           commit-message: 'CI: bumps version to {{version}} [skip ci]'
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#       - name: 'Output Step'
-#         env:
-#           NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
-#         run: echo "new tag $NEW_TAG"
       - name: publish
+        if: github.ref == 'refs/heads/main'
         uses: mikeal/merge-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
