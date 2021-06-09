@@ -10,20 +10,15 @@ GithubAction での公開方法を行うと簡単です。
 
 ## 公開までの Action 実行詳細・注意点
 
-### npm publish の公開バージョンについて
+### npm tag バージョンについて
 
-publish のステップでは、action のきっかけとなる最新 commit から最後に publish されたすべての commit を調べます。
-commit メッセージに基づいてリリースのバージョンのインクリメントを決めています
+main に push された commit メッセージに基づいてリリースのバージョンのインクリメントを決めています
 
-- mejer version: commit メッセージまたは説明に "BREAKING CHANGE" という文字がある
+- mejer version: commit メッセージまたは説明に "BREAKING CHANGE" or "major" という文字がある
 
 - minor version: commit メッセージまたは説明に "feat" という文字がある
 
 - patch version: 上記以外
-
-### Tag について
-
-package 公開した際に公開するバージョンでタグを切るように設定しています。
 
 ### docs と demo site のデプロイ
 
@@ -33,4 +28,4 @@ SDK の package が公開成功した場合、最新の SDK を使うように d
 
 ### 参考
 
-https://github.com/marketplace/actions/automated-releases-for-npm-packages
+https://github.com/phips28/gh-action-bump-version
