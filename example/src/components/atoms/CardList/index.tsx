@@ -12,7 +12,6 @@ export const ListTitle = styled(ListComponent)`
   padding: 8px 0 16px 0;
   height: 48px;
   flex-direction: row;
-  margin-top: 64px;
   align-items: center;
 `
 

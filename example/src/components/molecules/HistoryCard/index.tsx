@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { ItemLog, NetworkId } from '@kyuzan/mint-sdk-js'
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import { format } from 'date-fns'
 import { color, font } from '../../../style'
+import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 
 type Props = {
   log: ItemLog
@@ -17,7 +17,7 @@ export const HistoryCard: React.FC<Props> = ({ log, networkId }) => {
   return (
     <HistoryContainer href={link} target="blank">
       <Avatar>
-        <Jazzicon diameter={44} seed={jsNumberForAddress(log.accountAddress)} />
+        <DefaultAvatarIcon size={44} name={log.accountAddress} />
       </Avatar>
       <BidderDetail>
         <BidderId>{log.accountAddress}</BidderId>

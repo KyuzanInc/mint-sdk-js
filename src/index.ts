@@ -1138,10 +1138,13 @@ export class MintSDK {
       this.accessToken
     )
     await this.uploadData({
-      signedUrl: res.data.data.signedUrl,
+      signedUrl: res.data.data.signedUrlForUpload,
       file: arg.file,
     })
-    return res.data.data.imgId
+    return {
+      imgId: res.data.data.imgId,
+      uploadedImgUrl: res.data.data.signedUrlForRead,
+    }
   }
 
   /**

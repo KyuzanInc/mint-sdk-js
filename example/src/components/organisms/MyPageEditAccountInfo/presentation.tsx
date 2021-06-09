@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import React, { ChangeEvent, useEffect } from 'react'
+import React, { ChangeEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
@@ -29,7 +29,6 @@ type Props = {
 }
 
 type Form = {
-  avatarImgUrl: string
   displayName: string
   bio: string
   twitterAccountName: string
@@ -50,9 +49,8 @@ export const Presentation: React.VFC<Props> = ({
   instagramAccountName,
   homepageUrl,
 }) => {
-  const { register, handleSubmit, setValue } = useForm<Form>({
+  const { register, handleSubmit } = useForm<Form>({
     defaultValues: {
-      avatarImgUrl: avatarImgUrl,
       displayName: displayName,
       bio: bio,
       twitterAccountName: twitterAccountName,
@@ -60,10 +58,6 @@ export const Presentation: React.VFC<Props> = ({
       homepageUrl: homepageUrl,
     },
   })
-
-  useEffect(() => {
-    setValue('avatarImgUrl', avatarImgUrl)
-  }, [avatarImgUrl])
 
   return (
     <Container>
@@ -163,7 +157,7 @@ const InputFile = styled('input')({
 })
 
 const Image = styled.img`
-  height: auto;
+  height: 100%;
   width: 100%;
   object-fit: cover;
 `

@@ -3,19 +3,17 @@ import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import { color, font } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 import { WalletAddressWithClipBoard } from '../WalletAddressWithClipBoard'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
+import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 
 type Props = {
-  //
   loading: boolean
   profileUrl: string | undefined
   displayName: string | undefined
   bio: string | undefined
-  isShowEditButton: boolean
   onEdit: (() => void) | undefined
   walletAddress: string | undefined
   instagramAccountName: string | undefined
@@ -53,8 +51,10 @@ export const AccountInfo: React.VFC<Props> = ({
   return (
     <Container>
       <AvatarContainer>
-        {typeof profileUrl === 'undefined' && (
-          <Jazzicon diameter={120} seed={jsNumberForAddress(walletAddress)} />
+        {typeof profileUrl === 'undefined' ? (
+          <DefaultAvatarIcon size={120} name={walletAddress ?? ''} />
+        ) : (
+          <AvatarImage src={profileUrl} />
         )}
       </AvatarContainer>
       <DisplayName>{displayName}</DisplayName>
@@ -181,4 +181,10 @@ const LinksButton = styled.div`
 
 const EditButton = styled.div`
   margin-top: 24px;
+`
+
+const AvatarImage = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 `

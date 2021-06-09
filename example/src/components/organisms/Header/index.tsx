@@ -2,12 +2,12 @@ import React, { useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import styled from '@emotion/styled'
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import { Anchor } from '../../atoms/Anchor'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { connectWalletActionCreator } from '../../../redux/wallet'
 import { font } from '../../../style'
+import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 
 export const Header: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -46,9 +46,9 @@ export const Header: React.FC = () => {
               <Link passHref href={'/me'}>
                 <Anchor>
                   <WalletInfoContainer>
-                    <Jazzicon
-                      diameter={44}
-                      seed={jsNumberForAddress(walletInfo?.address)}
+                    <DefaultAvatarIcon
+                      name={walletInfo?.address ?? ''}
+                      size={44}
                     />
                     <WalletDetail>
                       <WalletBalance>

@@ -38,6 +38,12 @@ export interface AccountInfo {
      * @type {string}
      * @memberof AccountInfo
      */
+    avatarImgId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountInfo
+     */
     displayName: string;
     /**
      * 
@@ -193,7 +199,13 @@ export interface InlineResponse2002Data {
      * @type {string}
      * @memberof InlineResponse2002Data
      */
-    signedUrl: string;
+    signedUrlForUpload: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2002Data
+     */
+    signedUrlForRead: string;
 }
 /**
  * 
@@ -816,17 +828,17 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary ウォレットのプロフィールの取得
          * @param {string} annapurnaAccessToken 
-         * @param {string} wallerAddress 
+         * @param {string} walletAddress 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAccountInfo: async (annapurnaAccessToken: string, wallerAddress: string, options: any = {}): Promise<RequestArgs> => {
+        getAccountInfo: async (annapurnaAccessToken: string, walletAddress: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'annapurnaAccessToken' is not null or undefined
             assertParamExists('getAccountInfo', 'annapurnaAccessToken', annapurnaAccessToken)
-            // verify required parameter 'wallerAddress' is not null or undefined
-            assertParamExists('getAccountInfo', 'wallerAddress', wallerAddress)
-            const localVarPath = `/v3_accounts/{wallerAddress}`
-                .replace(`{${"wallerAddress"}}`, encodeURIComponent(String(wallerAddress)));
+            // verify required parameter 'walletAddress' is not null or undefined
+            assertParamExists('getAccountInfo', 'walletAddress', walletAddress)
+            const localVarPath = `/v3_accounts/{walletAddress}`
+                .replace(`{${"walletAddress"}}`, encodeURIComponent(String(walletAddress)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -857,11 +869,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary ウォレットのプロフィール画像のアップロードURLの取得
          * @param {string} annapurnaAccessToken 
-         * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAvatarSignedUrlToUpload: async (annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options: any = {}): Promise<RequestArgs> => {
+        getAvatarSignedUrlToUpload: async (annapurnaAccessToken: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'annapurnaAccessToken' is not null or undefined
             assertParamExists('getAvatarSignedUrlToUpload', 'annapurnaAccessToken', annapurnaAccessToken)
             const localVarPath = `/v3_accounts/avatar`;
@@ -882,12 +893,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createAccountsInfoRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1181,24 +1189,23 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary ウォレットのプロフィールの取得
          * @param {string} annapurnaAccessToken 
-         * @param {string} wallerAddress 
+         * @param {string} walletAddress 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAccountInfo(annapurnaAccessToken: string, wallerAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAccountInfo(annapurnaAccessToken, wallerAddress, options);
+        async getAccountInfo(annapurnaAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAccountInfo(annapurnaAccessToken, walletAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary ウォレットのプロフィール画像のアップロードURLの取得
          * @param {string} annapurnaAccessToken 
-         * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAvatarSignedUrlToUpload(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAvatarSignedUrlToUpload(annapurnaAccessToken, createAccountsInfoRequestBody, options);
+        async getAvatarSignedUrlToUpload(annapurnaAccessToken: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAvatarSignedUrlToUpload(annapurnaAccessToken, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1296,23 +1303,22 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary ウォレットのプロフィールの取得
          * @param {string} annapurnaAccessToken 
-         * @param {string} wallerAddress 
+         * @param {string} walletAddress 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAccountInfo(annapurnaAccessToken: string, wallerAddress: string, options?: any): AxiosPromise<InlineResponse2001> {
-            return localVarFp.getAccountInfo(annapurnaAccessToken, wallerAddress, options).then((request) => request(axios, basePath));
+        getAccountInfo(annapurnaAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2001> {
+            return localVarFp.getAccountInfo(annapurnaAccessToken, walletAddress, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary ウォレットのプロフィール画像のアップロードURLの取得
          * @param {string} annapurnaAccessToken 
-         * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAvatarSignedUrlToUpload(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any): AxiosPromise<InlineResponse2002> {
-            return localVarFp.getAvatarSignedUrlToUpload(annapurnaAccessToken, createAccountsInfoRequestBody, options).then((request) => request(axios, basePath));
+        getAvatarSignedUrlToUpload(annapurnaAccessToken: string, options?: any): AxiosPromise<InlineResponse2002> {
+            return localVarFp.getAvatarSignedUrlToUpload(annapurnaAccessToken, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1406,26 +1412,25 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary ウォレットのプロフィールの取得
      * @param {string} annapurnaAccessToken 
-     * @param {string} wallerAddress 
+     * @param {string} walletAddress 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getAccountInfo(annapurnaAccessToken: string, wallerAddress: string, options?: any) {
-        return DefaultApiFp(this.configuration).getAccountInfo(annapurnaAccessToken, wallerAddress, options).then((request) => request(this.axios, this.basePath));
+    public getAccountInfo(annapurnaAccessToken: string, walletAddress: string, options?: any) {
+        return DefaultApiFp(this.configuration).getAccountInfo(annapurnaAccessToken, walletAddress, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary ウォレットのプロフィール画像のアップロードURLの取得
      * @param {string} annapurnaAccessToken 
-     * @param {CreateAccountsInfoRequestBody} [createAccountsInfoRequestBody] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getAvatarSignedUrlToUpload(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any) {
-        return DefaultApiFp(this.configuration).getAvatarSignedUrlToUpload(annapurnaAccessToken, createAccountsInfoRequestBody, options).then((request) => request(this.axios, this.basePath));
+    public getAvatarSignedUrlToUpload(annapurnaAccessToken: string, options?: any) {
+        return DefaultApiFp(this.configuration).getAvatarSignedUrlToUpload(annapurnaAccessToken, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -1,4 +1,6 @@
+import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
+import { getAccountInfoActionCreator } from '../../../redux/accountInfo'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import {
   getBidedActionCreator,
@@ -68,6 +70,16 @@ export const Container: React.VFC = () => {
     setSelectShippingInfoItemId(undefined)
   }
 
+  const router = useRouter()
+  const goEditPage = useCallback(() => {
+    router.push('/me/edit')
+  }, [])
+  const accountInfoLoading = useAppSelector(
+    (state) => state.app.accountInfo.meta.loading
+  )
+  const accountInfo = useAppSelector(
+    (state) => state.app.accountInfo.data.accountInfo
+  )
   useEffect(() => {
     if (typeof walletInfo?.address === 'undefined') {
       return
@@ -77,6 +89,9 @@ export const Container: React.VFC = () => {
     )
     dispatch(
       getOwnItemsActionCreator({ walletAddress: walletInfo.address }) as any
+    )
+    dispatch(
+      getAccountInfoActionCreator({ walletAddress: walletInfo.address }) as any
     )
   }, [walletInfo?.address])
   return (
@@ -98,6 +113,16 @@ export const Container: React.VFC = () => {
           ? shippingInfo[selectShippingInfoItemId]
           : undefined
       }
+      accountDisplayName={accountInfo.displayName || undefined}
+      accountBio={accountInfo.bio || undefined}
+      accountProfileUrl={accountInfo.avatarImgUrl || undefined}
+      accountInstagramAccountName={
+        accountInfo.instagramAccountName || undefined
+      }
+      accountTwitterAccountName={accountInfo.twitterAccountName || undefined}
+      accountSiteUrl={accountInfo.homepageUrl || undefined}
+      accountLoading={accountInfoLoading}
+      accountOnClickEdit={goEditPage}
     />
   )
 }
