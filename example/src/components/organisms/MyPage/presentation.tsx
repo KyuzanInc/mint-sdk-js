@@ -131,7 +131,7 @@ export const Presentation: React.VFC<Props> = ({
         closeModal={handleHideShippingInfo}
       />
       <WalletModal
-        isOpen={typeof userWalletAddress === 'undefined'}
+        isOpen={!accountLoading && typeof userWalletAddress === 'undefined'}
         connectWallet={onConnectWallet}
         loading={connectingWallet}
       />

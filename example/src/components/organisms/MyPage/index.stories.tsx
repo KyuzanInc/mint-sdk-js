@@ -21,7 +21,6 @@ export const Basic: React.VFC = () => (
     shippingInfo={undefined}
     accountDisplayName={''}
     accountBio={''}
-    walletAddress={''}
     accountProfileUrl={undefined}
     accountInstagramAccountName={undefined}
     accountTwitterAccountName={undefined}
@@ -48,7 +47,6 @@ export const NoWalletAddress: React.VFC = () => (
     shippingInfo={undefined}
     accountDisplayName={''}
     accountBio={''}
-    walletAddress={''}
     accountProfileUrl={undefined}
     accountInstagramAccountName={undefined}
     accountTwitterAccountName={undefined}
@@ -75,7 +73,6 @@ export const Loading: React.VFC = () => (
     shippingInfo={undefined}
     accountDisplayName={''}
     accountBio={''}
-    walletAddress={''}
     accountProfileUrl={undefined}
     accountInstagramAccountName={undefined}
     accountTwitterAccountName={undefined}
@@ -112,7 +109,6 @@ export const ShowShippingInfo: React.VFC = () => (
     }}
     accountDisplayName={''}
     accountBio={''}
-    walletAddress={''}
     accountProfileUrl={undefined}
     accountInstagramAccountName={undefined}
     accountTwitterAccountName={undefined}

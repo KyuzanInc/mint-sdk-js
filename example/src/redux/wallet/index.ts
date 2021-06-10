@@ -95,6 +95,7 @@ export const walletSlice = createSlice({
     builder.addCase(
       initialWalletActionCreator.fulfilled,
       (state, { payload }) => {
+        state.meta.initialized = true
         if (typeof payload === 'undefined') {
           state.data.walletInfo = undefined
         } else {
