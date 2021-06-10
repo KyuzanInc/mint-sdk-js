@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { push } from 'connected-next-router'
 import { getSdk } from '../../sdk'
 
-export type AccountInfoEditState = {
+export type MyAccountInfoEditState = {
   data: {
     accountInfo: AccountInfo
     uploadedImgId: string | undefined
@@ -17,7 +17,7 @@ export type AccountInfoEditState = {
   }
 }
 
-export const initialAccountInfoEditState: AccountInfoEditState = {
+export const initialMyAccountInfoEditState: MyAccountInfoEditState = {
   data: {
     accountInfo: {
       avatarImgUrl: '',
@@ -41,7 +41,7 @@ export const initialAccountInfoEditState: AccountInfoEditState = {
 
 // AsyncAction
 export const getAccountInfoActionCreator = createAsyncThunk(
-  'app/accountInfo/get',
+  'app/myAccountInfo/get',
   async (arg: { walletAddress: string }, thunkApi) => {
     try {
       const data = await getSdk()?.getAccountInfo({
@@ -56,7 +56,7 @@ export const getAccountInfoActionCreator = createAsyncThunk(
 )
 
 export const uploadAvatarActionCreator = createAsyncThunk(
-  'app/accountInfo/uploadAvatar',
+  'app/myAccountInfo/uploadAvatar',
   async (arg: { file: File }, thunkApi) => {
     try {
       return await getSdk()?.uploadAccountInfoAvatar({
@@ -70,7 +70,7 @@ export const uploadAvatarActionCreator = createAsyncThunk(
 )
 
 export const updateAccountInfoActionCreator = createAsyncThunk(
-  'app/accountInfo/update',
+  'app/myAccountInfo/update',
   async (
     arg: {
       avatarImgId: string
@@ -93,9 +93,9 @@ export const updateAccountInfoActionCreator = createAsyncThunk(
 )
 
 // Slice
-export const accountInfoEditSlice = createSlice({
-  name: 'accountInfoEdit',
-  initialState: initialAccountInfoEditState,
+export const myAccountInfoEditSlice = createSlice({
+  name: 'myAccountInfoEdit',
+  initialState: initialMyAccountInfoEditState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getAccountInfoActionCreator.pending, (state) => {
@@ -149,7 +149,7 @@ export const accountInfoEditSlice = createSlice({
     )
     builder.addCase(updateAccountInfoActionCreator.fulfilled, (state) => {
       state.meta.submitting = false
-      state = initialAccountInfoEditState
+      state = initialMyAccountInfoEditState
     })
   },
 })

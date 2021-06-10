@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
-import { getAccountInfoActionCreator } from '../../../redux/accountInfo'
+import { getAccountInfoActionCreator } from '../../../redux/myAccountInfo'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import {
   getBidedActionCreator,
@@ -75,10 +75,10 @@ export const Container: React.VFC = () => {
     router.push('/me/edit')
   }, [])
   const accountInfoLoading = useAppSelector(
-    (state) => state.app.accountInfo.meta.loading
+    (state) => state.app.myAccountInfo.meta.loading
   )
   const accountInfo = useAppSelector(
-    (state) => state.app.accountInfo.data.accountInfo
+    (state) => state.app.myAccountInfo.data.accountInfo
   )
   useEffect(() => {
     if (typeof walletInfo?.address === 'undefined') {

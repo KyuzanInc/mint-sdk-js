@@ -1,9 +1,8 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { getAccountInfoActionCreator } from '../../../redux/accountInfo'
+import { getTokensActionCreator } from '../../../redux/accountTokens'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
-import { getOwnItemsActionCreator } from '../../../redux/myItems'
-
 import { Presentation } from './presentation'
 
 export const Container: React.VFC = () => {
@@ -11,38 +10,40 @@ export const Container: React.VFC = () => {
   const walletAddress = router.query.walletAddress as string
   const dispatch = useAppDispatch()
 
-  const ownTokens = useAppSelector((state) => {
-    return state.app.myItems.data.ownItems
-  })
-
-  const waitingOwnTokens = useAppSelector((state) => {
-    return state.app.myItems.meta.ownItemsLoading
-  })
+  const tokens = useAppSelector(
+    (state) => state.app.accountTokens.data.tokens[walletAddress]
+  )
+  const tokensLoading = useAppSelector(
+    (state) => state.app.accountTokens.meta.loading[walletAddress]
+  )
 
   const accountInfoLoading = useAppSelector(
     (state) => state.app.accountInfo.meta.loading
   )
   const accountInfo = useAppSelector(
-    (state) => state.app.accountInfo.data.accountInfo
+    (state) => state.app.accountInfo.data.accountInfoMap[walletAddress]
   )
   useEffect(() => {
-    dispatch(getOwnItemsActionCreator({ walletAddress }) as any)
-    dispatch(getAccountInfoActionCreator({ walletAddress }) as any)
-  }, [walletAddress])
+    if (typeof accountInfo === 'undefined') {
+      dispatch(getAccountInfoActionCreator({ walletAddress }) as any)
+    }
+
+    dispatch(getTokensActionCreator({ walletAddress }) as any)
+  }, [walletAddress, accountInfo])
 
   return (
     <Presentation
-      waitingOwnTokens={waitingOwnTokens}
+      waitingOwnTokens={tokensLoading ?? true}
       userWalletAddress={walletAddress}
-      ownTokens={ownTokens}
-      accountDisplayName={accountInfo.displayName || undefined}
-      accountBio={accountInfo.bio || undefined}
-      accountProfileUrl={accountInfo.avatarImgUrl || undefined}
+      ownTokens={tokens ?? []}
+      accountDisplayName={accountInfo?.displayName || undefined}
+      accountBio={accountInfo?.bio || undefined}
+      accountProfileUrl={accountInfo?.avatarImgUrl || undefined}
       accountInstagramAccountName={
-        accountInfo.instagramAccountName || undefined
+        accountInfo?.instagramAccountName || undefined
       }
-      accountTwitterAccountName={accountInfo.twitterAccountName || undefined}
-      accountSiteUrl={accountInfo.homepageUrl || undefined}
+      accountTwitterAccountName={accountInfo?.twitterAccountName || undefined}
+      accountSiteUrl={accountInfo?.homepageUrl || undefined}
       accountLoading={accountInfoLoading}
     />
   )

@@ -4,7 +4,7 @@ import {
   getAccountInfoActionCreator,
   updateAccountInfoActionCreator,
   uploadAvatarActionCreator,
-} from '../../../redux/accountInfoEdit'
+} from '../../../redux/myAccountInfoEdit'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { Presentation } from './presentation'
 
@@ -12,16 +12,16 @@ export const Container: React.VFC = () => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const accountInfoLoading = useAppSelector(
-    (state) => state.app.accountInfoEdit.meta.loading
+    (state) => state.app.myAccountInfoEdit.meta.loading
   )
   const accountInfo = useAppSelector(
-    (state) => state.app.accountInfoEdit.data.accountInfo
+    (state) => state.app.myAccountInfoEdit.data.accountInfo
   )
   const uploadedImgUrl = useAppSelector(
-    (state) => state.app.accountInfoEdit.data.uploadedSignedUrl
+    (state) => state.app.myAccountInfoEdit.data.uploadedSignedUrl
   )
   const uploadedImgId = useAppSelector(
-    (state) => state.app.accountInfoEdit.data.uploadedImgId
+    (state) => state.app.myAccountInfoEdit.data.uploadedImgId
   )
   const onSubmit = useCallback(
     (data: {
@@ -45,10 +45,10 @@ export const Container: React.VFC = () => {
     [uploadedImgId, accountInfo.accountInfo]
   )
   const uploadingImg = useAppSelector(
-    (state) => state.app.accountInfoEdit.meta.imgUploading
+    (state) => state.app.myAccountInfoEdit.meta.imgUploading
   )
   const submitting = useAppSelector(
-    (state) => state.app.accountInfoEdit.meta.submitting
+    (state) => state.app.myAccountInfoEdit.meta.submitting
   )
   const onSelectImage = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null) return

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
-import { getAccountInfoActionCreator } from '../../../redux/accountInfoEdit'
+import { getAccountInfoActionCreator } from '../../../redux/myAccountInfoEdit'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { connectWalletActionCreator } from '../../../redux/wallet'
 import { Presentation } from './presentation'
@@ -16,7 +16,7 @@ export const Container: React.VFC = () => {
     return state.app.wallet.meta.waitingWalletAction
   })
   const accountInfo = useAppSelector(
-    (state) => state.app.accountInfo.data.accountInfo
+    (state) => state.app.myAccountInfo.data.accountInfo
   )
   const connectWallet = useCallback(() => {
     dispatch(connectWalletActionCreator() as any)

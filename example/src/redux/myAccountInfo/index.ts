@@ -2,9 +2,9 @@ import { AccountInfo } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
-export type AccountInfoState = {
+export type MyAccountInfoState = {
   data: {
-    accountInfoMap: Record<string, AccountInfo>
+    accountInfo: AccountInfo
   }
   meta: {
     loading: boolean
@@ -12,9 +12,17 @@ export type AccountInfoState = {
   }
 }
 
-export const initialAccountInfoState: AccountInfoState = {
+export const initialMyAccountInfoState: MyAccountInfoState = {
   data: {
-    accountInfoMap: {},
+    accountInfo: {
+      avatarImgUrl: '',
+      avatarImgId: '',
+      displayName: '',
+      bio: '',
+      twitterAccountName: '',
+      instagramAccountName: '',
+      homepageUrl: '',
+    },
   },
   meta: {
     error: undefined,
@@ -24,13 +32,13 @@ export const initialAccountInfoState: AccountInfoState = {
 
 // AsyncAction
 export const getAccountInfoActionCreator = createAsyncThunk(
-  'app/accountInfo/get',
+  'app/myAccountInfo/get',
   async (arg: { walletAddress: string }, thunkApi) => {
     try {
       const data = await getSdk()?.getAccountInfo({
         walletAddress: arg.walletAddress,
       })
-      return { accountInfo: data, walletAddress: arg.walletAddress }
+      return data
     } catch (err) {
       console.error(err)
       return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
@@ -39,9 +47,9 @@ export const getAccountInfoActionCreator = createAsyncThunk(
 )
 
 // Slice
-export const accountInfoSlice = createSlice({
-  name: 'accountInfo',
-  initialState: initialAccountInfoState,
+export const myAccountInfoSlice = createSlice({
+  name: 'myAccountInfo',
+  initialState: initialMyAccountInfoState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getAccountInfoActionCreator.pending, (state) => {
@@ -59,7 +67,7 @@ export const accountInfoSlice = createSlice({
       getAccountInfoActionCreator.fulfilled,
       (state, { payload }) => {
         state.meta.loading = false
-        state.data.accountInfoMap[payload.walletAddress] = payload.accountInfo
+        state.data.accountInfo = payload
       }
     )
   },
