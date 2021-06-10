@@ -7,7 +7,7 @@ export const getSdk = () => {
 
   if (typeof sdk === 'undefined') {
     sdk = new MintSDK(
-      'bd81509b-d657-4a36-9fbf-e839b00f03fe',
+      '4bdaee8f-8e23-4913-9858-7a10dd7be877',
       [4, 80001],
       {
         fortmatic: {
