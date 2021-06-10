@@ -30,10 +30,12 @@ export const Container: React.VFC = () => {
 
     dispatch(getTokensActionCreator({ walletAddress }) as any)
   }, [walletAddress, accountInfo])
-
+  console.log(tokensLoading)
   return (
     <Presentation
-      waitingOwnTokens={tokensLoading ?? true}
+      waitingOwnTokens={
+        typeof tokensLoading === 'undefined' ? true : tokensLoading
+      }
       userWalletAddress={walletAddress}
       ownTokens={tokens ?? []}
       accountDisplayName={accountInfo?.displayName || undefined}

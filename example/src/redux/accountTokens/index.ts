@@ -49,7 +49,7 @@ export const accountTokensSlice = createSlice({
       state.meta.loading[payload.walletAddress] = false
     })
     builder.addCase(getTokensActionCreator.pending, (state, action) => {
-      state.meta.loading[action.meta.arg.walletAddress] = false
+      state.meta.loading[action.meta.arg.walletAddress] = true
       state.meta.error = undefined
     })
     builder.addCase(

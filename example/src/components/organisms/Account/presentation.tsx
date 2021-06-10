@@ -7,7 +7,7 @@ import { CardUL } from '../../atoms/CardList'
 import { Tabs } from '../../atoms/Tabs'
 import { AccountInfo } from '../../molecules/AccountInfo'
 import { EndedCard } from '../../molecules/Card/ended'
-import { CardMyPage } from '../../molecules/CardMyPage'
+import { LoadingCard } from '../../molecules/Card/loading'
 
 type Props = {
   waitingOwnTokens: boolean
@@ -58,7 +58,7 @@ export const Presentation: React.VFC<Props> = ({
             />
           </TabsContainer>
         </OwnTokensContainer>
-        {waitingOwnTokens && <CardMyPage loading={true} />}
+        {waitingOwnTokens && <LoadingCard />}
         {!waitingOwnTokens && ownTokens.length === 0 && (
           <EmptyTitle>No Items</EmptyTitle>
         )}
