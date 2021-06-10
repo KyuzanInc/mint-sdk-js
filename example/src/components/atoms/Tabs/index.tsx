@@ -5,14 +5,17 @@ import { color, font } from '../../../style'
 type Props = {
   items: { value: string; label: string }[]
   value: string
-  onChange: (value: string) => void
+  onChange?: (value: string) => void
 }
 
 export const Tabs: React.VFC<Props> = ({ items, value, onChange }) => {
   return (
     <Container>
       {items.map((item) => (
-        <Tab active={value === item.value} onClick={() => onChange(item.value)}>
+        <Tab
+          active={value === item.value}
+          onClick={() => onChange && onChange(item.value)}
+        >
           <TabText active={value === item.value}>{item.label}</TabText>
         </Tab>
       ))}
