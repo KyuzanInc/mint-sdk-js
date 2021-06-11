@@ -1025,6 +1025,13 @@ export class MintSDK {
    * @param
    * @returns
    *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * await sdk.connectWallet()
+   * const accountInfo = await sdk.getAccountInfo({ walletAddress: '0xxxxxxxx' })
+   * ```
    */
   public getAccountInfo = async (arg: { walletAddress: string }) => {
     const res = await this.apiClient.getAccountInfo(
@@ -1114,6 +1121,7 @@ export class MintSDK {
 
   /**
    * `sdk.updateAccountInfo`の引数の`imgId`を取得できる
+   * uploadedImgUrlはアップロードされた画像のRead用のURLです。
    *
    * **Required**
    * - ウォレットに接続していること
@@ -1126,7 +1134,7 @@ export class MintSDK {
    *
    * const sdk = MintSDK.initialize(...)
    * await sdk.connectWallet()
-   * const imgId = await sdk.uploadAccountInfoAvatar(...)
+   * const { imgId, uploadedImgUrl } = await sdk.uploadAccountInfoAvatar({ file })
    * ```
    */
   public uploadAccountInfoAvatar = async (arg: { file: File }) => {
