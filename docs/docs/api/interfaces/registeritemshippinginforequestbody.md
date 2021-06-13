@@ -20,7 +20,7 @@ hide_title: true
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:739](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L739)
+Defined in: [src/apiClient/api.ts:739](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L739)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:745](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L745)
+Defined in: [src/apiClient/api.ts:745](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L745)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:685](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L685)
+Defined in: [src/apiClient/api.ts:685](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L685)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:733](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L733)
+Defined in: [src/apiClient/api.ts:733](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L733)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:697](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L697)
+Defined in: [src/apiClient/api.ts:697](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L697)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:715](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L715)
+Defined in: [src/apiClient/api.ts:715](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L715)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:757](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L757)
+Defined in: [src/apiClient/api.ts:757](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L757)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:709](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L709)
+Defined in: [src/apiClient/api.ts:709](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L709)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:691](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L691)
+Defined in: [src/apiClient/api.ts:691](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L691)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:721](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L721)
+Defined in: [src/apiClient/api.ts:721](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L721)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:727](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L727)
+Defined in: [src/apiClient/api.ts:727](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L727)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:679](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L679)
+Defined in: [src/apiClient/api.ts:679](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L679)
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:751](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L751)
+Defined in: [src/apiClient/api.ts:751](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L751)
 
 ___
 
@@ -152,4 +152,4 @@ ___
 
 **`memberof`** RegisterItemShippingInfoRequestBody
 
-Defined in: [src/apiClient/api.ts:703](https://github.com/KyuzanInc/annapurna-sdk-js/blob/b62d706/src/apiClient/api.ts#L703)
+Defined in: [src/apiClient/api.ts:703](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L703)
