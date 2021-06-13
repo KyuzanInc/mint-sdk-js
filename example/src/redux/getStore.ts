@@ -1,4 +1,12 @@
 import {
+  accountTokensSlice,
+  initialAccountTokensState,
+} from './accountTokens/index'
+import {
+  myAccountInfoEditSlice,
+  initialMyAccountInfoEditState,
+} from './myAccountInfoEdit/index'
+import {
   initialShippingInfoState,
   shippingInfoSlice,
 } from './shippingInfo/index'
@@ -20,6 +28,8 @@ import { initialItemsState, itemsSlice } from './items'
 import { initialItemState, itemSlice } from './item'
 import { historySlice, initialHistoryState } from './history'
 import { initialMyItemsState, myItemsSlice } from './myItems'
+import { myAccountInfoSlice, initialMyAccountInfoState } from './myAccountInfo'
+import { accountInfoSlice, initialAccountInfoState } from './accountInfo'
 
 const rootReducer = combineReducers({
   router: routerReducer,
@@ -31,6 +41,10 @@ const rootReducer = combineReducers({
     history: historySlice.reducer,
     transaction: transactionSlice.reducer,
     shippingInfo: shippingInfoSlice.reducer,
+    myAccountInfo: myAccountInfoSlice.reducer,
+    myAccountInfoEdit: myAccountInfoEditSlice.reducer,
+    accountInfo: accountInfoSlice.reducer,
+    accountTokens: accountTokensSlice.reducer,
   }),
   // ui: combineReducers({
   // }),
@@ -46,6 +60,10 @@ const getInitialState = (asPath?: string) => {
       history: initialHistoryState,
       transaction: initialTransactionState,
       shippingInfo: initialShippingInfoState,
+      myAccountInfo: initialMyAccountInfoState,
+      myAccountInfoEdit: initialMyAccountInfoEditState,
+      accountInfo: initialAccountInfoState,
+      accountTokens: initialAccountTokensState,
     },
     // ui: {},
   }

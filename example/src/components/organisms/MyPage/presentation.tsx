@@ -8,6 +8,7 @@ import {
   ListTitle,
   Title,
 } from '../../atoms/CardList'
+import { AccountInfo } from '../../molecules/AccountInfo'
 import { CardMyPage } from '../../molecules/CardMyPage'
 import { ShippingInfoModal } from '../../molecules/ShippingInfoModal'
 import { WalletModal } from '../../molecules/WalletModal'
@@ -26,6 +27,14 @@ type Props = {
   shippingInfo: ItemShippingInfo | undefined
   onConnectWallet: () => void
   connectingWallet: boolean
+  accountDisplayName: string | undefined
+  accountBio: string | undefined
+  accountProfileUrl: string | undefined
+  accountInstagramAccountName: string | undefined
+  accountTwitterAccountName: string | undefined
+  accountSiteUrl: string | undefined
+  accountLoading: boolean
+  accountOnClickEdit: () => void
 }
 
 export const Presentation: React.VFC<Props> = ({
@@ -42,11 +51,32 @@ export const Presentation: React.VFC<Props> = ({
   shippingInfo,
   onConnectWallet,
   connectingWallet,
+  accountDisplayName,
+  accountBio,
+  accountProfileUrl,
+  accountInstagramAccountName,
+  accountTwitterAccountName,
+  accountSiteUrl,
+  accountLoading,
+  accountOnClickEdit,
 }) => {
   return (
     <>
       <Container>
         <InnerContainer>
+          <AccountInfoContainer>
+            <AccountInfo
+              displayName={accountDisplayName}
+              bio={accountBio}
+              walletAddress={userWalletAddress}
+              profileUrl={accountProfileUrl}
+              instagramAccountName={accountInstagramAccountName}
+              twitterAccountName={accountTwitterAccountName}
+              siteUrl={accountSiteUrl}
+              loading={accountLoading}
+              onEdit={accountOnClickEdit}
+            />
+          </AccountInfoContainer>
           <ListTitle>
             <ActiveStatus />
             <Title>Bided Items</Title>
@@ -101,7 +131,7 @@ export const Presentation: React.VFC<Props> = ({
         closeModal={handleHideShippingInfo}
       />
       <WalletModal
-        isOpen={typeof userWalletAddress === 'undefined'}
+        isOpen={!accountLoading && typeof userWalletAddress === 'undefined'}
         connectWallet={onConnectWallet}
         loading={connectingWallet}
       />
@@ -117,13 +147,17 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 72px;
+  padding-top: 144px;
   margin: auto;
 `
 
 const InnerContainer = styled.div`
   min-width: 840px;
   min-height: 100vh;
+`
+
+const AccountInfoContainer = styled.div`
+  margin-bottom: 64px;
 `
 
 const ItemContainer = styled.div`

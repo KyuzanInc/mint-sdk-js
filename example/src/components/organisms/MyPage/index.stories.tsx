@@ -19,6 +19,14 @@ export const Basic: React.VFC = () => (
     ownTokens={[token]}
     showShippingInfoModal={false}
     shippingInfo={undefined}
+    accountDisplayName={''}
+    accountBio={''}
+    accountProfileUrl={undefined}
+    accountInstagramAccountName={undefined}
+    accountTwitterAccountName={undefined}
+    accountSiteUrl={undefined}
+    accountLoading={false}
+    accountOnClickEdit={action('accountOnClickEdit')}
   />
 )
 
@@ -37,6 +45,14 @@ export const NoWalletAddress: React.VFC = () => (
     ownTokens={[]}
     showShippingInfoModal={false}
     shippingInfo={undefined}
+    accountDisplayName={''}
+    accountBio={''}
+    accountProfileUrl={undefined}
+    accountInstagramAccountName={undefined}
+    accountTwitterAccountName={undefined}
+    accountSiteUrl={undefined}
+    accountLoading={false}
+    accountOnClickEdit={action('accountOnClickEdit')}
   />
 )
 
@@ -55,6 +71,14 @@ export const Loading: React.VFC = () => (
     ownTokens={[]}
     showShippingInfoModal={false}
     shippingInfo={undefined}
+    accountDisplayName={''}
+    accountBio={''}
+    accountProfileUrl={undefined}
+    accountInstagramAccountName={undefined}
+    accountTwitterAccountName={undefined}
+    accountSiteUrl={undefined}
+    accountLoading={false}
+    accountOnClickEdit={action('accountOnClickEdit')}
   />
 )
 
@@ -83,6 +107,14 @@ export const ShowShippingInfo: React.VFC = () => (
       tel: '00000000000',
       memo: 'memo',
     }}
+    accountDisplayName={''}
+    accountBio={''}
+    accountProfileUrl={undefined}
+    accountInstagramAccountName={undefined}
+    accountTwitterAccountName={undefined}
+    accountSiteUrl={undefined}
+    accountLoading={false}
+    accountOnClickEdit={action('accountOnClickEdit')}
   />
 )
 

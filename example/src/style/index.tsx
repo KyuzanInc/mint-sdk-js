@@ -16,10 +16,11 @@ export const color = {
   },
   content: {
     dark: 'rgba(0,0,0,.82)',
-    middle: '#999999',
+    middle: '#ECEDED',
     light: 'rgba(0, 0, 0, 0.14)',
     superLight: 'rgba(0, 0, 0, 0.08);',
     gray: 'rgba(0, 0, 0, .54)',
+    gray2: '#EBEBEB',
   },
   active: 'linear-gradient(180deg, #FD80A8 0%, #FCCF42 100%);',
 } as const

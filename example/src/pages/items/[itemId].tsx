@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect } from 'react'
-import { HistoryComponent } from '../../components/organisms/History'
+import { History } from '../../components/organisms/History'
 import { useAppDispatch, useAppSelector } from '../../redux/getStore'
 import { getItemActionCreator } from '../../redux/item'
 import { color } from '../../style'
@@ -61,7 +61,7 @@ const ItemDetailPage: NextPage<
       </MediaContainer>
       <DetailContainer>
         <ItemDetailComponent />
-        <HistoryComponent />
+        <History />
       </DetailContainer>
     </Container>
   )
