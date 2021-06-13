@@ -40,36 +40,59 @@ export const initialMyAccountInfoEditState: MyAccountInfoEditState = {
 }
 
 // AsyncAction
-export const getAccountInfoActionCreator = createAsyncThunk(
-  'app/myAccountInfo/get',
-  async (arg: { walletAddress: string }, thunkApi) => {
-    try {
-      const data = await getSdk()?.getAccountInfo({
-        walletAddress: arg.walletAddress,
-      })
-      return data
-    } catch (err) {
-      console.error(err)
-      return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
-    }
+export const getAccountInfoActionCreator = createAsyncThunk<
+  AccountInfo | undefined,
+  { walletAddress: string },
+  {
+    rejectValue: string
   }
-)
-
-export const uploadAvatarActionCreator = createAsyncThunk(
-  'app/myAccountInfo/uploadAvatar',
-  async (arg: { file: File }, thunkApi) => {
-    try {
-      return await getSdk()?.uploadAccountInfoAvatar({
-        file: arg.file,
-      })
-    } catch (err) {
-      console.error(err)
-      return thunkApi.rejectWithValue(`画像のアップロードに失敗しました`)
-    }
+>('app/myAccountInfo/get', async (arg, thunkApi) => {
+  try {
+    const data = await getSdk()?.getAccountInfo({
+      walletAddress: arg.walletAddress,
+    })
+    return data
+  } catch (err) {
+    console.error(err)
+    return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
   }
-)
+})
 
-export const updateAccountInfoActionCreator = createAsyncThunk(
+export const uploadAvatarActionCreator = createAsyncThunk<
+  | {
+      imgId: string
+      uploadedImgUrl: string
+    }
+  | undefined,
+  { file: File },
+  {
+    rejectValue: string
+  }
+>('app/myAccountInfo/uploadAvatar', async (arg, thunkApi) => {
+  try {
+    return await getSdk()?.uploadAccountInfoAvatar({
+      file: arg.file,
+    })
+  } catch (err) {
+    console.error(err)
+    return thunkApi.rejectWithValue(`画像のアップロードに失敗しました`)
+  }
+})
+
+export const updateAccountInfoActionCreator = createAsyncThunk<
+  void,
+  {
+    avatarImgId: string
+    displayName: string
+    bio: string
+    twitterAccountName: string
+    instagramAccountName: string
+    homepageUrl: string
+  },
+  {
+    rejectValue: string
+  }
+>(
   'app/myAccountInfo/update',
   async (
     arg: {
@@ -112,7 +135,15 @@ export const myAccountInfoEditSlice = createSlice({
       getAccountInfoActionCreator.fulfilled,
       (state, { payload }) => {
         state.meta.loading = false
-        state.data.accountInfo = payload
+        state.data.accountInfo = payload || {
+          avatarImgUrl: '',
+          avatarImgId: '',
+          displayName: '',
+          bio: '',
+          twitterAccountName: '',
+          instagramAccountName: '',
+          homepageUrl: '',
+        }
       }
     )
 
@@ -130,10 +161,10 @@ export const myAccountInfoEditSlice = createSlice({
       uploadAvatarActionCreator.fulfilled,
       (state, { payload }) => {
         state.meta.imgUploading = false
-        state.data.uploadedImgId = payload.imgId
-        state.data.uploadedSignedUrl = payload.uploadedImgUrl
-        state.data.accountInfo.avatarImgUrl = payload.uploadedImgUrl
-        state.data.accountInfo.avatarImgId = payload.imgId
+        state.data.uploadedImgId = payload?.imgId || ''
+        state.data.uploadedSignedUrl = payload?.uploadedImgUrl || ''
+        state.data.accountInfo.avatarImgUrl = payload?.uploadedImgUrl || ''
+        state.data.accountInfo.avatarImgId = payload?.imgId || ''
       }
     )
 

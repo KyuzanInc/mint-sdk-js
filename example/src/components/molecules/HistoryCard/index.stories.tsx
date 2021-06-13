@@ -1,3 +1,4 @@
+import { ItemLog } from '@kyuzan/mint-sdk-js'
 import React from 'react'
 import { HistoryCard } from '.'
 
@@ -14,14 +15,14 @@ export const WithAvatar: React.VFC = () => (
 )
 
 export const Loading: React.VFC = () => (
-  <HistoryCard log={[]} networkId={4} loading={true} />
+  <HistoryCard log={undefined} networkId={4} loading={true} />
 )
 
 export default {
   title: 'molecules/HistoryCard',
 }
 
-const itemLog = {
+const itemLog: ItemLog = {
   type: 'bid',
   accountAddress: '0x99A00d5430Eb9ee2B8eB9385b72aB17Fb1b15f2B',
   price: 1,

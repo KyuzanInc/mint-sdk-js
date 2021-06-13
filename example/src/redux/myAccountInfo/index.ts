@@ -31,20 +31,23 @@ export const initialMyAccountInfoState: MyAccountInfoState = {
 }
 
 // AsyncAction
-export const getAccountInfoActionCreator = createAsyncThunk(
-  'app/myAccountInfo/get',
-  async (arg: { walletAddress: string }, thunkApi) => {
-    try {
-      const data = await getSdk()?.getAccountInfo({
-        walletAddress: arg.walletAddress,
-      })
-      return data
-    } catch (err) {
-      console.error(err)
-      return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
-    }
+export const getAccountInfoActionCreator = createAsyncThunk<
+  AccountInfo | undefined,
+  { walletAddress: string },
+  {
+    rejectValue: string
   }
-)
+>('app/myAccountInfo/get', async (arg, thunkApi) => {
+  try {
+    const data = await getSdk()?.getAccountInfo({
+      walletAddress: arg.walletAddress,
+    })
+    return data
+  } catch (err) {
+    console.error(err)
+    return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
+  }
+})
 
 // Slice
 export const myAccountInfoSlice = createSlice({
@@ -67,7 +70,15 @@ export const myAccountInfoSlice = createSlice({
       getAccountInfoActionCreator.fulfilled,
       (state, { payload }) => {
         state.meta.loading = false
-        state.data.accountInfo = payload
+        state.data.accountInfo = payload || {
+          avatarImgUrl: '',
+          avatarImgId: '',
+          displayName: '',
+          bio: '',
+          twitterAccountName: '',
+          instagramAccountName: '',
+          homepageUrl: '',
+        }
       }
     )
   },

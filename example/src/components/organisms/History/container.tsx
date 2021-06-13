@@ -49,7 +49,7 @@ export const Container: React.VFC<Props> = () => {
           }
         }
       })}
-      networkId={item?.networkId}
+      networkId={item?.networkId ?? 1}
     />
   )
 }

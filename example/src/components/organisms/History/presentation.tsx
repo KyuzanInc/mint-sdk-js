@@ -15,7 +15,6 @@ export const Presentation: React.VFC<Props> = ({
   history,
   networkId,
 }) => {
-  console.log(history)
   return (
     <History>
       <Label>History</Label>
