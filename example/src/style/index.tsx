@@ -16,7 +16,7 @@ export const color = {
   },
   content: {
     dark: 'rgba(0,0,0,.82)',
-    middle: '#ECEDED',
+    middle: '#757575',
     light: 'rgba(0, 0, 0, 0.14)',
     superLight: 'rgba(0, 0, 0, 0.08);',
     gray: 'rgba(0, 0, 0, .54)',
