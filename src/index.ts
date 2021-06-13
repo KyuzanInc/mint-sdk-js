@@ -24,6 +24,7 @@ import { WalletSetting } from './types/WalletSetting'
 import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
 import { ItemsType } from './types/ItemsType'
 import { ItemTradeType } from './types/ItemTradeType'
+import { AccountInfo } from './apiClient/api'
 
 export {
   Item,
@@ -40,6 +41,7 @@ export {
   CurrencyUnit,
   RegisterItemShippingInfoRequestBody,
   ItemShippingInfo,
+  AccountInfo,
 }
 
 export class MintSDK {
