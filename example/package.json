@@ -17,7 +17,7 @@
   "dependencies": {
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@kyuzan/mint-sdk-js": "^5.0.0",
+    "@kyuzan/mint-sdk-js": "^5.1.0",
     "@reduxjs/toolkit": "^1.5.1",
     "boring-avatars": "^1.5.5",
     "clipboard-copy": "^4.0.1",
