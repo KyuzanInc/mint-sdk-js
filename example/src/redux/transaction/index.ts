@@ -36,6 +36,7 @@ export const bidActionCreator = createAsyncThunk<
     // TODO: サクセス画面に飛ばす
     thunkApi.dispatch(push('/me'))
   } catch (err) {
+    console.error(err)
     return thunkApi.rejectWithValue('入札に失敗しました')
   }
 })
