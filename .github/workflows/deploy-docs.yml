@@ -5,7 +5,7 @@ name: deploy-docs
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ['npm_publish']
+    workflows: ['npm-publish']
     types: [completed]
 
 jobs:
