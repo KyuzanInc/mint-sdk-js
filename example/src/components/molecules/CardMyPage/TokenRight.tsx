@@ -44,7 +44,7 @@ export const TokenRight: React.VFC<Props> = ({
         <Description>
           フィジカルアイテムの配送先の住所を入力してください
         </Description>
-        <PrimaryLoadingButton
+        <InputAddressButton
           isLoading={false}
           onClick={onWriteShipAddress}
           label={'配送先の住所を入力する'}
@@ -98,6 +98,10 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+`
+
+const InputAddressButton = styled(PrimaryLoadingButton)`
+  line-height: 19px;
 `
 
 const ReverseButton = styled(PrimaryLoadingButton)`
