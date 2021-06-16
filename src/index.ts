@@ -10,6 +10,7 @@ import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
 import { AxiosBody } from './types/AxiosBody'
 import { Token } from './types/Token'
+import { WalletStrategy, MetamaskStrategy, FortmaticStrategy, NodeStrategy } from './strategies'
 import { BACKEND_URL } from './constants/index'
 import Axios, { AxiosInstance } from 'axios'
 import * as Agent from 'agentkeepalive'
@@ -90,30 +91,7 @@ export class MintSDK {
    */
   private apiClient: ReturnType<typeof DefaultApiFactory>
 
-  /**
-   * @ignore
-   */
-  private metamaskProvider: ethers.providers.Web3Provider | null
-
-  /**
-   * @ignore
-   */
-  private fortmatic: WidgetMode
-
-  /**
-   * @ignore
-   */
-  private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
-
-  /**
-   * @ignore
-   */
-  private eventDisconnectCallbacks: Array<() => any> = []
-
-  /**
-   * @ignore
-   */
-  private eventConnectCallbacks: Array<() => any> = []
+  private walletStrategy: WalletStrategy
 
   /**
    *
@@ -131,17 +109,15 @@ export class MintSDK {
       jsonRPCUrl?: string
     }
   ) {
-    this.fortmatic = new Fortmatic(
-      walletSetting.fortmatic.key,
-      devOption?.jsonRPCUrl
-        ? {
-            rpcUrl: devOption.jsonRPCUrl,
-          }
-        : undefined
-    )
-    this.metamaskProvider = (window as any).ethereum
-      ? new ethers.providers.Web3Provider((window as any).ethereum, 'any')
-      : null
+
+    if (typeof globalThis.window === 'undefined') {
+      this.walletStrategy = new NodeStrategy()
+    } else if (MetamaskStrategy.checkExistsWeb3ProviderInWindow()) {
+      this.walletStrategy = new MetamaskStrategy(networkIds)
+    } else {
+      this.walletStrategy = new FortmaticStrategy(networkIds, walletSetting, devOption)
+    }
+
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
     const keepAliveAgent = new Agent.HttpsAgent({
       keepAlive: true,
@@ -154,20 +130,6 @@ export class MintSDK {
       },
     })
     this.apiClient = DefaultApiFactory(undefined, backendBaseUrl, this.axios)
-
-    if (this.metamaskProvider) {
-      this.metamaskProvider.on('network', (_, oldNetwork) => {
-        if (oldNetwork) {
-          window.location.reload()
-        }
-      })
-      ;(window as any).ethereum.on('accountsChanged', (accounts: string[]) => {
-        this.emitAccountChange(accounts)
-        if (accounts.length === 0) {
-          this.emitDisconnect()
-        }
-      })
-    }
   }
 
   /**
@@ -183,12 +145,7 @@ export class MintSDK {
    * ```
    */
   public isWalletConnect = async () => {
-    if (this.metamaskProvider && this.metamaskProvider.provider.request) {
-      const accounts = await this.metamaskProvider.listAccounts()
-      return accounts.length > 0
-    } else {
-      return await this.fortmatic.user.isLoggedIn()
-    }
+    return await this.walletStrategy.isWalletConnect()
   }
 
   /**
@@ -206,15 +163,7 @@ export class MintSDK {
    * ```
    */
   public connectWallet = async () => {
-    if (this.metamaskProvider && this.metamaskProvider.provider.request) {
-      await this.metamaskProvider.provider.request({
-        method: 'eth_requestAccounts',
-      })
-      this.emitConnect()
-    } else {
-      await this.fortmatic.getProvider().enable()
-      this.emitConnect()
-    }
+    await this.walletStrategy.connectWallet()
   }
 
   /**
@@ -230,8 +179,7 @@ export class MintSDK {
    * ```
    */
   public disconnectWallet = async () => {
-    await this.fortmatic.user.logout()
-    this.emitDisconnect()
+    await this.walletStrategy.disconnectWallet()
   }
 
   /**
@@ -250,36 +198,7 @@ export class MintSDK {
    * ```
    */
   public getWalletInfo: () => Promise<WalletInfo> = async () => {
-    if (!(await this.isWalletConnect())) {
-      throw new Error('not LoggedId')
-    }
-
-    const networkId = await this.getConnectedNetworkId()
-    const unit = networkId === 137 || networkId === 80001 ? 'MATIC' : 'ETH'
-
-    if (this.metamaskProvider) {
-      const accounts = await this.metamaskProvider.listAccounts()
-      const address = accounts[0]
-      const balance = await this.metamaskProvider.getBalance(address)
-      return {
-        address,
-        balance,
-        unit,
-      }
-    } else {
-      const accounts = (await this.fortmatic
-        .getProvider()
-        .send('eth_accounts')) as string[]
-      const address = accounts[0]
-      const balance = await new ethers.providers.Web3Provider(
-        this.fortmatic.getProvider() as any
-      ).getBalance(address)
-      return {
-        address,
-        balance,
-        unit,
-      }
-    }
+    return await this.walletStrategy.getWalletInfo()
   }
 
   /**
@@ -725,22 +644,14 @@ export class MintSDK {
    * ```
    */
   public onAccountsChange = (callback: (accounts: string[]) => any) => {
-    this.eventAccountsChangeCallbacks.push(callback)
+    this.walletStrategy.onAccountsChange(callback)
   }
 
   /**
    * @ignore
    */
   public offAccountsChange = (callback?: (accounts: string[]) => any) => {
-    if (callback) {
-      this.eventAccountsChangeCallbacks.forEach((f, index) => {
-        if (f === callback) {
-          this.eventAccountsChangeCallbacks.splice(index, 1)
-        }
-      })
-    } else {
-      this.eventAccountsChangeCallbacks = []
-    }
+    this.walletStrategy.offAccountsChange(callback)
   }
 
   /**
@@ -758,22 +669,14 @@ export class MintSDK {
    * ```
    */
   public onConnect = (callback: () => any) => {
-    this.eventConnectCallbacks.push(callback)
+    this.walletStrategy.onConnect(callback)
   }
 
   /**
    * @ignore
    */
   public offConnect = (callback?: () => any) => {
-    if (callback) {
-      this.eventConnectCallbacks.forEach((f, index) => {
-        if (f === callback) {
-          this.eventConnectCallbacks.splice(index, 1)
-        }
-      })
-    } else {
-      this.eventConnectCallbacks = []
-    }
+    this.walletStrategy.offConnect(callback)
   }
 
   /**
@@ -791,22 +694,14 @@ export class MintSDK {
    * ```
    */
   public onDisconnect = (callback: () => any) => {
-    this.eventDisconnectCallbacks.push(callback)
+    this.walletStrategy.onDisconnect(callback)
   }
 
   /**
    * @ignore
    */
   public offDisconnect = (callback?: () => any) => {
-    if (callback) {
-      this.eventDisconnectCallbacks.forEach((f, index) => {
-        if (f === callback) {
-          this.eventDisconnectCallbacks.splice(index, 1)
-        }
-      })
-    } else {
-      this.eventDisconnectCallbacks = []
-    }
+    this.walletStrategy.offDisconnect(callback)
   }
 
   /**
@@ -880,12 +775,7 @@ export class MintSDK {
    * ```
    */
   public getConnectedNetworkId = async () => {
-    if (this.isInjectedWallet()) {
-      return parseInt((window as any).ethereum.networkVersion, 10)
-    } else {
-      const network = await this.getProvider().getNetwork()
-      return network.chainId
-    }
+    return await this.walletStrategy.getConnectedNetworkId()
   }
 
   /**
@@ -1280,12 +1170,7 @@ export class MintSDK {
    * @ignore
    */
   private getProvider = () => {
-    if (this.metamaskProvider) {
-      return this.metamaskProvider
-    } else {
-      const provider = this.fortmatic.getProvider()
-      return new ethers.providers.Web3Provider(provider as any)
-    }
+    return this.walletStrategy.getProvider()
   }
 
   /**
@@ -1315,26 +1200,5 @@ export class MintSDK {
         ? new Date(item.withdrawableAt)
         : undefined,
     } as Item
-  }
-
-  /**
-   * @ignore
-   */
-  private emitAccountChange = (accounts: string[]) => {
-    this.eventAccountsChangeCallbacks.forEach((f) => f(accounts))
-  }
-
-  /**
-   * @ignore
-   */
-  private emitDisconnect = () => {
-    this.eventDisconnectCallbacks.forEach((f) => f())
-  }
-
-  /**
-   * @ignore
-   */
-  private emitConnect = () => {
-    this.eventConnectCallbacks.forEach((f) => f())
   }
 }
