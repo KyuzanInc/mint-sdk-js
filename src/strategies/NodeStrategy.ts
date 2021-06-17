@@ -33,41 +33,29 @@ export class NodeStrategy implements WalletStrategy {
     return null as never
   }
 
-  onConnect(callback: () => any) {
+  onConnect(_callback: () => any) {
     // noop
   }
 
-  offConnect(callback?: () => any) {
-    // noop
-  }
-
-
-  onAccountsChange(callback: (accounts: string[]) => any) {
-    // noop
-  }
-
-  offAccountsChange(callback?: (accounts: string[]) => any) {
+  offConnect(_callback?: () => any) {
     // noop
   }
 
 
-  onDisconnect(callback: () => any) {
+  onAccountsChange(_callback: (accounts: string[]) => any) {
     // noop
   }
 
-  offDisconnect(callback?: () => any) {
+  offAccountsChange(_callback?: (accounts: string[]) => any) {
     // noop
   }
 
-  private emitAccountChange = (accounts: string[]) => {
+
+  onDisconnect(_callback: () => any) {
     // noop
   }
 
-  private emitConnect = () => {
-    // noop
-  }
-
-  private emitDisconnect = () => {
+  offDisconnect(_callback?: () => any) {
     // noop
   }
 }
