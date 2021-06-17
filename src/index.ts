@@ -13,7 +13,12 @@ import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
 import { AxiosBody } from './types/AxiosBody'
 import { Token } from './types/Token'
-import { WalletStrategy, MetamaskStrategy, FortmaticStrategy, NodeStrategy } from './strategies'
+import {
+  WalletStrategy,
+  MetamaskStrategy,
+  FortmaticStrategy,
+  NodeStrategy,
+} from './strategies'
 import { BACKEND_URL } from './constants/index'
 import { Item } from './types/Item'
 import { ItemLog } from './types/ItemLog'
@@ -107,13 +112,16 @@ export class MintSDK {
       jsonRPCUrl?: string
     }
   ) {
-
     if (typeof globalThis.window === 'undefined') {
       this.walletStrategy = new NodeStrategy()
     } else if (MetamaskStrategy.checkExistsWeb3ProviderInWindow()) {
       this.walletStrategy = new MetamaskStrategy(networkIds)
     } else {
-      this.walletStrategy = new FortmaticStrategy(networkIds, walletSetting, devOption)
+      this.walletStrategy = new FortmaticStrategy(
+        networkIds,
+        walletSetting,
+        devOption
+      )
     }
 
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
@@ -395,7 +403,9 @@ export class MintSDK {
       page: 1,
     }
   ) => {
-    const { data } = await this.axios.get<AxiosBody<Omit<ItemLog[], 'createAt'>>>('v2_itemLogs', {
+    const { data } = await this.axios.get<
+      AxiosBody<Omit<ItemLog[], 'createAt'>>
+    >('v2_itemLogs', {
       params: { itemId, page: paging.page, perPage: paging.perPage },
     })
     const logs = data.data
@@ -418,9 +428,12 @@ export class MintSDK {
    * ```
    */
   public getTokensByAddress = async (address: string) => {
-    const { data } = await this.axios.get<AxiosBody<Token[]>>('v3_tokensByAddress', {
-      params: { address, networkIds: this.networkIds },
-    })
+    const { data } = await this.axios.get<AxiosBody<Token[]>>(
+      'v3_tokensByAddress',
+      {
+        params: { address, networkIds: this.networkIds },
+      }
+    )
     return data.data
   }
 

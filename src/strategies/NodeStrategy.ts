@@ -1,7 +1,7 @@
 import { WalletStrategy } from './interface'
 
 export class NodeStrategy implements WalletStrategy {
-  constructor() { }
+  constructor() {}
 
   async isWalletConnect() {
     throw new Error('this method should not call in node context')
@@ -41,7 +41,6 @@ export class NodeStrategy implements WalletStrategy {
     // noop
   }
 
-
   onAccountsChange(_callback: (accounts: string[]) => any) {
     // noop
   }
@@ -49,7 +48,6 @@ export class NodeStrategy implements WalletStrategy {
   offAccountsChange(_callback?: (accounts: string[]) => any) {
     // noop
   }
-
 
   onDisconnect(_callback: () => any) {
     // noop
