@@ -1,7 +1,9 @@
 import { WalletStrategy } from './interface'
 
 export class NodeStrategy implements WalletStrategy {
-  constructor() {}
+  constructor() {
+    // noop
+  }
 
   async isWalletConnect() {
     throw new Error('this method should not call in node context')
