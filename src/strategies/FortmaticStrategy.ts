@@ -11,13 +11,19 @@ export class FortmaticStrategy implements WalletStrategy {
   private eventDisconnectCallbacks: Array<() => any> = []
   private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
 
-  constructor(networkIds: NetworkId[], walletSetting: WalletSetting, devOption?: { backendUrl?: string, jsonRPCUrl?: string }) {
+  constructor(
+    networkIds: NetworkId[],
+    walletSetting: WalletSetting,
+    devOption?: { backendUrl?: string; jsonRPCUrl?: string }
+  ) {
     this.networkIds = networkIds
     this.fortmatic = new Fortmatic(
       walletSetting.fortmatic.key,
-      devOption?.jsonRPCUrl ? {
-        rpcUrl: devOption.jsonRPCUrl
-      } : undefined
+      devOption?.jsonRPCUrl
+        ? {
+            rpcUrl: devOption.jsonRPCUrl,
+          }
+        : undefined
     )
   }
 
@@ -27,15 +33,18 @@ export class FortmaticStrategy implements WalletStrategy {
 
   async getWalletInfo() {
     const networkId = await this.getConnectedNetworkId()
-    const unit: 'MATIC' | 'ETH' = networkId === 137 || networkId === 80001 ? 'MATIC' : 'ETH'
+    const unit: 'MATIC' | 'ETH' =
+      networkId === 137 || networkId === 80001 ? 'MATIC' : 'ETH'
     const provider = this.fortmatic.getProvider()
-    const accounts = await provider.send('eth_accounts') as string[]
+    const accounts = (await provider.send('eth_accounts')) as string[]
     const address = accounts[0]
-    const balance = await new ethers.providers.Web3Provider(provider as any).getBalance(address)
+    const balance = await new ethers.providers.Web3Provider(
+      provider as any
+    ).getBalance(address)
     return {
       address,
       balance,
-      unit
+      unit,
     }
   }
 
@@ -50,7 +59,9 @@ export class FortmaticStrategy implements WalletStrategy {
   }
 
   async getConnectedNetworkId() {
-    const provider = new ethers.providers.Web3Provider(this.fortmatic.getProvider() as any)
+    const provider = new ethers.providers.Web3Provider(
+      this.fortmatic.getProvider() as any
+    )
     const network = await provider.getNetwork()
     return network.chainId
   }
@@ -91,7 +102,6 @@ export class FortmaticStrategy implements WalletStrategy {
       this.eventAccountsChangeCallbacks = []
     }
   }
-
 
   onDisconnect(callback: () => any) {
     this.eventDisconnectCallbacks.push(callback)

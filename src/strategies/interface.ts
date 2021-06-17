@@ -1,10 +1,10 @@
 import { WalletInfo } from '../types/WalletInfo'
-import { ethers } from 'ethers';
+import { ethers } from 'ethers'
 
 export interface WalletStrategy {
-  isWalletConnect(): Promise<boolean>  
+  isWalletConnect(): Promise<boolean>
   connectWallet(): Promise<void>
-  getConnectedNetworkId(): Promise<number> 
+  getConnectedNetworkId(): Promise<number>
   getWalletInfo(): Promise<WalletInfo>
   getProvider(): ethers.providers.Web3Provider
   disconnectWallet(): Promise<void>
