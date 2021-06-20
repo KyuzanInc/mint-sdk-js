@@ -35,7 +35,7 @@ type Props = {
   accountSiteUrl: string | undefined
   accountLoading: boolean
   accountOnClickEdit: () => void
-  onComplete: () => void
+  onComplete?: () => void
 }
 
 export const Presentation: React.VFC<Props> = ({

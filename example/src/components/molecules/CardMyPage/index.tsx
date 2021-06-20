@@ -20,7 +20,7 @@ type Props = {
   onShowShippingInfo?: () => void
   onWithdraw?: () => void
   withdrawing?: boolean
-  onComplete: () => void
+  onComplete?: () => void
 }
 
 export const CardMyPage: React.VFC<Props> = ({

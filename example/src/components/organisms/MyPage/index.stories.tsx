@@ -27,6 +27,7 @@ export const Basic: React.VFC = () => (
     accountSiteUrl={undefined}
     accountLoading={false}
     accountOnClickEdit={action('accountOnClickEdit')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -53,6 +54,7 @@ export const NoWalletAddress: React.VFC = () => (
     accountSiteUrl={undefined}
     accountLoading={false}
     accountOnClickEdit={action('accountOnClickEdit')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -79,6 +81,7 @@ export const Loading: React.VFC = () => (
     accountSiteUrl={undefined}
     accountLoading={false}
     accountOnClickEdit={action('accountOnClickEdit')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -115,6 +118,7 @@ export const ShowShippingInfo: React.VFC = () => (
     accountSiteUrl={undefined}
     accountLoading={false}
     accountOnClickEdit={action('accountOnClickEdit')}
+    onComplete={action('onComplete')}
   />
 )
 
