@@ -39,10 +39,19 @@ export const CardMyPage: React.VFC<Props> = ({
           <MediaContent media={item?.previews[0]} height={240} />
         </MediaContainer>
         <Center>
-          <Skeleton width={240} height={160} />
+          <Skeleton width={250} height={20} style={{ margin: '0 0 32px 0' }} />
+          <Skeleton width={102} height={24} style={{ marginRight: '8px' }} />
+          <Skeleton width={114} height={24} />
         </Center>
-        <Right>
-          <Skeleton width={200} height={160} />
+        <VerticalLine />
+        <Right style={{ alignItems: 'flex-start' }}>
+          <Skeleton width={120} height={20} style={{ marginBottom: 16 }} />
+          <Skeleton width={222} height={12} count={3} />
+          <Skeleton
+            width={222}
+            height={44}
+            style={{ borderRadius: '22px', margin: '16px 0' }}
+          />
         </Right>
       </Container>
     )
@@ -214,9 +223,8 @@ const isToken = (target: any): target is Token => {
 
 const Container = styled.article`
   overflow: hidden;
-  width: 100%;
+  max-width: 840px;
   display: flex;
-  justify-content: space-between;
   background: ${color.white};
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
@@ -232,9 +240,12 @@ const MediaContainer = styled.div`
 
 const Center = styled.div`
   width: 316px;
-  padding: 32px 0;
+  padding: 32px;
 `
-
+const VerticalLine = styled.div`
+  border-left: thin solid ${color.content.gray};
+  margin: 32px 0;
+`
 const CenterTitleContainer = styled.div``
 
 const CenterTitle = styled.h1`
@@ -261,7 +272,7 @@ const Right = styled.div`
   align-items: center;
   justify-content: center;
   width: 254px;
-  padding: 32px 32px 32px 0;
+  padding: 32px;
 `
 
 const RightTitleContainer = styled.div`
