@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { getItemActionCreator } from '../../redux/item'
 import { Presentation } from './presentation'

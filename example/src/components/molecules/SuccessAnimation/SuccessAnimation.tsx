@@ -16,10 +16,10 @@ const bounceTransition = {
   },
 }
 
-const springType = {
-  type: 'spring',
-  bounce: 0.25,
-}
+// const springType = {
+//   type: 'spring',
+//   bounce: 0.25,
+// }
 
 export const SuccessAnimation: React.VFC = () => {
   return (
