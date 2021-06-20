@@ -20,6 +20,7 @@ type Props = {
   onShowShippingInfo?: () => void
   onWithdraw?: () => void
   withdrawing?: boolean
+  onComplete: () => void
 }
 
 export const CardMyPage: React.VFC<Props> = ({
@@ -29,6 +30,7 @@ export const CardMyPage: React.VFC<Props> = ({
   onWithdraw,
   onShowShippingInfo,
   withdrawing,
+  onComplete,
 }) => {
   const router = useRouter()
   // TODO: 固定価格販売
@@ -82,6 +84,7 @@ export const CardMyPage: React.VFC<Props> = ({
               networkId={item.item.networkId}
               initialPrice={item.item.initialPrice}
               currentPrice={item.item.currentPrice}
+              onComplete={onComplete}
             />
           </AuctionInfoContainer>
         </Center>
@@ -134,6 +137,7 @@ export const CardMyPage: React.VFC<Props> = ({
               networkId={item.networkId}
               initialPrice={item.initialPrice}
               currentPrice={item.currentPrice}
+              onComplete={onComplete}
             />
           </AuctionInfoContainer>
         </Center>
