@@ -5,7 +5,7 @@ import { History } from '../../components/organisms/History'
 import { useAppDispatch, useAppSelector } from '../../redux/getStore'
 import { getItemActionCreator } from '../../redux/item'
 import { color } from '../../style'
-import { ItemDetailComponent } from '../../components/organisms/ItemDetail'
+import { ItemDetail } from '../../components/organisms/ItemDetail'
 import { getHistoryActionCreator } from '../../redux/history'
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import CommonMeta from '../../components/atoms/CommonMeta'
@@ -60,7 +60,7 @@ const ItemDetailPage: NextPage<
         </MediaInner>
       </MediaContainer>
       <DetailContainer>
-        <ItemDetailComponent />
+        <ItemDetail />
         <History />
       </DetailContainer>
     </Container>
