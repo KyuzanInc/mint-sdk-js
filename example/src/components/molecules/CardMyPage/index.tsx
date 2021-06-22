@@ -247,7 +247,7 @@ const Center = styled.div`
   padding: 32px;
 `
 const VerticalLine = styled.div`
-  border-left: thin solid ${color.content.gray};
+  border-left: thin solid ${color.content.gray1};
   margin: 32px 0;
 `
 const CenterTitleContainer = styled.div``

@@ -84,7 +84,7 @@ export const BidderId = styled.div`
 export const BidTime = styled.div`
   padding: 4px 0 0 0;
   ${font.lg.caption}
-  color: ${color.content.gray};
+  color: ${color.content.gray1};
 `
 export const BidPrice = styled.div`
   min-width: 100px;

@@ -27,7 +27,7 @@ const Container = styled.div`
   width: fit-content;
   height: 43px;
   border-radius: 22px;
-  background-color: ${color.content.middle};
+  background-color: ${color.content.gray2};
   display: flex;
 `
 
@@ -37,7 +37,7 @@ const Tab = styled.div<{ active: boolean }>`
   width: 200px;
   border-radius: 22px;
   background-color: ${({ active }) =>
-    active ? color.white : color.content.middle};
+    active ? color.white : color.content.gray2};
   box-shadow: ${({ active }) =>
     active
       ? '0px 9px 8px rgba(0, 0, 0, 0.04), 0px 0px 4px rgba(0, 0, 0, 0.06), 0px 0px 2px rgba(0, 0, 0, 0.12);'
@@ -49,5 +49,5 @@ const Tab = styled.div<{ active: boolean }>`
 
 const TabText = styled.span<{ active: boolean }>`
   ${font.lg.button};
-  color: ${({ active }) => (active ? color.primary : color.content.gray)};
+  color: ${({ active }) => (active ? color.primary : color.content.gray1)};
 `

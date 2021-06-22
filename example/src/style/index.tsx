@@ -9,6 +9,7 @@ export const color = {
   },
   background: {
     bague: '#F5F5F5',
+    dark: '#333',
   },
   utils: {
     error: '#FF3B30',
@@ -16,10 +17,10 @@ export const color = {
   },
   content: {
     dark: 'rgba(0,0,0,.82)',
-    middle: '#757575',
+    middle: 'rgba(0,0,0,.54)',
     light: 'rgba(0, 0, 0, 0.14)',
     superLight: 'rgba(0, 0, 0, 0.08);',
-    gray: 'rgba(0, 0, 0, .54)',
+    gray1: '#BDBDBD',
     gray2: '#EBEBEB',
   },
   active: 'linear-gradient(180deg, #FD80A8 0%, #FCCF42 100%);',
