@@ -1,19 +1,14 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { Card } from '.'
-import { useAppDispatch } from '../../../redux/getStore'
-import { getItemsActionCreator } from '../../../redux/items'
 import { AuctionInfo } from '../AuctionInfo'
 
 type Props = {
   item: Item
+  onAuctionFinish?: () => void
 }
 
-export const ActiveCard: React.FC<Props> = ({ item }) => {
-  const dispatch = useAppDispatch()
-  const getItems = useCallback(() => {
-    dispatch(getItemsActionCreator() as any)
-  }, [])
+export const ActiveCard: React.FC<Props> = ({ item, onAuctionFinish }) => {
   return (
     <Card
       href={`/items/${item.itemId}`}
@@ -28,7 +23,7 @@ export const ActiveCard: React.FC<Props> = ({ item }) => {
         networkId={item.networkId}
         initialPrice={item.initialPrice}
         currentPrice={item.currentPrice}
-        onComplete={getItems}
+        onComplete={onAuctionFinish}
       />
     </Card>
   )
