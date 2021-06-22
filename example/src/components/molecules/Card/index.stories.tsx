@@ -1,4 +1,4 @@
-import { Item, Token } from '@kyuzan/mint-sdk-js'
+import { Item } from '@kyuzan/mint-sdk-js'
 import { addDays, subDays } from 'date-fns'
 import React from 'react'
 import { ActiveCard } from './active'
@@ -6,6 +6,17 @@ import { EndedCard } from './ended'
 import { LoadingCard } from './loading'
 
 export const Active: React.VFC = () => <ActiveCard item={loseItem} />
+export const ActiveWithLongTitle: React.VFC = () => (
+  <ActiveCard
+    item={{
+      ...loseItem,
+      name: '宮沢賢治の作品を読み解く上での重要なキーワードに「イーハトーブ」がある。彼の心の中の理想郷とも言うべきこの言葉は、故郷の岩手をモチーフに生まれた。賢治生誕120年を迎えた今、この言葉の意味を中国人の賢治研究家が再考する。',
+    }}
+  />
+)
+export const ActiveWithPhysicalItem: React.VFC = () => (
+  <ActiveCard item={{ ...loseItem, type: 'nftWithPhysicalProduct' }} />
+)
 export const Ended: React.VFC = () => <EndedCard item={doneItem} />
 export const Loading: React.VFC = () => <LoadingCard />
 
@@ -66,26 +77,4 @@ const doneItem: Item = {
   ...winItem,
   startAt: subDays(new Date(), 2),
   endAt: subDays(new Date(), 1),
-}
-
-const token: Token = {
-  contractAddress: '0x2222',
-  tokenId: 1,
-  name: 'test',
-  description: 'test test',
-  tokenURI: 'ipft://xxxxxx',
-  tokenURIHTTP: 'https://hoo.png',
-  imageURI: 'ipft://xxxxxx',
-  imageURIHTTP: {
-    url: 'https://place-hold.it/350x150',
-    mimeType: 'image/png',
-  },
-  authorAddress: '0x1111',
-  previews: [
-    {
-      url: 'https://place-hold.it/350x150',
-      mimeType: 'image/png',
-    },
-  ],
-  item: doneItem,
 }

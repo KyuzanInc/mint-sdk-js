@@ -197,11 +197,12 @@ const EndedDate = styled.div`
 `
 
 const Time = styled.div`
-  width: 16px;
+  width: 19px;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
   margin-left: 4px;
+  text-align: right;
   color: ${color.content.dark};
 `
 

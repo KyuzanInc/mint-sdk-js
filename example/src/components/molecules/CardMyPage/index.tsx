@@ -4,9 +4,10 @@ import { isBefore } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import React from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
-import { Anchor } from '../../atoms/Anchor'
+import { getPriceUnit } from '../../../util/getItemPriceUnit'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
@@ -35,28 +36,7 @@ export const CardMyPage: React.VFC<Props> = ({
   const router = useRouter()
   // TODO: 固定価格販売
   if (loading || typeof item === 'undefined') {
-    return (
-      <Container>
-        <MediaContainer>
-          <MediaContent media={item?.previews[0]} height={240} />
-        </MediaContainer>
-        <Center>
-          <Skeleton width={250} height={20} style={{ margin: '0 0 32px 0' }} />
-          <Skeleton width={102} height={24} style={{ marginRight: '8px' }} />
-          <Skeleton width={114} height={24} />
-        </Center>
-        <VerticalLine />
-        <Right style={{ alignItems: 'flex-start' }}>
-          <Skeleton width={120} height={20} style={{ marginBottom: 16 }} />
-          <Skeleton width={222} height={12} count={3} />
-          <Skeleton
-            width={222}
-            height={44}
-            style={{ borderRadius: '22px', margin: '16px 0' }}
-          />
-        </Right>
-      </Container>
-    )
+    return <Loading />
   }
   if (isToken(item)) {
     return (
@@ -157,10 +137,15 @@ export const CardMyPage: React.VFC<Props> = ({
                   競り勝っています
                 </WinningTitle>
               </RightTitleContainer>
-              <Link passHref href={`/items/${item.itemId}`}>
-                <Anchor>
-                  <ReverseButton isLoading={false} label={'商品を見る'} />
-                </Anchor>
+              <CurrentPriceContainer>
+                <CurrentPriceTitle>最新の入札額</CurrentPriceTitle>
+                <CurrentPriceValue>{item.currentPrice}</CurrentPriceValue>
+                <CurrentPriceUnit>
+                  {getPriceUnit(item.networkId)}
+                </CurrentPriceUnit>
+              </CurrentPriceContainer>
+              <Link href={`/items/${item.itemId}`}>
+                <ReverseButton isLoading={false} label={'商品を見る'} />
               </Link>
             </>
           )}
@@ -179,10 +164,15 @@ export const CardMyPage: React.VFC<Props> = ({
                   競り負けています
                 </LosingTitle>
               </RightTitleContainer>
-              <Link passHref href={`/items/${item.itemId}`}>
-                <Anchor>
-                  <ReverseButton isLoading={false} label={'商品を見る'} />
-                </Anchor>
+              <CurrentPriceContainer>
+                <CurrentPriceTitle>最新の入札額</CurrentPriceTitle>
+                <CurrentPriceValue>{item.currentPrice}</CurrentPriceValue>
+                <CurrentPriceUnit>
+                  {getPriceUnit(item.networkId)}
+                </CurrentPriceUnit>
+              </CurrentPriceContainer>
+              <Link href={`/items/${item.itemId}`}>
+                <ReverseButton isLoading={false} label={'商品を見る'} />
               </Link>
             </>
           )}
@@ -219,6 +209,31 @@ export const CardMyPage: React.VFC<Props> = ({
       </Container>
     )
   }
+}
+
+const Loading: React.VFC = () => {
+  return (
+    <Container>
+      <MediaContainer>
+        <MediaContent waitingItem={true} media={undefined} height={240} />
+      </MediaContainer>
+      <Center>
+        <Skeleton width={250} height={20} style={{ margin: '0 0 32px 0' }} />
+        <Skeleton width={102} height={24} style={{ marginRight: '8px' }} />
+        <Skeleton width={114} height={24} />
+      </Center>
+      <VerticalLine />
+      <Right style={{ alignItems: 'flex-start' }}>
+        <Skeleton width={120} height={20} style={{ marginBottom: 16 }} />
+        <Skeleton width={222} height={12} count={3} />
+        <Skeleton
+          width={222}
+          height={44}
+          style={{ borderRadius: '22px', margin: '16px 0' }}
+        />
+      </Right>
+    </Container>
+  )
 }
 
 const isToken = (target: any): target is Token => {
@@ -273,8 +288,8 @@ const AuctionInfoContainer = styled.div`
 const Right = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   width: 254px;
   padding: 32px;
 `
@@ -288,6 +303,23 @@ const RightTitleContainer = styled.div`
 
 const RightTitleIcon = styled.div`
   margin-right: 8px;
+`
+
+const CurrentPriceContainer = styled.div`
+  margin-bottom: 24px;
+`
+
+const CurrentPriceTitle = styled.p`
+  ${font.lg.label}
+  margin-bottom: 8px;
+`
+
+const CurrentPriceValue = styled.span`
+  ${font.lg.h4}
+`
+
+const CurrentPriceUnit = styled.span`
+  ${font.lg.overline}
 `
 
 const WonTitle = styled.div`
@@ -323,13 +355,13 @@ const ReverseButton = styled(PrimaryLoadingButton)`
 `
 
 const PrimaryButton = styled(PrimaryLoadingButton)`
-  margin-top: 32px;
+  margin-top: 16px;
   width: 100%;
 `
 
 const DisabledButton = styled(PrimaryLoadingButton)`
   background-color: ${color.content.middle};
-  margin-top: 32px;
+  margin-top: 16px;
   width: 100%;
   cursor: not-allowed;
 `

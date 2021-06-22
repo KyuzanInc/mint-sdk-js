@@ -59,6 +59,54 @@ export const WonAndWait5min: React.VFC = () => (
   />
 )
 
+export const ShippingInfoIsBlank: React.VFC = () => (
+  <CardMyPage
+    userWalletAddress={''}
+    loading={false}
+    item={{
+      ...item,
+      type: 'nftWithPhysicalProduct',
+      physicalOrderStatus: 'shippingInfoIsBlank',
+      endAt: subMinutes(new Date(), 4),
+    }}
+    withdrawing={false}
+    onWithdraw={action('onWithdraw')}
+    onShowShippingInfo={action('onShowShippingInfo')}
+  />
+)
+
+export const ShippingProcessing: React.VFC = () => (
+  <CardMyPage
+    userWalletAddress={''}
+    loading={false}
+    item={{
+      ...item,
+      type: 'nftWithPhysicalProduct',
+      physicalOrderStatus: 'wip',
+      endAt: subMinutes(new Date(), 4),
+    }}
+    withdrawing={false}
+    onWithdraw={action('onWithdraw')}
+    onShowShippingInfo={action('onShowShippingInfo')}
+  />
+)
+
+export const Shipped: React.VFC = () => (
+  <CardMyPage
+    userWalletAddress={''}
+    loading={false}
+    item={{
+      ...item,
+      type: 'nftWithPhysicalProduct',
+      physicalOrderStatus: 'shipped',
+      endAt: subMinutes(new Date(), 4),
+    }}
+    withdrawing={false}
+    onWithdraw={action('onWithdraw')}
+    onShowShippingInfo={action('onShowShippingInfo')}
+  />
+)
+
 export const Loading: React.VFC = () => (
   <CardMyPage
     loading={true}
