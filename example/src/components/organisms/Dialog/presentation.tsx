@@ -31,7 +31,7 @@ const customStyles: Styles = {
   },
 }
 
-export const Dialog: React.VFC<Props> = ({
+export const Presentation: React.VFC<Props> = ({
   title,
   content,
   handleConfirm,

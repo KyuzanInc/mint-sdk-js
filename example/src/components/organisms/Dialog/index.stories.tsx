@@ -31,5 +31,5 @@ export const ConfirmText: React.VFC = () => {
 }
 
 export default {
-  title: 'molecules/Dialog',
+  title: 'organism/Dialog',
 }

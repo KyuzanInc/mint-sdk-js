@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from 'react'
+import { dialogSlice } from '../../../redux/dialog'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { bidActionCreator } from '../../../redux/transaction'
 import { connectWalletActionCreator } from '../../../redux/wallet'
+import { getNetworkIdLabel } from '../../../util/getNetworkIdLabel'
 import { Presentation } from './presentation'
 
 export const Container: React.VFC = () => {
@@ -22,11 +24,12 @@ export const Container: React.VFC = () => {
   const walletIsConnect = useAppSelector((state) => {
     return typeof state.app.wallet.data.walletInfo?.address !== 'undefined'
   })
-
   const walletInfo = useAppSelector((state) => {
     return state.app.wallet.data.walletInfo
   })
-
+  const connectedNetworkId = useAppSelector((state) => {
+    return state.app.wallet.data.connectedNetwork
+  })
   const waitingWallet = useAppSelector((state) => {
     return state.app.wallet.meta.waitingWalletAction
   })
@@ -86,20 +89,30 @@ export const Container: React.VFC = () => {
     []
   )
 
-  const onClick = useCallback(() => {
+  const handleDoBid = useCallback(() => {
+    if (auctionIsOutOfDate) {
+      return
+    }
+
     if (!walletIsConnect) {
       openWalletModal()
       return
     }
 
-    if (auctionIsOutOfDate) {
+    if (connectedNetworkId !== item?.networkId) {
+      dispatch(
+        dialogSlice.actions.showDialog({
+          title: 'ネットワークを変更してください',
+          content: `${getNetworkIdLabel(
+            item?.networkId ?? 4
+          )}に接続してください。`,
+        })
+      )
       return
     }
 
-    // TODO: CheckNetwork
-
     openBidModal()
-  }, [walletIsConnect, auctionIsOutOfDate])
+  }, [item, walletIsConnect, auctionIsOutOfDate, connectedNetworkId])
 
   return (
     <Presentation
@@ -120,7 +133,7 @@ export const Container: React.VFC = () => {
       handleConnectWallet={connectWallet}
       userWalletBalance={walletInfo?.balance}
       bidModalOpen={bidModalIsOpen}
-      handleOpenBidModal={onClick}
+      handleOpenBidModal={handleDoBid}
       handleCloseBidModal={closeBidModal}
       handleChangeInputPrice={onChangeInput}
       bidding={bidding}
