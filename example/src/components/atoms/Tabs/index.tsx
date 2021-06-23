@@ -13,6 +13,7 @@ export const Tabs: React.VFC<Props> = ({ items, value, onChange }) => {
     <Container>
       {items.map((item) => (
         <Tab
+          key={item.value}
           active={value === item.value}
           onClick={() => onChange && onChange(item.value)}
         >
