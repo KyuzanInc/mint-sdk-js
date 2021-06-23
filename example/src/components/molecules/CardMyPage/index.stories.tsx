@@ -13,6 +13,7 @@ export const Losing: React.VFC = () => (
     withdrawing={false}
     onWithdraw={action('onWithdraw')}
     onShowShippingInfo={action('onShowShippingInfo')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -24,6 +25,7 @@ export const Wining: React.VFC = () => (
     withdrawing={false}
     onWithdraw={action('onWithdraw')}
     onShowShippingInfo={action('onShowShippingInfo')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -38,6 +40,7 @@ export const Won: React.VFC = () => (
     withdrawing={false}
     onWithdraw={action('onWithdraw')}
     onShowShippingInfo={action('onShowShippingInfo')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -52,6 +55,7 @@ export const WonAndWait5min: React.VFC = () => (
     withdrawing={false}
     onWithdraw={action('onWithdraw')}
     onShowShippingInfo={action('onShowShippingInfo')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -62,6 +66,7 @@ export const Loading: React.VFC = () => (
     withdrawing={false}
     onWithdraw={action('onWithdraw')}
     onShowShippingInfo={action('onShowShippingInfo')}
+    onComplete={action('onComplete')}
   />
 )
 

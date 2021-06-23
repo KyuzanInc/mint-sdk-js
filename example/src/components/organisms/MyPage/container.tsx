@@ -80,7 +80,8 @@ export const Container: React.VFC = () => {
   const accountInfo = useAppSelector(
     (state) => state.app.myAccountInfo.data.accountInfo
   )
-  useEffect(() => {
+
+  const updateItems = useCallback(() => {
     if (typeof walletInfo?.address === 'undefined') {
       return
     }
@@ -94,6 +95,11 @@ export const Container: React.VFC = () => {
       getAccountInfoActionCreator({ walletAddress: walletInfo.address }) as any
     )
   }, [walletInfo?.address])
+
+  useEffect(() => {
+    updateItems()
+  }, [walletInfo?.address])
+
   return (
     <Presentation
       connectingWallet={connectingWallet}
@@ -123,6 +129,7 @@ export const Container: React.VFC = () => {
       accountSiteUrl={accountInfo.homepageUrl || undefined}
       accountLoading={accountInfoLoading}
       accountOnClickEdit={goEditPage}
+      onComplete={updateItems}
     />
   )
 }

@@ -35,6 +35,7 @@ type Props = {
   accountSiteUrl: string | undefined
   accountLoading: boolean
   accountOnClickEdit: () => void
+  onComplete?: () => void
 }
 
 export const Presentation: React.VFC<Props> = ({
@@ -59,6 +60,7 @@ export const Presentation: React.VFC<Props> = ({
   accountSiteUrl,
   accountLoading,
   accountOnClickEdit,
+  onComplete,
 }) => {
   return (
     <>
@@ -96,6 +98,7 @@ export const Presentation: React.VFC<Props> = ({
                     userWalletAddress={userWalletAddress}
                     onWithdraw={() => handleWithdrawItem(item.itemId)}
                     withdrawing={withdrawingItemId === item.itemId}
+                    onComplete={onComplete}
                   />
                 </ItemContainer>
               )
@@ -119,6 +122,7 @@ export const Presentation: React.VFC<Props> = ({
                     onShowShippingInfo={() => {
                       showShippingInfo(item.item.itemId)
                     }}
+                    onComplete={onComplete}
                   />
                 </ItemContainer>
               )
