@@ -38,7 +38,12 @@ export const WalletModal: React.VFC<Props> = ({
   loading,
 }) => {
   return (
-    <Modal isOpen={isOpen} style={customStyles} contentLabel="Wallet">
+    <Modal
+      isOpen={isOpen}
+      style={customStyles}
+      contentLabel="Wallet"
+      ariaHideApp={false}
+    >
       <ModalContainer>
         <Content>
           <ContentLeft src={'/images/wallet_modal_visual.svg'} />

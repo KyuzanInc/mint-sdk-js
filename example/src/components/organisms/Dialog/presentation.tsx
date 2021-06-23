@@ -39,7 +39,12 @@ export const Presentation: React.VFC<Props> = ({
   confirmText,
 }) => {
   return (
-    <Modal isOpen={isOpen} style={customStyles} contentLabel={'Dialog'}>
+    <Modal
+      isOpen={isOpen}
+      style={customStyles}
+      contentLabel={'Dialog'}
+      ariaHideApp={false}
+    >
       <Wrapper>
         <Title>{title}</Title>
         <Content>{content}</Content>
