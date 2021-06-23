@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Dialog } from '.'
+import { Presentation } from './presentation'
 
 export const Basic: React.VFC = () => {
   const [open, setOpen] = useState(true)
   return (
-    <Dialog
+    <Presentation
       isOpen={open}
       handleConfirm={() => setOpen(false)}
       title={'ネットワークを変更してください'}
@@ -18,7 +18,7 @@ export const Basic: React.VFC = () => {
 export const ConfirmText: React.VFC = () => {
   const [open, setOpen] = useState(true)
   return (
-    <Dialog
+    <Presentation
       isOpen={open}
       handleConfirm={() => setOpen(false)}
       confirmText={'接続する'}
