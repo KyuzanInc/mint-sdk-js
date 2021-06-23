@@ -217,7 +217,7 @@ const AccountInfoContainer = styled.div`
 const ItemsContainer = styled.div`
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
   max-width: 840px;
 `
