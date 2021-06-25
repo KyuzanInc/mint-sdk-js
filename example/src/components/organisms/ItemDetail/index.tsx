@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React, { ReactNode, useCallback, useState } from 'react'
+import React, { ReactNode, useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { bidActionCreator } from '../../../redux/transaction'
@@ -57,6 +57,22 @@ export const ItemDetailComponent: React.FC<Props> = () => {
   }, [])
 
   const [bidPrice, setBidPrice] = useState('')
+  const [isError, setError] = useState(false)
+  const [errorText, setErrorText] = useState('')
+
+  useEffect(() => {
+    if (bidPrice < (item?.minBidPrice ?? bidPrice)) {
+      setError(true)
+      setErrorText(`Your bid must be at least ${item?.minBidPrice} ETH`)
+    } else if ((walletInfo?.balance ?? bidPrice) < bidPrice) {
+      setError(true)
+      setErrorText(`You don’t have enough ETH`)
+    } else {
+      setError(false)
+      setErrorText('')
+    }
+  }, [bidPrice])
+
   const onChangeInput = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     (e) => {
       setBidPrice(e.target.value)
@@ -216,6 +232,8 @@ export const ItemDetailComponent: React.FC<Props> = () => {
         doBid={doBid}
         bidPrice={bidPrice}
         onChangeInput={onChangeInput}
+        isValidationError={isError}
+        errorText={errorText}
       />
       <AboutPhysicalModal
         isOpen={aboutPhysicalModalIsOpen}

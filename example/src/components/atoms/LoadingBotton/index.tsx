@@ -6,6 +6,7 @@ import { color, font } from '../../../style'
 type Props = {
   isLoading: boolean
   label: string
+  disabled?: boolean
   className?: string
   onClick?: () => any
 }
@@ -15,7 +16,15 @@ export const PrimaryLoadingButton: React.FC<Props> = ({
   onClick,
   isLoading,
   className,
+  disabled,
 }) => {
+  if (disabled) {
+    return (
+      <Disabled onClick={onClick} className={className} disabled>
+        {label}
+      </Disabled>
+    )
+  }
   return (
     <Primary onClick={onClick} className={className}>
       {isLoading && (
@@ -65,7 +74,7 @@ const SubmitBase = styled.input`
   border: none;
 `
 
-const ButtonBase = styled.div`
+const ButtonBase = styled.button`
   cursor: pointer;
   ${font.lg.button}
   height: 44px;
@@ -78,8 +87,15 @@ const ButtonBase = styled.div`
   justify-content: center;
   text-align: center;
   padding: 0 32px;
+  border: 0;
 `
 
 const Primary = styled(ButtonBase)`
   background-color: ${color.primary};
+`
+
+const Disabled = styled(ButtonBase)`
+  background-color: ${color.content.superLight};
+  color: ${color.content.middle};
+  cursor: not-allowed;
 `
