@@ -388,16 +388,16 @@ export interface Item {
     imageURI: string;
     /**
      * 
-     * @type {Media}
+     * @type {NftDataMedia}
      * @memberof Item
      */
-    imageURIHTTP: Media;
+    imageURIHTTP: NftDataMedia;
     /**
      * Itemのプレビュー用URL
-     * @type {Array<Media>}
+     * @type {Array<PreviewMedia>}
      * @memberof Item
      */
-    previews: Array<Media>;
+    previews: Array<PreviewMedia>;
     /**
      * Itemの作成者ウォレットアドレス
      * @type {string}
@@ -625,25 +625,6 @@ export enum ItemType {
 /**
  * 
  * @export
- * @interface Media
- */
-export interface Media {
-    /**
-     * 
-     * @type {string}
-     * @memberof Media
-     */
-    url: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Media
-     */
-    mimeType: string;
-}
-/**
- * 
- * @export
  * @enum {string}
  */
 export enum NetworkId {
@@ -655,6 +636,31 @@ export enum NetworkId {
 }
 
 /**
+ * NFT Dataのメディア。urlにはGCSのURLが入る。GCSがない場合は、ipfs.ioが入る（後方互換用）。ipfsには、ipfs.ioのURLが入る
+ * @export
+ * @interface NftDataMedia
+ */
+export interface NftDataMedia {
+    /**
+     * 
+     * @type {string}
+     * @memberof NftDataMedia
+     */
+    url: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NftDataMedia
+     */
+    mimeType: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NftDataMedia
+     */
+    ipfs: string;
+}
+/**
  * 
  * @export
  * @enum {string}
@@ -665,6 +671,25 @@ export enum PhysicalOrderStatus {
     Shipped = 'shipped'
 }
 
+/**
+ * プレビュー用のメディア
+ * @export
+ * @interface PreviewMedia
+ */
+export interface PreviewMedia {
+    /**
+     * 
+     * @type {string}
+     * @memberof PreviewMedia
+     */
+    url: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PreviewMedia
+     */
+    mimeType: string;
+}
 /**
  * 
  * @export
