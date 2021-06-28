@@ -22,6 +22,8 @@ type Props = {
   bidPrice: string
   onChangeInput: React.ChangeEventHandler<HTMLInputElement>
   doBid: () => void
+  isValidationError?: boolean
+  errorText?: string
 }
 
 const customStyles: Styles = {
@@ -57,6 +59,8 @@ export const BidModal: React.VFC<Props> = ({
   endAt,
   price,
   itemName,
+  isValidationError,
+  errorText,
 }) => {
   return (
     <Modal
@@ -111,11 +115,21 @@ export const BidModal: React.VFC<Props> = ({
               <InputUnit>{unit}</InputUnit>
             </InputPriceContainer>
             <ContentButtonContainer>
-              <BidButton
-                label={loading ? '取引処理中です' : 'PLACE A BID'}
-                isLoading={loading}
-                onClick={doBid}
-              />
+              {isValidationError && (
+                <BidButton
+                  label={errorText ?? ''}
+                  isLoading={false}
+                  onClick={doBid}
+                  disabled={true}
+                />
+              )}
+              {!isValidationError && (
+                <BidButton
+                  label={loading ? '取引処理中です' : 'PLACE A BID'}
+                  isLoading={loading}
+                  onClick={doBid}
+                />
+              )}
             </ContentButtonContainer>
           </Right>
         </Content>
@@ -239,4 +253,5 @@ const CloseButton = styled.div`
 const BidButton = styled(ButtonBase)`
   width: 100%;
   margin-top: 40px;
+  line-height: 1.5;
 `

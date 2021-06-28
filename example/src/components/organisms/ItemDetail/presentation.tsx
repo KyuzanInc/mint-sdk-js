@@ -38,6 +38,8 @@ type Props = {
   handleChangeInputPrice: ChangeEventHandler<HTMLInputElement>
   bidPrice: string
   handleDoBid: () => void
+  isValidationError: boolean
+  errorText: string
 }
 
 export const Presentation: React.VFC<Props> = ({
@@ -62,6 +64,8 @@ export const Presentation: React.VFC<Props> = ({
   bidPrice,
   handleDoBid,
   loading,
+  isValidationError,
+  errorText
 }) => {
   if (loading) {
     return <LoadingItemDetailComponent />
@@ -157,6 +161,8 @@ export const Presentation: React.VFC<Props> = ({
         doBid={handleDoBid}
         bidPrice={bidPrice}
         onChangeInput={handleChangeInputPrice}
+        isValidationError={isValidationError}
+        errorText={errorText}
       />
       <AboutPhysicalModal
         isOpen={aboutPhysicalModalIsOpen}

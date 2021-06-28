@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { dialogSlice } from '../../../redux/dialog'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { bidActionCreator } from '../../../redux/transaction'
@@ -40,6 +40,21 @@ export const Container: React.VFC = () => {
   }, [])
 
   const [bidPrice, setBidPrice] = useState('')
+  const [isError, setError] = useState(false)
+  const [errorText, setErrorText] = useState('')
+
+  useEffect(() => {
+    if (bidPrice < (item?.minBidPrice ?? bidPrice)) {
+      setError(true)
+      setErrorText(`Your bid must be at least ${item?.minBidPrice} ETH`)
+    } else if ((walletInfo?.balance ?? bidPrice) < bidPrice) {
+      setError(true)
+      setErrorText(`You don’t have enough ETH`)
+    } else {
+      setError(false)
+      setErrorText('')
+    }
+  }, [bidPrice, walletInfo?.balance, item?.minBidPrice])
   const onChangeInput = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     (e) => {
       setBidPrice(e.target.value)
@@ -139,6 +154,8 @@ export const Container: React.VFC = () => {
       bidding={bidding}
       bidPrice={bidPrice}
       handleDoBid={doBid}
+      isValidationError={isError}
+      errorText={errorText}
     />
   )
 }
