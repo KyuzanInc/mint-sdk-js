@@ -1,13 +1,9 @@
 import styled from '@emotion/styled'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { Detail, Title, Description } from '.'
+import { Detail, Title, Description } from './presentation'
 
-type Props = {
-  children?: ReactNode
-}
-
-export const LoadingItemDetailComponent: React.FC<Props> = () => {
+export const LoadingItemDetailComponent: React.VFC = () => {
   return (
     <Detail>
       <Title>

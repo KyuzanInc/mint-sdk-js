@@ -5,6 +5,7 @@ import { initialWalletActionCreator, walletSlice } from '../redux/wallet'
 import { Header } from './organisms/Header'
 import { getSdk } from '../sdk'
 import { MintSDK } from '@kyuzan/mint-sdk-js'
+import { Dialog } from './organisms/Dialog'
 
 type Props = {
   children?: ReactNode
@@ -36,6 +37,7 @@ const Layout = ({ children }: Props) => {
   return (
     <Container>
       <Header />
+      <Dialog />
       {children}
     </Container>
   )
