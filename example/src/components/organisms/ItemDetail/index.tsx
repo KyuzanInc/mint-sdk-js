@@ -71,7 +71,7 @@ export const ItemDetailComponent: React.FC<Props> = () => {
       setError(false)
       setErrorText('')
     }
-  }, [bidPrice])
+  }, [bidPrice, walletInfo?.balance, item?.minBidPrice])
 
   const onChangeInput = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     (e) => {
