@@ -30,6 +30,7 @@ export const font = {
     h1: 'font-weight: 700; font-size: 48px; line-height: 1.3;',
     h2: 'font-weight: 700; font-size: 32px; line-height: 1.3;',
     h3: 'font-weight: 700; font-size: 20px; line-height: 1.3;',
+    h4: 'font-weight: 700; font-size: 18px; line-height: 1.3;',
     subtitle1: 'font-weight: 600; font-size: 16px; line-height: 1.3;',
     subtitle2: 'font-weight: 600; font-size: 14px; line-height: 1.3;',
     body1: 'font-weight: 500; font-size: 16px; line-height: 1.3;',

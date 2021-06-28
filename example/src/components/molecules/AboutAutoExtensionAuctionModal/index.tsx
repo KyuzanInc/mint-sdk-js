@@ -37,6 +37,7 @@ export const AboutAutoExtensionAuctionModal: React.VFC<Props> = ({
       isOpen={isOpen}
       style={customStyles}
       contentLabel="AboutPhysicalModal"
+      ariaHideApp={false}
     >
       <ModalContainer>
         <Content>

@@ -59,7 +59,12 @@ export const BidModal: React.VFC<Props> = ({
   itemName,
 }) => {
   return (
-    <Modal isOpen={isOpen} style={customStyles} contentLabel="Wallet">
+    <Modal
+      isOpen={isOpen}
+      style={customStyles}
+      contentLabel="Wallet"
+      ariaHideApp={false}
+    >
       <ModalContainer>
         <Content>
           <Left>

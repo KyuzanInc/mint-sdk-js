@@ -10,6 +10,8 @@ import { getShippingInfoActionCreator } from '../../../redux/shippingInfo'
 import { withDrawItemActionCreator } from '../../../redux/transaction'
 import { connectWalletActionCreator } from '../../../redux/wallet'
 import { Presentation } from './presentation'
+import { dialogSlice } from '../../../redux/dialog'
+import { getNetworkIdLabel } from '../../../util/getNetworkIdLabel'
 
 export const Container: React.VFC = () => {
   const dispatch = useAppDispatch()
@@ -48,7 +50,22 @@ export const Container: React.VFC = () => {
     (state) => state.app.transaction.meta.withdrawingItemId
   )
 
+  const connectedNetworkId = useAppSelector(
+    (state) => state.app.wallet.data.connectedNetwork
+  )
   const withdrawItem = async (itemId: string) => {
+    const item = bidedItems.find((i) => i.itemId === itemId)
+    if (connectedNetworkId !== item!.networkId) {
+      dispatch(
+        dialogSlice.actions.showDialog({
+          title: 'ネットワークを変更してください',
+          content: `${getNetworkIdLabel(
+            item?.networkId ?? 4
+          )}に接続してください。`,
+        })
+      )
+      return
+    }
     await dispatch(withDrawItemActionCreator({ itemId }) as any)
     // TODO: おめでとう画面に遷移させる
     window.location.reload()

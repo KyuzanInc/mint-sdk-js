@@ -30,6 +30,7 @@ import { historySlice, initialHistoryState } from './history'
 import { initialMyItemsState, myItemsSlice } from './myItems'
 import { myAccountInfoSlice, initialMyAccountInfoState } from './myAccountInfo'
 import { accountInfoSlice, initialAccountInfoState } from './accountInfo'
+import { dialogSlice, initialDialogState } from './dialog'
 
 const rootReducer = combineReducers({
   router: routerReducer,
@@ -46,8 +47,9 @@ const rootReducer = combineReducers({
     accountInfo: accountInfoSlice.reducer,
     accountTokens: accountTokensSlice.reducer,
   }),
-  // ui: combineReducers({
-  // }),
+  ui: combineReducers({
+    dialog: dialogSlice.reducer,
+  }),
 })
 const getInitialState = (asPath?: string) => {
   let preloadedState = {
@@ -65,7 +67,9 @@ const getInitialState = (asPath?: string) => {
       accountInfo: initialAccountInfoState,
       accountTokens: initialAccountTokensState,
     },
-    // ui: {},
+    ui: {
+      dialog: initialDialogState,
+    },
   }
   if (asPath) {
     preloadedState = {
