@@ -15,8 +15,10 @@ export class MetamaskStrategy implements WalletStrategy {
 
   constructor(networkIds: NetworkId[]) {
     this.networkIds = networkIds
-    this.metamaskProvider = (window as any).ethereum =
-      new ethers.providers.Web3Provider((window as any).ethereum, 'any')
+    this.metamaskProvider = new ethers.providers.Web3Provider(
+      (window as any).ethereum,
+      'any'
+    )
     this.metamaskProvider.on('network', (_, oldNetwork) => {
       if (oldNetwork) {
         window.location.reload()

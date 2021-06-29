@@ -1,8 +1,9 @@
-import { WidgetMode, Fortmatic } from 'fortmatic/dist/cjs/src/core/sdk'
 import { WalletStrategy } from './interface'
 import { WalletSetting } from '../types/WalletSetting'
 import { NetworkId } from 'index'
 import { ethers } from 'ethers'
+import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
+const Fortmatic = require('fortmatic')
 
 export class FortmaticStrategy implements WalletStrategy {
   private fortmatic: WidgetMode
