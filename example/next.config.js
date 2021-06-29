@@ -1,5 +1,3 @@
 module.exports = {
-  future: {
-    webpack5: false, // productionでエラーとなるため
-  },
+  webpack5: false, // productionでエラーとなるため
 }
