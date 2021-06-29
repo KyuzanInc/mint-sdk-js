@@ -86,6 +86,7 @@ const reducer = (
     | CombinedState<{
         router: RouterState
         app: StoreState['app']
+        ui: StoreState['ui']
       }>
     | undefined,
   action: AnyAction
