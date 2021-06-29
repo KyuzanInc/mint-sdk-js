@@ -28,7 +28,7 @@ const TagBase = styled.span`
   justify-content: flex-start;
   width: fit-content;
   border-radius: 4px;
-  background-color: ${color.content.superLight};
+  background-color: ${color.content.gray2};
   padding: 7px 10px;
 `
 
@@ -41,6 +41,6 @@ const Icon = styled.span`
 
 const Label = styled.span`
   ${font.lg.subtitle2}
-  color: ${color.content.middle};
+  color: ${color.content.gray1};
   line-height: 1;
 `

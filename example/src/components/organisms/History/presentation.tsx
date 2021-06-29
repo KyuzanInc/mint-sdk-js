@@ -56,5 +56,5 @@ const HistoryList = styled.li`
 `
 const EmptyHistory = styled.div`
   ${font.lg.subtitle2}
-  color: ${color.content.gray};
+  color: ${color.content.gray1};
 `

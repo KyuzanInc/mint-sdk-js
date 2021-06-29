@@ -150,7 +150,7 @@ const WalletAddressContainer = styled.div`
 
 const Bio = styled.div`
   ${font.lg.caption}
-  color: ${color.content.gray};
+  color: ${color.content.gray1};
   line-height: 1.6;
   text-align: center;
   min-width: 0px;
