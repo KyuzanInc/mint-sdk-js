@@ -65,7 +65,7 @@ export const Presentation: React.VFC<Props> = ({
   handleDoBid,
   loading,
   isValidationError,
-  errorText
+  errorText,
 }) => {
   if (loading) {
     return <LoadingItemDetailComponent />
