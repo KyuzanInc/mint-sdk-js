@@ -2,12 +2,12 @@ import React from 'react'
 import { actions } from '@storybook/addon-actions'
 import { BidModal } from '.'
 import { addDays } from 'date-fns'
-import { SuccessBidModal } from './success'
 
 const eventsFromObject = actions({
   closeModal: 'clicked',
   onChangeInput: 'hovered',
   doBid: 'ded',
+  addCalender: 'calender',
 })
 
 export const Basic: React.VFC = () => (
@@ -25,6 +25,7 @@ export const Basic: React.VFC = () => (
     loading={false}
     unit={'ETH'}
     bidPrice={'1'}
+    status={'bid'}
     {...eventsFromObject}
   />
 )
@@ -46,6 +47,7 @@ export const LongName: React.VFC = () => (
     loading={false}
     unit={'ETH'}
     bidPrice={'1'}
+    status={'bid'}
     {...eventsFromObject}
   />
 )
@@ -67,12 +69,13 @@ export const ValidationError: React.VFC = () => (
     bidPrice={'0.2'}
     isValidationError={true}
     errorText={'Your bid must be at least 1 ETH'}
+    status={'bid'}
     {...eventsFromObject}
   />
 )
 
 export const Success: React.VFC = () => (
-  <SuccessBidModal
+  <BidModal
     itemName={'NIKE AIR JORDAN 1 MID “HYPER ROYAL'}
     endAt={addDays(new Date(), 10)}
     price={21.1}
@@ -85,7 +88,10 @@ export const Success: React.VFC = () => (
     isOpen={true}
     loading={false}
     unit={'ETH'}
-    bidPrice={'1'}
+    bidPrice={'0.2'}
+    isValidationError={true}
+    errorText={'Your bid must be at least 1 ETH'}
+    status={'success'}
     {...eventsFromObject}
   />
 )

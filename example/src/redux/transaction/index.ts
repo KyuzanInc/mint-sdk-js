@@ -1,11 +1,11 @@
 import { sleep } from './../../util/sleep'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { push } from 'connected-next-router'
 import { getSdk } from '../../sdk'
 
 export type TransactionState = {
   meta: {
     bidding: boolean
+    status: string
     error: string | undefined
     withdrawingItemId: string | undefined
   }
@@ -14,6 +14,7 @@ export type TransactionState = {
 export const initialTransactionState: TransactionState = {
   meta: {
     bidding: false,
+    status: 'bid',
     withdrawingItemId: undefined,
     error: undefined,
   },
@@ -33,8 +34,6 @@ export const bidActionCreator = createAsyncThunk<
     await tx.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
-    // TODO: サクセス画面に飛ばす
-    thunkApi.dispatch(push('/me'))
   } catch (err) {
     return thunkApi.rejectWithValue('入札に失敗しました')
   }
@@ -49,6 +48,7 @@ export const withDrawItemActionCreator = createAsyncThunk<
 >('app/myItems/withdraw', async ({ itemId }, thunkApi) => {
   try {
     const tx = await getSdk()!.sendTxMakeSuccessfulBid(itemId, 'unknown')
+    console.log(tx)
     await tx.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
@@ -63,10 +63,15 @@ export const withDrawItemActionCreator = createAsyncThunk<
 export const transactionSlice = createSlice({
   name: 'transaction',
   initialState: initialTransactionState,
-  reducers: {},
+  reducers: {
+    changeStatus: (state, action) => {
+      state.meta.status = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(bidActionCreator.fulfilled, (state) => {
       state.meta.bidding = false
+      state.meta.status = 'success'
     })
     builder.addCase(bidActionCreator.pending, (state) => {
       state.meta.error = undefined

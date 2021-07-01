@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import React, { useCallback } from 'react'
 import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
 import { color, font } from '../../../style'
@@ -7,6 +7,9 @@ import { PrimaryLoadingButton as ButtonBase } from '../../atoms/LoadingBotton'
 import { Chip } from '../../atoms/Chip'
 import { MediaContent } from '../../atoms/MediaContent'
 import { StatusDetail } from '../Detail'
+import { TransactionStatus } from '../../atoms/TransactionStatus'
+import { SimpleButton } from '../../atoms/SimpleButton'
+import { format, subMinutes } from 'date-fns'
 
 type Props = {
   itemName: string
@@ -17,6 +20,19 @@ type Props = {
   walletBalance: string | undefined
   isOpen: boolean
   closeModal: () => void
+  loading: boolean
+  unit: string
+  bidPrice: string
+  onChangeInput: React.ChangeEventHandler<HTMLInputElement>
+  doBid: () => void
+  isValidationError?: boolean
+  errorText?: string
+  status?: string
+}
+
+type BidStatusProps = {
+  minBidPrice: number | undefined
+  walletBalance: string | undefined
   loading: boolean
   unit: string
   bidPrice: string
@@ -61,6 +77,7 @@ export const BidModal: React.VFC<Props> = ({
   itemName,
   isValidationError,
   errorText,
+  status,
 }) => {
   return (
     <Modal
@@ -81,56 +98,22 @@ export const BidModal: React.VFC<Props> = ({
             </InfoContainer>
           </Left>
           <Right>
-            <ContentTitle>Place a Bid </ContentTitle>
-            <PriceRangeContainer>
-              <PriceRangeItem>
-                <PriceRangeTitle>MIN</PriceRangeTitle>
-                <PriceRangeSubTitle>You must bid at least</PriceRangeSubTitle>
-                <PriceRangePrice>
-                  {minBidPrice}
-                  {unit}
-                </PriceRangePrice>
-              </PriceRangeItem>
-              <Image
-                src={'/images/arrows.svg'}
-                width={32}
-                height={16}
-                layout={'fixed'}
+            {status === 'bid' && (
+              <BidStatus
+                loading={loading}
+                minBidPrice={minBidPrice}
+                walletBalance={walletBalance}
+                unit={unit}
+                bidPrice={bidPrice}
+                onChangeInput={onChangeInput}
+                doBid={doBid}
+                isValidationError={isValidationError}
+                errorText={errorText}
               />
-              <PriceRangeItem>
-                <PriceRangeTitle>MAX</PriceRangeTitle>
-                <PriceRangeSubTitle>Your Balance</PriceRangeSubTitle>
-                <PriceRangePrice>
-                  {walletBalance}
-                  {unit}
-                </PriceRangePrice>
-              </PriceRangeItem>
-            </PriceRangeContainer>
-            <InputPriceContainer>
-              <InputPrice
-                type={'number'}
-                value={bidPrice}
-                onChange={onChangeInput}
-              />
-              <InputUnit>{unit}</InputUnit>
-            </InputPriceContainer>
-            <ContentButtonContainer>
-              {isValidationError && (
-                <BidButton
-                  label={errorText ?? ''}
-                  isLoading={false}
-                  onClick={doBid}
-                  disabled={true}
-                />
-              )}
-              {!isValidationError && (
-                <BidButton
-                  label={loading ? '取引処理中です' : 'PLACE A BID'}
-                  isLoading={loading}
-                  onClick={doBid}
-                />
-              )}
-            </ContentButtonContainer>
+            )}
+            {status === 'success' && (
+              <SuccessStatus itemName={itemName} endAt={endAt} />
+            )}
           </Right>
         </Content>
         <CloseButton onClick={closeModal}>
@@ -143,6 +126,111 @@ export const BidModal: React.VFC<Props> = ({
         </CloseButton>
       </ModalContainer>
     </Modal>
+  )
+}
+
+const BidStatus: React.VFC<BidStatusProps> = ({
+  loading,
+  minBidPrice,
+  walletBalance,
+  unit,
+  bidPrice,
+  onChangeInput,
+  doBid,
+  isValidationError,
+  errorText,
+}) => {
+  return (
+    <>
+      <ContentTitle>Place a Bid </ContentTitle>
+      <PriceRangeContainer>
+        <PriceRangeItem>
+          <PriceRangeTitle>MIN</PriceRangeTitle>
+          <PriceRangeSubTitle>You must bid at least</PriceRangeSubTitle>
+          <PriceRangePrice>
+            {minBidPrice}
+            {unit}
+          </PriceRangePrice>
+        </PriceRangeItem>
+        <ImageContainer>
+          <Image
+            src={'/images/arrows.svg'}
+            width={32}
+            height={16}
+            layout={'fixed'}
+          />
+        </ImageContainer>
+        <PriceRangeItem>
+          <PriceRangeTitle>MAX</PriceRangeTitle>
+          <PriceRangeSubTitle>Your Balance</PriceRangeSubTitle>
+          <PriceRangePrice>
+            {walletBalance}
+            {unit}
+          </PriceRangePrice>
+        </PriceRangeItem>
+      </PriceRangeContainer>
+      <InputPriceContainer>
+        <InputPrice type={'number'} value={bidPrice} onChange={onChangeInput} />
+        <InputUnit>{unit}</InputUnit>
+      </InputPriceContainer>
+      <ContentButtonContainer>
+        {isValidationError && (
+          <BidButton
+            label={errorText ?? ''}
+            isLoading={false}
+            onClick={doBid}
+            disabled={true}
+          />
+        )}
+        {!isValidationError && (
+          <BidButton
+            label={loading ? '取引処理中です' : 'PLACE A BID'}
+            isLoading={loading}
+            onClick={doBid}
+          />
+        )}
+      </ContentButtonContainer>
+    </>
+  )
+}
+
+const SuccessStatus: React.VFC<any> = ({ itemName, endAt }) => {
+  const title = `${itemName}:オークション終了予定時刻`
+  const before = subMinutes(endAt, 15)
+  const formattedBefore = format(before, "yyyyMMd'T'HHmmss")
+  const formattedEndAt = format(endAt, "yyyyMMd'T'HHmmss")
+  const calendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${title}&dates=${formattedBefore}/${formattedEndAt}`
+  const onClick = useCallback(() => {
+    // donothing
+  }, [])
+  return (
+    <>
+      <TitleContainer>
+        <Image
+          layout={'fixed'}
+          src={'/images/check-circle.svg'}
+          width={44}
+          height={44}
+        />
+        <TitleContent>入札に成功しました</TitleContent>
+      </TitleContainer>
+      <Description>
+        入札が完了しました。<br></br>
+        NFTは入札処理が完了した後、マイページで確認できるようになります。
+      </Description>
+      <TransactionContainer>
+        <TransactionStatus transactionUrl={calendarUrl} />
+      </TransactionContainer>
+      <ContentButtonContainer>
+        <AnchorLink href={calendarUrl} target="blank">
+          <CalenderButton
+            iconPath={'/images/icons/calendar.svg'}
+            label={'終了時刻をカレンダーに登録する'}
+            onClick={onClick}
+          />
+        </AnchorLink>
+      </ContentButtonContainer>
+    </>
   )
 }
 
@@ -197,11 +285,12 @@ const ContentTitle = styled.p`
 const PriceRangeContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
   margin-top: 64px;
 `
 
-const PriceRangeItem = styled.div``
+const PriceRangeItem = styled.div`
+  min-width: 110px;
+`
 
 const PriceRangeTitle = styled.div`
   ${font.lg.label}
@@ -211,6 +300,10 @@ const PriceRangeSubTitle = styled.div`
   ${font.lg.overline}
   margin-top: 8px;
 `
+const ImageContainer = styled.div`
+  margin: 26px 24px;
+`
+
 const PriceRangePrice = styled(Chip)`
   margin-top: 8px;
 `
@@ -254,4 +347,34 @@ const BidButton = styled(ButtonBase)`
   width: 100%;
   margin-top: 40px;
   line-height: 1.5;
+`
+
+const TitleContainer = styled.div`
+  ${font.lg.h2};
+  color: ${color.subColor.blue};
+  display: flex;
+  align-items: center;
+`
+const TitleContent = styled.div`
+  ${font.lg.h2};
+  color: ${color.subColor.blue};
+  margin-left: 16px;
+`
+
+const Description = styled.div`
+  ${font.lg.body1};
+  color: ${color.content.middle};
+  margin: 32px 0;
+`
+
+const TransactionContainer = styled.div`
+  width: 100%;
+  margin: 64px 0;
+`
+const AnchorLink = styled.a`
+  text-decoration: none;
+`
+
+const CalenderButton = styled(SimpleButton)`
+  width: 100%;
 `

@@ -40,6 +40,7 @@ type Props = {
   handleDoBid: () => void
   isValidationError: boolean
   errorText: string
+  status: string
 }
 
 export const Presentation: React.VFC<Props> = ({
@@ -65,7 +66,8 @@ export const Presentation: React.VFC<Props> = ({
   handleDoBid,
   loading,
   isValidationError,
-  errorText
+  errorText,
+  status,
 }) => {
   if (loading) {
     return <LoadingItemDetailComponent />
@@ -163,6 +165,7 @@ export const Presentation: React.VFC<Props> = ({
         onChangeInput={handleChangeInputPrice}
         isValidationError={isValidationError}
         errorText={errorText}
+        status={status}
       />
       <AboutPhysicalModal
         isOpen={aboutPhysicalModalIsOpen}
