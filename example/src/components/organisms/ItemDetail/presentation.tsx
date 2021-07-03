@@ -40,7 +40,8 @@ type Props = {
   handleDoBid: () => void
   isValidationError: boolean
   errorText: string
-  status: string
+  status?: string
+  bidHash?: string
 }
 
 export const Presentation: React.VFC<Props> = ({
@@ -68,6 +69,7 @@ export const Presentation: React.VFC<Props> = ({
   isValidationError,
   errorText,
   status,
+  bidHash,
 }) => {
   if (loading) {
     return <LoadingItemDetailComponent />
@@ -150,7 +152,7 @@ export const Presentation: React.VFC<Props> = ({
         closeModal={handleCloseConnectWalletModal}
       />
       <BidModal
-        itemName={item?.name ?? ''}
+        item={item}
         price={getItemPrice(item)}
         endAt={item?.endAt ?? new Date()}
         media={item?.imageURIHTTP}
@@ -166,6 +168,7 @@ export const Presentation: React.VFC<Props> = ({
         isValidationError={isValidationError}
         errorText={errorText}
         status={status}
+        bidHash={bidHash}
       />
       <AboutPhysicalModal
         isOpen={aboutPhysicalModalIsOpen}

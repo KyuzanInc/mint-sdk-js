@@ -90,6 +90,7 @@ export const Container: React.VFC = () => {
 
   const bidding = useAppSelector((state) => state.app.transaction.meta.bidding)
   const status = useAppSelector((state) => state.app.transaction.meta.status)
+  const bidHash = useAppSelector((state) => state.app.transaction.meta.bidHash)
   const [bidModalIsOpen, setBidModalIsOpen] = useState(false)
   const closeBidModal = useCallback(() => {
     setBidModalIsOpen(false)
@@ -175,6 +176,7 @@ export const Container: React.VFC = () => {
       isValidationError={isError}
       errorText={errorText}
       status={status}
+      bidHash={bidHash}
     />
   )
 }

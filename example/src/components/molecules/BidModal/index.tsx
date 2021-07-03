@@ -10,9 +10,10 @@ import { StatusDetail } from '../Detail'
 import { TransactionStatus } from '../../atoms/TransactionStatus'
 import { SimpleButton } from '../../atoms/SimpleButton'
 import { format, subMinutes } from 'date-fns'
+import { Item } from '@kyuzan/mint-sdk-js'
 
 type Props = {
-  itemName: string
+  item: Item | undefined
   endAt: Date
   price: number
   media: { url: string; mimeType: string } | undefined
@@ -28,6 +29,7 @@ type Props = {
   isValidationError?: boolean
   errorText?: string
   status?: string
+  bidHash?: string
 }
 
 type BidStatusProps = {
@@ -74,10 +76,11 @@ export const BidModal: React.VFC<Props> = ({
   media,
   endAt,
   price,
-  itemName,
+  item,
   isValidationError,
   errorText,
   status,
+  bidHash,
 }) => {
   return (
     <Modal
@@ -93,7 +96,7 @@ export const BidModal: React.VFC<Props> = ({
               <MediaContent media={media} height={254} />
             </MediaContainer>
             <InfoContainer>
-              <ItemName>{itemName}</ItemName>
+              <ItemName>{item?.name ?? ''}</ItemName>
               <StatusDetail endAt={endAt} price={price} unit={unit} />
             </InfoContainer>
           </Left>
@@ -112,7 +115,7 @@ export const BidModal: React.VFC<Props> = ({
               />
             )}
             {status === 'success' && (
-              <SuccessStatus itemName={itemName} endAt={endAt} />
+              <SuccessStatus item={item} endAt={endAt} bidHash={bidHash} />
             )}
           </Right>
         </Content>
@@ -194,8 +197,8 @@ const BidStatus: React.VFC<BidStatusProps> = ({
   )
 }
 
-const SuccessStatus: React.VFC<any> = ({ itemName, endAt }) => {
-  const title = `${itemName}:オークション終了予定時刻`
+const SuccessStatus: React.VFC<any> = ({ item, endAt, bidHash }) => {
+  const title = `${item?.name ?? ''}:オークション終了予定時刻`
   const before = subMinutes(endAt, 15)
   const formattedBefore = format(before, "yyyyMMd'T'HHmmss")
   const formattedEndAt = format(endAt, "yyyyMMd'T'HHmmss")
@@ -219,7 +222,7 @@ const SuccessStatus: React.VFC<any> = ({ itemName, endAt }) => {
         NFTは入札処理が完了した後、マイページで確認できるようになります。
       </Description>
       <TransactionContainer>
-        <TransactionStatus transactionUrl={calendarUrl} />
+        <TransactionStatus item={item} hash={bidHash} />
       </TransactionContainer>
       <ContentButtonContainer>
         <AnchorLink href={calendarUrl} target="blank">

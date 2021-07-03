@@ -33,6 +33,10 @@ export const Basic: React.VFC = () => {
       bidding={false}
       bidPrice={bidPrice}
       handleDoBid={action('handleDoBid')}
+      isValidationError={false}
+      errorText={''}
+      status={'bid'}
+      bidHash={''}
     />
   )
 }
@@ -66,6 +70,10 @@ export const AuctionIsOutOfDate: React.VFC = () => {
       bidding={false}
       bidPrice={bidPrice}
       handleDoBid={action('handleDoBid')}
+      isValidationError={false}
+      errorText={''}
+      status={'bid'}
+      bidHash={''}
     />
   )
 }
@@ -99,6 +107,10 @@ export const Loading: React.VFC = () => {
       bidding={false}
       bidPrice={bidPrice}
       handleDoBid={action('handleDoBid')}
+      isValidationError={false}
+      errorText={''}
+      status={'bid'}
+      bidHash={''}
     />
   )
 }

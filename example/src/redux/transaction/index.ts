@@ -6,6 +6,7 @@ export type TransactionState = {
   meta: {
     bidding: boolean
     status: string
+    bidHash: string
     error: string | undefined
     withdrawingItemId: string | undefined
   }
@@ -15,6 +16,7 @@ export const initialTransactionState: TransactionState = {
   meta: {
     bidding: false,
     status: 'bid',
+    bidHash: '',
     withdrawingItemId: undefined,
     error: undefined,
   },
@@ -23,7 +25,7 @@ export const initialTransactionState: TransactionState = {
 // AsyncAction
 
 export const bidActionCreator = createAsyncThunk<
-  void,
+  string,
   { itemId: string; bidPrice: number },
   {
     rejectValue: string
@@ -34,6 +36,7 @@ export const bidActionCreator = createAsyncThunk<
     await tx.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
+    return tx.hash
   } catch (err) {
     return thunkApi.rejectWithValue('入札に失敗しました')
   }
@@ -48,7 +51,6 @@ export const withDrawItemActionCreator = createAsyncThunk<
 >('app/myItems/withdraw', async ({ itemId }, thunkApi) => {
   try {
     const tx = await getSdk()!.sendTxMakeSuccessfulBid(itemId, 'unknown')
-    console.log(tx)
     await tx.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
@@ -69,9 +71,10 @@ export const transactionSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(bidActionCreator.fulfilled, (state) => {
+    builder.addCase(bidActionCreator.fulfilled, (state, { payload }) => {
       state.meta.bidding = false
       state.meta.status = 'success'
+      state.meta.bidHash = payload
     })
     builder.addCase(bidActionCreator.pending, (state) => {
       state.meta.error = undefined

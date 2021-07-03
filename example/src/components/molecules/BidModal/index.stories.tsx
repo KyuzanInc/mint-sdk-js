@@ -2,6 +2,7 @@ import React from 'react'
 import { actions } from '@storybook/addon-actions'
 import { BidModal } from '.'
 import { addDays } from 'date-fns'
+import { Item } from '@kyuzan/mint-sdk-js'
 
 const eventsFromObject = actions({
   closeModal: 'clicked',
@@ -12,7 +13,7 @@ const eventsFromObject = actions({
 
 export const Basic: React.VFC = () => (
   <BidModal
-    itemName={'NIKE AIR JORDAN 1 MID “HYPER ROYAL'}
+    item={item}
     endAt={addDays(new Date(), 10)}
     price={21.1}
     media={{
@@ -32,9 +33,7 @@ export const Basic: React.VFC = () => (
 
 export const LongName: React.VFC = () => (
   <BidModal
-    itemName={
-      'NIKE AIR JORDAN 1 MID “HYPER ROYAL NIKE AIR JORDAN 1 MID “HYPER ROYAL'
-    }
+    item={longNameItem}
     endAt={addDays(new Date(), 10)}
     price={21.1}
     media={{
@@ -54,7 +53,7 @@ export const LongName: React.VFC = () => (
 
 export const ValidationError: React.VFC = () => (
   <BidModal
-    itemName={'NIKE AIR JORDAN 1 MID “HYPER ROYAL'}
+    item={item}
     endAt={addDays(new Date(), 10)}
     price={21.1}
     media={{
@@ -76,7 +75,7 @@ export const ValidationError: React.VFC = () => (
 
 export const Success: React.VFC = () => (
   <BidModal
-    itemName={'NIKE AIR JORDAN 1 MID “HYPER ROYAL'}
+    item={item}
     endAt={addDays(new Date(), 10)}
     price={21.1}
     media={{
@@ -96,6 +95,15 @@ export const Success: React.VFC = () => (
   />
 )
 
+const item = {
+  name: 'NIKE AIR JORDAN 1 MID “HYPER ROYAL',
+  networkId: 4,
+} as Item
+
+const longNameItem = {
+  name: 'NIKE AIR JORDAN 1 MID “HYPER ROYAL NIKE AIR JORDAN 1 MID “HYPER ROYAL',
+  networkId: 4,
+} as Item
 export default {
   title: 'molecules/BidModal',
 }
