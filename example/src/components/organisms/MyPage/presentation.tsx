@@ -1,29 +1,29 @@
 import styled from '@emotion/styled'
 import { Item, ItemShippingInfo, Token } from '@kyuzan/mint-sdk-js'
-import React from 'react'
-import { color } from '../../../style'
-import {
-  ActiveStatus,
-  EmptyTitle,
-  ListTitle,
-  Title,
-} from '../../atoms/CardList'
+import Image from 'next/image'
+import React, { useState } from 'react'
+import { color, font } from '../../../style'
+import { EmptyTitle } from '../../atoms/CardList'
+import { Tabs } from '../../atoms/Tabs'
+import { ToolTip } from '../../atoms/ToolTip'
 import { AccountInfo } from '../../molecules/AccountInfo'
+import { EndedCard } from '../../molecules/Card/ended'
+import { LoadingCard } from '../../molecules/Card/loading'
 import { CardMyPage } from '../../molecules/CardMyPage'
 import { ShippingInfoModal } from '../../molecules/ShippingInfoModal'
 import { WalletModal } from '../../molecules/WalletModal'
 
 type Props = {
+  bidedItems: Item[]
+  ownTokens: Token[]
   waitingBidedItems: boolean
   waitingOwnTokens: boolean
   showShippingInfoModal: boolean
-  bidedItems: Item[]
   handleWithdrawItem: (itemId: string) => void
   handleHideShippingInfo: () => void
   showShippingInfo: (itemId: string) => void
   userWalletAddress: string | undefined
   withdrawingItemId: string | undefined
-  ownTokens: Token[]
   shippingInfo: ItemShippingInfo | undefined
   onConnectWallet: () => void
   connectingWallet: boolean
@@ -62,6 +62,10 @@ export const Presentation: React.VFC<Props> = ({
   accountOnClickEdit,
   onComplete,
 }) => {
+  const [selectedTab, setSelectedTab] = useState<string>('bidding')
+  const withPhysicalItemTokens = ownTokens.filter(
+    (item) => item.item.type === 'nftWithPhysicalProduct'
+  )
   return (
     <>
       <Container>
@@ -79,54 +83,100 @@ export const Presentation: React.VFC<Props> = ({
               onEdit={accountOnClickEdit}
             />
           </AccountInfoContainer>
-          <ListTitle>
-            <ActiveStatus />
-            <Title>Bided Items</Title>
-          </ListTitle>
-          {waitingBidedItems && <CardMyPage loading={true} />}
-          {!waitingBidedItems && bidedItems.length === 0 && (
-            <EmptyTitle>No Items</EmptyTitle>
-          )}
-          {!waitingBidedItems &&
-            bidedItems.length !== 0 &&
-            bidedItems.map((item) => {
-              return (
-                <ItemContainer key={item.itemId}>
-                  <CardMyPage
-                    item={item}
-                    loading={false}
-                    userWalletAddress={userWalletAddress}
-                    onWithdraw={() => handleWithdrawItem(item.itemId)}
-                    withdrawing={withdrawingItemId === item.itemId}
-                    onComplete={onComplete}
+          <TabsContainer>
+            <Tabs
+              items={[
+                { label: '入札中/引き出し待ち', value: 'bidding' },
+                { label: 'フィジカルアイテム', value: 'withPhysical' },
+                { label: 'コレクション', value: 'owned' },
+              ]}
+              onChange={setSelectedTab}
+              value={selectedTab}
+            />
+          </TabsContainer>
+          <NotFoundContainer>
+            <ToolTip
+              description={
+                '処理中の可能性があります。取引トランザクションをご確認ください'
+              }
+            >
+              <NotFoundIconText>
+                <NotFoundIcon>
+                  <Image
+                    src={'/images/icons/help.svg'}
+                    layout={'fixed'}
+                    width={16}
+                    height={16}
                   />
-                </ItemContainer>
-              )
-            })}
-          <ListTitle>
-            <Title>Collections</Title>
-          </ListTitle>
-          {waitingOwnTokens && <CardMyPage loading={true} />}
-          {!waitingOwnTokens && ownTokens.length === 0 && (
-            <EmptyTitle>No Items</EmptyTitle>
+                </NotFoundIcon>
+                <NotFoundText>商品が見当たらない</NotFoundText>
+              </NotFoundIconText>
+            </ToolTip>
+          </NotFoundContainer>
+          {selectedTab === 'bidding' && (
+            <>
+              {waitingBidedItems && <CardMyPage loading={true} />}
+              {!waitingBidedItems && bidedItems.length === 0 && (
+                <EmptyTitle>No Items</EmptyTitle>
+              )}
+              {!waitingBidedItems &&
+                bidedItems.length !== 0 &&
+                bidedItems.map((item) => {
+                  return (
+                    <ItemContainer key={item.itemId}>
+                      <CardMyPage
+                        item={item}
+                        loading={false}
+                        userWalletAddress={userWalletAddress}
+                        onWithdraw={() => handleWithdrawItem(item.itemId)}
+                        withdrawing={withdrawingItemId === item.itemId}
+                        onComplete={onComplete}
+                      />
+                    </ItemContainer>
+                  )
+                })}
+            </>
           )}
-          {!waitingOwnTokens &&
-            ownTokens.length !== 0 &&
-            ownTokens.map((item) => {
-              return (
-                <ItemContainer key={item.item.itemId}>
-                  <CardMyPage
-                    item={item}
-                    loading={false}
-                    userWalletAddress={userWalletAddress}
-                    onShowShippingInfo={() => {
-                      showShippingInfo(item.item.itemId)
-                    }}
-                    onComplete={onComplete}
-                  />
-                </ItemContainer>
-              )
-            })}
+          {selectedTab === 'withPhysical' && (
+            <>
+              {waitingOwnTokens && <CardMyPage loading={true} />}
+              {!waitingOwnTokens && withPhysicalItemTokens.length === 0 && (
+                <EmptyTitle>No Items</EmptyTitle>
+              )}
+              {withPhysicalItemTokens.length !== 0 &&
+                withPhysicalItemTokens.map((token) => {
+                  return (
+                    <ItemContainer key={token.item.itemId}>
+                      <CardMyPage
+                        item={token}
+                        loading={false}
+                        userWalletAddress={userWalletAddress}
+                        onShowShippingInfo={() =>
+                          showShippingInfo(token.item.itemId)
+                        }
+                      />
+                    </ItemContainer>
+                  )
+                })}
+            </>
+          )}
+          {selectedTab === 'owned' && (
+            <ItemsContainer>
+              {waitingOwnTokens && <LoadingCard />}
+              {!waitingOwnTokens && ownTokens.length === 0 && (
+                <EmptyTitle>No Items</EmptyTitle>
+              )}
+              {!waitingOwnTokens &&
+                ownTokens.length !== 0 &&
+                ownTokens.map((item) => {
+                  return (
+                    <ItemContainer key={item.item.itemId}>
+                      <EndedCard item={item.item} />
+                    </ItemContainer>
+                  )
+                })}
+            </ItemsContainer>
+          )}
         </InnerContainer>
       </Container>
       <ShippingInfoModal
@@ -144,7 +194,7 @@ export const Presentation: React.VFC<Props> = ({
 }
 
 const Container = styled.div`
-  background: ${color.background.bague};
+  background-color: ${color.content.gray2};
   min-width: 840px;
   min-height: 100vh;
   display: flex;
@@ -164,6 +214,47 @@ const AccountInfoContainer = styled.div`
   margin-bottom: 64px;
 `
 
+const ItemsContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 840px;
+`
+
 const ItemContainer = styled.div`
   margin-bottom: 32px;
+`
+
+const TabsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+`
+
+const NotFoundContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+`
+
+const NotFoundIconText = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+`
+
+const NotFoundIcon = styled.div`
+  margin-right: 4px;
+  line-height: 1;
+  height: 16px;
+  width: 16px;
+`
+
+const NotFoundText = styled.div`
+  color: ${color.content.middle};
+  ${font.lg.caption};
+  text-decoration: underline;
+  line-height: 1;
 `

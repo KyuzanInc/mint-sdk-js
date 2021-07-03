@@ -63,7 +63,7 @@ const WalletAddressContainer = styled.div`
 
 const WalletAddress = styled.div<{ fontColor?: string; fontSize?: number }>`
   ${font.lg.subtitle1}
-  color: ${({ fontColor }) => fontColor ?? color.content.gray};
+  color: ${({ fontColor }) => fontColor ?? color.content.gray1};
   font-size: ${({ fontSize }) => `${fontSize}px` ?? '20px'};
 `
 

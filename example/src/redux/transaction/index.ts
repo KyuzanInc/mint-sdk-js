@@ -38,6 +38,7 @@ export const bidActionCreator = createAsyncThunk<
     await sleep(6000)
     return tx.hash
   } catch (err) {
+    console.error(err)
     return thunkApi.rejectWithValue('入札に失敗しました')
   }
 })

@@ -21,7 +21,7 @@ export const Title = styled(ListComponent)`
 
 export const EmptyTitle = styled(ListComponent)`
   ${font.lg.h3}
-  color: ${color.content.gray};
+  color: ${color.content.gray1};
   margin-left: 10px;
   padding: 32px 0;
 `
