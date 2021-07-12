@@ -11,6 +11,7 @@ import { TransactionStatus } from '../../atoms/TransactionStatus'
 import { SimpleButton } from '../../atoms/SimpleButton'
 import { format, subMinutes } from 'date-fns'
 import { Item } from '@kyuzan/mint-sdk-js'
+import { Status } from '../../../redux/transaction'
 
 type Props = {
   item: Item | undefined
@@ -28,7 +29,7 @@ type Props = {
   doBid: () => void
   isValidationError?: boolean
   errorText?: string
-  status?: string
+  status?: Status
   bidHash?: string
 }
 

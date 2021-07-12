@@ -2,10 +2,12 @@ import { sleep } from './../../util/sleep'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
+export type Status = 'bid' | 'success'
+
 export type TransactionState = {
   meta: {
     bidding: boolean
-    status: string
+    status: Status
     bidHash: string
     error: string | undefined
     withdrawingItemId: string | undefined
