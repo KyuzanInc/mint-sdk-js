@@ -5,7 +5,19 @@ import React from 'react'
 import { color, font } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 
-export const Presentation: React.VFC = () => {
+type Props = {
+  termsOfUse?: string
+  privacyPolicy?: string
+  specifiedCommercialCode?: string
+  FAQ?: string
+}
+
+export const Presentation: React.VFC<Props> = ({
+  termsOfUse,
+  privacyPolicy,
+  specifiedCommercialCode,
+  FAQ,
+}) => {
   return (
     <FooterContainer>
       <FooterInner>
@@ -19,13 +31,21 @@ export const Presentation: React.VFC = () => {
             />
           </Anchor>
         </Link>
-        <FooterLink href={''}>利用規約</FooterLink>
-        <FooterLink href={''}>プライバシーポリシー</FooterLink>
-        <FooterLink href={''}>特商法に基づく表記</FooterLink>
-        <FooterLink href={''} target="blank">
-          このストアに関するお問い合わせ
-          <Icon src={'/images/external-link-gray.svg'} />
-        </FooterLink>
+        {termsOfUse && <FooterLink href={termsOfUse}>利用規約</FooterLink>}
+        {privacyPolicy && (
+          <FooterLink href={privacyPolicy}>プライバシーポリシー</FooterLink>
+        )}
+        {specifiedCommercialCode && (
+          <FooterLink href={specifiedCommercialCode}>
+            特商法に基づく表記
+          </FooterLink>
+        )}
+        {FAQ && (
+          <FooterLink href={FAQ} target="blank">
+            このストアに関するお問い合わせ
+            <Icon src={'/images/external-link-gray.svg'} />
+          </FooterLink>
+        )}
       </FooterInner>
     </FooterContainer>
   )
