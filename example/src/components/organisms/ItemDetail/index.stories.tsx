@@ -12,8 +12,6 @@ export const Basic: React.VFC = () => {
   const [bidPrice, setBidPrice] = useState('0')
   return (
     <Presentation
-      isValidationError={false}
-      errorText={''}
       loading={false}
       item={loseItem}
       aboutPhysicalModalIsOpen={physicalOpen}
@@ -53,8 +51,6 @@ export const AuctionIsOutOfDate: React.VFC = () => {
     <Presentation
       loading={false}
       item={loseItem}
-      isValidationError={false}
-      errorText={''}
       aboutPhysicalModalIsOpen={physicalOpen}
       handleClosePhysicalModal={() => setPhysicalOpen(false)}
       handleOpenPhysicalModal={() => setPhysicalOpen(true)}
@@ -92,8 +88,6 @@ export const Loading: React.VFC = () => {
     <Presentation
       loading={true}
       item={undefined}
-      isValidationError={false}
-      errorText={''}
       aboutPhysicalModalIsOpen={physicalOpen}
       handleClosePhysicalModal={() => setPhysicalOpen(false)}
       handleOpenPhysicalModal={() => setPhysicalOpen(true)}
