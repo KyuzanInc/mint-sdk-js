@@ -15,6 +15,7 @@ import Image from 'next/image'
 import { StatusDetail } from '../../molecules/Detail'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { LoadingItemDetailComponent } from './loading'
+import { Status } from '../../../redux/transaction'
 
 type Props = {
   loading: boolean
@@ -40,6 +41,8 @@ type Props = {
   handleDoBid: () => void
   isValidationError: boolean
   errorText: string
+  status?: Status
+  bidHash?: string
 }
 
 export const Presentation: React.VFC<Props> = ({
@@ -66,6 +69,8 @@ export const Presentation: React.VFC<Props> = ({
   loading,
   isValidationError,
   errorText,
+  status,
+  bidHash,
 }) => {
   if (loading) {
     return <LoadingItemDetailComponent />
@@ -148,7 +153,7 @@ export const Presentation: React.VFC<Props> = ({
         closeModal={handleCloseConnectWalletModal}
       />
       <BidModal
-        itemName={item?.name ?? ''}
+        item={item}
         price={getItemPrice(item)}
         endAt={item?.endAt ?? new Date()}
         media={item?.imageURIHTTP}
@@ -163,6 +168,8 @@ export const Presentation: React.VFC<Props> = ({
         onChangeInput={handleChangeInputPrice}
         isValidationError={isValidationError}
         errorText={errorText}
+        status={status}
+        bidHash={bidHash}
       />
       <AboutPhysicalModal
         isOpen={aboutPhysicalModalIsOpen}

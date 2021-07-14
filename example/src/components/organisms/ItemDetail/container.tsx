@@ -1,8 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { dialogSlice } from '../../../redux/dialog'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
-import { bidActionCreator } from '../../../redux/transaction'
-import { connectWalletActionCreator } from '../../../redux/wallet'
+import { getHistoryActionCreator } from '../../../redux/history'
+import { getItemActionCreator } from '../../../redux/item'
+import { bidActionCreator, transactionSlice } from '../../../redux/transaction'
+import {
+  connectWalletActionCreator,
+  initialWalletActionCreator,
+} from '../../../redux/wallet'
 import { getNetworkIdLabel } from '../../../util/getNetworkIdLabel'
 import { Presentation } from './presentation'
 
@@ -17,6 +22,7 @@ export const Container: React.VFC = () => {
   const startDate = item?.startAt ?? new Date()
   const auctionIsNotStarted = new Date() < startDate
   const auctionIsOutOfDate = auctionIsEnded || auctionIsNotStarted
+
   const waitingItem = useAppSelector((state) => {
     return state.app.item.meta.waitingItemAction
   })
@@ -37,6 +43,13 @@ export const Container: React.VFC = () => {
   const connectWallet = useCallback(async () => {
     await dispatch(connectWalletActionCreator() as any)
     closeWalletModal()
+  }, [])
+
+  const updateInfo = useCallback(async () => {
+    await dispatch(getItemActionCreator(item?.itemId ?? '') as any)
+    await dispatch(getHistoryActionCreator(item?.itemId ?? '') as any)
+    await dispatch(initialWalletActionCreator() as any)
+    setBidPrice('')
   }, [])
 
   const [bidPrice, setBidPrice] = useState('')
@@ -76,8 +89,14 @@ export const Container: React.VFC = () => {
   const openWalletModal = useCallback(() => setWalletModalIsOpen(true), [])
 
   const bidding = useAppSelector((state) => state.app.transaction.meta.bidding)
+  const status = useAppSelector((state) => state.app.transaction.meta.status)
+  const bidHash = useAppSelector((state) => state.app.transaction.meta.bidHash)
   const [bidModalIsOpen, setBidModalIsOpen] = useState(false)
-  const closeBidModal = useCallback(() => setBidModalIsOpen(false), [])
+  const closeBidModal = useCallback(() => {
+    setBidModalIsOpen(false)
+    updateInfo()
+    dispatch(transactionSlice.actions.changeStatus('bid'))
+  }, [status])
   const openBidModal = useCallback(() => setBidModalIsOpen(true), [])
 
   const [aboutPhysicalModalIsOpen, setAboutPhysicalModalIsOpen] =
@@ -156,6 +175,8 @@ export const Container: React.VFC = () => {
       handleDoBid={doBid}
       isValidationError={isError}
       errorText={errorText}
+      status={status}
+      bidHash={bidHash}
     />
   )
 }
