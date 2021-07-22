@@ -85,7 +85,7 @@ export const Presentation: React.VFC<Props> = ({
               </LoadingContainer>
             ) : (
               <PrimaryLoadingButton
-                label={'CONNECT'}
+                label={'接続する'}
                 isLoading={connectWalletLoading}
                 onClick={onClickConnectWallet}
               />

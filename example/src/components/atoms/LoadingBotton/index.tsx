@@ -90,6 +90,10 @@ const ButtonBase = styled.button`
   border: 0;
 `
 
+// const Primary = styled(ButtonBase)`
+//   background-color: ${color.primary};
+// `
+
 const Primary = styled(ButtonBase)`
   background-color: ${color.primary};
 `
@@ -97,5 +101,6 @@ const Primary = styled(ButtonBase)`
 const Disabled = styled(ButtonBase)`
   background-color: ${color.content.superLight};
   color: ${color.content.middle};
+  border-radius:0px;
   cursor: not-allowed;
 `

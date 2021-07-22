@@ -10,6 +10,7 @@ export const color = {
   background: {
     bague: '#F5F5F5',
     dark: '#333',
+    white:'#fff',
   },
   utils: {
     error: '#FF3B30',
