@@ -48,6 +48,7 @@ const Layout = ({ children }: Props) => {
 
 export default Layout
 
-const Container = styled.div`
-  height:100vh;
+const Container = styled.div`  
+  background-color: ${color.background.white};
+  position:relative;
 `

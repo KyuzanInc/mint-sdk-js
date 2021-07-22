@@ -12,6 +12,7 @@ const MyApp: AppComponent = ({ Component, pageProps }) => {
     <ConnectedRouter>
       <Global
         styles={css`
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600;700&display=swap');
           ${emotionReset}
           *, html, body {
             font-family: 'Montserrat', sans-serif;
@@ -22,6 +23,7 @@ const MyApp: AppComponent = ({ Component, pageProps }) => {
           body {
             background-color: ${color.background.bague};
           }
+
 
           *,
           *::after,

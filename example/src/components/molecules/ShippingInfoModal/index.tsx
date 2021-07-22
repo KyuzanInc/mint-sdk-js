@@ -113,16 +113,16 @@ const Content = styled.div`
 `
 
 const ContentTitle = styled.p`
-  ${font.lg.h2};
+  ${font.mont.h2};
   margin-bottom: 16px;
 `
 
 const Label = styled.div`
-  ${font.lg.subtitle2};
+  ${font.mont.subtitle2};
 `
 
 const ContentDescription = styled.p`
-  ${font.lg.body1};
+  ${font.mont.body1};
   line-height: 2;
 `
 

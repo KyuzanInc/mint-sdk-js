@@ -1,3 +1,5 @@
+import css from '@emotion/css'
+
 export const color = {
   primary: '#294446',
   secondary: '#CBA4A0',
@@ -28,7 +30,7 @@ export const color = {
 } as const
 
 export const font = {
-  lg: {
+  mont: {
     h1: 'font-weight: 700; font-size: 48px; line-height: 1.3;',
     h2: 'font-weight: 700; font-size: 32px; line-height: 1.3;',
     h3: 'font-weight: 700; font-size: 20px; line-height: 1.3;',
@@ -45,4 +47,44 @@ export const font = {
     overline: 'font-weight: 400; font-size: 10px; line-height: 1.5;',
     unit: 'font-weight: 700; font-size: 10px; line-height: 1.3;',
   },
+  noto: {
+    h1: 'font-family: Noto Serif JP, serif; font-weight: 700; font-size: 48px; line-height: 1.3;',
+    h2: 'font-family: Noto Serif JP, serif; font-weight: 700; font-size: 32px; line-height: 1.3;',
+    h3: 'font-family: Noto Serif JP, serif; font-weight: 700; font-size: 20px; line-height: 1.3;',
+    h4: 'font-family: Noto Serif JP, serif; font-weight: 700; font-size: 18px; line-height: 1.3;',
+    subtitle1: 'font-family: Noto Serif JP, serif; font-weight: 600; font-size: 16px; line-height: 1.3;',
+    subtitle2: 'font-family: Noto Serif JP, serif; font-weight: 600; font-size: 14px; line-height: 1.3;',
+    body1: 'font-family: Noto Serif JP, serif; font-weight: 500; font-size: 16px; line-height: 1.3;',
+    body2: 'font-family: Noto Serif JP, serif; font-weight: 500; font-size: 14px; line-height: 1.3;',
+    article1: 'font-family: Noto Serif JP, serif; font-weight: 500; font-size: 16px; line-height: 1.5;',
+    article2: 'font-family: Noto Serif JP, serif; font-weight: 500; font-size: 14px; line-height: 1.5;',
+    button: 'font-family: Noto Serif JP, serif; font-weight: 700; font-size: 14px; line-height: 1.5;',
+    caption: 'font-family: Noto Serif JP, serif; font-weight: 400; font-size: 12px; line-height: 1.5;',
+    label: 'font-family: Noto Serif JP, serif; font-weight: 600; font-size: 12px; line-height: 1.5;',
+    overline: 'font-family: Noto Serif JP, serif; font-weight: 400; font-size: 10px; line-height: 1.5;',
+    unit: 'font-family: Noto Serif JP, serif; font-weight: 700; font-size: 10px; line-height: 1.3;',
+  },
 } as const
+
+export const media = {
+  lg: (...args: any) => css`
+    @media (min-width: 1040px) {
+      ${css(...args)}
+    }
+  `,
+  md: (...args: any) => css`
+    @media (min-width: 480px) and (max-width: 1039px) {
+      ${css(...args)}
+    }
+  `,
+  mdsp: (...args: any) => css`
+    @media (max-width: 1039px) {
+      ${css(...args)}
+    }
+  `,
+  sp: (...args: any) => css`
+    @media (max-width: 479px) {
+      ${css(...args)}
+    }
+  `,
+}

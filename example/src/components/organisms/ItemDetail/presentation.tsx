@@ -210,12 +210,12 @@ export const Detail = styled.div`
 `
 
 export const Title = styled.div`
-  ${font.lg.h2}
+  ${font.mont.h2}
   margin-bottom: 8px;
 `
 
 export const Description = styled.div`
-  ${font.lg.body1}
+  ${font.mont.body1}
   min-height: 192px;
   margin-top: 32px;
 `
@@ -250,7 +250,7 @@ const QuestionIcon = styled.div`
 
 const QuestionText = styled.div`
   color: ${color.content.middle};
-  ${font.lg.caption};
+  ${font.mont.caption};
   text-decoration: underline;
   line-height: 1;
 `

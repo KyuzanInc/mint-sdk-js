@@ -7,7 +7,7 @@ export const ListComponent = styled.div`
   flex-direction: column;
 `
 export const ListTitle = styled(ListComponent)`
-  ${font.lg.h3}
+  ${font.mont.h3}
   padding: 8px 0 16px 0;
   height: 48px;
   flex-direction: row;
@@ -15,12 +15,12 @@ export const ListTitle = styled(ListComponent)`
 `
 
 export const Title = styled(ListComponent)`
-  ${font.lg.h3}
+  ${font.mont.h3}
   margin-left: 10px;
 `
 
 export const EmptyTitle = styled(ListComponent)`
-  ${font.lg.h3}
+  ${font.mont.h3}
   color: ${color.content.gray1};
   margin-left: 10px;
   padding: 32px 0;

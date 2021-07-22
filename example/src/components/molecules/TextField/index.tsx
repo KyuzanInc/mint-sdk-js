@@ -53,7 +53,7 @@ const FormGroup = styled.div`
 `
 
 const Label = styled.span`
-  ${font.lg.subtitle2}
+  ${font.mont.subtitle2}
   width: 160px;
 `
 
@@ -69,7 +69,7 @@ const Input = styled.input<{ fullWidth: boolean }>`
   border: 0.5px solid ${color.content.light};
   box-sizing: border-box;
   border-radius: 4px;
-  ${font.lg.body1}
+  ${font.mont.body1}
   padding: 12px 16px;
   width: ${({ fullWidth }) => (fullWidth ? '100%' : '184px')};
 `
@@ -79,7 +79,7 @@ const Memo = styled.textarea`
   border: 0.5px solid ${color.content.light};
   box-sizing: border-box;
   border-radius: 4px;
-  ${font.lg.body1}
+  ${font.mont.body1}
   padding: 12px 16px;
   width: 100%;
 `

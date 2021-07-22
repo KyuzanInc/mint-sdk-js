@@ -8,14 +8,14 @@ export const StatusContent = styled.div`
 
 export const StatusTitle = styled.div`
   color: ${color.content.dark};
-  ${font.lg.overline}
+  ${font.mont.overline}
   padding: 0 10px 0 0;
 `
 
 export const StatusValue = styled.div`
   width: 68px;
   height: 24px;
-  ${font.lg.h3}
+  ${font.mont.h3}
   color: ${color.content.dark};
   margin: 9px 10px 0 0px;
   display: flex;
@@ -26,14 +26,14 @@ export const Value = styled.div`
   width: 42px;
   height: 24px;
   display: flex;
-  ${font.lg.h3}
+  ${font.mont.h3}
   color: ${color.content.dark};
 `
 
 export const Unit = styled.div`
   width: 22px;
   height: 20px;
-  ${font.lg.unit}
+  ${font.mont.unit}
   color: ${color.content.dark};
   justify-content: center;
   align-items: center;

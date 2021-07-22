@@ -60,7 +60,7 @@ export const SaleInfo: React.VFC<Props> = ({
           <StatusBar active={!auctionIsEnded} />
           <StatusContent>
             <StatusTitle>
-              <span>{auctionIsEnded ? 'sold for' : 'current bid'}</span>
+              <span>{auctionIsEnded ? '終了価格' : '現在価格'}</span>
               <Icon>
                 <Image
                   src={getNetworkIconPath(networkId)}
@@ -77,7 +77,7 @@ export const SaleInfo: React.VFC<Props> = ({
           </StatusContent>
         </StatusContainer>
         <PriceContainer>
-          <StatusTitle>{auctionIsEnded ? 'end time' : 'ending in'}</StatusTitle>
+          <StatusTitle>{auctionIsEnded ? '終了時間' : '終了する時刻'}</StatusTitle>
           {auctionIsEnded ? (
             <StatusValue>
               <EndedDate>{formattedEndDate}</EndedDate>
@@ -112,7 +112,7 @@ export const SaleInfo: React.VFC<Props> = ({
           <StatusBar active={onSale && !hasBought} />
           <StatusContent>
             <StatusTitle>
-              <span>{'price'}</span>
+              <span>{'即決価格'}</span>
               <Icon>
                 <Image
                   src={getNetworkIconPath(networkId)}
@@ -129,10 +129,10 @@ export const SaleInfo: React.VFC<Props> = ({
           </StatusContent>
         </StatusContainer>
         <PriceContainer>
-          <StatusTitle>{hasBought ? '' : 'sale start time'}</StatusTitle>
+          <StatusTitle>{hasBought ? '' : '開始時間'}</StatusTitle>
           <StatusValue>
             <EndedDate>
-              {hasBought ? 'sold' : `${formattedStartDate}`}
+              {hasBought ? '売り切れ' : `${formattedStartDate}`}
             </EndedDate>
           </StatusValue>
         </PriceContainer>
@@ -156,13 +156,13 @@ const renderer = ({
     return (
       <StatusValue>
         <Time>{days}</Time>
-        <TimeUnit>d</TimeUnit>
+        <TimeUnit>日</TimeUnit>
         <Time>{hours}</Time>
-        <TimeUnit>h</TimeUnit>
+        <TimeUnit>時間</TimeUnit>
         <Time>{minutes}</Time>
-        <TimeUnit>m</TimeUnit>
+        <TimeUnit>分</TimeUnit>
         <Time>{seconds}</Time>
-        <TimeUnit>s</TimeUnit>
+        <TimeUnit>秒</TimeUnit>
       </StatusValue>
     )
   }
@@ -171,13 +171,12 @@ const renderer = ({
 const Container = styled.div`
   height: 52px;
   width: 100%;
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: ${color.content.dark};
 `
-
 const StatusBar = styled.span<{ active: boolean }>`
   background: ${({ active }) => (active ? color.active : color.content.light)};
   width: 6px;
@@ -189,6 +188,7 @@ const StatusContainer = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
+  margin:0 16px 0 0;
 `
 
 const StatusContent = styled.div`
@@ -208,28 +208,30 @@ const PriceContainer = styled.div`
 `
 
 const StatusTitle = styled.div`
+  text-align:center;
   color: ${color.content.dark};
-  ${font.lg.overline}
+  ${font.mont.overline}
   display: flex;
 `
 
 const StatusValue = styled.div`
-  ${font.lg.h3}
+  ${font.mont.h3}
   color: ${color.content.dark};
   display: flex;
   align-items: center;
 `
 
 const Value = styled.div`
-  width: 42px;
+  /* width: 42px; */
   display: flex;
-  ${font.lg.h4}
+  ${font.mont.h4}
+  font-weight:300;
   color: ${color.content.dark};
 `
 
 const Unit = styled.div`
   width: 22px;
-  ${font.lg.unit}
+  ${font.mont.unit}
   color: ${color.content.dark};
   justify-content: center;
   align-items: center;
@@ -256,6 +258,7 @@ const Time = styled.div`
   line-height: 20px;
   margin-left: 4px;
   text-align: right;
+  ${font.mont.body2};
   color: ${color.content.dark};
 `
 

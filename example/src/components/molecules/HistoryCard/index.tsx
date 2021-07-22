@@ -79,16 +79,16 @@ export const BidderDetail = styled.div`
   overflow-wrap: break-word;
 `
 export const BidderId = styled.div`
-  ${font.lg.caption}
+  ${font.mont.caption}
 `
 export const BidTime = styled.div`
   padding: 4px 0 0 0;
-  ${font.lg.caption}
+  ${font.mont.caption}
   color: ${color.content.gray1};
 `
 export const BidPrice = styled.div`
   min-width: 100px;
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   justify-content: center;
   display: flex;
   margin: auto;

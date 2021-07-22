@@ -52,6 +52,9 @@ export const Presentation: React.VFC<Props> = ({
 }
 
 const FooterContainer = styled.nav`
+  position: absolute;
+  left: 0;
+  bottom: 0;
   height: 128px;
   padding: 0px 180px;
   width: 100%;
@@ -76,7 +79,7 @@ const FooterInner = styled.div`
 
 const FooterLink = styled.a`
   padding: 18px 8px;
-  ${font.lg.label};
+  ${font.mont.label};
   color: ${color.content.light};
   align-items: center;
   justify-content: center;

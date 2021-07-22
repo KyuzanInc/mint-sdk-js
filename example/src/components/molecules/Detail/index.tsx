@@ -59,12 +59,12 @@ export const PriceContent = styled.div`
 
 export const StatusTitle = styled.div`
   color: ${color.content.dark};
-  ${font.lg.label}
+  ${font.mont.label}
   margin-bottom: 16px;
 `
 
 export const StatusValue = styled.div`
-  ${font.lg.h2}
+  ${font.mont.h2}
   color: ${color.content.dark};
   display: flex;
   align-items: center;
@@ -72,12 +72,12 @@ export const StatusValue = styled.div`
 
 export const Value = styled.div`
   display: flex;
-  ${font.lg.h2}
+  ${font.mont.h2}
   color: ${color.content.dark};
 `
 
 export const Unit = styled.div`
-  ${font.lg.unit}
+  ${font.mont.unit}
   color: ${color.content.dark};
   justify-content: center;
   align-items: center;

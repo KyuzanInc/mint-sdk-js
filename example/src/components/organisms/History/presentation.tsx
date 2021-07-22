@@ -45,7 +45,7 @@ const History = styled.div`
 `
 
 const Label = styled.div`
-  ${font.lg.h3}
+  ${font.mont.h3}
   margin-bottom: 16px;
 `
 
@@ -55,6 +55,6 @@ const HistoryList = styled.li`
   margin-bottom: 16px;
 `
 const EmptyHistory = styled.div`
-  ${font.lg.subtitle2}
+  ${font.mont.subtitle2}
   color: ${color.content.gray1};
 `

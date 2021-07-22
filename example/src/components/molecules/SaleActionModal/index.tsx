@@ -385,7 +385,7 @@ const InfoContainer = styled.div`
 `
 
 const ItemName = styled.p`
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   margin-bottom: 16px;
 `
 
@@ -395,7 +395,7 @@ const Right = styled.div`
 `
 
 const ContentTitle = styled.p`
-  ${font.lg.h2};
+  ${font.mont.h2};
 `
 
 const PriceRangeContainer = styled.div`
@@ -409,11 +409,11 @@ const PriceRangeItem = styled.div`
 `
 
 const PriceRangeTitle = styled.div`
-  ${font.lg.label}
+  ${font.mont.label}
 `
 
 const PriceRangeSubTitle = styled.div`
-  ${font.lg.overline}
+  ${font.mont.overline}
   margin-top: 8px;
 `
 const ImageContainer = styled.div`
@@ -433,7 +433,7 @@ const InputPriceContainer = styled.div`
 `
 
 const InputPrice = styled.input`
-  ${font.lg.h2}
+  ${font.mont.h2}
   width: 100%;
   border: 4px solid ${color.primary};
   box-sizing: border-box;
@@ -444,7 +444,7 @@ const InputPrice = styled.input`
 
 const InputUnit = styled.span`
   color: ${color.primary};
-  ${font.lg.h2}
+  ${font.mont.h2}
   margin-left: 4px;
 `
 
@@ -466,19 +466,19 @@ const BidButton = styled(ButtonBase)`
 `
 
 const TitleContainer = styled.div`
-  ${font.lg.h2};
+  ${font.mont.h2};
   color: ${color.subColor.blue};
   display: flex;
   align-items: center;
 `
 const TitleContent = styled.div`
-  ${font.lg.h2};
+  ${font.mont.h2};
   color: ${color.subColor.blue};
   margin-left: 16px;
 `
 
 const Description = styled.div`
-  ${font.lg.body1};
+  ${font.mont.body1};
   color: ${color.content.middle};
   margin: 32px 0;
 `

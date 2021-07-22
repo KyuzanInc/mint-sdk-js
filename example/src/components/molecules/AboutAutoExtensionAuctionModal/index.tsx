@@ -79,12 +79,12 @@ const Content = styled.div`
 `
 
 const Title = styled.p`
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   margin-bottom: 24px;
 `
 
 const Description = styled.p`
-  ${font.lg.body1}
+  ${font.mont.body1}
   line-height: 1.6;
 `
 

@@ -254,7 +254,7 @@ const NotFoundIcon = styled.div`
 
 const NotFoundText = styled.div`
   color: ${color.content.middle};
-  ${font.lg.caption};
+  ${font.mont.caption};
   text-decoration: underline;
   line-height: 1;
 `

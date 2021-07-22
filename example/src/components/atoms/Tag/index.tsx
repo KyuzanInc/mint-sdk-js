@@ -40,7 +40,7 @@ const Icon = styled.span`
 `
 
 const Label = styled.span`
-  ${font.lg.subtitle2}
+  ${font.mont.subtitle2}
   color: ${color.content.gray1};
   line-height: 1;
 `

@@ -137,7 +137,7 @@ const AvatarContainer = styled.div`
 `
 
 const DisplayName = styled.div`
-  ${font.lg.h3}
+  ${font.mont.h3}
   margin-top: 24px;
 `
 
@@ -149,7 +149,7 @@ const WalletAddressContainer = styled.div`
 `
 
 const Bio = styled.div`
-  ${font.lg.caption}
+  ${font.mont.caption}
   color: ${color.content.gray1};
   line-height: 1.6;
   text-align: center;

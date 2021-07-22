@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import React, { ReactNode } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
 
@@ -30,7 +30,7 @@ export const CardBase: React.FC<Props> = ({
     <Link href={href}>
       <Container>
         <CardMedia>
-          <MediaContent height={220} media={media} />
+          <MediaContent height={220}  media={media} />
         </CardMedia>
         <CardContent>
           <Typography>
@@ -58,7 +58,7 @@ export const CardBase: React.FC<Props> = ({
 const Container = styled.div`
   cursor: pointer;
   background: ${color.white};
-  ${font.lg.button}
+  ${font.mont.button}
   height: 402px;
   width: 264px;
   line-height: 44px;
@@ -69,6 +69,10 @@ const Container = styled.div`
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 12px;
   overflow: hidden;
+  /* margin:0 0 0 8px; */
+  ${media.mdsp`
+    margin:0 0 8px 0;
+  `}
 `
 
 const cardMediaHeight = '220px'
@@ -85,7 +89,7 @@ const CardContent = styled.div`
   height: calc(100% - ${cardMediaHeight});
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   padding: 16px 16px 24px 16px;
   border-radius: 0 0 12px 12px;
 `
@@ -93,7 +97,7 @@ const Typography = styled.div`
   background: ${color.white};
   width: 100%;
   height: 38px;
-  ${font.lg.body1}
+  ${font.mont.body1}
   color: ${color.content.dark};
   text-align: left;
   /* 3点リーダー */
@@ -111,9 +115,9 @@ const CardAction = styled.div`
   background: ${color.white};
   height: 52px;
   width: 100%;
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   display: flex;
   align-items: center;
   color: ${color.content.dark};
-  align-items: center;
+  /* align-items: center; */
 `

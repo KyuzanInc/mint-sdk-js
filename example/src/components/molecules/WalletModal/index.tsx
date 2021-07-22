@@ -109,7 +109,7 @@ const ContentRight = styled.div`
 `
 
 const ContentRightTitle = styled.p`
-  ${font.lg.h2};
+  ${font.mont.h2};
 `
 
 const ContentRightButtonContainer = styled.div`

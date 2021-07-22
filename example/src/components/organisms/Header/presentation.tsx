@@ -143,15 +143,11 @@ const WalletDetail = styled.div`
 `
 
 const WalletBalance = styled.div`
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
 `
 
 const WalletAddress = styled.div`
-  ${font.lg.caption}
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
+  ${font.mont.caption}
 `
 
 const LoadingContainer = styled.div`

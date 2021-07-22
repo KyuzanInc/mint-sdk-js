@@ -268,7 +268,7 @@ const VerticalLine = styled.div`
 const CenterTitleContainer = styled.div``
 
 const CenterTitle = styled.h1`
-  ${font.lg.h3}
+  ${font.mont.h3}
 `
 
 const CenterTagsContainer = styled.div`
@@ -310,38 +310,38 @@ const CurrentPriceContainer = styled.div`
 `
 
 const CurrentPriceTitle = styled.p`
-  ${font.lg.label}
+  ${font.mont.label}
   margin-bottom: 8px;
 `
 
 const CurrentPriceValue = styled.span`
-  ${font.lg.h4}
+  ${font.mont.h4}
 `
 
 const CurrentPriceUnit = styled.span`
-  ${font.lg.overline}
+  ${font.mont.overline}
 `
 
 const WonTitle = styled.div`
-  ${font.lg.subtitle2};
+  ${font.mont.subtitle2};
   color: ${color.primary};
   display: flex;
   align-items: center;
 `
 
 const WonDescription = styled.div`
-  ${font.lg.overline};
+  ${font.mont.overline};
 `
 
 const WinningTitle = styled.div`
-  ${font.lg.subtitle2};
+  ${font.mont.subtitle2};
   color: ${color.subColor.blue};
   display: flex;
   align-items: center;
 `
 
 const LosingTitle = styled.div`
-  ${font.lg.subtitle2};
+  ${font.mont.subtitle2};
   color: ${color.utils.error};
   display: flex;
   align-items: center;

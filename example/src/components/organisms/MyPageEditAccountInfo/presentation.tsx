@@ -166,7 +166,7 @@ const SelectImgButton = styled(PrimaryLoadingButton)``
 
 const Title = styled.h1`
   margin-top: 64px;
-  ${font.lg.h3}
+  ${font.mont.h3}
   text-align: center;
 `
 

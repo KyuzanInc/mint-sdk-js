@@ -112,7 +112,7 @@ const ReverseButton = styled(PrimaryLoadingButton)`
 `
 
 const Description = styled.p`
-  ${font.lg.subtitle2}
+  ${font.mont.subtitle2}
   color: ${color.primary};
   text-align: center;
 `

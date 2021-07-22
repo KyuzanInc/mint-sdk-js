@@ -18,7 +18,7 @@ export const BidButton: React.FC<Props> = ({ label, onClick, className }) => {
 
 const ButtonBase = styled.div`
   cursor: pointer;
-  ${font.lg.button}
+  ${font.mont.button}
   height: 44px;
   line-height: 44px;
   border-radius: 22px;
