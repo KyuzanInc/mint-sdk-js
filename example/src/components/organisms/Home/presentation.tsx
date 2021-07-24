@@ -8,69 +8,213 @@ import {font, color, media } from '../../../style'
 // import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 // import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { Item } from '@kyuzan/mint-sdk-js'
-import { addDays } from 'date-fns'
+import { addDays, subDays } from 'date-fns'
 import { ActiveCard } from '../../molecules/Card/active'
+import { EndedCard } from '../../molecules/Card/ended'
+import { ReadyCard } from '../../molecules/Card/ready'
+import {Profile} from '../../molecules/Profile'
 
 
 export const Presentation: React.VFC = () => {
 
   return(
     <Container>
-    <Hero>
-      <Carousel>
-        <img src={'/images/items/collection003/banba_008.jpg'} alt="" />
-      </Carousel>
-    </Hero>
-    <Collections>
-      <AuctionLabel>オークション中</AuctionLabel>
-      <CollectionLabel>Collection 001</CollectionLabel>
-      <CollectionTitle>輓馬</CollectionTitle>
-      <CollectionLink href=''>コレクション一覧へ<span></span></CollectionLink>
-      <Margin32/>
-      <ItemWrap>
-        <ActiveCard
-          item={{
-            ...loseItem,
-            name: 'ばんえい競馬 001',
-            imageURIHTTP: {
-              url: '/images/items/collection003/banba_001.jpg',
-              mimeType: 'image',
-            }
-          }}
-        />
-        <ActiveCard
-          item={{
-            ...loseItem,
-            name: 'ばんえい競馬 002',
-            imageURIHTTP: {
-              url: '/images/items/collection003/banba_002.jpg',
-              mimeType: 'image',
-            }
-          }}
-        />
-        <ActiveCard
-          item={{
-            ...loseItem,
-            name: 'ばんえい競馬 003',
-            imageURIHTTP: {
-              url: '/images/items/collection003/banba_003.jpg',
-              mimeType: 'image',
-            }
-          }}
-        />
-        <ActiveCard
-          item={{
-            ...loseItem,
-            name: 'ばんえい競馬 004',
-            imageURIHTTP: {
-              url: '/images/items/collection003/banba_004.jpg',
-              mimeType: 'image',
-            }
-          }}
-        />
-      </ItemWrap>
-    </Collections>
-    <Margin64/>
+      <Hero>
+        <Carousel>
+          <img src={'/images/items/collection003/banba_008.jpg'} alt="" />
+        </Carousel>
+      </Hero>
+      <Margin64/>
+      <Collections>
+        <AuctionLabel>オークション中</AuctionLabel>
+        <CollectionLabel>Collection 001</CollectionLabel>
+        <CollectionTitle>輓馬</CollectionTitle>
+        <CollectionLink href=''>コレクション一覧へ<span></span></CollectionLink>
+        <Margin32/>
+        <ItemWrap>
+          <ActiveCard
+            item={{
+              ...loseItem,
+              name: 'ばんえい競馬 001',
+              imageURIHTTP: {
+                url: '/images/items/collection003/banba_001.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <ActiveCard
+            item={{
+              ...loseItem,
+              name: 'ばんえい競馬 002',
+              imageURIHTTP: {
+                url: '/images/items/collection003/banba_002.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <ActiveCard
+            item={{
+              ...loseItem,
+              name: 'ばんえい競馬 003',
+              imageURIHTTP: {
+                url: '/images/items/collection003/banba_003.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <ActiveCard
+            item={{
+              ...loseItem,
+              name: 'ばんえい競馬 004',
+              imageURIHTTP: {
+                url: '/images/items/collection003/banba_004.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+        </ItemWrap>
+      </Collections>
+      <Margin64/>
+      <Collections>
+        <CollectionLabel>Collection 001</CollectionLabel>
+        <CollectionTitle>Chie</CollectionTitle>
+        <CollectionLink href=''>コレクション一覧へ<span></span></CollectionLink>
+        <Margin32/>
+        <ItemWrap>
+          <EndedCard
+            item={{
+              ...doneItem,
+              name: 'Chie 001',
+              imageURIHTTP: {
+                url: '/images/items/collection001/chie_001.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <EndedCard
+            item={{
+              ...doneItem,
+              name: 'Chie 002',
+              imageURIHTTP: {
+                url: '/images/items/collection001/chie_002.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <EndedCard
+            item={{
+              ...doneItem,
+              name: 'Chie 003',
+              imageURIHTTP: {
+                url: '/images/items/collection001/chie_003.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <EndedCard
+            item={{
+              ...doneItem,
+              name: 'Chie 004',
+              imageURIHTTP: {
+                url: '/images/items/collection001/chie_004.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <ReadyCard
+            item={{
+              ...doneItem,
+              name: 'Chie 005',
+              imageURIHTTP: {
+                url: '/images/items/collection001/chie_005.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <ReadyCard
+            item={{
+              ...doneItem,
+              name: 'Chie 006',
+              imageURIHTTP: {
+                url: '/images/items/collection001/chie_006.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <ReadyCard
+            item={{
+              ...doneItem,
+              name: 'Chie 007',
+              imageURIHTTP: {
+                url: '/images/items/collection001/chie_007.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <ReadyCard
+            item={{
+              ...doneItem,
+              name: 'Chie 008',
+              imageURIHTTP: {
+                url: '/images/items/collection001/chie_008.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+        </ItemWrap>
+      </Collections>
+      <Margin64/>
+      <Collections>
+        <CollectionLabel>Collection 003</CollectionLabel>
+        <CollectionTitle>球体関節人形</CollectionTitle>
+        <CollectionLink href=''>コレクション一覧へ<span></span></CollectionLink>
+        <Margin32/>
+        <ItemWrap>
+          <ReadyCard
+            item={{
+              ...doneItem,
+              name: '球体関節人形 001',
+              imageURIHTTP: {
+                url: '/images/items/collection002/kyutai_001.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <ReadyCard
+            item={{
+              ...doneItem,
+              name: '球体関節人形 002',
+              imageURIHTTP: {
+                url: '/images/items/collection002/kyutai_002.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <ReadyCard
+            item={{
+              ...doneItem,
+              name: '球体関節人形 003',
+              imageURIHTTP: {
+                url: '/images/items/collection002/kyutai_003.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+          <ReadyCard
+            item={{
+              ...doneItem,
+              name: '球体関節人形 004',
+              imageURIHTTP: {
+                url: '/images/items/collection002/kyutai_004.jpg',
+                mimeType: 'image',
+              }
+            }}
+          />
+        </ItemWrap>
+      </Collections>
+      <Margin64/>
+      <Profile/>
+      <Margin128/>
     </Container>
   ) 
 }
@@ -151,12 +295,25 @@ const CollectionLabel = styled.p`
     display:flex;
     flex-direction: row;
     width:100%;
-    overflow: hidden;
-    ${media.mdsp`
+    overflow: scroll;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar{
+      display:none;
+    }
+    ${media.sp`
       flex-direction: column;
     `}
 
   `
+  const Margin128=styled.div`
+  width:100%;
+  height:128px;
+  ${media.mdsp`
+    height:256px;
+  `}
+`
   const Margin64=styled.div`
     width:100%;
     height:64px;
@@ -173,7 +330,7 @@ const CollectionLabel = styled.p`
 `
 
 
-
+const userWalletAddress = '0x000000'
 const otherWalletAddress = '0x000001'
 
 const loseItem: Item = {
@@ -215,4 +372,15 @@ const loseItem: Item = {
   yearCreated: '2021',
   feeRatePermill: 0,
   createdBy: [],
+}
+
+const winItem: Item = {
+  ...loseItem,
+  currentBidderAddress: userWalletAddress,
+}
+
+const doneItem: Item = {
+  ...winItem,
+  startAt: subDays(new Date(), 2),
+  endAt: subDays(new Date(), 1),
 }

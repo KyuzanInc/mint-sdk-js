@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 
 type Props = {
@@ -68,6 +68,10 @@ const FooterContainer = styled.nav`
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   z-index: 1;
   color: ${color.content.light};
+  ${media.mdsp`
+    min-width:100%;
+  `}
+
 `
 
 const FooterInner = styled.div`

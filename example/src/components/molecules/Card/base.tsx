@@ -69,8 +69,7 @@ const Container = styled.div`
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 12px;
   overflow: hidden;
-  /* margin:0 0 0 8px; */
-  ${media.mdsp`
+  ${media.sp`
     margin:0 0 8px 0;
   `}
 `
@@ -80,7 +79,10 @@ const cardMediaHeight = '220px'
 const CardMedia = styled.div`
   background: ${color.background.bague};
   height: ${cardMediaHeight};
-  width: 100%;
+  width: fit-content;
+  ${media.sp`
+    height:fit-content;
+  `}
 `
 
 const CardContent = styled.div`

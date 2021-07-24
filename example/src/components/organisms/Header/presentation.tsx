@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Skeleton from 'react-loading-skeleton'
 import React from 'react'
-import { font } from '../../../style'
+import { font, media } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
@@ -98,6 +98,7 @@ export const Presentation: React.VFC<Props> = ({
 }
 
 const HeaderContainer = styled.nav`
+  padding:0 72px;
   position: fixed;
   left: 0;
   top: 0;
@@ -111,10 +112,14 @@ const HeaderContainer = styled.nav`
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   z-index: 1;
+  ${media.mdsp`
+    padding:0 16px;
+  `}
+  
 `
 
 const HeaderInner = styled.div`
-  max-width: 980px;
+  /* max-width: 980px; */
   width: 100%;
   display: flex;
   justify-content: space-between;
