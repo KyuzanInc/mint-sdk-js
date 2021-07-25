@@ -13,7 +13,7 @@ export const Presentation: React.VFC = () => {
 return(
     <Container>
         <Hero>
-            <Image src={'/images/items/collection003/banba_008.jpg'} alt=""/>
+            <Image src={'/images/items/collection003/008.jpg'} alt=""/>
             <HeroContents>
                 <Collection>Collection001</Collection>
                 <Title>球体関節人形</Title>
@@ -33,7 +33,7 @@ return(
                 ...loseItem,
                 name: '球体関節人形 001',
                 imageURIHTTP: {
-                    url: '/images/items/collection002/kyutai_001.jpg',
+                    url: '/images/items/collection002/001.jpg',
                     mimeType: 'image',
                 }
             }}
@@ -43,7 +43,7 @@ return(
                 ...loseItem,
                 name: '球体関節人形 002',
                 imageURIHTTP: {
-                    url: '/images/items/collection002/kyutai_002.jpg',
+                    url: '/images/items/collection002/002.jpg',
                     mimeType: 'image',
                 }
             }}
@@ -53,7 +53,7 @@ return(
                 ...loseItem,
                 name: '球体関節人形 003',
                 imageURIHTTP: {
-                    url: '/images/items/collection002/kyutai_003.jpg',
+                    url: '/images/items/collection002/003.jpg',
                     mimeType: 'image',
                 }
             }}
@@ -63,7 +63,7 @@ return(
                 ...loseItem,
                 name: '球体関節人形 004',
                 imageURIHTTP: {
-                    url: '/images/items/collection002/kyutai_004.jpg',
+                    url: '/images/items/collection002/004.jpg',
                     mimeType: 'image',
                 }
             }}
@@ -192,7 +192,7 @@ const loseItem: Item = {
   tokenURIHTTP: '',
   imageURI: '',
   imageURIHTTP: {
-    url: '/images/items/collection003/banba_008.jpg',
+    url: '/images/items/collection003/008.jpg',
     mimeType: 'image',
   },
   authorAddress: '0x',

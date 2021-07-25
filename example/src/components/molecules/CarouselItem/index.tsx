@@ -36,6 +36,7 @@ const Image = styled.img`
   width:100%;
   height:100%;
   object-fit: cover;
+  height:calc(100vh - 72px);
 `
 
 const Info = styled.div`
@@ -47,13 +48,16 @@ const Info = styled.div`
 
 const Name = styled.p`
   ${font.mont.caption};
+  color:${color.background.white};
 `
 
 const Price = styled.h3`
   ${font.mont.h2};
+  color:${color.background.white};
 `
 
 const Unit = styled.span`
   ${font.mont.h2};
   margin: 0 0 0 16px;
+  color:${color.background.white};
 `

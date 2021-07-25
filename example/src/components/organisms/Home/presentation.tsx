@@ -35,11 +35,11 @@ export const Presentation: React.VFC = () => {
     <Container>
       <Hero>
         <Carousels {...settings}>
-          <CarouselItem imageURL = {'/images/items/collection001/chie_001.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
+          <CarouselItem imageURL = {'/images/items/collection001/001.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
           />
-          <CarouselItem imageURL = {'/images/items/collection001/chie_002.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
+          <CarouselItem imageURL = {'/images/items/collection002/002.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
           />
-          <CarouselItem imageURL = {'/images/items/collection001/chie_003.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
+          <CarouselItem imageURL = {'/images/items/collection003/003.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
           />
         </Carousels>
       </Hero>
@@ -56,7 +56,7 @@ export const Presentation: React.VFC = () => {
               ...loseItem,
               name: 'ばんえい競馬 001',
               imageURIHTTP: {
-                url: '/images/items/collection003/banba_001.jpg',
+                url: '/images/items/collection003/001.jpg',
                 mimeType: 'image',
               }
             }}
@@ -66,7 +66,7 @@ export const Presentation: React.VFC = () => {
               ...loseItem,
               name: 'ばんえい競馬 002',
               imageURIHTTP: {
-                url: '/images/items/collection003/banba_002.jpg',
+                url: '/images/items/collection003/002.jpg',
                 mimeType: 'image',
               }
             }}
@@ -76,7 +76,7 @@ export const Presentation: React.VFC = () => {
               ...loseItem,
               name: 'ばんえい競馬 003',
               imageURIHTTP: {
-                url: '/images/items/collection003/banba_003.jpg',
+                url: '/images/items/collection003/003.jpg',
                 mimeType: 'image',
               }
             }}
@@ -86,7 +86,7 @@ export const Presentation: React.VFC = () => {
               ...loseItem,
               name: 'ばんえい競馬 004',
               imageURIHTTP: {
-                url: '/images/items/collection003/banba_004.jpg',
+                url: '/images/items/collection003/004.jpg',
                 mimeType: 'image',
               }
             }}
@@ -105,7 +105,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: 'Chie 001',
               imageURIHTTP: {
-                url: '/images/items/collection001/chie_001.jpg',
+                url: '/images/items/collection001/001.jpg',
                 mimeType: 'image',
               }
             }}
@@ -115,7 +115,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: 'Chie 002',
               imageURIHTTP: {
-                url: '/images/items/collection001/chie_002.jpg',
+                url: '/images/items/collection001/002.jpg',
                 mimeType: 'image',
               }
             }}
@@ -125,7 +125,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: 'Chie 003',
               imageURIHTTP: {
-                url: '/images/items/collection001/chie_003.jpg',
+                url: '/images/items/collection001/003.jpg',
                 mimeType: 'image',
               }
             }}
@@ -135,7 +135,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: 'Chie 004',
               imageURIHTTP: {
-                url: '/images/items/collection001/chie_004.jpg',
+                url: '/images/items/collection001/004.jpg',
                 mimeType: 'image',
               }
             }}
@@ -145,7 +145,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: 'Chie 005',
               imageURIHTTP: {
-                url: '/images/items/collection001/chie_005.jpg',
+                url: '/images/items/collection001/005.jpg',
                 mimeType: 'image',
               }
             }}
@@ -155,7 +155,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: 'Chie 006',
               imageURIHTTP: {
-                url: '/images/items/collection001/chie_006.jpg',
+                url: '/images/items/collection001/006.jpg',
                 mimeType: 'image',
               }
             }}
@@ -165,7 +165,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: 'Chie 007',
               imageURIHTTP: {
-                url: '/images/items/collection001/chie_007.jpg',
+                url: '/images/items/collection001/007.jpg',
                 mimeType: 'image',
               }
             }}
@@ -175,7 +175,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: 'Chie 008',
               imageURIHTTP: {
-                url: '/images/items/collection001/chie_008.jpg',
+                url: '/images/items/collection001/008.jpg',
                 mimeType: 'image',
               }
             }}
@@ -194,7 +194,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: '球体関節人形 001',
               imageURIHTTP: {
-                url: '/images/items/collection002/kyutai_001.jpg',
+                url: '/images/items/collection002/001.jpg',
                 mimeType: 'image',
               }
             }}
@@ -204,7 +204,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: '球体関節人形 002',
               imageURIHTTP: {
-                url: '/images/items/collection002/kyutai_002.jpg',
+                url: '/images/items/collection002/002.jpg',
                 mimeType: 'image',
               }
             }}
@@ -214,7 +214,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: '球体関節人形 003',
               imageURIHTTP: {
-                url: '/images/items/collection002/kyutai_003.jpg',
+                url: '/images/items/collection002/003.jpg',
                 mimeType: 'image',
               }
             }}
@@ -224,7 +224,7 @@ export const Presentation: React.VFC = () => {
               ...doneItem,
               name: '球体関節人形 004',
               imageURIHTTP: {
-                url: '/images/items/collection002/kyutai_004.jpg',
+                url: '/images/items/collection002/004.jpg',
                 mimeType: 'image',
               }
             }}
@@ -252,7 +252,7 @@ const Hero = styled.div`
 `
 
 const Carousels = styled(Slider)`
-position: relative;
+  position: relative;
   background-color: ${color.content.dark};
   width:100%;
   height:100%;
@@ -365,7 +365,7 @@ const loseItem: Item = {
   tokenURIHTTP: '',
   imageURI: '',
   imageURIHTTP: {
-    url: '/images/items/collection003/banba_008.jpg',
+    url: '/images/items/collection003/008.jpg',
     mimeType: 'image',
   },
   authorAddress: '0x',
