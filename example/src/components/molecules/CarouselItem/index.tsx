@@ -14,14 +14,17 @@ export const CarouselItem: React.FC<Props> = ({ imageURL, isEnd, name, price }) 
   return(
     <CarouselItemContainer>
       <Image src={imageURL}/>
-        {isEnd?(
-          null
-        ):(
+        <Overlay></Overlay>
         <Info>
           <Name>{name}</Name>
-          <Price>{price}<Unit>ETH</Unit></Price>
+          {isEnd?(
+            null
+          ):(
+            <Price>{price}<Unit>ETH</Unit></Price>
+          )}
+          
         </Info>  
-        )}
+        
     </CarouselItemContainer>
   )
 }
@@ -37,6 +40,14 @@ const Image = styled.img`
   height:100%;
   object-fit: cover;
   height:calc(100vh - 72px);
+`
+const Overlay= styled.div`
+  position: absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  background-color: ${color.content.middle};
 `
 
 const Info = styled.div`

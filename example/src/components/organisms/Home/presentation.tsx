@@ -28,20 +28,26 @@ export const Presentation: React.VFC = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    fade: true
+    fade: true,
+    arrows:false
   };
   
   return(
     <Container>
       <Hero>
         <Carousels {...settings}>
-          <CarouselItem imageURL = {'/images/items/collection001/001.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
+          <CarouselItem imageURL = {'/images/items/collection001/001.jpg'}  isEnd = {false} name= {'Chie 001'} price= {0.613}
           />
-          <CarouselItem imageURL = {'/images/items/collection002/002.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
+          <CarouselItem imageURL = {'/images/items/collection002/001.jpg'}  isEnd = {true} name= {'球体関節人形 001'} price= {0.613}
           />
-          <CarouselItem imageURL = {'/images/items/collection003/003.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
+          <CarouselItem imageURL = {'/images/items/collection003/001.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
           />
         </Carousels>
+        <HeroContents>
+          <Title>山岸 伸</Title>
+          <Eng>Shin Yamagishi</Eng>
+          <SubTitle>NFT Collection</SubTitle>
+        </HeroContents>
       </Hero>
       <Margin64/>
       <Collections>
@@ -245,9 +251,9 @@ const Container = styled.div`
 const Hero = styled.div`
   background-color: ${color.background.white};
   height:calc(100vh - 72px);
-  padding:0 72px 72px 72px;
+  margin:0 72px 72px 72px;
   ${media.mdsp`
-    padding:0;
+    margin:0;
   `}
 `
 
@@ -261,6 +267,35 @@ const Carousels = styled(Slider)`
     height:100%;
     object-fit: cover;
   } */
+`
+const HeroContents = styled.div`
+  position:absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align:center;
+`
+const Title= styled.h1`
+  color:${color.background.white};
+  ${font.noto.h1};
+  font-size:96px;
+`
+
+const Eng = styled.p`
+  color:${color.background.white};
+  ${font.noto.body1};
+  margin:0 0 32px 0;
+  letter-spacing: 12px;
+`
+
+const SubTitle = styled.h3`
+  color:${color.background.white};
+  ${font.noto.h2};
+  letter-spacing: 5px;
 `
 
 const Collections = styled.div`
