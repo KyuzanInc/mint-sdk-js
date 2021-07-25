@@ -44,8 +44,8 @@ export const Presentation: React.VFC = () => {
           />
         </Carousels>
         <HeroContents>
-          <Title>山岸 伸</Title>
           <Eng>Shin Yamagishi</Eng>
+          <Title>山岸 伸</Title>
           <SubTitle>NFT Collection</SubTitle>
         </HeroContents>
       </Hero>
@@ -249,11 +249,13 @@ const Container = styled.div`
 `
 
 const Hero = styled.div`
+  position:relative;
   background-color: ${color.background.white};
-  height:calc(100vh - 72px);
+  height:calc(100vh - 144px);
   margin:0 72px 72px 72px;
   ${media.mdsp`
     margin:0;
+    height:calc(100vh - 72px);
   `}
 `
 
@@ -283,19 +285,30 @@ const Title= styled.h1`
   color:${color.background.white};
   ${font.noto.h1};
   font-size:96px;
+  ${media.mdsp`
+    font-size:72px;
+  `}
 `
 
 const Eng = styled.p`
   color:${color.background.white};
   ${font.noto.body1};
-  margin:0 0 32px 0;
   letter-spacing: 12px;
+  ${media.mdsp`
+    letter-spacing: 7px;
+  `}
 `
 
 const SubTitle = styled.h3`
   color:${color.background.white};
   ${font.noto.h2};
   letter-spacing: 5px;
+  margin: 32px 0 0 0;
+  ${media.mdsp`
+    font-size:26px;
+    letter-spacing: 2px;
+  `}
+  
 `
 
 const Collections = styled.div`

@@ -1,5 +1,5 @@
 import React from 'react'
-import { color, font } from '../../../style'
+import {media, color, font } from '../../../style'
 import styled from '@emotion/styled'
 
 type Props = {
@@ -39,7 +39,10 @@ const Image = styled.img`
   width:100%;
   height:100%;
   object-fit: cover;
-  height:calc(100vh - 72px);
+  height:calc(100vh - 144px);
+  ${media.mdsp`
+    height:calc(100vh - 72px);
+  `}
 `
 const Overlay= styled.div`
   position: absolute;
@@ -47,7 +50,7 @@ const Overlay= styled.div`
   bottom:0;
   left:0;
   right:0;
-  background-color: ${color.content.middle};
+  background-color: rgba(0,0,0,.24);
 `
 
 const Info = styled.div`
