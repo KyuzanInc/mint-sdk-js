@@ -75,10 +75,12 @@ const FooterContainer = styled.nav`
 `
 
 const FooterInner = styled.div`
-  max-width: 980px;
   width: 100%;
   display: flex;
   align-items: center;
+  ${media.lg`
+    max-width: 1040px;
+  `}
 `
 
 const FooterLink = styled.a`
@@ -89,6 +91,9 @@ const FooterLink = styled.a`
   justify-content: center;
   display: flex;
   text-decoration: none;
+  &:hover{
+    text-decoration: underline;
+  }
 `
 const Icon = styled.img`
   margin-left: 8px;

@@ -38,13 +38,13 @@ const renderer = ({
     return (
       <StatusValue>
         <Time>{days}</Time>
-        <TimeUnit>d</TimeUnit>
+        <TimeUnit>日</TimeUnit>
         <Time>{hours}</Time>
-        <TimeUnit>h</TimeUnit>
+        <TimeUnit>時間</TimeUnit>
         <Time>{minutes}</Time>
-        <TimeUnit>m</TimeUnit>
+        <TimeUnit>分</TimeUnit>
         <Time>{seconds}</Time>
-        <TimeUnit>s</TimeUnit>
+        <TimeUnit>秒</TimeUnit>
       </StatusValue>
     )
   }
@@ -59,14 +59,14 @@ export const LiveStatus: React.FC<LiveProps> = ({
   return (
     <StatusContainer>
       <PriceContent>
-        <StatusTitle>current bid</StatusTitle>
+        <StatusTitle>現在価格</StatusTitle>
         <StatusValue>
           <Value>{price}</Value>
           <Unit>{unit}</Unit>
         </StatusValue>
       </PriceContent>
       <TimeContent>
-        <StatusTitle>ending in</StatusTitle>
+        <StatusTitle>終了までの残り時間</StatusTitle>
         <Countdown
           date={endAt ?? 0 - Date.now()}
           renderer={renderer}
@@ -99,7 +99,7 @@ export const PriceContent = styled.div`
 `
 
 export const TimeContent = styled.div`
-  background: ${color.white};
+  /* background: ${color.white}; */
 `
 
 export const StatusTitle = styled.div`

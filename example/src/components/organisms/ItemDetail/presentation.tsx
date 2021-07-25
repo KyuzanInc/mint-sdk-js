@@ -147,14 +147,14 @@ export const Presentation: React.VFC<Props> = ({
         <ExternalLinkUL>
           <ExternalLinkList>
             <ExternalLink
-              label={'View On IPFS'}
+              label={'IPFSで見る'}
               href={item?.tokenURIHTTP ?? ''}
             />
           </ExternalLinkList>
           <ExternalLinkList>
             {item?.buyerAddress ? (
               <ExternalLink
-                label={'View On OpenSea'}
+                label={'OpenSeaで見る'}
                 href={getOpenSeaLink(item)}
               />
             ) : null}
@@ -204,9 +204,9 @@ const Tag = styled(TagBase)`
 `
 
 export const Detail = styled.div`
-  width: 426px;
+  /* width: 426px; */
   padding: 64px 0;
-  margin-right: 128px;
+  /* margin-right: 128px; */
 `
 
 export const Title = styled.div`
@@ -215,9 +215,9 @@ export const Title = styled.div`
 `
 
 export const Description = styled.div`
-  ${font.mont.body1}
+  ${font.mont.article1}
   min-height: 192px;
-  margin-top: 32px;
+  margin: 32px 0 32px;
 `
 
 const TradeInfoContainer = styled.div`

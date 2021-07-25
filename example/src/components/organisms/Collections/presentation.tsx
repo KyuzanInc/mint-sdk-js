@@ -14,11 +14,12 @@ return(
     <Container>
         <Hero>
             <Image src={'/images/items/collection003/banba_008.jpg'} alt=""/>
-            <Collection>Collection001</Collection>
-            <Title>球体関節人形</Title>
-            <SubTitle>作：大竹京 by山岸伸</SubTitle>
+            <HeroContents>
+                <Collection>Collection001</Collection>
+                <Title>球体関節人形</Title>
+                <SubTitle>作：大竹京 by山岸伸</SubTitle>
+            </HeroContents>
         </Hero>
-        <Margin64/>
         <Description>
         ガラス彫りと呼ばれる墨一色で表現された刺青を背中一面に施すモデル・高岡千恵さん。その女性ならではの曲線と、柔肌におどろおどろしくも精緻に描かれた刺青の奇妙な競演を山岸伸氏がモノクロで捉えた野心作！→山岸伸インタビュー刺青の入った女性ではなく刺青自体に没入していく！以前、山岸伸写真展に高岡千恵さんが来てくれ、わずかに見えた刺青に興味を惹かれた。
         その後現在まで撮影を行っているが初期は「刺青の入った女性」の写真をただ撮ってしまっていた。これは違うと思い、彼女にはキャンパスに徹してもらい、もっと刺青を前面に出したほうがいいと気付いてから世界が広がっていった。これは彼女も意識している部分だそうだ。彼女の刺青は今も増え続けて進化していて完成はもう近いらしい。同様に自分の写真も進化させていかなければと思う。　高岡千恵さんは自らの身体自体をアート（芸術）として見てもらうアートモデルとして活動している。和彫りという技法で、色は載せずあえて墨だけで描いている。
@@ -30,9 +31,9 @@ return(
         <ActiveCard
             item={{
                 ...loseItem,
-                name: 'ばんえい競馬 004',
+                name: '球体関節人形 001',
                 imageURIHTTP: {
-                    url: '/images/items/collection003/banba_004.jpg',
+                    url: '/images/items/collection002/kyutai_001.jpg',
                     mimeType: 'image',
                 }
             }}
@@ -40,9 +41,9 @@ return(
         <ActiveCard
             item={{
                 ...loseItem,
-                name: 'ばんえい競馬 004',
+                name: '球体関節人形 002',
                 imageURIHTTP: {
-                    url: '/images/items/collection003/banba_004.jpg',
+                    url: '/images/items/collection002/kyutai_002.jpg',
                     mimeType: 'image',
                 }
             }}
@@ -50,9 +51,9 @@ return(
         <ActiveCard
             item={{
                 ...loseItem,
-                name: 'ばんえい競馬 004',
+                name: '球体関節人形 003',
                 imageURIHTTP: {
-                    url: '/images/items/collection003/banba_004.jpg',
+                    url: '/images/items/collection002/kyutai_003.jpg',
                     mimeType: 'image',
                 }
             }}
@@ -60,9 +61,9 @@ return(
         <ActiveCard
             item={{
                 ...loseItem,
-                name: 'ばんえい競馬 004',
+                name: '球体関節人形 004',
                 imageURIHTTP: {
-                    url: '/images/items/collection003/banba_004.jpg',
+                    url: '/images/items/collection002/kyutai_004.jpg',
                     mimeType: 'image',
                 }
             }}
@@ -77,23 +78,41 @@ const Container = styled.div`
     padding:72px 0 128px;
 `
 const Hero = styled.div`
+    position: relative;
     background-color: ${color.background.white};
     width:100%;
-    height:calc(100vh - 72px);
+    height:calc(50vh - 72px);
     color:${color.background.white};
+    ${media.mdsp`
+        height:50vh;
+    `}
 `
 
 const Image = styled.img`
     width:100%;
     height:100%;
+    object-fit: cover;
 `
+
+const HeroContents = styled.div`
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    text-align:center;
+    /* color:${color.background.white}; */
+`
+
+
 const Collection = styled.p`
     ${font.noto.h4};
     margin:0 0 32px 0;
+    color:${color.background.white};
 `
 
 const Title = styled.h1`
     ${font.noto.h1};
+    color:${color.background.white};
     ${media.mdsp`
         ${font.noto.h2};
     `}
@@ -101,6 +120,7 @@ const Title = styled.h1`
 
 const SubTitle = styled.h3`
     ${font.noto.h3};
+    color:${color.background.white};
     ${media.mdsp`
         ${font.noto.h4};
     `}
@@ -108,12 +128,16 @@ const SubTitle = styled.h3`
 
 const Description = styled.div`
     color:${color.content.dark};
+    ${font.noto.article1};
+    margin:64px auto 0;
     ${media.lg`
         max-width:840px;
+        /* margin:auto; */
     `}
     ${media.mdsp`
         width:100%;
         padding:0 32px;
+        ${font.noto.article2};
     `}
     p{
         ${font.mont.article1}
@@ -138,6 +162,10 @@ const ItemWrap = styled.div`
     display: grid;
     gap: 24px;
     grid-template-columns: 1fr 1fr;
+    ${media.lg`
+        max-width:840px;
+        margin:auto;
+    `}
     ${media.sp`
         grid-template-columns: 1fr;
     `}

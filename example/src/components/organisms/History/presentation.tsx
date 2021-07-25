@@ -17,9 +17,9 @@ export const Presentation: React.VFC<Props> = ({
 }) => {
   return (
     <History>
-      <Label>History</Label>
+      <Label>入札履歴</Label>
       {!loading && history.length === 0 ? (
-        <EmptyHistory>No Histories</EmptyHistory>
+        <EmptyHistory>入札はまだありません</EmptyHistory>
       ) : (
         <HistoryUL>
           {loading &&
@@ -40,7 +40,7 @@ export const Presentation: React.VFC<Props> = ({
 }
 
 const History = styled.div`
-  width: 426px;
+  /* width: 426px; */
   padding: 64px 0;
 `
 

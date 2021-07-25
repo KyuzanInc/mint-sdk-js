@@ -57,12 +57,12 @@ export const CardBase: React.FC<Props> = ({
 
 const Container = styled.div`
   cursor: pointer;
-  background: ${color.white};
+  /* background: ${color.white}; */
   ${font.mont.button}
   height: 402px;
   width: 264px;
   line-height: 44px;
-  color: ${color.white};
+  /* color: ${color.white}; */
   padding: 0;
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
@@ -77,16 +77,17 @@ const Container = styled.div`
 const cardMediaHeight = '220px'
 
 const CardMedia = styled.div`
-  background: ${color.background.bague};
+  background: ${color.background.white};
   height: ${cardMediaHeight};
   width: fit-content;
+  margin:auto;
   ${media.sp`
     height:fit-content;
   `}
 `
 
 const CardContent = styled.div`
-  background: ${color.white};
+  /* background: ${color.white}; */
   width: 100%;
   height: calc(100% - ${cardMediaHeight});
   display: flex;
@@ -96,7 +97,7 @@ const CardContent = styled.div`
   border-radius: 0 0 12px 12px;
 `
 const Typography = styled.div`
-  background: ${color.white};
+  /* background: ${color.white}; */
   width: 100%;
   height: 38px;
   ${font.mont.body1}
@@ -114,7 +115,7 @@ const LoadingTypography = styled.div`
 `
 
 const CardAction = styled.div`
-  background: ${color.white};
+  /* background: ${color.white}; */
   height: 52px;
   width: 100%;
   ${font.mont.subtitle1}

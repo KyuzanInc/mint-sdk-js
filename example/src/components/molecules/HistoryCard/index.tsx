@@ -52,7 +52,7 @@ export const HistoryCard: React.FC<Props> = ({ log, networkId, loading }) => {
 }
 
 export const HistoryContainer = styled.div`
-  width: 426px;
+  /* width: 426px; */
   height: 70px;
   padding: 8px 16px 8px 16px;
   justify-content: space-between;

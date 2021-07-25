@@ -4,7 +4,7 @@ import React, { useCallback, useEffect } from 'react'
 import { History } from '../../components/organisms/History'
 import { useAppDispatch, useAppSelector } from '../../redux/getStore'
 import { getItemActionCreator } from '../../redux/item'
-import { color } from '../../style'
+import { color, media } from '../../style'
 import { ItemDetail } from '../../components/organisms/ItemDetail'
 import { getHistoryActionCreator } from '../../redux/history'
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -91,9 +91,26 @@ const MediaInner = styled.div`
 `
 
 const DetailContainer = styled.div`
-  background: ${color.white};
-  display: flex;
-  justify-content: center;
+  /* background: ${color.white}; */
+  display: grid;
   width: 100%;
-  padding: 0 150px;
+  margin:auto;
+  /* padding: 0 128px; */
+  ${media.lg`
+    max-width:1040px;
+    gap: 128px;
+    grid-template-columns: 1fr 1fr;
+  `}
+  ${media.md`
+    width:100%;
+    padding:0 24px;
+    gap: 64px;
+    grid-template-columns: 1fr 1fr;
+  `}
+  ${media.sp`
+    width:100%;
+    padding:0 24px;
+    gap: 64px;
+    grid-template-rows: 1fr 1fr;
+  `}
 `

@@ -29,7 +29,7 @@ const LinkBase = styled.a`
   justify-content: center;
   text-align: center;
   padding: 0 32px;
-  border: 2px solid ${color.content.dark};
+  border: 1px solid ${color.content.dark};
   text-decoration: none;
 `
 
