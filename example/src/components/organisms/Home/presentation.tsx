@@ -1,5 +1,8 @@
-import React from 'react'
+import React,{ Component } from 'react'
 import styled from '@emotion/styled'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css"
+import Slider from "react-slick"
 // import Image from 'next/image'
 // import Link from 'next/link'
 // import Skeleton from 'react-loading-skeleton'
@@ -13,16 +16,32 @@ import { ActiveCard } from '../../molecules/Card/active'
 import { EndedCard } from '../../molecules/Card/ended'
 import { ReadyCard } from '../../molecules/Card/ready'
 import {Profile} from '../../molecules/Profile'
+import { CarouselItem } from '../../molecules/CarouselItem';
 
 
 export const Presentation: React.VFC = () => {
-
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    fade: true
+  };
+  
   return(
     <Container>
       <Hero>
-        <Carousel>
-          <img src={'/images/items/collection003/banba_008.jpg'} alt="" />
-        </Carousel>
+        <Carousels {...settings}>
+          <CarouselItem imageURL = {'/images/items/collection001/chie_001.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
+          />
+          <CarouselItem imageURL = {'/images/items/collection001/chie_002.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
+          />
+          <CarouselItem imageURL = {'/images/items/collection001/chie_003.jpg'}  isEnd = {false} name= {'ばんえい競馬 001'} price= {0.613}
+          />
+        </Carousels>
       </Hero>
       <Margin64/>
       <Collections>
@@ -232,15 +251,16 @@ const Hero = styled.div`
   `}
 `
 
-const Carousel = styled.div`
-  background-color: ${color.content.gray1};
+const Carousels = styled(Slider)`
+position: relative;
+  background-color: ${color.content.dark};
   width:100%;
   height:100%;
-  img{
+  /* img{
     width:100%;
     height:100%;
     object-fit: cover;
-  }
+  } */
 `
 
 const Collections = styled.div`
