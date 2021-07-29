@@ -98,7 +98,7 @@ const reducer = (
     }
     if (typeof window !== 'undefined' && state?.router) {
       // preserve router value on client side navigation
-      nextState.app.router = state.router
+      nextState.router = state.router
     }
     return nextState
   } else {
