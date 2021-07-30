@@ -109,6 +109,9 @@ const ReverseButton = styled(PrimaryLoadingButton)`
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};
+  &:hover{
+    background-color: ${color.content.superLight};
+  }
 `
 
 const Description = styled.p`

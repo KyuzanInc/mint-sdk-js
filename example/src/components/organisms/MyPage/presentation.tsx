@@ -227,11 +227,18 @@ const ItemsContainer = styled.div`
   justify-content: space-around;
   flex-wrap: wrap;
   max-width: 840px;
+  
+
 `
 
 const ItemContainer = styled.div`
   margin-bottom: 32px;
   width:100%;
+  background: ${color.white};
+  box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
+    0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
+    0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+  border-radius: 8px;
 `
 
 const TabsContainer = styled.div`
