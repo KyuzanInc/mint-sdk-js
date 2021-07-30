@@ -117,7 +117,7 @@ export const Presentation: React.VFC<Props> = ({
             <>
               {waitingBidedItems && <CardMyPage loading={true} />}
               {!waitingBidedItems && bidedItems.length === 0 && (
-                <EmptyTitle>No Items</EmptyTitle>
+                <EmptyTitle>商品はありません</EmptyTitle>
               )}
               {!waitingBidedItems &&
                 bidedItems.length !== 0 &&
@@ -141,7 +141,7 @@ export const Presentation: React.VFC<Props> = ({
             <>
               {waitingOwnTokens && <CardMyPage loading={true} />}
               {!waitingOwnTokens && withPhysicalItemTokens.length === 0 && (
-                <EmptyTitle>No Items</EmptyTitle>
+                <EmptyTitle>商品はありません</EmptyTitle>
               )}
               {withPhysicalItemTokens.length !== 0 &&
                 withPhysicalItemTokens.map((token) => {
@@ -164,7 +164,7 @@ export const Presentation: React.VFC<Props> = ({
             <ItemsContainer>
               {waitingOwnTokens && <LoadingCard />}
               {!waitingOwnTokens && ownTokens.length === 0 && (
-                <EmptyTitle>No Items</EmptyTitle>
+                <EmptyTitle>商品はありません</EmptyTitle>
               )}
               {!waitingOwnTokens &&
                 ownTokens.length !== 0 &&
@@ -216,6 +216,9 @@ const Container = styled.div`
 
 const AccountInfoContainer = styled.div`
   margin-bottom: 64px;
+  ${media.mdsp`
+    margin-bottom:32px;
+  `}
 `
 
 const ItemsContainer = styled.div`

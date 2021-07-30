@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { Token } from '@kyuzan/mint-sdk-js'
 import React from 'react'
-import { color } from '../../../style'
+import { color, media } from '../../../style'
 import { EmptyTitle, CardList } from '../../atoms/CardList'
 import { CardUL } from '../../atoms/CardList'
 import { Tabs } from '../../atoms/Tabs'
@@ -60,7 +60,7 @@ export const Presentation: React.VFC<Props> = ({
         </OwnTokensContainer>
         {waitingOwnTokens && <LoadingCard />}
         {!waitingOwnTokens && ownTokens.length === 0 && (
-          <EmptyTitle>No Items</EmptyTitle>
+          <EmptyTitle>商品はありません</EmptyTitle>
         )}
         <CardUL>
           {!waitingOwnTokens &&
@@ -97,6 +97,9 @@ const InnerContainer = styled.div`
 
 const AccountInfoContainer = styled.div`
   margin-bottom: 64px;
+  ${media.mdsp`
+    margin-bottom:32px;
+  `}
 `
 
 const OwnTokensContainer = styled.div``

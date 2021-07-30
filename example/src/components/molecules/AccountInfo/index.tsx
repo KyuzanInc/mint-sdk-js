@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 import { WalletAddressWithClipBoard } from '../WalletAddressWithClipBoard'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
@@ -57,58 +57,63 @@ export const AccountInfo: React.VFC<Props> = ({
           <AvatarImage src={profileUrl} />
         )}
       </AvatarContainer>
-      <DisplayName>{displayName}</DisplayName>
+      {displayName? <DisplayName>{displayName}</DisplayName>:null}
+      
       <WalletAddressContainer>
         <WalletAddressWithClipBoard walletAddress={walletAddress ?? ''} />
       </WalletAddressContainer>
       <Bio>{bio}</Bio>
-      <LinksContainer>
-        {typeof twitterAccountName !== 'undefined' && (
-          <Link href={`https://twitter.com/${twitterAccountName}`} passHref>
-            <Anchor target={'_blank'} referrerPolicy={'no-referrer'}>
-              <LinksButton>
-                <Image
-                  src={'/images/icons/twitter.svg'}
-                  layout={'fixed'}
-                  width={24}
-                  height={24}
-                />
-              </LinksButton>
-            </Anchor>
-          </Link>
-        )}
-        {typeof instagramAccountName !== 'undefined' && (
-          <Link
-            href={`https://www.instagram.com/${instagramAccountName}`}
-            passHref
-          >
-            <Anchor target={'_blank'} referrerPolicy={'no-referrer'}>
-              <LinksButton>
-                <Image
-                  src={'/images/icons/instagram.svg'}
-                  layout={'fixed'}
-                  width={24}
-                  height={24}
-                />
-              </LinksButton>
-            </Anchor>
-          </Link>
-        )}
-        {typeof siteUrl !== 'undefined' && (
-          <Link href={siteUrl} passHref>
-            <Anchor target={'_blank'} referrerPolicy={'no-referrer'}>
-              <LinksButton>
-                <Image
-                  src={'/images/icons/home.svg'}
-                  layout={'fixed'}
-                  width={24}
-                  height={24}
-                />
-              </LinksButton>
-            </Anchor>
-          </Link>
-        )}
-      </LinksContainer>
+      {twitterAccountName||instagramAccountName||siteUrl?(
+        <LinksContainer>
+          {typeof twitterAccountName !== 'undefined' && (
+            <Link href={`https://twitter.com/${twitterAccountName}`} passHref>
+              <Anchor target={'_blank'} referrerPolicy={'no-referrer'}>
+                <LinksButton>
+                  <Image
+                    src={'/images/icons/twitter.svg'}
+                    layout={'fixed'}
+                    width={24}
+                    height={24}
+                  />
+                </LinksButton>
+              </Anchor>
+            </Link>
+          )}
+          {typeof instagramAccountName !== 'undefined' && (
+            <Link
+              href={`https://www.instagram.com/${instagramAccountName}`}
+              passHref
+            >
+              <Anchor target={'_blank'} referrerPolicy={'no-referrer'}>
+                <LinksButton>
+                  <Image
+                    src={'/images/icons/instagram.svg'}
+                    layout={'fixed'}
+                    width={24}
+                    height={24}
+                  />
+                </LinksButton>
+              </Anchor>
+            </Link>
+          )}
+          {typeof siteUrl !== 'undefined' && (
+            <Link href={siteUrl} passHref>
+              <Anchor target={'_blank'} referrerPolicy={'no-referrer'}>
+                <LinksButton>
+                  <Image
+                    src={'/images/icons/home.svg'}
+                    layout={'fixed'}
+                    width={24}
+                    height={24}
+                  />
+                </LinksButton>
+              </Anchor>
+            </Link>
+          )}
+        </LinksContainer>
+      ):(
+        null
+      )}
       {onEdit && (
         <EditButton>
           <PrimaryLoadingButton
@@ -134,6 +139,14 @@ const AvatarContainer = styled.div`
   height: 120px;
   border-radius: 50%;
   overflow: hidden;
+  ${media.mdsp`
+    width:80px;
+    height:80px;
+    svg{
+      width:80px;
+    height:80px;
+    }
+  `}
 `
 
 const DisplayName = styled.div`

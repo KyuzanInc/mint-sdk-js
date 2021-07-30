@@ -30,7 +30,7 @@ export const LiveAuctionList: React.FC<Props> = ({ items }) => {
           <ActiveStatus />
           <Title>Live</Title>
         </ListTitle>
-        <EmptyTitle>No Items</EmptyTitle>
+        <EmptyTitle>商品はありません</EmptyTitle>
       </ListComponent>
     )
   }

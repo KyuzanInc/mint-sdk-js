@@ -1,10 +1,13 @@
 import styled from '@emotion/styled'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 
 export const ListComponent = styled.div`
-  width: 864px;
+  max-width: 840px;
   display: flex;
   flex-direction: column;
+  ${media.mdsp`
+    width:100%;
+  `}
 `
 export const ListTitle = styled(ListComponent)`
   ${font.mont.h3}

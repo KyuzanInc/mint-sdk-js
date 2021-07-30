@@ -226,12 +226,6 @@ const Loading: React.VFC = () => {
       <MediaContainer height={moduleHeight}>
         <MediaContent waitingItem={true} media={undefined} height={moduleHeight} />
       </MediaContainer>
-      <Center>
-        <Skeleton width={250} height={20} style={{ margin: '0 0 32px 0' }} />
-        <Skeleton width={102} height={24} style={{ marginRight: '8px' }} />
-        <Skeleton width={114} height={24} />
-      </Center>
-      <VerticalLine />
       <Right style={{ alignItems: 'flex-start' }}>
         <Skeleton width={120} height={20} style={{ marginBottom: 16 }} />
         <Skeleton width={222} height={12} count={3} />
@@ -273,11 +267,15 @@ const MediaContainer = styled.div<{ height: number }>`
   /* height:${({ height }) => height}; */
   ${props => ({ height: props.height })}
   width:${props => ( props.height )}px;
-
+  //skeleton用の記述
+  span{
+    width:100%;
+    height:100%;
+  }
   ${media.mdsp`
     width:100%;
-    
   `}
+
 `
 
 
@@ -407,6 +405,9 @@ const ReverseButton = styled(PrimaryLoadingButton)`
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};
+  &:hover{
+    background-color: ${color.content.superLight};
+  }
 `
 
 const PrimaryButton = styled(PrimaryLoadingButton)`
