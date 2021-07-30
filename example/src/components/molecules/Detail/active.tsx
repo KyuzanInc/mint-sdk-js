@@ -1,7 +1,7 @@
 import React from 'react'
 import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 
 type LiveProps = {
   endAt: Date
@@ -79,13 +79,16 @@ export const LiveStatus: React.FC<LiveProps> = ({
 
 export const StatusContainer = styled.div`
   display: flex;
-  background: ${color.white};
+  /* background: ${color.white}; */
 `
 
 export const Time = styled.div`
   ${font.mont.h2}
   color: ${color.content.dark};
   margin-right: 4px;
+  ${media.sp`
+    ${font.mont.subtitle1}
+  `}
 `
 
 export const TimeUnit = styled.div`
@@ -113,12 +116,18 @@ export const StatusValue = styled.div`
   color: ${color.content.dark};
   display: flex;
   align-items: center;
+  ${media.sp`
+    ${font.mont.subtitle1}
+  `}
 `
 
 export const Value = styled.div`
   display: flex;
   ${font.mont.h2}
   color: ${color.content.dark};
+  ${media.sp`
+    ${font.mont.subtitle1}
+  `}
 `
 
 export const Unit = styled.div`

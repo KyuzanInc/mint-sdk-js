@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import { css } from '@emotion/react'
 import { Item, Token } from '@kyuzan/mint-sdk-js'
 import { isBefore } from 'date-fns'
 import Image from 'next/image'
@@ -306,10 +305,10 @@ const Center = styled.div`
     transform:translate(0,0);
   `}
 `
-const VerticalLine = styled.div`
-  border-left: thin solid ${color.content.gray1};
-  margin: 32px 0;
-`
+// const VerticalLine = styled.div`
+//   border-left: thin solid ${color.content.gray1};
+//   margin: 32px 0;
+// `
 const CenterTitleContainer = styled.div``
 
 const CenterTitle = styled.h1`

@@ -1,4 +1,4 @@
-import React,{ Component } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"
@@ -11,11 +11,11 @@ import {font, color, media } from '../../../style'
 // import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 // import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { Item } from '@kyuzan/mint-sdk-js'
-import { addDays, subDays } from 'date-fns'
+import { addDays } from 'date-fns'
 import { ActiveCard } from '../../molecules/Card/active'
-import { EndedCard } from '../../molecules/Card/ended'
-import { ReadyCard } from '../../molecules/Card/ready'
-import {Profile} from '../../molecules/Profile'
+// import { EndedCard } from '../../molecules/Card/ended'
+// import { ReadyCard } from '../../molecules/Card/ready'
+// import {Profile} from '../../molecules/Profile'
 import { CarouselItem } from '../../molecules/CarouselItem';
 
 
@@ -99,146 +99,7 @@ export const Presentation: React.VFC = () => {
           />
         </ItemWrap>
       </Collections>
-      <Margin64/>
-      <Collections>
-        <CollectionLabel>Collection 001</CollectionLabel>
-        <CollectionTitle>Chie</CollectionTitle>
-        <CollectionLink href=''>コレクション一覧へ<span></span></CollectionLink>
-        <Margin32/>
-        <ItemWrap>
-          <EndedCard
-            item={{
-              ...doneItem,
-              name: 'Chie 001',
-              imageURIHTTP: {
-                url: '/images/items/collection001/001.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-          <EndedCard
-            item={{
-              ...doneItem,
-              name: 'Chie 002',
-              imageURIHTTP: {
-                url: '/images/items/collection001/002.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-          <EndedCard
-            item={{
-              ...doneItem,
-              name: 'Chie 003',
-              imageURIHTTP: {
-                url: '/images/items/collection001/003.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-          <EndedCard
-            item={{
-              ...doneItem,
-              name: 'Chie 004',
-              imageURIHTTP: {
-                url: '/images/items/collection001/004.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-          <ReadyCard
-            item={{
-              ...doneItem,
-              name: 'Chie 005',
-              imageURIHTTP: {
-                url: '/images/items/collection001/005.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-          <ReadyCard
-            item={{
-              ...doneItem,
-              name: 'Chie 006',
-              imageURIHTTP: {
-                url: '/images/items/collection001/006.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-          <ReadyCard
-            item={{
-              ...doneItem,
-              name: 'Chie 007',
-              imageURIHTTP: {
-                url: '/images/items/collection001/007.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-          <ReadyCard
-            item={{
-              ...doneItem,
-              name: 'Chie 008',
-              imageURIHTTP: {
-                url: '/images/items/collection001/008.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-        </ItemWrap>
-      </Collections>
-      <Margin64/>
-      <Collections>
-        <CollectionLabel>Collection 003</CollectionLabel>
-        <CollectionTitle>球体関節人形</CollectionTitle>
-        <CollectionLink href=''>コレクション一覧へ<span></span></CollectionLink>
-        <Margin32/>
-        <ItemWrap>
-          <ReadyCard
-            item={{
-              ...doneItem,
-              name: '球体関節人形 001',
-              imageURIHTTP: {
-                url: '/images/items/collection002/001.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-          <ReadyCard
-            item={{
-              ...doneItem,
-              name: '球体関節人形 002',
-              imageURIHTTP: {
-                url: '/images/items/collection002/002.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-          <ReadyCard
-            item={{
-              ...doneItem,
-              name: '球体関節人形 003',
-              imageURIHTTP: {
-                url: '/images/items/collection002/003.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-          <ReadyCard
-            item={{
-              ...doneItem,
-              name: '球体関節人形 004',
-              imageURIHTTP: {
-                url: '/images/items/collection002/004.jpg',
-                mimeType: 'image',
-              }
-            }}
-          />
-        </ItemWrap>
-      </Collections>
-      <Margin64/>
-      <Profile/>
+      
       <Margin128/>
     </Container>
   ) 
@@ -398,7 +259,6 @@ const CollectionLabel = styled.p`
 `
 
 
-const userWalletAddress = '0x000000'
 const otherWalletAddress = '0x000001'
 
 const loseItem: Item = {
@@ -430,9 +290,9 @@ const loseItem: Item = {
   startAt: new Date(),
   endAt: addDays(new Date(), 1),
   initialPrice: 1,
-  signatureBuyAuction: undefined,
-  signatureBidAuction: undefined,
-  signatureBuyFixedPrice: undefined,
+  // signatureBuyAuction: undefined,
+  // signatureBidAuction: undefined,
+  // signatureBuyFixedPrice: undefined,
   chainType: 'ethereum',
   collectionId: 'xxxx', // uuidv4
   mintContractAddress: '',
@@ -442,13 +302,4 @@ const loseItem: Item = {
   createdBy: [],
 }
 
-const winItem: Item = {
-  ...loseItem,
-  currentBidderAddress: userWalletAddress,
-}
 
-const doneItem: Item = {
-  ...winItem,
-  startAt: subDays(new Date(), 2),
-  endAt: subDays(new Date(), 1),
-}

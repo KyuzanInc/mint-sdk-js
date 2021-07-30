@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import {font, color, media } from '../../../style'
 import { Item } from '@kyuzan/mint-sdk-js'
-import { addDays, subDays } from 'date-fns'
+import { addDays } from 'date-fns'
 import { ActiveCard } from '../../molecules/Card/active'
 // import { EndedCard } from '../../molecules/Card/ended'
 // import { ReadyCard } from '../../molecules/Card/ready'
@@ -21,9 +21,7 @@ return(
             </HeroContents>
         </Hero>
         <Description>
-        ガラス彫りと呼ばれる墨一色で表現された刺青を背中一面に施すモデル・高岡千恵さん。その女性ならではの曲線と、柔肌におどろおどろしくも精緻に描かれた刺青の奇妙な競演を山岸伸氏がモノクロで捉えた野心作！→山岸伸インタビュー刺青の入った女性ではなく刺青自体に没入していく！以前、山岸伸写真展に高岡千恵さんが来てくれ、わずかに見えた刺青に興味を惹かれた。
-        その後現在まで撮影を行っているが初期は「刺青の入った女性」の写真をただ撮ってしまっていた。これは違うと思い、彼女にはキャンパスに徹してもらい、もっと刺青を前面に出したほうがいいと気付いてから世界が広がっていった。これは彼女も意識している部分だそうだ。彼女の刺青は今も増え続けて進化していて完成はもう近いらしい。同様に自分の写真も進化させていかなければと思う。　高岡千恵さんは自らの身体自体をアート（芸術）として見てもらうアートモデルとして活動している。和彫りという技法で、色は載せずあえて墨だけで描いている。
-        背中にはほぼ隙間なく刺青が入っており圧倒的な迫力がある。腕からへそまでは刺青を入れないことで、刺青と普通の肌の対比が際立つ。
+        hoge
         </Description>
         <Margin64/>
         <Margin64/>
@@ -177,7 +175,6 @@ const ItemWrap = styled.div`
 
 
 
-const userWalletAddress = '0x000000'
 const otherWalletAddress = '0x000001'
 
 const loseItem: Item = {
@@ -209,9 +206,9 @@ const loseItem: Item = {
   startAt: new Date(),
   endAt: addDays(new Date(), 1),
   initialPrice: 1,
-  signatureBuyAuction: undefined,
-  signatureBidAuction: undefined,
-  signatureBuyFixedPrice: undefined,
+//   signatureBuyAuction: undefined,
+//   signatureBidAuction: undefined,
+//   signatureBuyFixedPrice: undefined,
   chainType: 'ethereum',
   collectionId: 'xxxx', // uuidv4
   mintContractAddress: '',
@@ -221,13 +218,4 @@ const loseItem: Item = {
   createdBy: [],
 }
 
-const winItem: Item = {
-  ...loseItem,
-  currentBidderAddress: userWalletAddress,
-}
 
-const doneItem: Item = {
-  ...winItem,
-  startAt: subDays(new Date(), 2),
-  endAt: subDays(new Date(), 1),
-}

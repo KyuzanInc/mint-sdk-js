@@ -194,7 +194,7 @@ export const Presentation: React.VFC<Props> = ({
 }
 
 const Container = styled.div`
-  background-color: ${color.content.gray2};
+  background-color: transparent;
   max-width: 840px;
   min-height: 100vh;
   display: flex;

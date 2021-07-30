@@ -68,7 +68,7 @@ export const ValidationError: React.VFC = () => (
     unit={'ETH'}
     bidPrice={'0.2'}
     isValidationError={true}
-    errorText={'Your bid must be at least 1 ETH'}
+    errorText={'1ETH以上の価格を入力してください'}
     status={undefined}
     {...eventsFromObject}
   />
