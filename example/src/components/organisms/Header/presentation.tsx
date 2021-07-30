@@ -7,6 +7,7 @@ import { font } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
+import { ClipBoard } from '../../atoms/Clipboard'
 
 type Props = {
   loading: boolean
@@ -62,6 +63,7 @@ export const Presentation: React.VFC<Props> = ({
                       <WalletBalance>{walletBalance}</WalletBalance>
                       <WalletAddress>
                         {walletAddress?.slice(0, 8)}
+                        <ClipBoard text={walletAddress} />
                       </WalletAddress>
                     </WalletDetail>
                   </WalletInfoContainer>
@@ -146,6 +148,10 @@ const WalletBalance = styled.div`
 
 const WalletAddress = styled.div`
   ${font.lg.caption}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
 `
 
 const LoadingContainer = styled.div`
