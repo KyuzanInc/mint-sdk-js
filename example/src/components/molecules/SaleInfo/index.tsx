@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import Countdown from 'react-countdown'
 import { format, isAfter, isBefore } from 'date-fns'
 import Image from 'next/image'
@@ -227,6 +227,9 @@ const Value = styled.div`
   ${font.mont.h4}
   font-weight:300;
   color: ${color.content.dark};
+  ${media.sp`
+    ${font.mont.h3}
+  `}
 `
 
 const Unit = styled.div`

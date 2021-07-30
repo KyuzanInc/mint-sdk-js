@@ -116,9 +116,6 @@ export const StatusValue = styled.div`
   color: ${color.content.dark};
   display: flex;
   align-items: center;
-  ${media.sp`
-    ${font.mont.subtitle1}
-  `}
 `
 
 export const Value = styled.div`
@@ -126,7 +123,7 @@ export const Value = styled.div`
   ${font.mont.h2}
   color: ${color.content.dark};
   ${media.sp`
-    ${font.mont.subtitle1}
+    ${font.mont.h3}
   `}
 `
 

@@ -78,11 +78,16 @@ const Container = styled.div`
 
 const MediaContainer = styled.div`
   background: ${color.background.bague};
-  max-height: 480px;
+  
   display: flex;
   justify-content: center;
   width: 100%;
   margin: 0 auto;
+  padding:64px 0;
+  background: #f5f5f5 linear-gradient(0deg, rgb(230, 230, 230) 60%, rgba(230, 230, 230, 0) 100%);
+  ${media.sp`
+    padding:0;
+  `}
 `
 
 const MediaInner = styled.div`

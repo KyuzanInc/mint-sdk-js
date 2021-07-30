@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React, { ChangeEventHandler } from 'react'
 import { Tag as TagBase } from '../../atoms/Tag'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { BidButton } from '../../molecules/Button/bid'
 import { WalletModal } from '../../molecules/WalletModal'
 import { SaleActionModal } from '../../molecules/SaleActionModal'
@@ -218,6 +218,9 @@ export const Description = styled.div`
   ${font.mont.article1}
   min-height: 192px;
   margin: 32px 0 32px;
+  ${media.sp`
+    ${font.mont.article2}
+  `}
 `
 
 const TradeInfoContainer = styled.div`

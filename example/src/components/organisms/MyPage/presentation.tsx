@@ -232,6 +232,7 @@ const ItemsContainer = styled.div`
 `
 
 const ItemContainer = styled.div`
+      overflow: hidden;
   margin-bottom: 32px;
   width:100%;
   background: ${color.white};

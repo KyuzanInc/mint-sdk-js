@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { format } from 'date-fns'
 import {
   StatusContainer,
@@ -43,4 +43,7 @@ const EndedStatusValue = styled.div`
   color: ${color.content.dark};
   display: flex;
   align-items: center;
+  ${media.sp`
+    ${font.mont.h3}
+  `}
 `
