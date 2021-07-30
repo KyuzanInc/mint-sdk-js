@@ -174,7 +174,7 @@ const Container = styled.div`
   ${font.mont.subtitle1}
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   color: ${color.content.dark};
 `
 const StatusBar = styled.span<{ active: boolean }>`

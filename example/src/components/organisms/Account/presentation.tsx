@@ -53,7 +53,7 @@ export const Presentation: React.VFC<Props> = ({
         <OwnTokensContainer>
           <TabsContainer>
             <Tabs
-              items={[{ label: 'コレクション', value: 'コレクション' }]}
+              items={[{ label: '購入済み', value: 'コレクション' }]}
               value={'コレクション'}
             />
           </TabsContainer>

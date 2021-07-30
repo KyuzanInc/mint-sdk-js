@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { Item, ItemShippingInfo, Token } from '@kyuzan/mint-sdk-js'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { EmptyTitle } from '../../atoms/CardList'
 import { Tabs } from '../../atoms/Tabs'
 import { ToolTip } from '../../atoms/ToolTip'
@@ -69,7 +69,7 @@ export const Presentation: React.VFC<Props> = ({
   return (
     <>
       <Container>
-        <InnerContainer>
+        {/* <InnerContainer> */}
           <AccountInfoContainer>
             <AccountInfo
               displayName={accountDisplayName}
@@ -88,7 +88,7 @@ export const Presentation: React.VFC<Props> = ({
               items={[
                 { label: '入札中/引き出し待ち', value: 'bidding' },
                 { label: 'フィジカルアイテム', value: 'withPhysical' },
-                { label: 'コレクション', value: 'owned' },
+                { label: '購入済み', value: 'owned' },
               ]}
               onChange={setSelectedTab}
               value={selectedTab}
@@ -177,7 +177,7 @@ export const Presentation: React.VFC<Props> = ({
                 })}
             </ItemsContainer>
           )}
-        </InnerContainer>
+        {/* </InnerContainer> */}
       </Container>
       <ShippingInfoModal
         isOpen={showShippingInfoModal}
@@ -195,7 +195,7 @@ export const Presentation: React.VFC<Props> = ({
 
 const Container = styled.div`
   background-color: ${color.content.gray2};
-  min-width: 840px;
+  max-width: 840px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -203,12 +203,16 @@ const Container = styled.div`
   align-items: center;
   padding-top: 144px;
   margin: auto;
+  ${media.mdsp`
+    max-width:100%;
+    padding:0 16px;
+  `}
 `
 
-const InnerContainer = styled.div`
-  min-width: 840px;
-  min-height: 100vh;
-`
+// const InnerContainer = styled.div`
+//   min-width: 840px;
+//   min-height: 100vh;
+// `
 
 const AccountInfoContainer = styled.div`
   margin-bottom: 64px;
@@ -224,18 +228,21 @@ const ItemsContainer = styled.div`
 
 const ItemContainer = styled.div`
   margin-bottom: 32px;
+  width:100%;
 `
 
 const TabsContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 16px;
+  width:100%;
 `
 
 const NotFoundContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 8px;
+  width:100%;
 `
 
 const NotFoundIconText = styled.div`
