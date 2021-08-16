@@ -1,18 +1,19 @@
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import React from 'react'
-import { CardSuccessPage } from '../../components/molecules/CardSuccessPage'
+import { DrawerModal } from '../../components/molecules/DrawerModal'
 import { color } from '../../style'
 
 type Props = {
   item: Item
+  bidHash: string
 }
 
 export const Presentation: React.VFC<Props> = ({ item }) => {
   return (
     <Container>
       <InnerContainer>
-        <CardSuccessPage item={item} />
+        <DrawerModal item={item} bidHash={''}/>
       </InnerContainer>
     </Container>
   )

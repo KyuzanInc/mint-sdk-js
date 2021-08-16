@@ -1,20 +1,25 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Image from 'next/image'
+import { color } from '../../../style'
 
 type Props = {
   className?: string
+  imagePath: string
+  href: string
+  text?: string
+  dataUrl?: string
 }
 
-export const TwitterButton: React.VFC<Props> = ({ className }) => {
+export const IconButton: React.VFC<Props> = ({ className, imagePath,  href, text, dataUrl }) => {
   return (
-    <ButtonBase className={className}>
+    <ButtonBase className={className} href={href} data-text={text} data-url={dataUrl}>
       <Icon>
         <Image
           width={24}
           height={24}
           layout={'fixed'}
-          src={'/images/twitter_icon.svg'}
+          src={imagePath}
         />
       </Icon>
     </ButtonBase>
@@ -24,13 +29,12 @@ export const TwitterButton: React.VFC<Props> = ({ className }) => {
 const ButtonBase = styled.a`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  width: 50px;
+  width: fit-content;
   height: 44px;
-  border: 2px solid #1da1f2;
+  border: 2px solid ${color.content.gray1};
   box-sizing: border-box;
   border-radius: 22px;
-  padding: 10px 13px;
+  padding: 10px;
   cursor: pointer;
 `
 

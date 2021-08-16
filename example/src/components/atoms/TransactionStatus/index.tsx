@@ -61,6 +61,7 @@ const Container = styled.div`
   border-radius: 4px;
   padding: 16px;
   height: 74px;
+  min-width: 310px;
   display: flex;
   background-color: ${color.white};
 `

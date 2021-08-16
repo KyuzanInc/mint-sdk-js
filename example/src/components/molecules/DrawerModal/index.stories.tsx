@@ -1,12 +1,12 @@
 import React from 'react'
-import { CardSuccessPage } from '.'
+import { DrawerModal } from '.'
 import { addDays } from 'date-fns/esm'
 import { Item } from '@kyuzan/mint-sdk-js'
 
-export const Success: React.VFC = () => <CardSuccessPage item={item} />
+export const Success: React.VFC = () => <DrawerModal item={item} bidHash={''}/>
 
 export default {
-  title: 'molecules/CardSuccessPage',
+  title: 'molecules/DrawerModal',
 }
 
 const item: Item = {

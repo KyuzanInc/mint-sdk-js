@@ -12,6 +12,8 @@ export const Container: React.VFC = () => {
   const item = useAppSelector((state: { app: { item: { data: any } } }) => {
     return state.app.item.data
   })
+  const bidHash = useAppSelector((state: { app: { transaction: { meta: { bidHash: string } } } }) => state.app.transaction.meta.bidHash)
+
 
   const getItem = useCallback(() => {
     if (typeof itemId === 'string') {
@@ -23,5 +25,5 @@ export const Container: React.VFC = () => {
     getItem()
   }, [itemId])
 
-  return <Presentation item={item} />
+  return <Presentation item={item} bidHash={bidHash} />
 }
