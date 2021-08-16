@@ -1,4 +1,6 @@
+import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
+import { getAccountInfoActionCreator } from '../../../redux/myAccountInfo'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import {
   getBidedActionCreator,
@@ -8,6 +10,8 @@ import { getShippingInfoActionCreator } from '../../../redux/shippingInfo'
 import { withDrawItemActionCreator } from '../../../redux/transaction'
 import { connectWalletActionCreator } from '../../../redux/wallet'
 import { Presentation } from './presentation'
+import { dialogSlice } from '../../../redux/dialog'
+import { getNetworkIdLabel } from '../../../util/getNetworkIdLabel'
 
 export const Container: React.VFC = () => {
   const dispatch = useAppDispatch()
@@ -46,7 +50,22 @@ export const Container: React.VFC = () => {
     (state) => state.app.transaction.meta.withdrawingItemId
   )
 
+  const connectedNetworkId = useAppSelector(
+    (state) => state.app.wallet.data.connectedNetwork
+  )
   const withdrawItem = async (itemId: string) => {
+    const item = bidedItems.find((i) => i.itemId === itemId)
+    if (connectedNetworkId !== item!.networkId) {
+      dispatch(
+        dialogSlice.actions.showDialog({
+          title: 'ネットワークを変更してください',
+          content: `${getNetworkIdLabel(
+            item?.networkId ?? 4
+          )}に接続してください。`,
+        })
+      )
+      return
+    }
     await dispatch(withDrawItemActionCreator({ itemId }) as any)
     // TODO: おめでとう画面に遷移させる
     window.location.reload()
@@ -68,7 +87,18 @@ export const Container: React.VFC = () => {
     setSelectShippingInfoItemId(undefined)
   }
 
-  useEffect(() => {
+  const router = useRouter()
+  const goEditPage = useCallback(() => {
+    router.push('/me/edit')
+  }, [])
+  const accountInfoLoading = useAppSelector(
+    (state) => state.app.myAccountInfo.meta.loading
+  )
+  const accountInfo = useAppSelector(
+    (state) => state.app.myAccountInfo.data.accountInfo
+  )
+
+  const updateItems = useCallback(() => {
     if (typeof walletInfo?.address === 'undefined') {
       return
     }
@@ -78,7 +108,15 @@ export const Container: React.VFC = () => {
     dispatch(
       getOwnItemsActionCreator({ walletAddress: walletInfo.address }) as any
     )
+    dispatch(
+      getAccountInfoActionCreator({ walletAddress: walletInfo.address }) as any
+    )
   }, [walletInfo?.address])
+
+  useEffect(() => {
+    updateItems()
+  }, [walletInfo?.address])
+
   return (
     <Presentation
       connectingWallet={connectingWallet}
@@ -98,6 +136,17 @@ export const Container: React.VFC = () => {
           ? shippingInfo[selectShippingInfoItemId]
           : undefined
       }
+      accountDisplayName={accountInfo.displayName || undefined}
+      accountBio={accountInfo.bio || undefined}
+      accountProfileUrl={accountInfo.avatarImgUrl || undefined}
+      accountInstagramAccountName={
+        accountInfo.instagramAccountName || undefined
+      }
+      accountTwitterAccountName={accountInfo.twitterAccountName || undefined}
+      accountSiteUrl={accountInfo.homepageUrl || undefined}
+      accountLoading={accountInfoLoading}
+      accountOnClickEdit={goEditPage}
+      onComplete={updateItems}
     />
   )
 }

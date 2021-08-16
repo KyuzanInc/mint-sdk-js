@@ -12,12 +12,11 @@ export const getOpenSeaLink = (item: ItemDetail) => {
   }
 
   if (networkId === 137) {
-    return `https://matic.opensea.io/`
+    return `https://opensea.io/assets/matic/${contactAddress}/${tokenId}`
   }
 
   if (networkId === 80001) {
-    // TODO: fix link
-    return ''
+    return `https://testnets.opensea.io/assets/matic/${contactAddress}/${tokenId}`
   }
 
   return ''

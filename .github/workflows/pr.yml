@@ -66,9 +66,9 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
-      - name: npm i
-        working-directory: ./example
+      - name: npm ci
         run: npm ci
+        working-directory: ./example
       - name: npm run lint:check
         run: npm run lint:check
         working-directory: ./example
@@ -78,3 +78,4 @@ jobs:
       - name: npm run format:check
         run: npm run format:check
         working-directory: ./example
+

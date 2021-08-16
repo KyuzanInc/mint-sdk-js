@@ -3,13 +3,14 @@ module.exports = {
     'Getting Started': [
       'gettingStarted/Tutorial',
       'gettingStarted/PhysicalItem',
+      'gettingStarted/UserAccountInfo',
     ],
-    '外部リンク（OpenSea...etc）の生成方法': [
+    OpenSeaやEtherscanなどへのリンク生成方法: [
       'tokenRelatedURL/openSea',
       'tokenRelatedURL/blockchainExplorer',
     ],
     tokenIdについて: ['TokenIdDesign'],
     通貨について: ['EthInSdk'],
-    'API Document': require('./typedoc-sidebar.js'),
+    'Mint SDK API': require('./typedoc-sidebar.js'),
   },
 }

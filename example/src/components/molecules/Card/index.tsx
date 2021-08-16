@@ -59,7 +59,7 @@ const CardBase = styled.div`
   cursor: pointer;
   background: ${color.white};
   ${font.lg.button}
-  height: 382px;
+  height: 402px;
   width: 264px;
   line-height: 44px;
   color: ${color.white};
@@ -70,30 +70,36 @@ const CardBase = styled.div`
   border-radius: 12px;
   overflow: hidden;
 `
+
+const cardMediaHeight = '220px'
+
 const CardMedia = styled.div`
   background: ${color.background.bague};
-  height: 220px;
+  height: ${cardMediaHeight};
   width: 100%;
 `
 
 const CardContent = styled.div`
   background: ${color.white};
   width: 100%;
-  height: 162px;
+  height: calc(100% - ${cardMediaHeight});
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
   padding: 16px 16px 24px 16px;
   border-radius: 0 0 12px 12px;
 `
 const Typography = styled.div`
   background: ${color.white};
   width: 100%;
-  height: 2.6em;
-  ${font.lg.subtitle1}
+  height: 38px;
+  ${font.lg.body1}
   color: ${color.content.dark};
-  align-items: baseline;
+  text-align: left;
+  /* 3点リーダー */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
 `
 

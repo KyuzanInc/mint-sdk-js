@@ -47,7 +47,12 @@ export const ShippingInfoModal: React.VFC<Props> = ({
   shippingInfo,
 }) => {
   return (
-    <Modal isOpen={isOpen} style={customStyles} contentLabel="Wallet">
+    <Modal
+      isOpen={isOpen}
+      style={customStyles}
+      contentLabel="Wallet"
+      ariaHideApp={false}
+    >
       <ModalContainer>
         <Content>
           <ContentTitle>発送先情報</ContentTitle>

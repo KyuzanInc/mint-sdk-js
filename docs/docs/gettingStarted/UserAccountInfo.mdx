@@ -1,0 +1,56 @@
+---
+title: ユーザーのプロフィール情報の設定・取得
+---
+
+import Image from '@theme/IdealImage'
+import useBaseUrl from '@docusaurus/useBaseUrl'
+
+MintSDK を通じて、ウォレットアドレスに紐づくプロフィール画像などをユーザーに設定・表示させることが可能です。
+
+## 使用例
+
+ユーザーページやトランザクションログでユーザー情報を表示させたりすることができます
+
+<img
+  alt="Profile イメージ"
+  src={useBaseUrl('/img/userAccountInfo/profile.png')}
+/>
+
+<img
+  alt="トランザクション イメージ"
+  src={useBaseUrl('/img/userAccountInfo/tx.png')}
+/>
+
+## 実装例
+
+### 1. プロフィール設定
+
+以下のような UI を用意します。
+
+<img alt="フォーム" src={useBaseUrl('/img/userAccountInfo/form.png')} />
+
+プロフィール画像のアップロードには、`sdk.uploadAccountInfoAvatar`を使います。Upload に成功すると、`imgId`と`uploadedImgUrl`が Promise の Resolve された値として取得できます。
+
+`imgId`は、`sdk.updateAccountInfo`の引数の 1 つの`imgId`です。
+
+`uploadedImgUrl`は、Upload した画像の View 用 URL です。プレビューなどに使えます。
+
+```typescript
+const { imgId, uploadedImgUrl } = await sdk.uploadAccountInfoAvatar({ file })
+```
+
+プロフィールの作成・更新には、`sdk.updateAccountInfo`を使います。
+
+```typescript
+await sdk.updateAccountInfo({ imgId, .... })
+```
+
+プロフィール設定は以上です。
+
+### 2. プロフィールの取得
+
+プロフィールの取得は、`sdk.getAccountInfo`を使います。引数の`walletAddress`に任意のウォレットアドレスを設定してください。
+
+```typescript
+const accountInfo = await sdk.getAccountInfo({ walletAddress: '0xxxxxxxx' })
+```

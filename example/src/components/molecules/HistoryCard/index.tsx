@@ -1,41 +1,62 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { ItemLog, NetworkId } from '@kyuzan/mint-sdk-js'
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import { format } from 'date-fns'
 import { color, font } from '../../../style'
+import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
+import { LoadingHistoryCard } from './loading'
+import Link from 'next/link'
+import { Anchor } from '../../atoms/Anchor'
 
 type Props = {
-  log: ItemLog
+  log?: ItemLog & { avatarImgUrl?: string }
   networkId?: NetworkId
+  loading: boolean
 }
 
-export const HistoryCard: React.FC<Props> = ({ log, networkId }) => {
-  const price = log.price
+export const HistoryCard: React.FC<Props> = ({ log, networkId, loading }) => {
+  if (loading) return <LoadingHistoryCard />
+  if (!log) return <LoadingHistoryCard />
+  const price = log?.price
   const date = format(log.createAt, 'yyyy/MM/dd HH:mm')
   const link = getLink(log.transactionHash, networkId)
+
   return (
-    <HistoryContainer href={link} target="blank">
-      <Avatar>
-        <Jazzicon diameter={44} seed={jsNumberForAddress(log.accountAddress)} />
-      </Avatar>
+    <HistoryContainer>
+      <Link href={`/accounts/${log.accountAddress}`} passHref>
+        <Anchor>
+          <Avatar>
+            {log.avatarImgUrl ? (
+              <AvatarImage src={log.avatarImgUrl} />
+            ) : (
+              <DefaultAvatarIcon size={44} name={log.accountAddress} />
+            )}
+          </Avatar>
+        </Anchor>
+      </Link>
+
       <BidderDetail>
         <BidderId>{log.accountAddress}</BidderId>
         <BidTime>{date}</BidTime>
       </BidderDetail>
-      <BidPrice>
-        {price} ETH
-        <Icon src={'/images/external-link.svg'} />
-      </BidPrice>
+      <Link href={link} passHref>
+        <Anchor target={'_blank'}>
+          <BidPrice>
+            {price} ETH
+            <Icon src={'/images/external-link.svg'} />
+          </BidPrice>
+        </Anchor>
+      </Link>
     </HistoryContainer>
   )
 }
 
-export const HistoryContainer = styled.a`
+export const HistoryContainer = styled.div`
   width: 426px;
   height: 70px;
   padding: 8px 16px 8px 16px;
-  justify: space-between;
+  justify-content: space-between;
+  align-items: center;
   display: flex;
   background: ${color.white};
   text-decoration: none;
@@ -50,6 +71,7 @@ const Avatar = styled.div`
   margin: 4.5px 16px 4.5px 0;
   object-fit: cover;
   border-radius: 50%;
+  overflow: hidden;
 `
 
 export const BidderDetail = styled.div`
@@ -62,7 +84,7 @@ export const BidderId = styled.div`
 export const BidTime = styled.div`
   padding: 4px 0 0 0;
   ${font.lg.caption}
-  color: ${color.content.gray}
+  color: ${color.content.gray1};
 `
 export const BidPrice = styled.div`
   min-width: 100px;
@@ -74,6 +96,12 @@ export const BidPrice = styled.div`
 export const Icon = styled.img`
   text-align: center;
   margin-left: 4px;
+`
+
+const AvatarImage = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 `
 
 const getLink = (hash: string, networkId?: NetworkId) => {

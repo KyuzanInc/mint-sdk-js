@@ -1,3 +1,6 @@
+import Axios, { AxiosInstance } from 'axios'
+import * as Agent from 'agentkeepalive'
+import * as ethers from 'ethers'
 import {
   DefaultApiFactory,
   RegisterItemShippingInfoRequestBody,
@@ -10,20 +13,22 @@ import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
 import { AxiosBody } from './types/AxiosBody'
 import { Token } from './types/Token'
+import {
+  WalletStrategy,
+  MetamaskStrategy,
+  FortmaticStrategy,
+  NodeStrategy,
+} from './strategies'
 import { BACKEND_URL } from './constants/index'
-import Axios, { AxiosInstance } from 'axios'
-import * as Agent from 'agentkeepalive'
-import * as ethers from 'ethers'
-import Fortmatic from 'fortmatic'
 import { Item } from './types/Item'
 import { ItemLog } from './types/ItemLog'
 import { NetworkId, networkIdMapLabel } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
 import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
-import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
 import { ItemsType } from './types/ItemsType'
 import { ItemTradeType } from './types/ItemTradeType'
+import { AccountInfo } from './apiClient/api'
 
 export {
   Item,
@@ -40,6 +45,7 @@ export {
   CurrencyUnit,
   RegisterItemShippingInfoRequestBody,
   ItemShippingInfo,
+  AccountInfo,
 }
 
 export class MintSDK {
@@ -88,30 +94,7 @@ export class MintSDK {
    */
   private apiClient: ReturnType<typeof DefaultApiFactory>
 
-  /**
-   * @ignore
-   */
-  private metamaskProvider: ethers.providers.Web3Provider | null
-
-  /**
-   * @ignore
-   */
-  private fortmatic: WidgetMode
-
-  /**
-   * @ignore
-   */
-  private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
-
-  /**
-   * @ignore
-   */
-  private eventDisconnectCallbacks: Array<() => any> = []
-
-  /**
-   * @ignore
-   */
-  private eventConnectCallbacks: Array<() => any> = []
+  private walletStrategy: WalletStrategy
 
   /**
    *
@@ -129,17 +112,18 @@ export class MintSDK {
       jsonRPCUrl?: string
     }
   ) {
-    this.fortmatic = new Fortmatic(
-      walletSetting.fortmatic.key,
-      devOption?.jsonRPCUrl
-        ? {
-            rpcUrl: devOption.jsonRPCUrl,
-          }
-        : undefined
-    )
-    this.metamaskProvider = (window as any).ethereum
-      ? new ethers.providers.Web3Provider((window as any).ethereum, 'any')
-      : null
+    if (typeof globalThis.window === 'undefined') {
+      this.walletStrategy = new NodeStrategy()
+    } else if (MetamaskStrategy.checkExistsWeb3ProviderInWindow()) {
+      this.walletStrategy = new MetamaskStrategy(networkIds)
+    } else {
+      this.walletStrategy = new FortmaticStrategy(
+        networkIds,
+        walletSetting,
+        devOption
+      )
+    }
+
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
     const keepAliveAgent = new Agent.HttpsAgent({
       keepAlive: true,
@@ -152,20 +136,6 @@ export class MintSDK {
       },
     })
     this.apiClient = DefaultApiFactory(undefined, backendBaseUrl, this.axios)
-
-    if (this.metamaskProvider) {
-      this.metamaskProvider.on('network', (_, oldNetwork) => {
-        if (oldNetwork) {
-          window.location.reload()
-        }
-      })
-      ;(window as any).ethereum.on('accountsChanged', (accounts: string[]) => {
-        this.emitAccountChange(accounts)
-        if (accounts.length === 0) {
-          this.emitDisconnect()
-        }
-      })
-    }
   }
 
   /**
@@ -181,12 +151,7 @@ export class MintSDK {
    * ```
    */
   public isWalletConnect = async () => {
-    if (this.metamaskProvider && this.metamaskProvider.provider.request) {
-      const accounts = await this.metamaskProvider.listAccounts()
-      return accounts.length > 0
-    } else {
-      return await this.fortmatic.user.isLoggedIn()
-    }
+    return await this.walletStrategy.isWalletConnect()
   }
 
   /**
@@ -204,15 +169,7 @@ export class MintSDK {
    * ```
    */
   public connectWallet = async () => {
-    if (this.metamaskProvider && this.metamaskProvider.provider.request) {
-      await this.metamaskProvider.provider.request({
-        method: 'eth_requestAccounts',
-      })
-      this.emitConnect()
-    } else {
-      await this.fortmatic.getProvider().enable()
-      this.emitConnect()
-    }
+    await this.walletStrategy.connectWallet()
   }
 
   /**
@@ -228,8 +185,7 @@ export class MintSDK {
    * ```
    */
   public disconnectWallet = async () => {
-    await this.fortmatic.user.logout()
-    this.emitDisconnect()
+    await this.walletStrategy.disconnectWallet()
   }
 
   /**
@@ -248,36 +204,7 @@ export class MintSDK {
    * ```
    */
   public getWalletInfo: () => Promise<WalletInfo> = async () => {
-    if (!(await this.isWalletConnect())) {
-      throw new Error('not LoggedId')
-    }
-
-    const networkId = await this.getConnectedNetworkId()
-    const unit = networkId === 137 || networkId === 80001 ? 'MATIC' : 'ETH'
-
-    if (this.metamaskProvider) {
-      const accounts = await this.metamaskProvider.listAccounts()
-      const address = accounts[0]
-      const balance = await this.metamaskProvider.getBalance(address)
-      return {
-        address,
-        balance,
-        unit,
-      }
-    } else {
-      const accounts = (await this.fortmatic
-        .getProvider()
-        .send('eth_accounts')) as string[]
-      const address = accounts[0]
-      const balance = await new ethers.providers.Web3Provider(
-        this.fortmatic.getProvider() as any
-      ).getBalance(address)
-      return {
-        address,
-        balance,
-        unit,
-      }
-    }
+    return await this.walletStrategy.getWalletInfo()
   }
 
   /**
@@ -305,7 +232,7 @@ export class MintSDK {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
-    const wallet = await this.getProvider()
+    const wallet = this.walletStrategy.getProvider()
     await wallet.waitForTransaction(txHash)
   }
 
@@ -476,22 +403,16 @@ export class MintSDK {
       page: 1,
     }
   ) => {
-    const { data } = await this.axios.get<{
-      data: {
-        type: 'bought' | 'bid'
-        accountAddress: string
-        price: number // only 'bid' and 'bought'
-        createAt: Date
-        transactionHash: string
-      }[]
-    }>('v2_itemLogs', {
+    const { data } = await this.axios.get<
+      AxiosBody<Omit<ItemLog[], 'createAt'>>
+    >('v2_itemLogs', {
       params: { itemId, page: paging.page, perPage: paging.perPage },
     })
     const logs = data.data
     return logs.map((l) => ({
       ...l,
       createAt: new Date(l.createAt),
-    })) as ItemLog[]
+    }))
   }
 
   /**
@@ -507,10 +428,13 @@ export class MintSDK {
    * ```
    */
   public getTokensByAddress = async (address: string) => {
-    const { data } = await this.axios.get('v3_tokensByAddress', {
-      params: { address, networkIds: this.networkIds },
-    })
-    return data.data as Token[]
+    const { data } = await this.axios.get<AxiosBody<Token[]>>(
+      'v3_tokensByAddress',
+      {
+        params: { address, networkIds: this.networkIds },
+      }
+    )
+    return data.data
   }
 
   /**
@@ -545,7 +469,7 @@ export class MintSDK {
 
     const item = await this.getItemById(itemId)
     await this.validateNetworkForItem(item)
-    const wallet = await this.getProvider()
+    const wallet = this.walletStrategy.getProvider()
     const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(address, abi, signer)
@@ -612,7 +536,7 @@ export class MintSDK {
     }
     const item = await this.getItemById(itemId)
     await this.validateNetworkForItem(item)
-    const wallet = await this.getProvider()
+    const wallet = this.walletStrategy.getProvider()
     const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(address, abi, signer)
@@ -677,7 +601,7 @@ export class MintSDK {
 
     const item = await this.getItemById(itemId)
     await this.validateNetworkForItem(item)
-    const wallet = await this.getProvider()
+    const wallet = this.walletStrategy.getProvider()
     const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(address, abi, signer)
@@ -723,22 +647,14 @@ export class MintSDK {
    * ```
    */
   public onAccountsChange = (callback: (accounts: string[]) => any) => {
-    this.eventAccountsChangeCallbacks.push(callback)
+    this.walletStrategy.onAccountsChange(callback)
   }
 
   /**
    * @ignore
    */
   public offAccountsChange = (callback?: (accounts: string[]) => any) => {
-    if (callback) {
-      this.eventAccountsChangeCallbacks.forEach((f, index) => {
-        if (f === callback) {
-          this.eventAccountsChangeCallbacks.splice(index, 1)
-        }
-      })
-    } else {
-      this.eventAccountsChangeCallbacks = []
-    }
+    this.walletStrategy.offAccountsChange(callback)
   }
 
   /**
@@ -756,22 +672,14 @@ export class MintSDK {
    * ```
    */
   public onConnect = (callback: () => any) => {
-    this.eventConnectCallbacks.push(callback)
+    this.walletStrategy.onConnect(callback)
   }
 
   /**
    * @ignore
    */
   public offConnect = (callback?: () => any) => {
-    if (callback) {
-      this.eventConnectCallbacks.forEach((f, index) => {
-        if (f === callback) {
-          this.eventConnectCallbacks.splice(index, 1)
-        }
-      })
-    } else {
-      this.eventConnectCallbacks = []
-    }
+    this.walletStrategy.offConnect(callback)
   }
 
   /**
@@ -789,22 +697,14 @@ export class MintSDK {
    * ```
    */
   public onDisconnect = (callback: () => any) => {
-    this.eventDisconnectCallbacks.push(callback)
+    this.walletStrategy.onDisconnect(callback)
   }
 
   /**
    * @ignore
    */
   public offDisconnect = (callback?: () => any) => {
-    if (callback) {
-      this.eventDisconnectCallbacks.forEach((f, index) => {
-        if (f === callback) {
-          this.eventDisconnectCallbacks.splice(index, 1)
-        }
-      })
-    } else {
-      this.eventDisconnectCallbacks = []
-    }
+    this.walletStrategy.offDisconnect(callback)
   }
 
   /**
@@ -821,7 +721,7 @@ export class MintSDK {
    * ```
    */
   public getServerUnixTime = async () => {
-    const { data } = await this.axios.get('serverSideTime')
+    const { data } = await this.axios.get<AxiosBody<number>>('serverSideTime')
     return data.data
   }
 
@@ -859,7 +759,7 @@ export class MintSDK {
         parseInt((window as any).ethereum.networkVersion, 10) as any
       )
     } else {
-      const network = await this.getProvider().getNetwork()
+      const network = await this.walletStrategy.getProvider().getNetwork()
       return this.networkIds.includes(network.chainId as any)
     }
   }
@@ -878,12 +778,7 @@ export class MintSDK {
    * ```
    */
   public getConnectedNetworkId = async () => {
-    if (this.isInjectedWallet()) {
-      return parseInt((window as any).ethereum.networkVersion, 10)
-    } else {
-      const network = await this.getProvider().getNetwork()
-      return network.chainId
-    }
+    return await this.walletStrategy.getConnectedNetworkId()
   }
 
   /**
@@ -1019,6 +914,143 @@ export class MintSDK {
   }
 
   /**
+   * ユーザーのウォレットアドレスの画像や表示名を取得できる
+   * 設定されていない場合は、各項目空文字が入っています
+   *
+   * @param
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * await sdk.connectWallet()
+   * const accountInfo = await sdk.getAccountInfo({ walletAddress: '0xxxxxxxx' })
+   * ```
+   */
+  public getAccountInfo = async (arg: { walletAddress: string }) => {
+    const res = await this.apiClient.getAccountInfo(
+      this.accessToken,
+      arg.walletAddress
+    )
+    return res.data.data
+  }
+
+  /**
+   * ユーザーのウォレットアドレスの画像や表示名を設定できる
+   * 全ての項目は optionalです。設定しない場合は空文字を入れてください
+   * `avatarImgId`は`sdk.uploadImg`の返り値です
+   *
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * await sdk.connectWallet()
+   * const imgId = await sdk.uploadAvatarImg()
+   * await sdk.updateAccountInfo({ imgId, .... })
+   * ```
+   */
+  public updateAccountInfo = async (arg: {
+    avatarImgId: string
+    displayName: string
+    bio: string
+    twitterAccountName: string
+    instagramAccountName: string
+    homepageUrl: string
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const networkId = await this.getConnectedNetworkId()
+    const signDataType = {
+      domain: {
+        chainId: networkId,
+        name: 'アカウント情報の更新',
+        version: '1',
+      },
+      message: {
+        avatarImgId: arg.avatarImgId,
+        displayName: arg.displayName,
+        bio: arg.bio,
+        twitterAccountName: arg.twitterAccountName,
+        instagramAccountName: arg.instagramAccountName,
+        homepageUrl: arg.homepageUrl,
+      },
+      primaryType: 'AccountInfo',
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+        ],
+        AccountInfo: [
+          { name: 'avatarImgId', type: 'string' },
+          { name: 'displayName', type: 'string' },
+          { name: 'bio', type: 'string' },
+          { name: 'twitterAccountName', type: 'string' },
+          { name: 'instagramAccountName', type: 'string' },
+          { name: 'homepageUrl', type: 'string' },
+        ],
+      },
+    }
+
+    const signedData = await this.signData({ msgParams: signDataType })
+    await this.apiClient.createAccountInfo(this.accessToken, {
+      signedData,
+      networkId,
+      avatarImgId: arg.avatarImgId,
+      displayName: arg.displayName,
+      bio: arg.bio,
+      twitterAccountName: arg.twitterAccountName,
+      instagramAccountName: arg.instagramAccountName,
+      homepageUrl: arg.homepageUrl,
+    })
+  }
+
+  /**
+   * `sdk.updateAccountInfo`の引数の`imgId`を取得できる
+   * uploadedImgUrlはアップロードされた画像のRead用のURLです。
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * await sdk.connectWallet()
+   * const { imgId, uploadedImgUrl } = await sdk.uploadAccountInfoAvatar({ file })
+   * ```
+   */
+  public uploadAccountInfoAvatar = async (arg: { file: File }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const res = await this.apiClient.getAvatarSignedUrlToUpload(
+      this.accessToken
+    )
+    await this.uploadData({
+      signedUrl: res.data.data.signedUrlForUpload,
+      file: arg.file,
+    })
+    return {
+      imgId: res.data.data.imgId,
+      uploadedImgUrl: res.data.data.signedUrlForRead,
+    }
+  }
+
+  /**
    * @ignore
    */
   private signData = async (arg: { msgParams: any }) => {
@@ -1027,7 +1059,7 @@ export class MintSDK {
     }
     return new Promise<string>((resolve, reject) => {
       const msgParams = JSON.stringify(arg.msgParams)
-      const wallet = this.getProvider()
+      const wallet = this.walletStrategy.getProvider()
       wallet
         .getSigner()
         .getAddress()
@@ -1049,6 +1081,17 @@ export class MintSDK {
         })
         .catch(reject)
     })
+  }
+
+  /**
+   * signedUrlを用いてFileをアップロード
+   * @ignore
+   */
+  private uploadData = async (arg: { signedUrl: string; file: File }) => {
+    const axios = Axios.create({
+      headers: { 'Content-Type': 'application/octet-stream' },
+    })
+    await axios.put(arg.signedUrl, arg.file)
   }
 
   /**
@@ -1129,18 +1172,6 @@ export class MintSDK {
   /**
    * @ignore
    */
-  private getProvider = () => {
-    if (this.metamaskProvider) {
-      return this.metamaskProvider
-    } else {
-      const provider = this.fortmatic.getProvider()
-      return new ethers.providers.Web3Provider(provider as any)
-    }
-  }
-
-  /**
-   * @ignore
-   */
   private getMintShopContractInfo = async (networkId: NetworkId) => {
     const { data } = await this.axios.get('/v2_projectConfig')
     const networkLabel = networkIdMapLabel[networkId]
@@ -1165,26 +1196,5 @@ export class MintSDK {
         ? new Date(item.withdrawableAt)
         : undefined,
     } as Item
-  }
-
-  /**
-   * @ignore
-   */
-  private emitAccountChange = (accounts: string[]) => {
-    this.eventAccountsChangeCallbacks.forEach((f) => f(accounts))
-  }
-
-  /**
-   * @ignore
-   */
-  private emitDisconnect = () => {
-    this.eventDisconnectCallbacks.forEach((f) => f())
-  }
-
-  /**
-   * @ignore
-   */
-  private emitConnect = () => {
-    this.eventConnectCallbacks.forEach((f) => f())
   }
 }
