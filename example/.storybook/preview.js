@@ -12,7 +12,7 @@ Object.defineProperty(nextImage, 'default', {
 
 export const decorators = [
   (Story) => (
-    <div style={{ margin: '3em' }}>
+    <div>
       <Global
         styles={css`
           ${emotionReset}

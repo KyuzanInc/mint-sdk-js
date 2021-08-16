@@ -5,7 +5,7 @@ name: deploy-docs
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ['npm_publish']
+    workflows: ['npm-publish']
     types: [completed]
 
 jobs:
@@ -38,8 +38,8 @@ jobs:
         working-directory: ./docs
       - name: git config
         run: |
-          git config --global user.email ""
-          git config --global user.name "Your Name"
+          git config --global user.email "ci@kyuzan.com"
+          git config --global user.name "GitHubActions"
       - run: npm run doc:deploy
         env:
           GIT_USER: ${{ github.actor }}:${{ github.token }}

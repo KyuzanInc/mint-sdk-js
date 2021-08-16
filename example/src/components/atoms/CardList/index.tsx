@@ -5,14 +5,12 @@ export const ListComponent = styled.div`
   width: 864px;
   display: flex;
   flex-direction: column;
-  aligin-items: center;
 `
 export const ListTitle = styled(ListComponent)`
   ${font.lg.h3}
   padding: 8px 0 16px 0;
   height: 48px;
   flex-direction: row;
-  margin-top: 64px;
   align-items: center;
 `
 
@@ -23,7 +21,7 @@ export const Title = styled(ListComponent)`
 
 export const EmptyTitle = styled(ListComponent)`
   ${font.lg.h3}
-  color: ${color.content.gray};
+  color: ${color.content.gray1};
   margin-left: 10px;
   padding: 32px 0;
 `

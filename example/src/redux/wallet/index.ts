@@ -1,4 +1,4 @@
-import { MintSDK, CurrencyUnit } from '@kyuzan/mint-sdk-js'
+import { MintSDK, CurrencyUnit, NetworkId } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
@@ -13,6 +13,7 @@ type FormattedWalletInfo = {
 export type WalletState = {
   data: {
     walletInfo: FormattedWalletInfo | undefined
+    connectedNetwork: NetworkId
   }
   meta: {
     waitingWalletAction: boolean
@@ -24,6 +25,7 @@ export type WalletState = {
 export const initialState: WalletState = {
   data: {
     walletInfo: undefined,
+    connectedNetwork: 4,
   },
   meta: {
     waitingWalletAction: false,
@@ -39,10 +41,12 @@ export const initialWalletActionCreator = createAsyncThunk(
   async () => {
     if (await getSdk()!.isWalletConnect()) {
       const walletInfo = await getSdk()!.getWalletInfo()
+      const connectingNetworkId = await getSdk()!.getConnectedNetworkId()
       return {
         balance: MintSDK.formatEther(walletInfo.balance),
         currencyUnit: walletInfo.unit,
         address: walletInfo.address,
+        connectingNetworkId,
       }
     } else {
       return undefined
@@ -95,6 +99,7 @@ export const walletSlice = createSlice({
     builder.addCase(
       initialWalletActionCreator.fulfilled,
       (state, { payload }) => {
+        state.meta.initialized = true
         if (typeof payload === 'undefined') {
           state.data.walletInfo = undefined
         } else {
@@ -103,6 +108,7 @@ export const walletSlice = createSlice({
             currencyUnit: payload.currencyUnit,
             address: payload.address,
           }
+          state.data.connectedNetwork = payload.connectingNetworkId as NetworkId
         }
       }
     )

@@ -9,6 +9,7 @@ export const color = {
   },
   background: {
     bague: '#F5F5F5',
+    dark: '#333',
   },
   utils: {
     error: '#FF3B30',
@@ -16,10 +17,11 @@ export const color = {
   },
   content: {
     dark: 'rgba(0,0,0,.82)',
-    middle: '#999999',
+    middle: 'rgba(0,0,0,.54)',
     light: 'rgba(0, 0, 0, 0.14)',
     superLight: 'rgba(0, 0, 0, 0.08);',
-    gray: 'rgba(0, 0, 0, .54)',
+    gray1: '#BDBDBD',
+    gray2: '#EBEBEB',
   },
   active: 'linear-gradient(180deg, #FD80A8 0%, #FCCF42 100%);',
 } as const
@@ -29,6 +31,7 @@ export const font = {
     h1: 'font-weight: 700; font-size: 48px; line-height: 1.3;',
     h2: 'font-weight: 700; font-size: 32px; line-height: 1.3;',
     h3: 'font-weight: 700; font-size: 20px; line-height: 1.3;',
+    h4: 'font-weight: 700; font-size: 18px; line-height: 1.3;',
     subtitle1: 'font-weight: 600; font-size: 16px; line-height: 1.3;',
     subtitle2: 'font-weight: 600; font-size: 14px; line-height: 1.3;',
     body1: 'font-weight: 500; font-size: 16px; line-height: 1.3;',

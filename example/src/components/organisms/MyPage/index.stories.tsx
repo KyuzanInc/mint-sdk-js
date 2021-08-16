@@ -19,6 +19,41 @@ export const Basic: React.VFC = () => (
     ownTokens={[token]}
     showShippingInfoModal={false}
     shippingInfo={undefined}
+    accountDisplayName={''}
+    accountBio={''}
+    accountProfileUrl={undefined}
+    accountInstagramAccountName={undefined}
+    accountTwitterAccountName={undefined}
+    accountSiteUrl={undefined}
+    accountLoading={false}
+    accountOnClickEdit={action('accountOnClickEdit')}
+    onComplete={action('onComplete')}
+  />
+)
+
+export const NoItems: React.VFC = () => (
+  <Presentation
+    connectingWallet={false}
+    onConnectWallet={action('onConnectWallet')}
+    waitingBidedItems={false}
+    waitingOwnTokens={false}
+    bidedItems={[]}
+    handleWithdrawItem={action('handleWithdrawItem')}
+    handleHideShippingInfo={action('handleHideShippingInfo')}
+    showShippingInfo={action('showShippingInfo')}
+    userWalletAddress={userWalletAddress}
+    withdrawingItemId={'test'}
+    ownTokens={[]}
+    showShippingInfoModal={false}
+    shippingInfo={undefined}
+    accountDisplayName={''}
+    accountBio={''}
+    accountProfileUrl={undefined}
+    accountInstagramAccountName={undefined}
+    accountTwitterAccountName={undefined}
+    accountSiteUrl={undefined}
+    accountLoading={false}
+    accountOnClickEdit={action('accountOnClickEdit')}
   />
 )
 
@@ -37,6 +72,15 @@ export const NoWalletAddress: React.VFC = () => (
     ownTokens={[]}
     showShippingInfoModal={false}
     shippingInfo={undefined}
+    accountDisplayName={''}
+    accountBio={''}
+    accountProfileUrl={undefined}
+    accountInstagramAccountName={undefined}
+    accountTwitterAccountName={undefined}
+    accountSiteUrl={undefined}
+    accountLoading={false}
+    accountOnClickEdit={action('accountOnClickEdit')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -55,6 +99,15 @@ export const Loading: React.VFC = () => (
     ownTokens={[]}
     showShippingInfoModal={false}
     shippingInfo={undefined}
+    accountDisplayName={''}
+    accountBio={''}
+    accountProfileUrl={undefined}
+    accountInstagramAccountName={undefined}
+    accountTwitterAccountName={undefined}
+    accountSiteUrl={undefined}
+    accountLoading={false}
+    accountOnClickEdit={action('accountOnClickEdit')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -83,6 +136,15 @@ export const ShowShippingInfo: React.VFC = () => (
       tel: '00000000000',
       memo: 'memo',
     }}
+    accountDisplayName={''}
+    accountBio={''}
+    accountProfileUrl={undefined}
+    accountInstagramAccountName={undefined}
+    accountTwitterAccountName={undefined}
+    accountSiteUrl={undefined}
+    accountLoading={false}
+    accountOnClickEdit={action('accountOnClickEdit')}
+    onComplete={action('onComplete')}
   />
 )
 

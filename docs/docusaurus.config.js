@@ -20,8 +20,8 @@ module.exports = {
 
       items: [
         {
-          to: 'docs/api',
-          activeBasePath: 'docs/api',
+          to: 'docs/gettingStarted/Tutorial',
+          activeBasePath: 'docs/',
           label: 'Docs',
           position: 'left',
         },

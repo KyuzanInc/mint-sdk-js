@@ -13,6 +13,7 @@ export const Losing: React.VFC = () => (
     withdrawing={false}
     onWithdraw={action('onWithdraw')}
     onShowShippingInfo={action('onShowShippingInfo')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -24,6 +25,7 @@ export const Wining: React.VFC = () => (
     withdrawing={false}
     onWithdraw={action('onWithdraw')}
     onShowShippingInfo={action('onShowShippingInfo')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -38,6 +40,7 @@ export const Won: React.VFC = () => (
     withdrawing={false}
     onWithdraw={action('onWithdraw')}
     onShowShippingInfo={action('onShowShippingInfo')}
+    onComplete={action('onComplete')}
   />
 )
 
@@ -47,6 +50,55 @@ export const WonAndWait5min: React.VFC = () => (
     loading={false}
     item={{
       ...item,
+      endAt: subMinutes(new Date(), 4),
+    }}
+    withdrawing={false}
+    onWithdraw={action('onWithdraw')}
+    onShowShippingInfo={action('onShowShippingInfo')}
+    onComplete={action('onComplete')}
+  />
+)
+
+export const ShippingInfoIsBlank: React.VFC = () => (
+  <CardMyPage
+    userWalletAddress={''}
+    loading={false}
+    item={{
+      ...item,
+      type: 'nftWithPhysicalProduct',
+      physicalOrderStatus: 'shippingInfoIsBlank',
+      endAt: subMinutes(new Date(), 4),
+    }}
+    withdrawing={false}
+    onWithdraw={action('onWithdraw')}
+    onShowShippingInfo={action('onShowShippingInfo')}
+  />
+)
+
+export const ShippingProcessing: React.VFC = () => (
+  <CardMyPage
+    userWalletAddress={''}
+    loading={false}
+    item={{
+      ...item,
+      type: 'nftWithPhysicalProduct',
+      physicalOrderStatus: 'wip',
+      endAt: subMinutes(new Date(), 4),
+    }}
+    withdrawing={false}
+    onWithdraw={action('onWithdraw')}
+    onShowShippingInfo={action('onShowShippingInfo')}
+  />
+)
+
+export const Shipped: React.VFC = () => (
+  <CardMyPage
+    userWalletAddress={''}
+    loading={false}
+    item={{
+      ...item,
+      type: 'nftWithPhysicalProduct',
+      physicalOrderStatus: 'shipped',
       endAt: subMinutes(new Date(), 4),
     }}
     withdrawing={false}
@@ -62,6 +114,7 @@ export const Loading: React.VFC = () => (
     withdrawing={false}
     onWithdraw={action('onWithdraw')}
     onShowShippingInfo={action('onShowShippingInfo')}
+    onComplete={action('onComplete')}
   />
 )
 

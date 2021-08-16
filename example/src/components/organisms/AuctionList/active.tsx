@@ -1,5 +1,7 @@
 import { Item } from '@kyuzan/mint-sdk-js'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useCallback } from 'react'
+import { useAppDispatch } from '../../../redux/getStore'
+import { getItemsActionCreator } from '../../../redux/items'
 import {
   ListComponent,
   ListTitle,
@@ -17,6 +19,10 @@ type Props = {
 }
 
 export const LiveAuctionList: React.FC<Props> = ({ items }) => {
+  const dispatch = useAppDispatch()
+  const getItems = useCallback(() => {
+    dispatch(getItemsActionCreator() as any)
+  }, [])
   if (items.length === 0) {
     return (
       <ListComponent>
@@ -38,7 +44,7 @@ export const LiveAuctionList: React.FC<Props> = ({ items }) => {
         {items.map((item, i) => {
           return (
             <CardList key={i}>
-              <ActiveCard item={item} />
+              <ActiveCard onAuctionFinish={getItems} item={item} />
             </CardList>
           )
         })}

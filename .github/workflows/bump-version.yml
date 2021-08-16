@@ -1,0 +1,29 @@
+name: bump-version
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: install
+        run: |
+          npm ci
+      - name: build
+        run: npm run build:production
+      - name: Automated Version Bump
+        id: version-bump
+        uses: 'phips28/gh-action-bump-version@master'
+        with:
+          tag-prefix: 'v'
+          commit-message: 'CI: bumps version to {{version}} [skip ci]'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
