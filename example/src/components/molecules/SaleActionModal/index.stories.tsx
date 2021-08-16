@@ -7,7 +7,8 @@ import { Item } from '@kyuzan/mint-sdk-js'
 const eventsFromObject = actions({
   closeModal: 'clicked',
   onChangeInput: 'hovered',
-  doAction: 'ded',
+  doBuy: 'doBuy',
+  doBid: 'doBid',
   addCalender: 'calender',
 })
 
