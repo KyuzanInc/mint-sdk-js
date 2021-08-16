@@ -4,7 +4,7 @@ import { Tag as TagBase } from '../../atoms/Tag'
 import { color, font } from '../../../style'
 import { BidButton } from '../../molecules/Button/bid'
 import { WalletModal } from '../../molecules/WalletModal'
-import { BidModal } from '../../molecules/BidModal'
+import { SaleActionModal } from '../../molecules/SaleActionModal'
 import { AboutPhysicalModal } from '../../molecules/AboutPhysicalModal'
 import { AboutAutoExtensionAuctionModal } from '../../molecules/AboutAutoExtensionAuctionModal'
 import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
@@ -26,8 +26,8 @@ type Props = {
   aboutAutoExtensionAuctionModalIsOpen: boolean
   handleCloseAutoExtensionModal: () => void
   handleOpenAutoExtensionModal: () => void
-  handleOpenBidModal: () => void
-  auctionIsOutOfDate: boolean
+  handleOpenSaleActionModal: () => void
+  saleIsOutOfDate: boolean
   connectWalletModalIsOpen: boolean
   handleConnectWallet: () => void
   handleCloseConnectWalletModal: () => void
@@ -39,6 +39,7 @@ type Props = {
   handleChangeInputPrice: ChangeEventHandler<HTMLInputElement>
   bidPrice: string
   handleDoBid: () => void
+  handleDoBuy: (inJapan: boolean) => void
   isValidationError: boolean
   errorText: string
   status?: Status
@@ -53,8 +54,8 @@ export const Presentation: React.VFC<Props> = ({
   item,
   handleOpenPhysicalModal,
   handleOpenAutoExtensionModal,
-  handleOpenBidModal,
-  auctionIsOutOfDate,
+  handleOpenSaleActionModal: handleOpenBidModal,
+  saleIsOutOfDate,
   connectWalletModalIsOpen,
   connectingWallet,
   handleConnectWallet,
@@ -66,6 +67,7 @@ export const Presentation: React.VFC<Props> = ({
   handleChangeInputPrice,
   bidPrice,
   handleDoBid,
+  handleDoBuy,
   loading,
   isValidationError,
   errorText,
@@ -75,6 +77,8 @@ export const Presentation: React.VFC<Props> = ({
   if (loading) {
     return <LoadingItemDetailComponent />
   }
+
+  const isBought = typeof item?.buyerAddress === 'string'
 
   return (
     <>
@@ -89,11 +93,13 @@ export const Presentation: React.VFC<Props> = ({
         {item?.tradeType === 'autoExtensionAuction' && (
           <Tag label={'自動延長オークション'} />
         )}
+        {item?.tradeType === 'fixedPrice' && <Tag label={'固定価格販売'} />}
         <TradeInfoContainer>
           <StatusDetail
             unit={getPriceUnit(item ? item.networkId : 4)}
             price={getItemPrice(item)}
             endAt={item?.endAt ?? new Date()}
+            tradeType={item?.tradeType ?? 'fixedPrice'}
           />
         </TradeInfoContainer>
 
@@ -124,9 +130,18 @@ export const Presentation: React.VFC<Props> = ({
             <QuestionText>自動延長オークション</QuestionText>
           </QuestionButton>
         )}
-        {!auctionIsOutOfDate && (
-          <BidButton label={'PLACE A BID'} onClick={handleOpenBidModal} />
+        {!saleIsOutOfDate && !isBought && (
+          <BidButton
+            label={
+              item?.tradeType === 'autoExtensionAuction'
+                ? '入札する'
+                : '購入する'
+            }
+            onClick={handleOpenBidModal}
+          />
         )}
+
+        {isBought && 'Sold'}
 
         <Description>{item?.description}</Description>
         <ExternalLinkUL>
@@ -152,7 +167,7 @@ export const Presentation: React.VFC<Props> = ({
         connectWallet={handleConnectWallet}
         closeModal={handleCloseConnectWalletModal}
       />
-      <BidModal
+      <SaleActionModal
         item={item}
         price={getItemPrice(item)}
         endAt={item?.endAt ?? new Date()}
@@ -164,6 +179,7 @@ export const Presentation: React.VFC<Props> = ({
         loading={bidding}
         closeModal={handleCloseBidModal}
         doBid={handleDoBid}
+        doBuy={handleDoBuy}
         bidPrice={bidPrice}
         onChangeInput={handleChangeInputPrice}
         isValidationError={isValidationError}

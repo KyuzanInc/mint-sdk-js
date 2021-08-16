@@ -19,7 +19,7 @@ export const EndedAuctionList: React.FC<Props> = ({ items }) => {
     return (
       <ListComponent>
         <ListTitle>
-          <Title>Ended Sale</Title>
+          <Title>End</Title>
         </ListTitle>
         <EmptyTitle>No Items</EmptyTitle>
       </ListComponent>
@@ -28,7 +28,7 @@ export const EndedAuctionList: React.FC<Props> = ({ items }) => {
   return (
     <ListComponent>
       <ListTitle>
-        <Title>Ended Sale</Title>
+        <Title>End</Title>
       </ListTitle>
       <CardUL>
         {items.map((item, i) => {

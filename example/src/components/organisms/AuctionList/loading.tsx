@@ -15,7 +15,7 @@ export const LoadingList: React.FC = () => {
       <ListComponent>
         <ListTitle>
           <ActiveStatus />
-          <Title>Live Auctions</Title>
+          <Title>Live</Title>
         </ListTitle>
         <CardUL>
           <CardList>
@@ -31,7 +31,7 @@ export const LoadingList: React.FC = () => {
       </ListComponent>
       <ListComponent>
         <ListTitle>
-          <Title>Ended Auctions</Title>
+          <Title>End</Title>
         </ListTitle>
         <CardUL>
           <CardList>

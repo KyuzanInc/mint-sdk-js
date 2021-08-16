@@ -15,7 +15,7 @@ export const TransactionStatus: React.FC<Props> = ({ item, hash }) => {
     <Container>
       <StatusContainer>
         <Title>ステータス</Title>
-        <Status>入札処理中</Status>
+        <Status>処理中</Status>
       </StatusContainer>
       <TransactionContainer>
         <Title>トランザクション</Title>

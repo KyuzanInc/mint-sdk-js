@@ -19,7 +19,7 @@ export const Presentation: React.VFC<Props> = ({
     <History>
       <Label>History</Label>
       {!loading && history.length === 0 ? (
-        <EmptyHistory>No Bids</EmptyHistory>
+        <EmptyHistory>No Histories</EmptyHistory>
       ) : (
         <HistoryUL>
           {loading &&

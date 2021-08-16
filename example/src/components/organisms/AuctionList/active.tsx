@@ -28,7 +28,7 @@ export const LiveAuctionList: React.FC<Props> = ({ items }) => {
       <ListComponent>
         <ListTitle>
           <ActiveStatus />
-          <Title>On Sale</Title>
+          <Title>Live</Title>
         </ListTitle>
         <EmptyTitle>No Items</EmptyTitle>
       </ListComponent>
@@ -38,7 +38,7 @@ export const LiveAuctionList: React.FC<Props> = ({ items }) => {
     <ListComponent>
       <ListTitle>
         <ActiveStatus />
-        <Title>On Sale</Title>
+        <Title>Live</Title>
       </ListTitle>
       <CardUL>
         {items.map((item, i) => {

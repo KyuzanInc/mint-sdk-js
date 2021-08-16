@@ -1,18 +1,18 @@
 import React from 'react'
 import { actions } from '@storybook/addon-actions'
-import { BidModal } from '.'
+import { SaleActionModal } from '.'
 import { addDays } from 'date-fns'
 import { Item } from '@kyuzan/mint-sdk-js'
 
 const eventsFromObject = actions({
   closeModal: 'clicked',
   onChangeInput: 'hovered',
-  doBid: 'ded',
+  doAction: 'ded',
   addCalender: 'calender',
 })
 
 export const Basic: React.VFC = () => (
-  <BidModal
+  <SaleActionModal
     item={item}
     endAt={addDays(new Date(), 10)}
     price={21.1}
@@ -26,13 +26,13 @@ export const Basic: React.VFC = () => (
     loading={false}
     unit={'ETH'}
     bidPrice={'1'}
-    status={'bid'}
+    status={undefined}
     {...eventsFromObject}
   />
 )
 
 export const LongName: React.VFC = () => (
-  <BidModal
+  <SaleActionModal
     item={longNameItem}
     endAt={addDays(new Date(), 10)}
     price={21.1}
@@ -46,13 +46,13 @@ export const LongName: React.VFC = () => (
     loading={false}
     unit={'ETH'}
     bidPrice={'1'}
-    status={'bid'}
+    status={undefined}
     {...eventsFromObject}
   />
 )
 
 export const ValidationError: React.VFC = () => (
-  <BidModal
+  <SaleActionModal
     item={item}
     endAt={addDays(new Date(), 10)}
     price={21.1}
@@ -68,13 +68,13 @@ export const ValidationError: React.VFC = () => (
     bidPrice={'0.2'}
     isValidationError={true}
     errorText={'Your bid must be at least 1 ETH'}
-    status={'bid'}
+    status={undefined}
     {...eventsFromObject}
   />
 )
 
 export const Success: React.VFC = () => (
-  <BidModal
+  <SaleActionModal
     item={item}
     endAt={addDays(new Date(), 10)}
     price={21.1}
@@ -90,7 +90,7 @@ export const Success: React.VFC = () => (
     bidPrice={'0.2'}
     isValidationError={true}
     errorText={'Your bid must be at least 1 ETH'}
-    status={'success'}
+    status={'bidSuccess'}
     {...eventsFromObject}
   />
 )

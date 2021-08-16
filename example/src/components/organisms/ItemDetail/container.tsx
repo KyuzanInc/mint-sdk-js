@@ -3,7 +3,11 @@ import { dialogSlice } from '../../../redux/dialog'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { getHistoryActionCreator } from '../../../redux/history'
 import { getItemActionCreator } from '../../../redux/item'
-import { bidActionCreator, transactionSlice } from '../../../redux/transaction'
+import {
+  bidActionCreator,
+  buyFixedPriceItemActionCreator,
+  transactionSlice,
+} from '../../../redux/transaction'
 import {
   connectWalletActionCreator,
   initialWalletActionCreator,
@@ -84,6 +88,19 @@ export const Container: React.VFC = () => {
     )
   }, [item, bidPrice])
 
+  const doBuy = useCallback(
+    async (inJapan: boolean) => {
+      if (!item) return
+      dispatch(
+        buyFixedPriceItemActionCreator({
+          itemId: item.itemId,
+          inJapan,
+        }) as any
+      )
+    },
+    [item]
+  )
+
   const [walletModalIsOpen, setWalletModalIsOpen] = useState(false)
   const closeWalletModal = useCallback(() => setWalletModalIsOpen(false), [])
   const openWalletModal = useCallback(() => setWalletModalIsOpen(true), [])
@@ -160,19 +177,20 @@ export const Container: React.VFC = () => {
       }
       handleOpenAutoExtensionModal={openAutoExtensionModal}
       handleCloseAutoExtensionModal={closeAutoExtensionModal}
-      auctionIsOutOfDate={auctionIsOutOfDate}
+      saleIsOutOfDate={auctionIsOutOfDate}
       connectingWallet={waitingWallet}
       connectWalletModalIsOpen={walletModalIsOpen}
       handleCloseConnectWalletModal={closeWalletModal}
       handleConnectWallet={connectWallet}
       userWalletBalance={walletInfo?.balance}
       bidModalOpen={bidModalIsOpen}
-      handleOpenBidModal={handleDoBid}
+      handleOpenSaleActionModal={handleDoBid}
       handleCloseBidModal={closeBidModal}
       handleChangeInputPrice={onChangeInput}
       bidding={bidding}
       bidPrice={bidPrice}
       handleDoBid={doBid}
+      handleDoBuy={doBuy}
       isValidationError={isError}
       errorText={errorText}
       status={status}

@@ -474,7 +474,7 @@ export class MintSDK {
     const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(address, abi, signer)
-    if (item.tradeType === 'fixedPrice') {
+    if (item.tradeType !== 'autoExtensionAuction') {
       throw new Error("Item's tradeType is not auction")
     }
     const initialPrice = ethers.utils
@@ -541,7 +541,7 @@ export class MintSDK {
     const { abi, address } = await this.getMintShopContractInfo(item.networkId)
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(address, abi, signer)
-    if (item.tradeType === 'fixedPrice') {
+    if (item.tradeType !== 'autoExtensionAuction') {
       throw new Error("Item's tradeType is not auction")
     }
     const sign = await this.apiClient.getItemSignedDataBuyAuction(
@@ -610,6 +610,15 @@ export class MintSDK {
       throw new Error("Item's tradeType is not fixedPrice")
     }
 
+    const {
+      data: {
+        data: { signedData },
+      },
+    } = await this.apiClient.getItemSignedDataFixedPrice(
+      this.accessToken,
+      itemId
+    )
+
     const price = ethers.utils
       .parseEther((item.price as number).toString())
       .toString()
@@ -620,7 +629,7 @@ export class MintSDK {
       item.authorAddress,
       price,
       item.feeRatePermill,
-      item.signatureBuyFixedPrice,
+      signedData,
       {
         value: price,
       }

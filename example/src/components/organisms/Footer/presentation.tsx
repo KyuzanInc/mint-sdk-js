@@ -52,9 +52,6 @@ export const Presentation: React.VFC<Props> = ({
 }
 
 const FooterContainer = styled.nav`
-  position: fixed;
-  left: 0;
-  bottom: 0;
   height: 128px;
   padding: 0px 180px;
   width: 100%;
