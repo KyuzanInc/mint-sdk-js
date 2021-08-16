@@ -2,11 +2,11 @@ import styled from '@emotion/styled'
 import { action } from '@storybook/addon-actions'
 import { addDays, subDays } from 'date-fns'
 import React from 'react'
-import { AuctionInfo } from '.'
+import { SaleInfo } from '.'
 
 export const Live: React.VFC = () => (
   <Container>
-    <AuctionInfo
+    <SaleInfo
       tradeType={'auction'}
       startAt={new Date()}
       endAt={addDays(new Date(), 10)}
@@ -20,7 +20,7 @@ export const Live: React.VFC = () => (
 
 export const LivePolygon: React.VFC = () => (
   <Container>
-    <AuctionInfo
+    <SaleInfo
       tradeType={'auction'}
       startAt={new Date()}
       endAt={addDays(new Date(), 10)}
@@ -34,7 +34,7 @@ export const LivePolygon: React.VFC = () => (
 
 export const End: React.VFC = () => (
   <Container>
-    <AuctionInfo
+    <SaleInfo
       tradeType={'auction'}
       startAt={new Date()}
       endAt={subDays(new Date(), 10)}

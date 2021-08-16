@@ -6,7 +6,7 @@ import { EmptyTitle, CardList } from '../../atoms/CardList'
 import { CardUL } from '../../atoms/CardList'
 import { Tabs } from '../../atoms/Tabs'
 import { AccountInfo } from '../../molecules/AccountInfo'
-import { EndedCard } from '../../molecules/Card/ended'
+import { Card } from '../../molecules/Card'
 import { LoadingCard } from '../../molecules/Card/loading'
 
 type Props = {
@@ -68,7 +68,7 @@ export const Presentation: React.VFC<Props> = ({
             ownTokens.map((item) => {
               return (
                 <CardList key={item.item.itemId}>
-                  <EndedCard item={item.item} />
+                  <Card item={item.item} loading={false} />
                 </CardList>
               )
             })}
