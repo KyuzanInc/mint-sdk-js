@@ -403,11 +403,12 @@ export class MintSDK {
       page: 1,
     }
   ) => {
-    const { data } = await this.axios.get<
-      AxiosBody<Omit<ItemLog[], 'createAt'>>
-    >('v2_itemLogs', {
-      params: { itemId, page: paging.page, perPage: paging.perPage },
-    })
+    const { data } = await this.apiClient.getItemLogs(
+      this.accessToken,
+      paging.perPage.toString(),
+      paging.page.toString(),
+      itemId
+    )
     const logs = data.data
     return logs.map((l) => ({
       ...l,
