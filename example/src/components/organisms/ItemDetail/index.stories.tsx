@@ -155,9 +155,6 @@ const loseItem: Item = {
   startAt: new Date(),
   endAt: addDays(new Date(), 1),
   initialPrice: 1,
-  signatureBuyAuction: undefined,
-  signatureBidAuction: undefined,
-  signatureBuyFixedPrice: undefined,
   chainType: 'ethereum',
   collectionId: 'xxxx', // uuidv4
   mintContractAddress: '',
