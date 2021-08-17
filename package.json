@@ -1,7 +1,7 @@
 {
   "name": "@kyuzan/mint-sdk-js",
   "description": "MINT NFT Platform Client SDK",
-  "version": "5.4.4",
+  "version": "5.4.5",
   "dependencies": {
     "agentkeepalive": "^4.1.4",
     "axios": "^0.21.1",
