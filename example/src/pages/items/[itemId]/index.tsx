@@ -1,15 +1,15 @@
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect } from 'react'
-import { History } from '../../components/organisms/History'
-import { useAppDispatch, useAppSelector } from '../../redux/getStore'
-import { getItemActionCreator } from '../../redux/item'
-import { color } from '../../style'
-import { ItemDetail } from '../../components/organisms/ItemDetail'
-import { getHistoryActionCreator } from '../../redux/history'
+import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
+import { getItemActionCreator } from '../../../redux/item'
+import { color } from '../../../style'
+import { getHistoryActionCreator } from '../../../redux/history'
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import CommonMeta from '../../components/atoms/CommonMeta'
-import { MediaContent } from '../../components/atoms/MediaContent'
+import CommonMeta from '../../../components/atoms/CommonMeta'
+import { MediaContent } from '../../../components/atoms/MediaContent'
+import { ItemDetail } from '../../../components/organisms/ItemDetail'
+import { HistoryList } from '../../../components/organisms/HistoryList'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const host = context.req.headers.host
@@ -61,7 +61,7 @@ const ItemDetailPage: NextPage<
       </MediaContainer>
       <DetailContainer>
         <ItemDetail />
-        <History />
+        <HistoryList />
       </DetailContainer>
     </Container>
   )

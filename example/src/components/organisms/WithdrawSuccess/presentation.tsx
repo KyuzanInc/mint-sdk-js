@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import React from 'react'
-import { DrawerModal } from '../../components/molecules/DrawerModal'
-import { color } from '../../style'
+import { WithdrawModal } from '../../molecules/WithdrawModal'
+import { color } from '../../../style'
 
 type Props = {
   item: Item
@@ -13,7 +13,7 @@ export const Presentation: React.VFC<Props> = ({ item }) => {
   return (
     <Container>
       <InnerContainer>
-        <DrawerModal item={item} bidHash={''}/>
+        <WithdrawModal item={item} bidHash={''} />
       </InnerContainer>
     </Container>
   )
@@ -27,7 +27,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 72px;
+  padding-top: 170px;
   margin: auto;
 `
 

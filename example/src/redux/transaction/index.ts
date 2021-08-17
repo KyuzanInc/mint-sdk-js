@@ -46,7 +46,7 @@ export const bidActionCreator = createAsyncThunk<
 })
 
 export const withDrawItemActionCreator = createAsyncThunk<
-  void,
+  string,
   { itemId: string },
   {
     rejectValue: string
@@ -58,6 +58,7 @@ export const withDrawItemActionCreator = createAsyncThunk<
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
     // TODO: おめでとう画面に遷移させる
+    return tx.hash
   } catch (err) {
     return thunkApi.rejectWithValue('引き出しに失敗しました')
   }
@@ -87,9 +88,13 @@ export const transactionSlice = createSlice({
       state.meta.error = payload
       state.meta.bidding = false
     })
-    builder.addCase(withDrawItemActionCreator.fulfilled, (state) => {
-      state.meta.withdrawingItemId = undefined
-    })
+    builder.addCase(
+      withDrawItemActionCreator.fulfilled,
+      (state, { payload }) => {
+        state.meta.withdrawingItemId = undefined
+        state.meta.bidHash = payload
+      }
+    )
     builder.addCase(withDrawItemActionCreator.pending, (state, action) => {
       state.meta.withdrawingItemId = action.meta.arg.itemId
       state.meta.error = undefined

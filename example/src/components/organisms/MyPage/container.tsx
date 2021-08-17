@@ -67,8 +67,8 @@ export const Container: React.VFC = () => {
       return
     }
     await dispatch(withDrawItemActionCreator({ itemId }) as any)
-    // TODO: おめでとう画面に遷移させる
-    window.location.reload()
+    router.push(`/items/${itemId}/withdraw`)
+    // window.location.reload()
   }
 
   const shippingInfo = useAppSelector(

@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
-import Link from 'next/link'
 import React from 'react'
 import { color, font } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
@@ -12,7 +11,6 @@ type Props = {
   bidHash?: string
 }
 
-
 type ModalContentProps = {
   url: string
   tweetUrl: string
@@ -20,21 +18,24 @@ type ModalContentProps = {
   bidHash?: string
 }
 
-export const DrawerModal: React.VFC<Props> = ({ item }) => {
+export const WithdrawModal: React.VFC<Props> = ({ item }) => {
   return (
     <Container>
       <MediaContainer>
         <MediaContent media={item?.previews[0]} height={520} />
       </MediaContainer>
       <Right>
-        <ModalContent url={''} tweetUrl={''} item={item}/>
+        <ModalContent url={''} tweetUrl={''} item={item} />
       </Right>
     </Container>
   )
 }
 
-
-const ModalContent: React.VFC<ModalContentProps> = ({ url, tweetUrl, item, bidHash}) => {
+const ModalContent: React.VFC<ModalContentProps> = ({
+  item,
+  bidHash,
+}) => {
+  const url = window.location.href;
   return (
     <ModalContainer>
       <Typography>Congratulation on getting your NFT !</Typography>
@@ -48,32 +49,31 @@ const ModalContent: React.VFC<ModalContentProps> = ({ url, tweetUrl, item, bidHa
         <TransactionStatus item={item} hash={bidHash ?? ''} />
       </TransactionContainer>
       <PromotionContainer>
-        <PromotionText>
-          待っている間、
-          ちょっと自慢しませんか？
-        </PromotionText>
+        <PromotionText>待っている間、 ちょっと自慢しませんか？</PromotionText>
         <IconList>
           <Icon>
-            <Link passHref href={'//twitter.com/share'}>
-              <IconButton imagePath={'/images/twitter_icon.svg'} href={'//twitter.com/share'}/>
-            </Link>
+            <IconButton
+              imagePath={'/images/twitter_icon.svg'}
+              href={`http://twitter.com/share?url=${url}&text=NFTアイテムを手に入れました！`}
+            />
           </Icon>
           <Icon>
-            <Link passHref href={tweetUrl} >
-            <IconButton imagePath={'/images/facebook.svg'} href={'//twitter.com/share'}/>
-            </Link>
+            <IconButton
+              imagePath={'/images/facebook.svg'}
+              href={""}
+            />
           </Icon>
           <Icon>
-            <Link passHref href={tweetUrl}>
-            <IconButton imagePath={'/images/paperclip.svg'} href={'//twitter.com/share'}/>
-            </Link>
+            <IconButton
+              imagePath={'/images/paperclip.svg'}
+              href={'//twitter.com/share'}
+            />
           </Icon>
         </IconList>
       </PromotionContainer>
     </ModalContainer>
   )
 }
-
 
 const Container = styled.article`
   max-width: 880px;

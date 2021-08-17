@@ -1,12 +1,14 @@
 import React from 'react'
-import { DrawerModal } from '.'
+import { WithdrawModal } from '.'
 import { addDays } from 'date-fns/esm'
 import { Item } from '@kyuzan/mint-sdk-js'
 
-export const Success: React.VFC = () => <DrawerModal item={item} bidHash={''}/>
+export const Success: React.VFC = () => (
+  <WithdrawModal item={item} bidHash={''} />
+)
 
 export default {
-  title: 'molecules/DrawerModal',
+  title: 'molecules/WithdrawModal',
 }
 
 const item: Item = {

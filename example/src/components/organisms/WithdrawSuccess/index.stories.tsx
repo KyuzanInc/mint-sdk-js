@@ -3,10 +3,10 @@ import { Item } from '@kyuzan/mint-sdk-js'
 import { addDays } from 'date-fns'
 import { Presentation } from './presentation'
 
-export const Basic: React.VFC = () => <Presentation item={item} />
+export const Basic: React.VFC = () => <Presentation item={item} bidHash={''} />
 
 export default {
-  title: 'page/SuccessPage',
+  title: 'organism/WithDrawSuccess',
 }
 
 const userWalletAddress = '0x000000'

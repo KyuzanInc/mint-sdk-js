@@ -11,16 +11,23 @@ type Props = {
   dataUrl?: string
 }
 
-export const IconButton: React.VFC<Props> = ({ className, imagePath,  href, text, dataUrl }) => {
+export const IconButton: React.VFC<Props> = ({
+  className,
+  imagePath,
+  href,
+  text,
+  dataUrl,
+}) => {
   return (
-    <ButtonBase className={className} href={href} data-text={text} data-url={dataUrl}>
+    <ButtonBase
+      className={className}
+      href={href}
+      data-text={text}
+      data-url={dataUrl}
+      target='blank'
+    >
       <Icon>
-        <Image
-          width={24}
-          height={24}
-          layout={'fixed'}
-          src={imagePath}
-        />
+        <Image width={24} height={24} layout={'fixed'} src={imagePath} />
       </Icon>
     </ButtonBase>
   )

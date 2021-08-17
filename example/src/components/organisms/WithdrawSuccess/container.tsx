@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
-import { getItemActionCreator } from '../../redux/item'
+import { getItemActionCreator } from '../../../redux/item'
 import { Presentation } from './presentation'
 
 export const Container: React.VFC = () => {
@@ -12,8 +12,10 @@ export const Container: React.VFC = () => {
   const item = useAppSelector((state: { app: { item: { data: any } } }) => {
     return state.app.item.data
   })
-  const bidHash = useAppSelector((state: { app: { transaction: { meta: { bidHash: string } } } }) => state.app.transaction.meta.bidHash)
-
+  const bidHash = useAppSelector(
+    (state: { app: { transaction: { meta: { bidHash: string } } } }) =>
+      state.app.transaction.meta.bidHash
+  )
 
   const getItem = useCallback(() => {
     if (typeof itemId === 'string') {
