@@ -405,9 +405,9 @@ export class MintSDK {
   ) => {
     const { data } = await this.apiClient.getItemLogs(
       this.accessToken,
+      itemId,
       paging.perPage.toString(),
-      paging.page.toString(),
-      itemId
+      paging.page.toString()
     )
     const logs = data.data
     return logs.map((l) => ({
