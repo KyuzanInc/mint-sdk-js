@@ -576,7 +576,7 @@ export interface ItemLog {
      * @type {string}
      * @memberof ItemLog
      */
-    transactionHash?: string;
+    transactionHash: string;
 }
 
 /**
@@ -1058,15 +1058,17 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Itemに紐づくコントラクトイベントを取得
          * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
          * @param {string} [perPage] 
          * @param {string} [page] 
-         * @param {string} [itemId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemLogs: async (annapurnaAccessToken: string, perPage?: string, page?: string, itemId?: string, options: any = {}): Promise<RequestArgs> => {
+        getItemLogs: async (annapurnaAccessToken: string, itemId: string, perPage?: string, page?: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'annapurnaAccessToken' is not null or undefined
             assertParamExists('getItemLogs', 'annapurnaAccessToken', annapurnaAccessToken)
+            // verify required parameter 'itemId' is not null or undefined
+            assertParamExists('getItemLogs', 'itemId', itemId)
             const localVarPath = `/v2_itemLogs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1397,14 +1399,14 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary Itemに紐づくコントラクトイベントを取得
          * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
          * @param {string} [perPage] 
          * @param {string} [page] 
-         * @param {string} [itemId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemLogs(annapurnaAccessToken: string, perPage?: string, page?: string, itemId?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemLogs(annapurnaAccessToken, perPage, page, itemId, options);
+        async getItemLogs(annapurnaAccessToken: string, itemId: string, perPage?: string, page?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemLogs(annapurnaAccessToken, itemId, perPage, page, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1534,14 +1536,14 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary Itemに紐づくコントラクトイベントを取得
          * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
          * @param {string} [perPage] 
          * @param {string} [page] 
-         * @param {string} [itemId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemLogs(annapurnaAccessToken: string, perPage?: string, page?: string, itemId?: string, options?: any): AxiosPromise<InlineResponse200> {
-            return localVarFp.getItemLogs(annapurnaAccessToken, perPage, page, itemId, options).then((request) => request(axios, basePath));
+        getItemLogs(annapurnaAccessToken: string, itemId: string, perPage?: string, page?: string, options?: any): AxiosPromise<InlineResponse200> {
+            return localVarFp.getItemLogs(annapurnaAccessToken, itemId, perPage, page, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1673,15 +1675,15 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary Itemに紐づくコントラクトイベントを取得
      * @param {string} annapurnaAccessToken 
+     * @param {string} itemId 
      * @param {string} [perPage] 
      * @param {string} [page] 
-     * @param {string} [itemId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItemLogs(annapurnaAccessToken: string, perPage?: string, page?: string, itemId?: string, options?: any) {
-        return DefaultApiFp(this.configuration).getItemLogs(annapurnaAccessToken, perPage, page, itemId, options).then((request) => request(this.axios, this.basePath));
+    public getItemLogs(annapurnaAccessToken: string, itemId: string, perPage?: string, page?: string, options?: any) {
+        return DefaultApiFp(this.configuration).getItemLogs(annapurnaAccessToken, itemId, perPage, page, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
