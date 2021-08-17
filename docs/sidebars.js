@@ -2,6 +2,7 @@ module.exports = {
   main: {
     'Getting Started': [
       'gettingStarted/Tutorial',
+      'gettingStarted/TutorialFixedPrice',
       'gettingStarted/PhysicalItem',
       'gettingStarted/UserAccountInfo',
     ],
