@@ -131,18 +131,6 @@ export type Item = {
    * tradeType === 'auction` の時だけ値が入る
    * */
   initialPrice?: number
-  /**
-   * @ignore
-   */
-  signatureBuyAuction: string | undefined
-  /**
-   * @ignore
-   */
-  signatureBidAuction: string | undefined
-  /**
-   * @ignore
-   */
-  signatureBuyFixedPrice: string | undefined
   chainType: 'ethereum'
   collectionId: string // uuidv4
   mintContractAddress: string

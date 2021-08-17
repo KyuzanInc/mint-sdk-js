@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
 import { color, font } from '../../../style'
@@ -12,6 +12,7 @@ import { SimpleButton } from '../../atoms/SimpleButton'
 import { format, subMinutes } from 'date-fns'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { Status } from '../../../redux/transaction'
+import { ToolTip } from '../../atoms/ToolTip'
 
 type Props = {
   item: Item | undefined
@@ -26,23 +27,12 @@ type Props = {
   unit: string
   bidPrice: string
   onChangeInput: React.ChangeEventHandler<HTMLInputElement>
+  doBuy: (inJapan: boolean) => void
   doBid: () => void
   isValidationError?: boolean
   errorText?: string
   status?: Status
   bidHash?: string
-}
-
-type BidStatusProps = {
-  minBidPrice: number | undefined
-  walletBalance: string | undefined
-  loading: boolean
-  unit: string
-  bidPrice: string
-  onChangeInput: React.ChangeEventHandler<HTMLInputElement>
-  doBid: () => void
-  isValidationError?: boolean
-  errorText?: string
 }
 
 const customStyles: Styles = {
@@ -64,7 +54,7 @@ const customStyles: Styles = {
   },
 }
 
-export const BidModal: React.VFC<Props> = ({
+export const SaleActionModal: React.VFC<Props> = ({
   closeModal,
   isOpen,
   loading,
@@ -74,6 +64,7 @@ export const BidModal: React.VFC<Props> = ({
   bidPrice,
   onChangeInput,
   doBid,
+  doBuy,
   media,
   endAt,
   price,
@@ -98,12 +89,17 @@ export const BidModal: React.VFC<Props> = ({
             </MediaContainer>
             <InfoContainer>
               <ItemName>{item?.name ?? ''}</ItemName>
-              <StatusDetail endAt={endAt} price={price} unit={unit} />
+              <StatusDetail
+                endAt={endAt}
+                price={price}
+                unit={unit}
+                tradeType={item?.tradeType ?? 'fixedPrice'}
+              />
             </InfoContainer>
           </Left>
           <Right>
-            {status === 'bid' && (
-              <BidStatus
+            {status === null && item?.tradeType === 'autoExtensionAuction' && (
+              <AuctionSaleAction
                 loading={loading}
                 minBidPrice={minBidPrice}
                 walletBalance={walletBalance}
@@ -115,8 +111,22 @@ export const BidModal: React.VFC<Props> = ({
                 errorText={errorText}
               />
             )}
-            {status === 'success' && (
-              <SuccessStatus item={item} endAt={endAt} bidHash={bidHash} />
+            {status === null && item?.tradeType === 'fixedPrice' && (
+              <FixedSaleAction
+                loading={loading}
+                unit={unit}
+                price={item.price}
+                doBuy={doBuy}
+                isValidationError={isValidationError}
+                errorText={errorText}
+              />
+            )}
+            {status === 'bidSuccess' && (
+              <BidSuccessStatus item={item} endAt={endAt} bidHash={bidHash} />
+            )}
+
+            {status === 'buySuccess' && (
+              <BuySuccessStatus item={item} hash={bidHash} />
             )}
           </Right>
         </Content>
@@ -133,7 +143,17 @@ export const BidModal: React.VFC<Props> = ({
   )
 }
 
-const BidStatus: React.VFC<BidStatusProps> = ({
+const AuctionSaleAction: React.VFC<{
+  minBidPrice: number | undefined
+  walletBalance: string | undefined
+  loading: boolean
+  unit: string
+  bidPrice: string
+  onChangeInput: React.ChangeEventHandler<HTMLInputElement>
+  doBid: () => void
+  isValidationError?: boolean
+  errorText?: string
+}> = ({
   loading,
   minBidPrice,
   walletBalance,
@@ -146,7 +166,7 @@ const BidStatus: React.VFC<BidStatusProps> = ({
 }) => {
   return (
     <>
-      <ContentTitle>Place a Bid </ContentTitle>
+      <ContentTitle>入札する</ContentTitle>
       <PriceRangeContainer>
         <PriceRangeItem>
           <PriceRangeTitle>MIN</PriceRangeTitle>
@@ -198,7 +218,73 @@ const BidStatus: React.VFC<BidStatusProps> = ({
   )
 }
 
-const SuccessStatus: React.VFC<any> = ({ item, endAt, bidHash }) => {
+const FixedSaleAction: React.VFC<{
+  price: number | undefined
+  loading: boolean
+  unit: string
+  doBuy: (inJapan: boolean) => void
+  isValidationError?: boolean
+  errorText?: string
+}> = ({ loading, unit, doBuy, isValidationError, errorText, price }) => {
+  const [inJapan, setInJapan] = useState(false)
+  return (
+    <>
+      <ContentTitle>購入を確定する</ContentTitle>
+      <InputPriceContainer>
+        <InputUnit>
+          {price} {unit}
+        </InputUnit>
+      </InputPriceContainer>
+      <CheckInJapanContainer>
+        <label>
+          <input
+            type={'checkbox'}
+            checked={inJapan}
+            onChange={(e) => setInJapan(e.target.checked)}
+          />{' '}
+          私は日本に在住しています
+          <ToolTip
+            description={
+              '入札される方が日本在住の場合、管理者が消費税をお支払いします'
+            }
+          >
+            <NotFoundIcon>
+              <Image
+                src={'/images/icons/help.svg'}
+                layout={'fixed'}
+                width={16}
+                height={16}
+              />
+            </NotFoundIcon>
+          </ToolTip>
+        </label>
+      </CheckInJapanContainer>
+      <ContentButtonContainer>
+        {isValidationError && (
+          <BidButton
+            label={errorText ?? ''}
+            isLoading={false}
+            onClick={() => doBuy(inJapan)}
+            disabled={true}
+          />
+        )}
+        {!isValidationError && (
+          <BidButton
+            label={loading ? '取引処理中です' : '購入'}
+            isLoading={loading}
+            onClick={() => doBuy(inJapan)}
+          />
+        )}
+      </ContentButtonContainer>
+    </>
+  )
+}
+
+const BidSuccessStatus: React.VFC<{
+  item: Item | undefined
+  endAt: Date
+  bidHash: string | undefined
+}> = ({ item, endAt, bidHash }) => {
   const title = `${item?.name ?? ''}:オークション終了予定時刻`
   const before = subMinutes(endAt, 15)
   const formattedBefore = format(before, "yyyyMMd'T'HHmmss")
@@ -223,7 +309,7 @@ const SuccessStatus: React.VFC<any> = ({ item, endAt, bidHash }) => {
         NFTは入札処理が完了した後、マイページで確認できるようになります。
       </Description>
       <TransactionContainer>
-        <TransactionStatus item={item} hash={bidHash} />
+        <TransactionStatus item={item} hash={bidHash ?? ''} />
       </TransactionContainer>
       <ContentButtonContainer>
         <AnchorLink href={calendarUrl} target="blank">
@@ -234,6 +320,32 @@ const SuccessStatus: React.VFC<any> = ({ item, endAt, bidHash }) => {
           />
         </AnchorLink>
       </ContentButtonContainer>
+    </>
+  )
+}
+
+const BuySuccessStatus: React.VFC<{
+  item: Item | undefined
+  hash: string | undefined
+}> = ({ item, hash }) => {
+  return (
+    <>
+      <TitleContainer>
+        <Image
+          layout={'fixed'}
+          src={'/images/check-circle.svg'}
+          width={44}
+          height={44}
+        />
+        <TitleContent>購入に成功しました</TitleContent>
+      </TitleContainer>
+      <Description>
+        NFTの購入が完了しました。<br></br>
+        処理が完了した後、マイページで確認できるようになります。
+      </Description>
+      <TransactionContainer>
+        <TransactionStatus item={item} hash={hash ?? ''} />
+      </TransactionContainer>
     </>
   )
 }
@@ -381,4 +493,14 @@ const AnchorLink = styled.a`
 
 const CalenderButton = styled(SimpleButton)`
   width: 100%;
+`
+
+const NotFoundIcon = styled.span`
+  margin-left: 4px;
+  height: 16px;
+  width: 16px;
+`
+
+const CheckInJapanContainer = styled.div`
+  margin-top: 8px;
 `

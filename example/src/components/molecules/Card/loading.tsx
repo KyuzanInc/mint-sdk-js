@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import Skeleton from 'react-loading-skeleton'
 
 import React from 'react'
-import { Card } from '.'
+import { CardBase } from './base'
 import {
   StatusContent,
   StatusTitle,
@@ -13,7 +13,7 @@ import {
 
 export const LoadingCard: React.FC = () => {
   return (
-    <Card href={''}>
+    <CardBase href={''}>
       <StatusBar />
       <Skeleton count={10} />
       <StatusContent>
@@ -36,7 +36,7 @@ export const LoadingCard: React.FC = () => {
           </Time>
         </StatusValue>
       </StatusContent>
-    </Card>
+    </CardBase>
   )
 }
 

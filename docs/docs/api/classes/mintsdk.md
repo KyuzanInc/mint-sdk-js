@@ -27,7 +27,7 @@ hide_title: true
 
 **Returns:** [*MintSDK*](mintsdk.md)
 
-Defined in: [src/index.ts:114](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L114)
+Defined in: [src/index.ts:97](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L97)
 
 ## Properties
 
@@ -55,9 +55,17 @@ await sdk.getWalletInfo()
 
 **Returns:** *Promise*<[*WalletInfo*](../modules.md#walletinfo)\>
 
-Defined in: [src/index.ts:250](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L250)
+Defined in: [src/index.ts:206](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L206)
 
-Defined in: [src/index.ts:250](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L250)
+Defined in: [src/index.ts:206](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L206)
+
+___
+
+### walletStrategy
+
+• `Private` **walletStrategy**: WalletStrategy
+
+Defined in: [src/index.ts:97](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L97)
 
 ## Methods
 
@@ -88,7 +96,7 @@ await sdk.connectWallet()
 await sdk.addEthereumChain(137)
 ```
 
-Defined in: [src/index.ts:1220](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L1220)
+Defined in: [src/index.ts:1125](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L1125)
 
 ___
 
@@ -111,7 +119,7 @@ await sdk.isWalletConnect()  // true
 
 **Returns:** *Promise*<void\>
 
-Defined in: [src/index.ts:206](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L206)
+Defined in: [src/index.ts:171](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L171)
 
 ___
 
@@ -132,13 +140,13 @@ await sdk.disconnectWallet()
 
 **Returns:** *Promise*<void\>
 
-Defined in: [src/index.ts:230](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L230)
+Defined in: [src/index.ts:187](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L187)
 
 ___
 
 ### getAccountInfo
 
-▸ **getAccountInfo**(`arg`: { `walletAddress`: *string*  }): *Promise*<AccountInfo\>
+▸ **getAccountInfo**(`arg`: { `walletAddress`: *string*  }): *Promise*<[*AccountInfo*](../interfaces/accountinfo.md)\>
 
 ユーザーのウォレットアドレスの画像や表示名を取得できる
 設定されていない場合は、各項目空文字が入っています
@@ -150,7 +158,7 @@ ___
 | `arg` | *object* |
 | `arg.walletAddress` | *string* |
 
-**Returns:** *Promise*<AccountInfo\>
+**Returns:** *Promise*<[*AccountInfo*](../interfaces/accountinfo.md)\>
 
 ```typescript
 import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -160,7 +168,7 @@ await sdk.connectWallet()
 const accountInfo = await sdk.getAccountInfo({ walletAddress: '0xxxxxxxx' })
 ```
 
-Defined in: [src/index.ts:1036](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L1036)
+Defined in: [src/index.ts:941](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L941)
 
 ___
 
@@ -180,7 +188,7 @@ await sdk.connectWallet()
 await sdk.getConnectedNetworkId()
 ```
 
-Defined in: [src/index.ts:880](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L880)
+Defined in: [src/index.ts:790](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L790)
 
 ___
 
@@ -204,7 +212,7 @@ const sdk = await MintSDK.initialize(...)
 const item = await sdk.getItemById('item.itemId')
 ```
 
-Defined in: [src/index.ts:428](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L428)
+Defined in: [src/index.ts:355](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L355)
 
 ___
 
@@ -228,13 +236,13 @@ const sdk = await MintSDK.initialize(...)
 const item = await sdk.getItemByToken(token)
 ```
 
-Defined in: [src/index.ts:445](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L445)
+Defined in: [src/index.ts:372](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L372)
 
 ___
 
 ### getItemLogs
 
-▸ **getItemLogs**(`itemId`: *string*, `paging?`: { `page`: *number* = 1; `perPage`: *number* = 30 }): *Promise*<[*ItemLog*](../modules.md#itemlog)[]\>
+▸ **getItemLogs**(`itemId`: *string*, `paging?`: { `page`: *number* = 1; `perPage`: *number* = 30 }): *Promise*<{ `accountAddress`: *string* ; `createAt`: Date ; `price`: *number* ; `transactionHash?`: *string* ; `type`: ItemLogTypeEnum  }[]\>
 
 アイテムの履歴(bidされた、買われた)の取得
 最新の物から返される
@@ -248,7 +256,7 @@ ___
 | `paging.page` | *number* | 1 | - |
 | `paging.perPage` | *number* | 30 | - |
 
-**Returns:** *Promise*<[*ItemLog*](../modules.md#itemlog)[]\>
+**Returns:** *Promise*<{ `accountAddress`: *string* ; `createAt`: Date ; `price`: *number* ; `transactionHash?`: *string* ; `type`: ItemLogTypeEnum  }[]\>
 
 ```typescript
 import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -257,13 +265,13 @@ const sdk = await MintSDK.initialize(...)
 const item = await sdk.getItemLogs('Item.itemId')
 ```
 
-Defined in: [src/index.ts:472](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L472)
+Defined in: [src/index.ts:399](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L399)
 
 ___
 
 ### getItemShippingInfo
 
-▸ **getItemShippingInfo**(`arg`: { `itemId`: *string*  }): *Promise*<InlineResponse2005\>
+▸ **getItemShippingInfo**(`arg`: { `itemId`: *string*  }): *Promise*<InlineResponse2006\>
 
 物理アイテム付きのItemの入力された発送先情報を取得
 {@link Items}セキュリティの観点から、ユーザーのSignが必要になります
@@ -282,9 +290,9 @@ ___
 | `arg` | *object* | itemId = [Item](../modules.md#item)のitemI |
 | `arg.itemId` | *string* | - |
 
-**Returns:** *Promise*<InlineResponse2005\>
+**Returns:** *Promise*<InlineResponse2006\>
 
-Defined in: [src/index.ts:984](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L984)
+Defined in: [src/index.ts:889](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L889)
 
 ___
 
@@ -327,7 +335,7 @@ const sdk = await MintSDK.initialize(...)
 const items = await sdk.getItems({ onSale: true })
 ```
 
-Defined in: [src/index.ts:334](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L334)
+Defined in: [src/index.ts:261](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L261)
 
 ___
 
@@ -351,17 +359,17 @@ const sdk = await MintSDK.initialize(...)
 const item = await sdk.getItemsByBidderAddress('0x1111......')
 ```
 
-Defined in: [src/index.ts:405](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L405)
+Defined in: [src/index.ts:332](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L332)
 
 ___
 
 ### getServerUnixTime
 
-▸ **getServerUnixTime**(): *Promise*<any\>
+▸ **getServerUnixTime**(): *Promise*<number\>
 
 サーバーのUnixタイムを取得
 
-**Returns:** *Promise*<any\>
+**Returns:** *Promise*<number\>
 
 unix time (ms)
 
@@ -373,7 +381,7 @@ await sdk.connectWallet()
 await sdk.getServerUnixTime()  // ex) 1615444120104
 ```
 
-Defined in: [src/index.ts:823](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L823)
+Defined in: [src/index.ts:733](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L733)
 
 ___
 
@@ -397,7 +405,7 @@ const sdk = await MintSDK.initialize(...
 const tokens = await sdk.getTokensByAddress('0x11111...')
 ```
 
-Defined in: [src/index.ts:509](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L509)
+Defined in: [src/index.ts:431](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L431)
 
 ___
 
@@ -418,7 +426,7 @@ const sdk = MintSDK.initialize(...)
 await sdk.isCorrectNetwork() // true
 ```
 
-Defined in: [src/index.ts:856](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L856)
+Defined in: [src/index.ts:766](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L766)
 
 ___
 
@@ -439,17 +447,17 @@ const sdk = MintSDK.initialize(...)
 await sdk.isInjectedWallet() // true
 ```
 
-Defined in: [src/index.ts:840](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L840)
+Defined in: [src/index.ts:750](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L750)
 
 ___
 
 ### isWalletConnect
 
-▸ **isWalletConnect**(): *Promise*<any\>
+▸ **isWalletConnect**(): *Promise*<boolean\>
 
 有効なアカウントがあるの状態を返す
 
-**Returns:** *Promise*<any\>
+**Returns:** *Promise*<boolean\>
 
 ウォレットが接続されていればtrue
 
@@ -460,7 +468,7 @@ const sdk = await MintSDK.initialize(...)
 await sdk.isWalletConnect()
 ```
 
-Defined in: [src/index.ts:183](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L183)
+Defined in: [src/index.ts:153](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L153)
 
 ___
 
@@ -488,7 +496,7 @@ sdk.onAccountsChange((accounts: string[]) => {
 })
 ```
 
-Defined in: [src/index.ts:725](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L725)
+Defined in: [src/index.ts:659](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L659)
 
 ___
 
@@ -516,7 +524,7 @@ sdk.onConnect(() => {
 })
 ```
 
-Defined in: [src/index.ts:758](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L758)
+Defined in: [src/index.ts:684](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L684)
 
 ___
 
@@ -544,7 +552,7 @@ sdk.onDisconnect(() => {
 })
 ```
 
-Defined in: [src/index.ts:791](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L791)
+Defined in: [src/index.ts:709](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L709)
 
 ___
 
@@ -572,7 +580,7 @@ ___
 
 **Returns:** *Promise*<void\>
 
-Defined in: [src/index.ts:904](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L904)
+Defined in: [src/index.ts:809](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L809)
 
 ___
 
@@ -609,7 +617,7 @@ try {
 }
 ```
 
-Defined in: [src/index.ts:541](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L541)
+Defined in: [src/index.ts:466](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L466)
 
 ___
 
@@ -647,7 +655,7 @@ try {
 }
 ```
 
-Defined in: [src/index.ts:670](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L670)
+Defined in: [src/index.ts:595](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L595)
 
 ___
 
@@ -685,7 +693,7 @@ try {
 }
 ```
 
-Defined in: [src/index.ts:605](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L605)
+Defined in: [src/index.ts:530](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L530)
 
 ___
 
@@ -723,7 +731,7 @@ const imgId = await sdk.uploadAvatarImg()
 await sdk.updateAccountInfo({ imgId, .... })
 ```
 
-Defined in: [src/index.ts:1065](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L1065)
+Defined in: [src/index.ts:970](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L970)
 
 ___
 
@@ -754,7 +762,7 @@ await sdk.connectWallet()
 const { imgId, uploadedImgUrl } = await sdk.uploadAccountInfoAvatar({ file })
 ```
 
-Defined in: [src/index.ts:1140](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L1140)
+Defined in: [src/index.ts:1045](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L1045)
 
 ___
 
@@ -775,7 +783,7 @@ Transactionが成功するとResolveするPromiseを返します
 
 **Returns:** *Promise*<void\>
 
-Defined in: [src/index.ts:304](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L304)
+Defined in: [src/index.ts:231](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L231)
 
 ___
 
@@ -804,7 +812,7 @@ const walletInfo = await sdk.getWalletInfo()
 MintSDK.formatEther(walletInfo.balance) // 3.2
 ```
 
-Defined in: [src/index.ts:77](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L77)
+Defined in: [src/index.ts:83](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L83)
 
 ___
 
@@ -830,4 +838,4 @@ import { MintSDK } from '@kyuzan/mint-sdk-js'
 MintSDK.parseEther('3.2') // BigNumber
 ```
 
-Defined in: [src/index.ts:58](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/index.ts#L58)
+Defined in: [src/index.ts:64](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/index.ts#L64)

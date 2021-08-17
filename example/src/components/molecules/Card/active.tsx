@@ -1,7 +1,7 @@
 import React from 'react'
 import { Item } from '@kyuzan/mint-sdk-js'
-import { Card } from '.'
-import { AuctionInfo } from '../AuctionInfo'
+import { CardBase } from './base'
+import { SaleInfo } from '../SaleInfo'
 
 type Props = {
   item: Item
@@ -10,21 +10,22 @@ type Props = {
 
 export const ActiveCard: React.FC<Props> = ({ item, onAuctionFinish }) => {
   return (
-    <Card
+    <CardBase
       href={`/items/${item.itemId}`}
       title={item.name}
       media={item.imageURIHTTP}
       withPhysicalProduct={item.type === 'nftWithPhysicalProduct'}
     >
-      <AuctionInfo
+      <SaleInfo
         startAt={item.startAt}
         endAt={item.endAt}
         tradeType={item.tradeType}
         networkId={item.networkId}
         initialPrice={item.initialPrice}
-        currentPrice={item.currentPrice}
+        currentPrice={item.currentPrice ?? item.price}
         onComplete={onAuctionFinish}
+        hasBought={typeof item.buyerAddress === 'string'}
       />
-    </Card>
+    </CardBase>
   )
 }

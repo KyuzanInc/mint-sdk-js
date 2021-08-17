@@ -133,10 +133,10 @@ export interface CreateAccountsInfoRequestBody {
 export interface InlineResponse200 {
     /**
      * 
-     * @type {string}
+     * @type {Array<ItemLog>}
      * @memberof InlineResponse200
      */
-    data: string;
+    data: Array<ItemLog>;
     /**
      * 
      * @type {object}
@@ -152,10 +152,10 @@ export interface InlineResponse200 {
 export interface InlineResponse2001 {
     /**
      * 
-     * @type {AccountInfo}
+     * @type {string}
      * @memberof InlineResponse2001
      */
-    data: AccountInfo;
+    data: string;
     /**
      * 
      * @type {object}
@@ -171,41 +171,16 @@ export interface InlineResponse2001 {
 export interface InlineResponse2002 {
     /**
      * 
-     * @type {InlineResponse2002Data}
+     * @type {AccountInfo}
      * @memberof InlineResponse2002
      */
-    data: InlineResponse2002Data;
+    data: AccountInfo;
     /**
      * 
      * @type {object}
      * @memberof InlineResponse2002
      */
     meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2002Data
- */
-export interface InlineResponse2002Data {
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse2002Data
-     */
-    imgId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse2002Data
-     */
-    signedUrlForUpload: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse2002Data
-     */
-    signedUrlForRead: string;
 }
 /**
  * 
@@ -215,16 +190,41 @@ export interface InlineResponse2002Data {
 export interface InlineResponse2003 {
     /**
      * 
-     * @type {Array<Item>}
+     * @type {InlineResponse2003Data}
      * @memberof InlineResponse2003
      */
-    data: Array<Item>;
+    data: InlineResponse2003Data;
     /**
      * 
      * @type {object}
      * @memberof InlineResponse2003
      */
     meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2003Data
+ */
+export interface InlineResponse2003Data {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2003Data
+     */
+    imgId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2003Data
+     */
+    signedUrlForUpload: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2003Data
+     */
+    signedUrlForRead: string;
 }
 /**
  * 
@@ -234,29 +234,16 @@ export interface InlineResponse2003 {
 export interface InlineResponse2004 {
     /**
      * 
-     * @type {InlineResponse2004Data}
+     * @type {Array<Item>}
      * @memberof InlineResponse2004
      */
-    data: InlineResponse2004Data;
+    data: Array<Item>;
     /**
      * 
      * @type {object}
      * @memberof InlineResponse2004
      */
     meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2004Data
- */
-export interface InlineResponse2004Data {
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse2004Data
-     */
-    signedData: string;
 }
 /**
  * 
@@ -266,10 +253,10 @@ export interface InlineResponse2004Data {
 export interface InlineResponse2005 {
     /**
      * 
-     * @type {ItemShippingInfo}
+     * @type {InlineResponse2005Data}
      * @memberof InlineResponse2005
      */
-    data: ItemShippingInfo;
+    data: InlineResponse2005Data;
     /**
      * 
      * @type {object}
@@ -280,19 +267,51 @@ export interface InlineResponse2005 {
 /**
  * 
  * @export
+ * @interface InlineResponse2005Data
+ */
+export interface InlineResponse2005Data {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2005Data
+     */
+    signedData: string;
+}
+/**
+ * 
+ * @export
  * @interface InlineResponse2006
  */
 export interface InlineResponse2006 {
     /**
      * 
-     * @type {string}
+     * @type {ItemShippingInfo}
      * @memberof InlineResponse2006
+     */
+    data: ItemShippingInfo;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse2006
+     */
+    meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2007
+ */
+export interface InlineResponse2007 {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2007
      */
     data?: string;
     /**
      * 
      * @type {object}
-     * @memberof InlineResponse2006
+     * @memberof InlineResponse2007
      */
     meta?: object;
 }
@@ -411,24 +430,6 @@ export interface Item {
      */
     networkId: NetworkId;
     /**
-     * tradeType === fixedPriceの時に値が入る
-     * @type {string}
-     * @memberof Item
-     */
-    signatureBuyAuction?: string;
-    /**
-     * tradeType === auctionの時に値が入る。`/sign_bid_auction`で取得するに移行中
-     * @type {string}
-     * @memberof Item
-     */
-    signatureBidAuction?: string;
-    /**
-     * tradeType === auctionの時に値が入る。`/sign_buy_auction`で取得するに移行中
-     * @type {string}
-     * @memberof Item
-     */
-    signatureBuyFixedPrice?: string;
-    /**
      * Itemが引き出されたり買われたりして、NFTが発行されると値が入る
      * @type {string}
      * @memberof Item
@@ -538,6 +539,53 @@ export interface Item {
     */
 export enum ItemChainTypeEnum {
     Ethereum = 'ethereum'
+}
+
+/**
+ * 
+ * @export
+ * @interface ItemLog
+ */
+export interface ItemLog {
+    /**
+     * イベントの種類
+     * @type {string}
+     * @memberof ItemLog
+     */
+    type: ItemLogTypeEnum;
+    /**
+     * SignedDataをリカバリーする時に必要
+     * @type {string}
+     * @memberof ItemLog
+     */
+    accountAddress: string;
+    /**
+     * GetAvatarSignedUrlのレスポンスのimgId
+     * @type {number}
+     * @memberof ItemLog
+     */
+    price: number;
+    /**
+     * 
+     * @type {Date}
+     * @memberof ItemLog
+     */
+    createAt: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemLog
+     */
+    transactionHash?: string;
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum ItemLogTypeEnum {
+    Bought = 'bought',
+    Bid = 'bid'
 }
 
 /**
@@ -1008,6 +1056,58 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Itemに紐づくコントラクトイベントを取得
+         * @param {string} annapurnaAccessToken 
+         * @param {string} [perPage] 
+         * @param {string} [page] 
+         * @param {string} [itemId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemLogs: async (annapurnaAccessToken: string, perPage?: string, page?: string, itemId?: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'annapurnaAccessToken' is not null or undefined
+            assertParamExists('getItemLogs', 'annapurnaAccessToken', annapurnaAccessToken)
+            const localVarPath = `/v2_itemLogs`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (itemId !== undefined) {
+                localVarQueryParameter['itemId'] = itemId;
+            }
+
+            if (annapurnaAccessToken !== undefined && annapurnaAccessToken !== null) {
+                localVarHeaderParameter['annapurna-access-token'] = String(annapurnaAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 登録されているフィジカルアイテム付きItemに配送先住所を取得。（個人情報なので、WalletのSignが必要）
          * @param {string} annapurnaAccessToken 
          * @param {string} itemId 
@@ -1145,6 +1245,47 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary 固定価格アイテムのSignを取得。販売期間のバリデーションあり
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemSignedDataFixedPrice: async (annapurnaAccessToken: string, itemId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'annapurnaAccessToken' is not null or undefined
+            assertParamExists('getItemSignedDataFixedPrice', 'annapurnaAccessToken', annapurnaAccessToken)
+            // verify required parameter 'itemId' is not null or undefined
+            assertParamExists('getItemSignedDataFixedPrice', 'itemId', itemId)
+            const localVarPath = `/v3_items/{itemId}/sign_fixed_price`
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (annapurnaAccessToken !== undefined && annapurnaAccessToken !== null) {
+                localVarHeaderParameter['annapurna-access-token'] = String(annapurnaAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary フィジカルアイテム付きItemに配送先住所を登録する
          * @param {string} annapurnaAccessToken 
          * @param {string} itemId 
@@ -1206,7 +1347,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createAccountInfo(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+        async createAccountInfo(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createAccountInfo(annapurnaAccessToken, createAccountsInfoRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1218,7 +1359,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAccountInfo(annapurnaAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+        async getAccountInfo(annapurnaAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAccountInfo(annapurnaAccessToken, walletAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1229,7 +1370,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAvatarSignedUrlToUpload(annapurnaAccessToken: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+        async getAvatarSignedUrlToUpload(annapurnaAccessToken: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAvatarSignedUrlToUpload(annapurnaAccessToken, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1248,8 +1389,22 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
+        async getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemList(annapurnaAccessToken, networkIds, itemType, tradeType, onSale, perPage, page, sortBy, order, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Itemに紐づくコントラクトイベントを取得
+         * @param {string} annapurnaAccessToken 
+         * @param {string} [perPage] 
+         * @param {string} [page] 
+         * @param {string} [itemId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getItemLogs(annapurnaAccessToken: string, perPage?: string, page?: string, itemId?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemLogs(annapurnaAccessToken, perPage, page, itemId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1262,7 +1417,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
+        async getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1274,7 +1429,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
+        async getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemSignedDataBidAuction(annapurnaAccessToken, itemId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1286,8 +1441,20 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
+        async getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemSignedDataBuyAuction(annapurnaAccessToken, itemId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 固定価格アイテムのSignを取得。販売期間のバリデーションあり
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getItemSignedDataFixedPrice(annapurnaAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemSignedDataFixedPrice(annapurnaAccessToken, itemId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1299,7 +1466,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>> {
+        async registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2007>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.registerItemShippingInfo(annapurnaAccessToken, itemId, registerItemShippingInfoRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1321,7 +1488,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createAccountInfo(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any): AxiosPromise<InlineResponse200> {
+        createAccountInfo(annapurnaAccessToken: string, createAccountsInfoRequestBody?: CreateAccountsInfoRequestBody, options?: any): AxiosPromise<InlineResponse2001> {
             return localVarFp.createAccountInfo(annapurnaAccessToken, createAccountsInfoRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1332,7 +1499,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAccountInfo(annapurnaAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2001> {
+        getAccountInfo(annapurnaAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2002> {
             return localVarFp.getAccountInfo(annapurnaAccessToken, walletAddress, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1342,7 +1509,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAvatarSignedUrlToUpload(annapurnaAccessToken: string, options?: any): AxiosPromise<InlineResponse2002> {
+        getAvatarSignedUrlToUpload(annapurnaAccessToken: string, options?: any): AxiosPromise<InlineResponse2003> {
             return localVarFp.getAvatarSignedUrlToUpload(annapurnaAccessToken, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1360,8 +1527,21 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse2003> {
+        getItemList(annapurnaAccessToken: string, networkIds: Array<string> | string, itemType?: ItemType, tradeType?: TradeType, onSale?: 'true' | 'false', perPage?: string, page?: string, sortBy?: 'endAt' | 'startAt' | 'price' | 'tokenId', order?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse2004> {
             return localVarFp.getItemList(annapurnaAccessToken, networkIds, itemType, tradeType, onSale, perPage, page, sortBy, order, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Itemに紐づくコントラクトイベントを取得
+         * @param {string} annapurnaAccessToken 
+         * @param {string} [perPage] 
+         * @param {string} [page] 
+         * @param {string} [itemId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemLogs(annapurnaAccessToken: string, perPage?: string, page?: string, itemId?: string, options?: any): AxiosPromise<InlineResponse200> {
+            return localVarFp.getItemLogs(annapurnaAccessToken, perPage, page, itemId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1373,7 +1553,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): AxiosPromise<InlineResponse2005> {
+        getItemShippingInfo(annapurnaAccessToken: string, itemId: string, walletAddress: string, signedData: string, options?: any): AxiosPromise<InlineResponse2006> {
             return localVarFp.getItemShippingInfo(annapurnaAccessToken, itemId, walletAddress, signedData, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1384,7 +1564,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2004> {
+        getItemSignedDataBidAuction(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2005> {
             return localVarFp.getItemSignedDataBidAuction(annapurnaAccessToken, itemId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1395,8 +1575,19 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2004> {
+        getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2005> {
             return localVarFp.getItemSignedDataBuyAuction(annapurnaAccessToken, itemId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 固定価格アイテムのSignを取得。販売期間のバリデーションあり
+         * @param {string} annapurnaAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemSignedDataFixedPrice(annapurnaAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2005> {
+            return localVarFp.getItemSignedDataFixedPrice(annapurnaAccessToken, itemId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1407,7 +1598,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): AxiosPromise<InlineResponse2006> {
+        registerItemShippingInfo(annapurnaAccessToken: string, itemId: string, registerItemShippingInfoRequestBody?: RegisterItemShippingInfoRequestBody, options?: any): AxiosPromise<InlineResponse2007> {
             return localVarFp.registerItemShippingInfo(annapurnaAccessToken, itemId, registerItemShippingInfoRequestBody, options).then((request) => request(axios, basePath));
         },
     };
@@ -1480,6 +1671,21 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
+     * @summary Itemに紐づくコントラクトイベントを取得
+     * @param {string} annapurnaAccessToken 
+     * @param {string} [perPage] 
+     * @param {string} [page] 
+     * @param {string} [itemId] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getItemLogs(annapurnaAccessToken: string, perPage?: string, page?: string, itemId?: string, options?: any) {
+        return DefaultApiFp(this.configuration).getItemLogs(annapurnaAccessToken, perPage, page, itemId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary 登録されているフィジカルアイテム付きItemに配送先住所を取得。（個人情報なので、WalletのSignが必要）
      * @param {string} annapurnaAccessToken 
      * @param {string} itemId 
@@ -1517,6 +1723,19 @@ export class DefaultApi extends BaseAPI {
      */
     public getItemSignedDataBuyAuction(annapurnaAccessToken: string, itemId: string, options?: any) {
         return DefaultApiFp(this.configuration).getItemSignedDataBuyAuction(annapurnaAccessToken, itemId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 固定価格アイテムのSignを取得。販売期間のバリデーションあり
+     * @param {string} annapurnaAccessToken 
+     * @param {string} itemId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getItemSignedDataFixedPrice(annapurnaAccessToken: string, itemId: string, options?: any) {
+        return DefaultApiFp(this.configuration).getItemSignedDataFixedPrice(annapurnaAccessToken, itemId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

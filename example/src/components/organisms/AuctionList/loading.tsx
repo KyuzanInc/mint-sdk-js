@@ -7,7 +7,7 @@ import {
   ActiveStatus,
   CardList,
 } from '../../atoms/CardList'
-import { LoadingCard } from '../../molecules/Card/loading'
+import { Card } from '../../molecules/Card'
 
 export const LoadingList: React.FC = () => {
   return (
@@ -15,33 +15,33 @@ export const LoadingList: React.FC = () => {
       <ListComponent>
         <ListTitle>
           <ActiveStatus />
-          <Title>Live Auctions</Title>
+          <Title>Live</Title>
         </ListTitle>
         <CardUL>
           <CardList>
-            <LoadingCard />
+            <Card loading={true} />
           </CardList>
           <CardList>
-            <LoadingCard />
+            <Card loading={true} />
           </CardList>
           <CardList>
-            <LoadingCard />
+            <Card loading={true} />
           </CardList>
         </CardUL>
       </ListComponent>
       <ListComponent>
         <ListTitle>
-          <Title>Ended Auctions</Title>
+          <Title>End</Title>
         </ListTitle>
         <CardUL>
           <CardList>
-            <LoadingCard />
+            <Card loading={true} />
           </CardList>
           <CardList>
-            <LoadingCard />
+            <Card loading={true} />
           </CardList>
           <CardList>
-            <LoadingCard />
+            <Card loading={true} />
           </CardList>
         </CardUL>
       </ListComponent>

@@ -20,22 +20,23 @@ export const Basic: React.VFC = () => {
       aboutAutoExtensionAuctionModalIsOpen={autoExtensionOpen}
       handleCloseAutoExtensionModal={() => setAutoExtensionOpen(false)}
       handleOpenAutoExtensionModal={() => setAutoExtensionOpen(true)}
-      auctionIsOutOfDate={false}
+      saleIsOutOfDate={false}
       connectingWallet={false}
       connectWalletModalIsOpen={connectWalletOpen}
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
       handleConnectWallet={action('handleConnectWallet')}
       userWalletBalance={'1.4'}
       bidModalOpen={bidModalOpen}
-      handleOpenBidModal={() => setBidModalOpen(true)}
+      handleOpenSaleActionModal={() => setBidModalOpen(true)}
       handleCloseBidModal={() => setBidModalOpen(false)}
       handleChangeInputPrice={(e) => setBidPrice(e.target.value)}
       bidding={false}
       bidPrice={bidPrice}
       handleDoBid={action('handleDoBid')}
+      handleDoBuy={action('handleDoBuy')}
       isValidationError={false}
       errorText={''}
-      status={'bid'}
+      status={undefined}
       bidHash={''}
     />
   )
@@ -57,22 +58,23 @@ export const AuctionIsOutOfDate: React.VFC = () => {
       aboutAutoExtensionAuctionModalIsOpen={autoExtensionOpen}
       handleCloseAutoExtensionModal={() => setAutoExtensionOpen(false)}
       handleOpenAutoExtensionModal={() => setAutoExtensionOpen(true)}
-      auctionIsOutOfDate={true}
+      saleIsOutOfDate={true}
       connectingWallet={false}
       connectWalletModalIsOpen={connectWalletOpen}
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
       handleConnectWallet={action('handleConnectWallet')}
       userWalletBalance={'1.4'}
       bidModalOpen={bidModalOpen}
-      handleOpenBidModal={() => setBidModalOpen(true)}
+      handleOpenSaleActionModal={() => setBidModalOpen(true)}
       handleCloseBidModal={() => setBidModalOpen(false)}
       handleChangeInputPrice={(e) => setBidPrice(e.target.value)}
       bidding={false}
       bidPrice={bidPrice}
       handleDoBid={action('handleDoBid')}
+      handleDoBuy={action('handleDoBuy')}
       isValidationError={false}
       errorText={''}
-      status={'bid'}
+      status={undefined}
       bidHash={''}
     />
   )
@@ -94,22 +96,23 @@ export const Loading: React.VFC = () => {
       aboutAutoExtensionAuctionModalIsOpen={autoExtensionOpen}
       handleCloseAutoExtensionModal={() => setAutoExtensionOpen(false)}
       handleOpenAutoExtensionModal={() => setAutoExtensionOpen(true)}
-      auctionIsOutOfDate={false}
+      saleIsOutOfDate={false}
       connectingWallet={false}
       connectWalletModalIsOpen={connectWalletOpen}
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
       handleConnectWallet={action('handleConnectWallet')}
       userWalletBalance={'1.4'}
       bidModalOpen={bidModalOpen}
-      handleOpenBidModal={() => setBidModalOpen(true)}
+      handleOpenSaleActionModal={() => setBidModalOpen(true)}
       handleCloseBidModal={() => setBidModalOpen(false)}
       handleChangeInputPrice={(e) => setBidPrice(e.target.value)}
       bidding={false}
       bidPrice={bidPrice}
       handleDoBid={action('handleDoBid')}
+      handleDoBuy={action('handleDoBuy')}
       isValidationError={false}
       errorText={''}
-      status={'bid'}
+      status={undefined}
       bidHash={''}
     />
   )

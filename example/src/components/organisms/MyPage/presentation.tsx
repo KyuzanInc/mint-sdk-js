@@ -7,7 +7,7 @@ import { EmptyTitle } from '../../atoms/CardList'
 import { Tabs } from '../../atoms/Tabs'
 import { ToolTip } from '../../atoms/ToolTip'
 import { AccountInfo } from '../../molecules/AccountInfo'
-import { EndedCard } from '../../molecules/Card/ended'
+import { Card } from '../../molecules/Card'
 import { LoadingCard } from '../../molecules/Card/loading'
 import { CardMyPage } from '../../molecules/CardMyPage'
 import { ShippingInfoModal } from '../../molecules/ShippingInfoModal'
@@ -171,7 +171,7 @@ export const Presentation: React.VFC<Props> = ({
                 ownTokens.map((item) => {
                   return (
                     <ItemContainer key={item.item.itemId}>
-                      <EndedCard item={item.item} />
+                      <Card item={item.item} loading={false} />
                     </ItemContainer>
                   )
                 })}

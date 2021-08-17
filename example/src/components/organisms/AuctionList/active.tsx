@@ -11,7 +11,7 @@ import {
   ActiveStatus,
   EmptyTitle,
 } from '../../atoms/CardList'
-import { ActiveCard } from '../../molecules/Card/active'
+import { Card } from '../../molecules/Card'
 
 type Props = {
   items: Item[]
@@ -28,7 +28,7 @@ export const LiveAuctionList: React.FC<Props> = ({ items }) => {
       <ListComponent>
         <ListTitle>
           <ActiveStatus />
-          <Title>Live Auctions</Title>
+          <Title>Live</Title>
         </ListTitle>
         <EmptyTitle>No Items</EmptyTitle>
       </ListComponent>
@@ -38,13 +38,13 @@ export const LiveAuctionList: React.FC<Props> = ({ items }) => {
     <ListComponent>
       <ListTitle>
         <ActiveStatus />
-        <Title>Live Auctions</Title>
+        <Title>Live</Title>
       </ListTitle>
       <CardUL>
         {items.map((item, i) => {
           return (
             <CardList key={i}>
-              <ActiveCard onAuctionFinish={getItems} item={item} />
+              <Card loading={false} onAuctionFinish={getItems} item={item} />
             </CardList>
           )
         })}

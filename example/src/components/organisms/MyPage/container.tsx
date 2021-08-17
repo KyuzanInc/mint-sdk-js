@@ -66,7 +66,8 @@ export const Container: React.VFC = () => {
       )
       return
     }
-    await dispatch(withDrawItemActionCreator({ itemId }) as any)
+    // TODO: 居住地を問うUI追加
+    await dispatch(withDrawItemActionCreator({ itemId, inJapan: false }) as any)
     // TODO: おめでとう画面に遷移させる
     window.location.reload()
   }

@@ -11,7 +11,7 @@ import { getPriceUnit } from '../../../util/getItemPriceUnit'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
-import { AuctionInfo } from '../AuctionInfo'
+import { SaleInfo } from '../SaleInfo'
 import { TokenRight } from './TokenRight'
 
 type Props = {
@@ -57,7 +57,7 @@ export const CardMyPage: React.VFC<Props> = ({
             )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
-            <AuctionInfo
+            <SaleInfo
               startAt={item.item.startAt}
               endAt={item.item.endAt}
               tradeType={item.item.tradeType}
@@ -110,7 +110,7 @@ export const CardMyPage: React.VFC<Props> = ({
             )}
           </CenterTagsContainer>
           <AuctionInfoContainer>
-            <AuctionInfo
+            <SaleInfo
               startAt={item.startAt}
               endAt={item.endAt}
               tradeType={item.tradeType}

@@ -1,5 +1,5 @@
 import { addDays, subDays } from 'date-fns'
-import { ItemDetail } from './../../../redux/item/index'
+import { ItemDetail } from '../../../redux/item/index'
 
 export const fixtureAuctionItem: ItemDetail = {
   itemId: '123',
