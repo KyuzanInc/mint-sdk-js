@@ -41,7 +41,7 @@ export const LoadingCard: React.FC = () => {
 }
 
 const StatusBar = styled.span`
-  background: rgba(0, 0, 0, 0);
+  background-color: transparent;
   width: 6px;
   height: 52px;
   border-radius: 3px;

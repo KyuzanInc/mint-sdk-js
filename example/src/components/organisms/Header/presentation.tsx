@@ -98,7 +98,7 @@ export const Presentation: React.VFC<Props> = ({
 }
 
 const HeaderContainer = styled.nav`
-  padding:0 72px;
+  padding: 0 72px;
   position: fixed;
   left: 0;
   top: 0;
@@ -115,7 +115,6 @@ const HeaderContainer = styled.nav`
   ${media.mdsp`
     padding:0 16px;
   `}
-  
 `
 
 const HeaderInner = styled.div`
@@ -153,6 +152,8 @@ const WalletBalance = styled.div`
 
 const WalletAddress = styled.div`
   ${font.mont.caption}
+  display: flex;
+  align-items: center;
 `
 
 const LoadingContainer = styled.div`

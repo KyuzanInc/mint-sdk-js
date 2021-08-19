@@ -15,7 +15,6 @@ import { Status } from '../../../redux/transaction'
 import { ToolTip } from '../../atoms/ToolTip'
 import { useMedia } from '../../../util/useMedia'
 
-
 type Props = {
   item: Item | undefined
   endAt: Date
@@ -76,7 +75,7 @@ export const SaleActionModal: React.VFC<Props> = ({
   status,
   bidHash,
 }) => {
-  const isMobile=useMedia().isMobile
+  const isMobile = useMedia().isMobile
   return (
     <Modal
       isOpen={isOpen}
@@ -136,9 +135,9 @@ export const SaleActionModal: React.VFC<Props> = ({
         <CloseButton onClick={closeModal}>
           <Image
             src={'/images/close_button.svg'}
-            width={isMobile?32:64}
+            width={isMobile ? 32 : 64}
             layout={'fixed'}
-            height={isMobile?32:64}
+            height={isMobile ? 32 : 64}
           />
         </CloseButton>
       </ModalContainer>
@@ -167,7 +166,7 @@ const AuctionSaleAction: React.VFC<{
   isValidationError,
   errorText,
 }) => {
-  const isMobile = useMedia().isMobile;
+  const isMobile = useMedia().isMobile
   return (
     <>
       {!isMobile && <ContentTitle>入札する</ContentTitle>}
@@ -176,7 +175,7 @@ const AuctionSaleAction: React.VFC<{
           <PriceRangeTitle>MIN</PriceRangeTitle>
           <PriceRangeSubTitle>最低入札価格</PriceRangeSubTitle>
           <PriceRangePrice>
-            {Math.ceil(parseFloat(`${minBidPrice}`)*1000)/1000}
+            {Math.ceil(parseFloat(`${minBidPrice}`) * 1000) / 1000}
             {unit}
           </PriceRangePrice>
         </PriceRangeItem>
@@ -192,7 +191,7 @@ const AuctionSaleAction: React.VFC<{
           <PriceRangeTitle>MAX</PriceRangeTitle>
           <PriceRangeSubTitle>所持金額</PriceRangeSubTitle>
           <PriceRangePrice>
-            {Math.floor(parseFloat(`${walletBalance}`)*1000)/1000}
+            {Math.floor(parseFloat(`${walletBalance}`) * 1000) / 1000}
             {unit}
           </PriceRangePrice>
         </PriceRangeItem>
@@ -304,8 +303,8 @@ const BidSuccessStatus: React.VFC<{
         <Image
           layout={'fixed'}
           src={'/images/check-circle.svg'}
-          width={isMobile?24:44}
-          height={isMobile?24:44}
+          width={isMobile ? 24 : 44}
+          height={isMobile ? 24 : 44}
         />
         <TitleContent>入札に成功しました</TitleContent>
       </TitleContainer>
@@ -359,11 +358,10 @@ const ModalContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
 `
 
 const Content = styled.div`
-  min-width:840px;
+  max-width: 840px;
   max-height: 480px;
   ${media.sp`
     min-width:320px;
@@ -382,7 +380,7 @@ const Content = styled.div`
 `
 
 const Left = styled.div`
-  position:relative;
+  position: relative;
   flex-basis: 50%;
   background-color: ${color.background.bague};
   /* max-width: 600px; */
@@ -393,12 +391,13 @@ const Left = styled.div`
 
 const MediaContainer = styled.div`
   margin: 0 auto;
-  padding:32px;
-  width:100%;
-  height:100%;
-  img, video{
+  padding: 32px;
+  width: 100%;
+  height: 100%;
+  img,
+  video {
     width: 100%;
-    height:100%;
+    height: 100%;
     object-fit: contain;
   }
   ${media.sp`
@@ -414,17 +413,19 @@ const MediaContainer = styled.div`
 `
 
 const InfoContainer = styled.div`
-  position:absolute;
-  left:24px;
-  right:24px;
-  bottom:32px;
-  top:auto;
-  background-color: rgba(255,255,255,.82);
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 32px;
+  top: auto;
+  background-color: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(32px);
   border-radius: 8px;
   padding: 16px;
   margin-top: 8px;
-  box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.06), 0px 2.01027px 3.57381px rgba(0, 0, 0, 0.03), 0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+  box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.06),
+    0px 2.01027px 3.57381px rgba(0, 0, 0, 0.03),
+    0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   ${media.sp`
     left:16px;
     right:16px;
@@ -480,9 +481,8 @@ const ImageContainer = styled.div`
 
 const PriceRangePrice = styled(Chip)`
   margin-top: 8px;
-  span{
-    max-width:70px;
-
+  span {
+    max-width: 70px;
   }
 `
 

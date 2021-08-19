@@ -52,9 +52,6 @@ export const Presentation: React.VFC<Props> = ({
 }
 
 const FooterContainer = styled.nav`
-  position: absolute;
-  left: 0;
-  bottom: 0;
   height: 128px;
   padding: 0px 180px;
   width: 100%;
@@ -71,7 +68,6 @@ const FooterContainer = styled.nav`
   ${media.mdsp`
     min-width:100%;
   `}
-
 `
 
 const FooterInner = styled.div`
@@ -91,7 +87,7 @@ const FooterLink = styled.a`
   justify-content: center;
   display: flex;
   text-decoration: none;
-  &:hover{
+  &:hover {
     text-decoration: underline;
   }
 `

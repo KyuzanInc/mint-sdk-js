@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { color, font } from '../../../style'
 
 export const StatusContent = styled.div`
-  background: ${color.white};
+  background: transparent;
   padding: 0px 6px 0px 8px;
 `
 

@@ -77,7 +77,9 @@ export const SaleInfo: React.VFC<Props> = ({
           </StatusContent>
         </StatusContainer>
         <PriceContainer>
-          <StatusTitle>{auctionIsEnded ? '終了時間' : '終了する時刻'}</StatusTitle>
+          <StatusTitle>
+            {auctionIsEnded ? '終了時間' : '終了する時刻'}
+          </StatusTitle>
           {auctionIsEnded ? (
             <StatusValue>
               <EndedDate>{formattedEndDate}</EndedDate>
@@ -188,7 +190,7 @@ const StatusContainer = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
-  margin:0 16px 0 0;
+  margin: 0 16px 0 0;
 `
 
 const StatusContent = styled.div`
@@ -208,7 +210,7 @@ const PriceContainer = styled.div`
 `
 
 const StatusTitle = styled.div`
-  text-align:center;
+  text-align: center;
   color: ${color.content.dark};
   ${font.mont.overline}
   display: flex;

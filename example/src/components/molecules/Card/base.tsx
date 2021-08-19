@@ -30,7 +30,7 @@ export const CardBase: React.FC<Props> = ({
     <Link href={href}>
       <Container>
         <CardMedia>
-          <MediaContent height={220}  media={media} />
+          <MediaContent height={220} media={media} />
         </CardMedia>
         <CardContent>
           <Typography>
@@ -58,14 +58,14 @@ export const CardBase: React.FC<Props> = ({
 const cardMediaHeight = '220px'
 
 const CardMedia = styled.div`
-  background: ${color.background.white};
+  background: transparent;
   height: ${cardMediaHeight};
   width: fit-content;
-  margin:auto;
+  margin: auto;
   ${media.sp`
   height:fit-content;
   `}
-  `
+`
 const Container = styled.div`
   cursor: pointer;
   /* background: ${color.white}; */
@@ -80,17 +80,15 @@ const Container = styled.div`
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 12px;
   overflow: hidden;
-  &:hover{
-    ${CardMedia}{
-      opacity:0.82;
+  &:hover {
+    ${CardMedia} {
+      opacity: 0.82;
     }
   }
   ${media.sp`
     margin:0 0 8px 0;
   `}
 `
-
-
 
 // const CardBase = styled.div`
 //   display: inline-table;
