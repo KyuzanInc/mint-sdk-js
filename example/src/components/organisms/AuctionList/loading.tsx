@@ -31,7 +31,7 @@ export const LoadingList: React.FC = () => {
       </ListComponent>
       <ListComponent>
         <ListTitle>
-          <Title>End</Title>
+          <Title>終了した商品</Title>
         </ListTitle>
         <CardUL>
           <CardList>

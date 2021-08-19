@@ -214,6 +214,7 @@ const StatusTitle = styled.div`
   color: ${color.content.dark};
   ${font.mont.overline}
   display: flex;
+  align-items: center;
 `
 
 const StatusValue = styled.div`
@@ -231,6 +232,7 @@ const Value = styled.div`
   color: ${color.content.dark};
   ${media.sp`
     ${font.mont.h3}
+    font-weight:300;
   `}
 `
 
@@ -246,6 +248,7 @@ const Unit = styled.div`
 
 const Icon = styled.div`
   margin-left: 4px;
+  height:16px;
 `
 
 const EndedDate = styled.div`
@@ -257,7 +260,7 @@ const EndedDate = styled.div`
 `
 
 const Time = styled.div`
-  width: 19px;
+  width: 15px;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
@@ -265,6 +268,9 @@ const Time = styled.div`
   text-align: right;
   ${font.mont.body2};
   color: ${color.content.dark};
+  &:first-child{
+   margin:0; 
+  }
 `
 
 const TimeUnit = styled.div`

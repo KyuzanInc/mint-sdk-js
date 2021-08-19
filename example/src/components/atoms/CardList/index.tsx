@@ -39,8 +39,9 @@ export const CardUL = styled.ul`
   display: grid;
   gap: 24px;
   grid-template-columns: repeat(auto-fit, minmax(264px, 1fr));
+  grid-auto-rows: minmax(100px, auto);
   margin: 0 0 64px 0;
-  ${media.mdsp`
+  ${media.sp`
     width:100%;
     grid-template-columns: 1fr;
   `}
