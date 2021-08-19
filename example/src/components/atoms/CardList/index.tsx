@@ -37,8 +37,9 @@ export const CardList = styled.li`
 export const CardUL = styled.ul`
   width:100%;
   display: grid;
-  gap: 16px;
+  gap: 24px;
   grid-template-columns: repeat(auto-fit, minmax(264px, 1fr));
+  margin: 0 0 64px 0;
   ${media.mdsp`
     width:100%;
     grid-template-columns: 1fr;
