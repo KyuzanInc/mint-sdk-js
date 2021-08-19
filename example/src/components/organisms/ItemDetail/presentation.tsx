@@ -15,7 +15,8 @@ import Image from 'next/image'
 import { StatusDetail } from '../../molecules/Detail'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { LoadingItemDetailComponent } from './loading'
-import { Status } from '../../../redux/transaction'
+import { BidSuccessModal } from '../../molecules/BidSuccessModal'
+import { BoughtFixedPriceSuccessModal } from '../../molecules/BoughtFixedPriceSuccessModal'
 
 type Props = {
   loading: boolean
@@ -33,17 +34,20 @@ type Props = {
   handleCloseConnectWalletModal: () => void
   connectingWallet: boolean
   userWalletBalance: string | undefined
-  bidModalOpen: boolean
+  actionModalOpen: boolean
   bidding: boolean
   handleCloseBidModal: () => void
+  handleCloseBidSuccessModal: () => void
+  showBidSuccessModal: boolean
+  handleCloseBuyFixedPriceSuccessModal: () => void
+  showBuyFixedPriceSuccessModal: boolean
   handleChangeInputPrice: ChangeEventHandler<HTMLInputElement>
   bidPrice: string
   handleDoBid: () => void
   handleDoBuy: (inJapan: boolean) => void
   isValidationError: boolean
   errorText: string
-  status?: Status
-  bidHash?: string
+  taHash?: string
 }
 
 export const Presentation: React.VFC<Props> = ({
@@ -51,6 +55,10 @@ export const Presentation: React.VFC<Props> = ({
   handleClosePhysicalModal,
   aboutAutoExtensionAuctionModalIsOpen,
   handleCloseAutoExtensionModal,
+  handleCloseBidSuccessModal,
+  showBidSuccessModal,
+  handleCloseBuyFixedPriceSuccessModal,
+  showBuyFixedPriceSuccessModal,
   item,
   handleOpenPhysicalModal,
   handleOpenAutoExtensionModal,
@@ -61,7 +69,7 @@ export const Presentation: React.VFC<Props> = ({
   handleConnectWallet,
   handleCloseConnectWalletModal,
   userWalletBalance,
-  bidModalOpen,
+  actionModalOpen,
   bidding,
   handleCloseBidModal,
   handleChangeInputPrice,
@@ -71,8 +79,7 @@ export const Presentation: React.VFC<Props> = ({
   loading,
   isValidationError,
   errorText,
-  status,
-  bidHash,
+  taHash: bidHash,
 }) => {
   if (loading) {
     return <LoadingItemDetailComponent />
@@ -107,7 +114,7 @@ export const Presentation: React.VFC<Props> = ({
           <QuestionButton onClick={handleOpenPhysicalModal}>
             <QuestionIcon>
               <Image
-                src={'/images/info.svg'}
+                src={'/images/icons/info.svg'}
                 layout={'fixed'}
                 width={16}
                 height={16}
@@ -121,7 +128,7 @@ export const Presentation: React.VFC<Props> = ({
           <QuestionButton onClick={handleOpenAutoExtensionModal}>
             <QuestionIcon>
               <Image
-                src={'/images/info.svg'}
+                src={'/images/icons/info.svg'}
                 layout={'fixed'}
                 width={16}
                 height={16}
@@ -168,14 +175,15 @@ export const Presentation: React.VFC<Props> = ({
         closeModal={handleCloseConnectWalletModal}
       />
       <SaleActionModal
-        item={item}
+        itemTradeType={item?.tradeType ?? 'fixedPrice'}
+        itemName={item?.name ?? ''}
         price={getItemPrice(item)}
         endAt={item?.endAt ?? new Date()}
         media={item?.imageURIHTTP}
         unit={getItemPriceUnit(item)}
         minBidPrice={item?.minBidPrice}
         walletBalance={userWalletBalance}
-        isOpen={bidModalOpen}
+        isOpen={actionModalOpen}
         loading={bidding}
         closeModal={handleCloseBidModal}
         doBid={handleDoBid}
@@ -184,8 +192,28 @@ export const Presentation: React.VFC<Props> = ({
         onChangeInput={handleChangeInputPrice}
         isValidationError={isValidationError}
         errorText={errorText}
-        status={status}
-        bidHash={bidHash}
+      />
+      <BidSuccessModal
+        closeModal={handleCloseBidSuccessModal}
+        isOpen={showBidSuccessModal}
+        media={item?.imageURIHTTP}
+        unit={getItemPriceUnit(item)}
+        bidHash={bidHash ?? ''}
+        itemName={item?.name ?? ''}
+        itemNetworkId={item?.networkId ?? 1}
+        endAt={item?.endAt ?? new Date()}
+        price={getItemPrice(item)}
+      />
+      <BoughtFixedPriceSuccessModal
+        itemName={item?.name ?? ''}
+        price={getItemPrice(item)}
+        media={item?.imageURIHTTP}
+        isOpen={showBuyFixedPriceSuccessModal}
+        itemNetworkId={item?.networkId ?? 1}
+        unit={getItemPriceUnit(item)}
+        closeModal={handleCloseBuyFixedPriceSuccessModal}
+        endAt={item?.endAt ?? new Date()}
+        txHash={bidHash ?? ''}
       />
       <AboutPhysicalModal
         isOpen={aboutPhysicalModalIsOpen}

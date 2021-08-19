@@ -19,7 +19,7 @@ type Props = {
   waitingBidedItems: boolean
   waitingOwnTokens: boolean
   showShippingInfoModal: boolean
-  handleWithdrawItem: (itemId: string) => void
+  handleWithdrawItem: (itemId: string, inJapan: boolean) => void
   handleHideShippingInfo: () => void
   showShippingInfo: (itemId: string) => void
   userWalletAddress: string | undefined
@@ -69,7 +69,6 @@ export const Presentation: React.VFC<Props> = ({
   return (
     <>
       <Container>
-        {/* <InnerContainer> */}
         <AccountInfoContainer>
           <AccountInfo
             displayName={accountDisplayName}
@@ -128,7 +127,9 @@ export const Presentation: React.VFC<Props> = ({
                       item={item}
                       loading={false}
                       userWalletAddress={userWalletAddress}
-                      onWithdraw={() => handleWithdrawItem(item.itemId)}
+                      onWithdraw={(inJapan: boolean) =>
+                        handleWithdrawItem(item.itemId, inJapan)
+                      }
                       withdrawing={withdrawingItemId === item.itemId}
                       onComplete={onComplete}
                     />
@@ -177,7 +178,6 @@ export const Presentation: React.VFC<Props> = ({
               })}
           </ItemsContainer>
         )}
-        {/* </InnerContainer> */}
       </Container>
       <ShippingInfoModal
         isOpen={showShippingInfoModal}
@@ -208,11 +208,6 @@ const Container = styled.div`
     padding:0 16px;
   `}
 `
-
-// const InnerContainer = styled.div`
-//   min-width: 840px;
-//   min-height: 100vh;
-// `
 
 const AccountInfoContainer = styled.div`
   margin-bottom: 64px;

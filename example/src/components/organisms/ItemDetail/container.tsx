@@ -108,13 +108,13 @@ export const Container: React.VFC = () => {
   const bidding = useAppSelector((state) => state.app.transaction.meta.bidding)
   const status = useAppSelector((state) => state.app.transaction.meta.status)
   const bidHash = useAppSelector((state) => state.app.transaction.meta.bidHash)
-  const [bidModalIsOpen, setBidModalIsOpen] = useState(false)
-  const closeBidModal = useCallback(() => {
-    setBidModalIsOpen(false)
+  const [actionModalIsOpen, setActionModalIsOpen] = useState(false)
+  const closeActionModal = useCallback(() => {
+    setActionModalIsOpen(false)
     updateInfo()
     dispatch(transactionSlice.actions.changeStatus('bid'))
   }, [status])
-  const openBidModal = useCallback(() => setBidModalIsOpen(true), [])
+  const openBidModal = useCallback(() => setActionModalIsOpen(true), [])
 
   const [aboutPhysicalModalIsOpen, setAboutPhysicalModalIsOpen] =
     useState(false)
@@ -165,6 +165,35 @@ export const Container: React.VFC = () => {
     openBidModal()
   }, [item, walletIsConnect, auctionIsOutOfDate, connectedNetworkId])
 
+  const [bidSuccessModalIsOpen, setBidSuccessModalIsOpen] = useState(false)
+  const closeBidSuccessModal = useCallback(
+    () => setBidSuccessModalIsOpen(false),
+    []
+  )
+  const openBidSuccessModal = useCallback(
+    () => setBidSuccessModalIsOpen(true),
+    []
+  )
+  const [buySuccessModalIsOpen, setBuySuccessModalIsOpen] = useState(false)
+  const closeBuySuccessModal = useCallback(
+    () => setBuySuccessModalIsOpen(false),
+    []
+  )
+  const openBuySuccessModal = useCallback(
+    () => setBuySuccessModalIsOpen(true),
+    []
+  )
+
+  useEffect(() => {
+    if (status === 'bidSuccess') {
+      openBidSuccessModal()
+      closeActionModal()
+    } else if (status === 'buySuccess') {
+      openBuySuccessModal()
+      closeActionModal()
+    }
+  }, [status])
+
   return (
     <Presentation
       loading={waitingItem}
@@ -183,18 +212,21 @@ export const Container: React.VFC = () => {
       handleCloseConnectWalletModal={closeWalletModal}
       handleConnectWallet={connectWallet}
       userWalletBalance={walletInfo?.balance}
-      bidModalOpen={bidModalIsOpen}
+      actionModalOpen={actionModalIsOpen}
       handleOpenSaleActionModal={handleDoBid}
-      handleCloseBidModal={closeBidModal}
+      handleCloseBidModal={closeActionModal}
       handleChangeInputPrice={onChangeInput}
       bidding={bidding}
+      handleCloseBidSuccessModal={closeBidSuccessModal}
+      showBidSuccessModal={bidSuccessModalIsOpen}
+      handleCloseBuyFixedPriceSuccessModal={closeBuySuccessModal}
+      showBuyFixedPriceSuccessModal={buySuccessModalIsOpen}
       bidPrice={bidPrice}
       handleDoBid={doBid}
       handleDoBuy={doBuy}
       isValidationError={isError}
       errorText={errorText}
-      status={status}
-      bidHash={bidHash}
+      taHash={bidHash}
     />
   )
 }

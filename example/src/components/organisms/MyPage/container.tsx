@@ -53,7 +53,7 @@ export const Container: React.VFC = () => {
   const connectedNetworkId = useAppSelector(
     (state) => state.app.wallet.data.connectedNetwork
   )
-  const withdrawItem = async (itemId: string) => {
+  const withdrawItem = async (itemId: string, inJapan: boolean) => {
     const item = bidedItems.find((i) => i.itemId === itemId)
     if (connectedNetworkId !== item!.networkId) {
       dispatch(
@@ -66,8 +66,7 @@ export const Container: React.VFC = () => {
       )
       return
     }
-    // TODO: 居住地を問うUI追加
-    await dispatch(withDrawItemActionCreator({ itemId, inJapan: false }) as any)
+    await dispatch(withDrawItemActionCreator({ itemId, inJapan }) as any)
     // TODO: おめでとう画面に遷移させる
     window.location.reload()
   }

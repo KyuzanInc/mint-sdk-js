@@ -1,22 +1,19 @@
 import styled from '@emotion/styled'
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
-import Modal, { Styles } from 'react-modal'
+import Modal from 'react-modal'
 import { color, font, media } from '../../../style'
 import { PrimaryLoadingButton as ButtonBase } from '../../atoms/LoadingBotton'
 import { Chip } from '../../atoms/Chip'
 import { MediaContent } from '../../atoms/MediaContent'
 import { StatusDetail } from '../Detail'
-import { TransactionStatus } from '../../atoms/TransactionStatus'
-import { SimpleButton } from '../../atoms/SimpleButton'
-import { format, subMinutes } from 'date-fns'
-import { Item } from '@kyuzan/mint-sdk-js'
-import { Status } from '../../../redux/transaction'
 import { ToolTip } from '../../atoms/ToolTip'
 import { useMedia } from '../../../util/useMedia'
+import { ItemTradeType } from '@kyuzan/mint-sdk-js'
 
 type Props = {
-  item: Item | undefined
+  itemName: string
+  itemTradeType: ItemTradeType
   endAt: Date
   price: number
   media: { url: string; mimeType: string } | undefined
@@ -32,27 +29,6 @@ type Props = {
   doBid: () => void
   isValidationError?: boolean
   errorText?: string
-  status?: Status
-  bidHash?: string
-}
-
-const customStyles: Styles = {
-  overlay: {
-    zIndex: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  content: {
-    border: 'none',
-    background: 'transparent',
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
 }
 
 export const SaleActionModal: React.VFC<Props> = ({
@@ -69,17 +45,33 @@ export const SaleActionModal: React.VFC<Props> = ({
   media,
   endAt,
   price,
-  item,
   isValidationError,
   errorText,
-  status,
-  bidHash,
+  itemName,
+  itemTradeType,
 }) => {
   const isMobile = useMedia().isMobile
   return (
     <Modal
       isOpen={isOpen}
-      style={customStyles}
+      style={{
+        overlay: {
+          zIndex: 100,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        content: {
+          border: 'none',
+          background: 'transparent',
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+        },
+      }}
       contentLabel="Wallet"
       ariaHideApp={false}
     >
@@ -90,17 +82,17 @@ export const SaleActionModal: React.VFC<Props> = ({
               <MediaContent media={media} height={254} />
             </MediaContainer>
             <InfoContainer>
-              <ItemName>{item?.name ?? ''}</ItemName>
+              <ItemName>{itemName}</ItemName>
               <StatusDetail
                 endAt={endAt}
                 price={price}
                 unit={unit}
-                tradeType={item?.tradeType ?? 'fixedPrice'}
+                tradeType={itemTradeType}
               />
             </InfoContainer>
           </Left>
           <Right>
-            {status === null && item?.tradeType === 'autoExtensionAuction' && (
+            {itemTradeType === 'autoExtensionAuction' && (
               <AuctionSaleAction
                 loading={loading}
                 minBidPrice={minBidPrice}
@@ -113,22 +105,15 @@ export const SaleActionModal: React.VFC<Props> = ({
                 errorText={errorText}
               />
             )}
-            {status === null && item?.tradeType === 'fixedPrice' && (
+            {itemTradeType === 'fixedPrice' && (
               <FixedSaleAction
                 loading={loading}
                 unit={unit}
-                price={item.price}
+                price={price}
                 doBuy={doBuy}
                 isValidationError={isValidationError}
                 errorText={errorText}
               />
-            )}
-            {status === 'bidSuccess' && (
-              <BidSuccessStatus item={item} endAt={endAt} bidHash={bidHash} />
-            )}
-
-            {status === 'buySuccess' && (
-              <BuySuccessStatus item={item} hash={bidHash} />
             )}
           </Right>
         </Content>
@@ -283,76 +268,6 @@ const FixedSaleAction: React.VFC<{
   )
 }
 
-const BidSuccessStatus: React.VFC<{
-  item: Item | undefined
-  endAt: Date
-  bidHash: string | undefined
-}> = ({ item, endAt, bidHash }) => {
-  const title = `${item?.name ?? ''}:オークション終了予定時刻`
-  const before = subMinutes(endAt, 15)
-  const formattedBefore = format(before, "yyyyMMd'T'HHmmss")
-  const formattedEndAt = format(endAt, "yyyyMMd'T'HHmmss")
-  const calendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${title}&dates=${formattedBefore}/${formattedEndAt}`
-  const onClick = useCallback(() => {
-    // donothing
-  }, [])
-  const isMobile = useMedia().isMobile
-  return (
-    <>
-      <TitleContainer>
-        <Image
-          layout={'fixed'}
-          src={'/images/check-circle.svg'}
-          width={isMobile ? 24 : 44}
-          height={isMobile ? 24 : 44}
-        />
-        <TitleContent>入札に成功しました</TitleContent>
-      </TitleContainer>
-      <Description>
-        NFTは入札処理が完了した後、マイページで確認できるようになります。
-      </Description>
-      <TransactionContainer>
-        <TransactionStatus item={item} hash={bidHash ?? ''} />
-      </TransactionContainer>
-      <ContentButtonContainer>
-        <AnchorLink href={calendarUrl} target="blank">
-          <CalenderButton
-            iconPath={'/images/icons/calendar.svg'}
-            label={'終了時刻をカレンダーに登録する'}
-            onClick={onClick}
-          />
-        </AnchorLink>
-      </ContentButtonContainer>
-    </>
-  )
-}
-
-const BuySuccessStatus: React.VFC<{
-  item: Item | undefined
-  hash: string | undefined
-}> = ({ item, hash }) => {
-  return (
-    <>
-      <TitleContainer>
-        <Image
-          layout={'fixed'}
-          src={'/images/check-circle.svg'}
-          width={44}
-          height={44}
-        />
-        <TitleContent>購入に成功しました</TitleContent>
-      </TitleContainer>
-      <Description>
-        NFTの購入が完了しました。<br></br>
-        処理が完了した後、マイページで確認できるようになります。
-      </Description>
-      <TransactionContainer>
-        <TransactionStatus item={item} hash={hash ?? ''} />
-      </TransactionContainer>
-    </>
-  )
-}
-
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -363,10 +278,6 @@ const ModalContainer = styled.div`
 const Content = styled.div`
   max-width: 840px;
   max-height: 480px;
-  ${media.sp`
-    min-width:320px;
-    max-height: fit-content;
-  `}
   border-radius: 16px;
   overflow: hidden;
   background: ${color.white};
@@ -376,6 +287,8 @@ const Content = styled.div`
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   ${media.sp`
     flex-direction:column;
+    min-width:320px;
+    max-height: fit-content;
   `}
 `
 
@@ -549,45 +462,6 @@ const BidButton = styled(ButtonBase)`
   ${media.sp`
     margin-top: 16px;
   `}
-`
-
-const TitleContainer = styled.div`
-  ${font.mont.h2};
-  color: ${color.subColor.blue};
-  display: flex;
-  align-items: center;
-`
-const TitleContent = styled.div`
-  ${font.mont.h2};
-  color: ${color.subColor.blue};
-  margin-left: 16px;
-  ${media.sp`
-    ${font.mont.h4}
-  `}
-`
-
-const Description = styled.div`
-  ${font.mont.body1};
-  color: ${color.content.middle};
-  margin: 32px 0;
-  ${media.sp`
-    ${font.mont.caption};
-  `}
-`
-
-const TransactionContainer = styled.div`
-  width: 100%;
-  margin: 64px 0;
-  ${media.sp`
-    margin:16px 0;
-  `}
-`
-const AnchorLink = styled.a`
-  text-decoration: none;
-`
-
-const CalenderButton = styled(SimpleButton)`
-  width: 100%;
 `
 
 const NotFoundIcon = styled.span`

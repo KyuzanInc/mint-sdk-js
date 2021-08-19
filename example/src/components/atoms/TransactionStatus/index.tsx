@@ -2,15 +2,16 @@ import styled from '@emotion/styled'
 import React from 'react'
 import Image from 'next/image'
 import { color, font } from '../../../style'
-import { Item } from '@kyuzan/mint-sdk-js'
+import { NetworkId } from '@kyuzan/mint-sdk-js'
+import { getTransactionLink } from '../../../util/getTransactionLink'
 
 type Props = {
-  item?: Item
+  networkId: NetworkId
   hash: string
 }
 
-export const TransactionStatus: React.FC<Props> = ({ item, hash }) => {
-  const url = getTransactionLink(item, hash)
+export const TransactionStatus: React.FC<Props> = ({ networkId, hash }) => {
+  const url = getTransactionLink(hash, networkId)
   return (
     <Container>
       <StatusContainer>
@@ -33,27 +34,6 @@ export const TransactionStatus: React.FC<Props> = ({ item, hash }) => {
       </TransactionContainer>
     </Container>
   )
-}
-
-const getTransactionLink = (item: Item | undefined, hash: string) => {
-  const networkId = item?.networkId
-  if (networkId === 1) {
-    return `https://etherscan.io/tx/${hash}`
-  }
-
-  if (networkId === 4) {
-    return `https://rinkeby.etherscan.io/tx/${hash}`
-  }
-
-  if (networkId === 137) {
-    return `https://explorer-mainnet.maticvigil.com/tx/${hash}`
-  }
-
-  if (networkId === 80001) {
-    return `https://explorer-mumbai.maticvigil.com/tx/${hash}`
-  }
-
-  return ''
 }
 
 const Container = styled.div`
