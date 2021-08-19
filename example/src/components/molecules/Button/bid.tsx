@@ -35,4 +35,3 @@ const Primary = styled(ButtonBase)`
   background-color: ${color.primary};
   margin: 32px 0px;
 `
-

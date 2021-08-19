@@ -101,6 +101,6 @@ const Primary = styled(ButtonBase)`
 const Disabled = styled(ButtonBase)`
   background-color: ${color.content.superLight};
   color: ${color.content.middle};
-  border-radius:0px;
+  border-radius: 0px;
   cursor: not-allowed;
 `

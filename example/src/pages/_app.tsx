@@ -24,7 +24,6 @@ const MyApp: AppComponent = ({ Component, pageProps }) => {
             background-color: ${color.background.bague};
           }
 
-
           *,
           *::after,
           *::before {

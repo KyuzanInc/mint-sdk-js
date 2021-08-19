@@ -49,28 +49,28 @@ export const CardMyPage: React.VFC<Props> = ({
             <MediaContent media={item?.previews[0]} height={moduleHeight} />
           </MediaContainer>
           <Center>
-              <CenterTitleContainer>
-                <CenterTitle>{item?.name}</CenterTitle>
-              </CenterTitleContainer>
-              <CenterTagsContainer>
-                {item?.item.type === 'nftWithPhysicalProduct' && (
-                  <CenterTags
-                    label={'フィジカルアイテムつき'}
-                    iconPath={'/images/cardboard.svg'}
-                  />
-                )}
-              </CenterTagsContainer>
-              <AuctionInfoContainer>
-                <SaleInfo
-                  startAt={item.item.startAt}
-                  endAt={item.item.endAt}
-                  tradeType={item.item.tradeType}
-                  networkId={item.item.networkId}
-                  initialPrice={item.item.initialPrice}
-                  currentPrice={item.item.currentPrice}
-                  onComplete={onComplete}
+            <CenterTitleContainer>
+              <CenterTitle>{item?.name}</CenterTitle>
+            </CenterTitleContainer>
+            <CenterTagsContainer>
+              {item?.item.type === 'nftWithPhysicalProduct' && (
+                <CenterTags
+                  label={'フィジカルアイテムつき'}
+                  iconPath={'/images/cardboard.svg'}
                 />
-              </AuctionInfoContainer>
+              )}
+            </CenterTagsContainer>
+            <AuctionInfoContainer>
+              <SaleInfo
+                startAt={item.item.startAt}
+                endAt={item.item.endAt}
+                tradeType={item.item.tradeType}
+                networkId={item.item.networkId}
+                initialPrice={item.item.initialPrice}
+                currentPrice={item.item.currentPrice}
+                onComplete={onComplete}
+              />
+            </AuctionInfoContainer>
           </Center>
         </Left>
         <Right>
@@ -223,7 +223,11 @@ const Loading: React.VFC = () => {
   return (
     <Container>
       <MediaContainer height={moduleHeight}>
-        <MediaContent waitingItem={true} media={undefined} height={moduleHeight} />
+        <MediaContent
+          waitingItem={true}
+          media={undefined}
+          height={moduleHeight}
+        />
       </MediaContainer>
       <Right style={{ alignItems: 'flex-start' }}>
         <Skeleton width={120} height={20} style={{ marginBottom: 16 }} />
@@ -243,16 +247,16 @@ const isToken = (target: any): target is Token => {
 }
 
 const Container = styled.article`
-  position:relative;
+  position: relative;
   overflow: hidden;
-  width:100%;
+  width: 100%;
   display: flex;
   background: ${color.white};
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 8px;
-  flex-direction:row;
+  flex-direction: row;
   ${media.mdsp`
     flex-direction:column;
   `}
@@ -260,39 +264,37 @@ const Container = styled.article`
 
 const MediaContainer = styled.div<{ height: number }>`
   position: relative;
-  display:flex;
+  display: flex;
   justify-content: center;
-  overflow:hidden;
+  overflow: hidden;
   /* height:${({ height }) => height}; */
-  ${props => ({ height: props.height })}
-  width:${props => ( props.height )}px;
+  ${(props) => ({ height: props.height })}
+  width:${(props) => props.height}px;
   //skeleton用の記述
-  span{
-    width:100%;
-    height:100%;
+  span {
+    width: 100%;
+    height: 100%;
   }
   ${media.mdsp`
     width:100%;
   `}
-
 `
 
-
 const Left = styled.div`
-  position:relative;
+  position: relative;
   flex-grow: 2;
-  background-color:${color.background.bague};
+  background-color: ${color.background.bague};
 `
 const Center = styled.div`
   /* width: 316px; */
   padding: 16px;
-  position:absolute;
-  right:16px;
-  top:50%;
-  transform:translate(0px,-50%);
-  background-color: rgba(255,255,255,.56);
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translate(0px, -50%);
+  background-color: rgba(255, 255, 255, 0.56);
   backdrop-filter: blur(8px);
-  border-radius:8px;
+  border-radius: 8px;
   ${media.lg`
     min-width:266px;
   `}
@@ -404,7 +406,7 @@ const ReverseButton = styled(PrimaryLoadingButton)`
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};
-  &:hover{
+  &:hover {
     background-color: ${color.content.superLight};
   }
 `

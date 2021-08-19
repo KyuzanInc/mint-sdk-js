@@ -20,7 +20,7 @@ export const MediaContent: React.VFC<Props> = ({
   height,
 }) => {
   if (!media || waitingItem) {
-    return <Skeleton height={height}/>
+    return <Skeleton height={height} />
   }
   const type = media.mimeType.split('/')[0]
   const src = media.url
@@ -38,7 +38,6 @@ const Image = styled.img<{ height: number }>`
     width:100%;
     height:auto;
   `}
-
 `
 
 const Video = styled.video<{ height: number }>`

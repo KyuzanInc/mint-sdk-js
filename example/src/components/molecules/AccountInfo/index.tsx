@@ -57,13 +57,13 @@ export const AccountInfo: React.VFC<Props> = ({
           <AvatarImage src={profileUrl} />
         )}
       </AvatarContainer>
-      {displayName? <DisplayName>{displayName}</DisplayName>:null}
-      
+      {displayName ? <DisplayName>{displayName}</DisplayName> : null}
+
       <WalletAddressContainer>
         <WalletAddressWithClipBoard walletAddress={walletAddress ?? ''} />
       </WalletAddressContainer>
       <Bio>{bio}</Bio>
-      {twitterAccountName||instagramAccountName||siteUrl?(
+      {twitterAccountName || instagramAccountName || siteUrl ? (
         <LinksContainer>
           {typeof twitterAccountName !== 'undefined' && (
             <Link href={`https://twitter.com/${twitterAccountName}`} passHref>
@@ -111,9 +111,7 @@ export const AccountInfo: React.VFC<Props> = ({
             </Link>
           )}
         </LinksContainer>
-      ):(
-        null
-      )}
+      ) : null}
       {onEdit && (
         <EditButton>
           <PrimaryLoadingButton

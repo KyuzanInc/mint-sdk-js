@@ -1,5 +1,5 @@
 import React from 'react'
-import {media, color, font } from '../../../style'
+import { media, color, font } from '../../../style'
 import styled from '@emotion/styled'
 
 type Props = {
@@ -9,69 +9,72 @@ type Props = {
   price: number
 }
 
-export const CarouselItem: React.FC<Props> = ({ imageURL, isEnd, name, price }) => {
-  
-  return(
+export const CarouselItem: React.FC<Props> = ({
+  imageURL,
+  isEnd,
+  name,
+  price,
+}) => {
+  return (
     <CarouselItemContainer>
-      <Image src={imageURL}/>
-        <Overlay></Overlay>
-        <Info>
-          <Name>{name}</Name>
-          {isEnd?(
-            null
-          ):(
-            <Price>{price}<Unit>ETH</Unit></Price>
-          )}
-          
-        </Info>  
-        
+      <Image src={imageURL} />
+      <Overlay></Overlay>
+      <Info>
+        <Name>{name}</Name>
+        {isEnd ? null : (
+          <Price>
+            {price}
+            <Unit>ETH</Unit>
+          </Price>
+        )}
+      </Info>
     </CarouselItemContainer>
   )
 }
 
 const CarouselItemContainer = styled.div`
-  width:100%;
-  height:100%;
-  position:relative;
+  width: 100%;
+  height: 100%;
+  position: relative;
 `
 
 const Image = styled.img`
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  height:calc(100vh - 144px);
+  height: calc(100vh - 144px);
   ${media.mdsp`
     height:calc(100vh - 72px);
   `}
 `
-const Overlay= styled.div`
+const Overlay = styled.div`
   position: absolute;
-  top:0;
-  bottom:0;
-  left:0;
-  right:0;
-  background-color: rgba(0,0,0,.24);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.24);
 `
 
 const Info = styled.div`
-  position:absolute;
-  right:32px;
-  bottom:32px;
-  color:${color.background.white};
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  color: ${color.background.white};
 `
 
 const Name = styled.p`
   ${font.mont.caption};
-  color:${color.background.white};
+  color: ${color.background.white};
 `
 
 const Price = styled.h3`
   ${font.mont.h2};
-  color:${color.background.white};
+  color: ${color.background.white};
 `
 
 const Unit = styled.span`
   ${font.mont.h2};
   margin: 0 0 0 16px;
-  color:${color.background.white};
+  color: ${color.background.white};
 `

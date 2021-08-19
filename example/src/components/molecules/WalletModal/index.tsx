@@ -120,7 +120,7 @@ const ContentRight = styled.div`
 
 const ContentRightTitle = styled.p`
   ${font.mont.h2};
-  margin:0 0 32px;
+  margin: 0 0 32px;
 `
 
 const ContentRightButtonContainer = styled.div`

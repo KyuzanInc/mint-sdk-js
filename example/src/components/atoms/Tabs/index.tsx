@@ -30,7 +30,7 @@ const Container = styled.div`
   border-radius: 22px;
   background-color: ${color.content.gray2};
   display: flex;
-  width:100%;
+  width: 100%;
   ${media.lg`
     max-width:600px;
   `}
@@ -39,7 +39,7 @@ const Container = styled.div`
 const Tab = styled.div<{ active: boolean }>`
   cursor: pointer;
   height: 43px;
-  flex-grow:1;
+  flex-grow: 1;
   /* width: 200px; */
   border-radius: 22px;
   background-color: ${({ active }) =>
