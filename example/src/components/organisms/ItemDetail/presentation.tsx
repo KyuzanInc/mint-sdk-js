@@ -294,6 +294,7 @@ const QuestionButton = styled.div`
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
+  margin:16px 0 0 0;
 `
 
 const QuestionIcon = styled.div`
