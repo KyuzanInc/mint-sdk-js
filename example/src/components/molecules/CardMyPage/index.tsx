@@ -4,13 +4,14 @@ import { isBefore } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { color, font, media } from '../../../style'
 import { getPriceUnit } from '../../../util/getItemPriceUnit'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
+import { ToolTip } from '../../atoms/ToolTip'
 import { SaleInfo } from '../SaleInfo'
 import { TokenRight } from './TokenRight'
 
@@ -19,7 +20,7 @@ type Props = {
   userWalletAddress?: string
   item?: Item | Token
   onShowShippingInfo?: () => void
-  onWithdraw?: () => void
+  onWithdraw?: (inJapan: boolean) => void
   withdrawing?: boolean
   onComplete?: () => void
 }
@@ -35,6 +36,7 @@ export const CardMyPage: React.VFC<Props> = ({
 }) => {
   const router = useRouter()
 
+  const [inJapan, setInJapan] = useState(false)
   const moduleHeight = 240
 
   // TODO: 固定価格販売
@@ -205,10 +207,34 @@ export const CardMyPage: React.VFC<Props> = ({
               <WonDescription>
                 おめとうございます。オークションに競り勝ち、NFTを勝ち取りました。下のボタンからNFTを受け取り、ウォレットに入れてください
               </WonDescription>
+              <CheckInJapanContainer>
+                <CheckInJapanLabel>
+                  <input
+                    type={'checkbox'}
+                    checked={inJapan}
+                    onChange={(e) => setInJapan(e.target.checked)}
+                  />{' '}
+                  私は日本に在住しています
+                  <ToolTip
+                    description={
+                      '入札される方が日本在住の場合、管理者が消費税をお支払いします'
+                    }
+                  >
+                    <NotFoundIcon>
+                      <Image
+                        src={'/images/icons/help.svg'}
+                        layout={'fixed'}
+                        width={12}
+                        height={12}
+                      />
+                    </NotFoundIcon>
+                  </ToolTip>
+                </CheckInJapanLabel>
+              </CheckInJapanContainer>
               <PrimaryButton
                 isLoading={withdrawing!}
                 label={'NFTを受け取る'}
-                onClick={onWithdraw}
+                onClick={() => onWithdraw && onWithdraw(inJapan)}
               />
             </>
           )}
@@ -421,4 +447,21 @@ const DisabledButton = styled(PrimaryLoadingButton)`
   margin-top: 16px;
   width: 100%;
   cursor: not-allowed;
+`
+
+const NotFoundIcon = styled.span`
+  margin-left: 4px;
+  height: 16px;
+  width: 16px;
+`
+
+const CheckInJapanContainer = styled.div`
+  margin-top: 8px;
+`
+
+const CheckInJapanLabel = styled.label`
+  margin-top: 8px;
+  ${font.mont.overline};
+  display: flex;
+  align-items: center;
 `
