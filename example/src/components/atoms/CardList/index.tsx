@@ -30,11 +30,20 @@ export const EmptyTitle = styled(ListComponent)`
 `
 
 export const CardList = styled.li`
-  margin: 0 16px 24px 0;
-  float: left;
+  /* margin: 0 16px 24px 0; */
+  /* float: left; */
 `
 
-export const CardUL = styled.ul``
+export const CardUL = styled.ul`
+  width:100%;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(264px, 1fr));
+  ${media.mdsp`
+    width:100%;
+    grid-template-columns: 1fr;
+  `}
+`
 
 export const ActiveStatus = styled.div`
   background: ${color.active};

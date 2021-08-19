@@ -5,7 +5,7 @@ import { LiveAuctionList } from '../components/organisms/AuctionList/active'
 import { LoadingList } from '../components/organisms/AuctionList/loading'
 import { useAppDispatch, useAppSelector } from '../redux/getStore'
 import { getItemsActionCreator } from '../redux/items'
-import { color } from '../style'
+import { color, media } from '../style'
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import CommonMeta from '../components/atoms/CommonMeta'
 
@@ -54,17 +54,21 @@ export default Page
 
 const Container = styled.div`
   background: ${color.background.bague};
-  min-width: 840px;
+  max-width: 840px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 144px;
+  padding: 144px 0 0 0;
   margin: auto;
+  ${media.mdsp`
+    padding: 144px 16px 0;
+  `}
 `
 
 const InnerContainer = styled.div`
-  min-width: 840px;
+  width: 100%;
   min-height: 100vh;
+
 `

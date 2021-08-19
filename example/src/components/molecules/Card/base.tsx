@@ -85,6 +85,10 @@ const Container = styled.div`
       opacity: 0.82;
     }
   }
+  ${media.mdsp`
+    height: auto;
+    width: auto;
+  `}
   ${media.sp`
     margin:0 0 8px 0;
   `}

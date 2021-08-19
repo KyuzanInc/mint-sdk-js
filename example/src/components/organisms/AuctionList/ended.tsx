@@ -19,7 +19,7 @@ export const EndedAuctionList: React.FC<Props> = ({ items }) => {
     return (
       <ListComponent>
         <ListTitle>
-          <Title>End</Title>
+          <Title>終了した商品</Title>
         </ListTitle>
         <EmptyTitle>商品はありません</EmptyTitle>
       </ListComponent>
@@ -28,7 +28,7 @@ export const EndedAuctionList: React.FC<Props> = ({ items }) => {
   return (
     <ListComponent>
       <ListTitle>
-        <Title>End</Title>
+        <Title>終了した商品</Title>
       </ListTitle>
       <CardUL>
         {items.map((item, i) => {
