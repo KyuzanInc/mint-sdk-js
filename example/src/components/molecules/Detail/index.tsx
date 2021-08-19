@@ -54,7 +54,7 @@ export const StatusDetail: React.FC<Props> = ({
 }
 
 export const PriceContent = styled.div`
-  margin-right: 24px;
+  margin: 0 24px 16px 0;
 `
 
 export const StatusTitle = styled.div`

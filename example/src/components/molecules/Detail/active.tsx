@@ -87,7 +87,7 @@ export const Time = styled.div`
   color: ${color.content.dark};
   margin-right: 4px;
   ${media.sp`
-    ${font.mont.subtitle1}
+    ${font.mont.h3}
   `}
 `
 
@@ -123,15 +123,16 @@ export const Value = styled.div`
   ${font.mont.h2}
   color: ${color.content.dark};
   ${media.sp`
-    ${font.mont.h3}
+    ${font.mont.h2}
   `}
 `
 
 export const Unit = styled.div`
-  ${font.mont.unit}
+  ${font.mont.label}
   color: ${color.content.dark};
   justify-content: center;
   align-items: center;
   display: flex;
   margin-left: 4px;
+  
 `

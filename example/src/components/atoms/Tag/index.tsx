@@ -46,5 +46,6 @@ const Label = styled.span`
   ${font.mont.overline}
   font-weight: 700;
   color: ${color.content.middle};
-  line-height: 1;
+  line-height: 14px;
+  min-height: 14px;
 `

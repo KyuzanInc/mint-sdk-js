@@ -268,7 +268,7 @@ const Time = styled.div`
   text-align: right;
   ${font.mont.body2};
   color: ${color.content.dark};
-  &:first-child{
+  &:first-of-type{
    margin:0; 
   }
 `

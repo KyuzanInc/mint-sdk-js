@@ -60,8 +60,10 @@ const Button = styled(ButtonBase)`
 
 const Disabled = styled(ButtonBase)`
   background-color: ${color.content.superLight};
-  color: ${color.content.middle};
+  color: ${color.content.light};
   cursor: not-allowed;
+  border:0px;
+  width: 100%;
 `
 
 const IconContainer = styled.div`

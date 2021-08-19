@@ -75,7 +75,7 @@ const Avatar = styled.div`
 `
 
 export const BidderDetail = styled.div`
-  width: 200px;
+  max-width: 200px;
   overflow-wrap: break-word;
   ${media.sp`
     overflow-wrap: anywhere;
