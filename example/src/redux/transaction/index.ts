@@ -94,6 +94,9 @@ export const transactionSlice = createSlice({
     changeStatus: (state, action) => {
       state.meta.status = action.payload
     },
+    reset: (state) => {
+      state.meta = initialTransactionState.meta
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(bidActionCreator.fulfilled, (state, { payload }) => {

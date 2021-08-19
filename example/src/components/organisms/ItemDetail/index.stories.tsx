@@ -15,6 +15,8 @@ export const Basic: React.VFC = () => {
       loading={false}
       item={loseItem}
       aboutPhysicalModalIsOpen={physicalOpen}
+      handleCloseBidSuccessModal={action('handleClose')}
+      showBidSuccessModal={false}
       handleClosePhysicalModal={() => setPhysicalOpen(false)}
       handleOpenPhysicalModal={() => setPhysicalOpen(true)}
       aboutAutoExtensionAuctionModalIsOpen={autoExtensionOpen}
@@ -26,18 +28,21 @@ export const Basic: React.VFC = () => {
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
       handleConnectWallet={action('handleConnectWallet')}
       userWalletBalance={'1.4'}
-      bidModalOpen={bidModalOpen}
+      actionModalOpen={bidModalOpen}
       handleOpenSaleActionModal={() => setBidModalOpen(true)}
       handleCloseBidModal={() => setBidModalOpen(false)}
       handleChangeInputPrice={(e) => setBidPrice(e.target.value)}
       bidding={false}
+      showBuyFixedPriceSuccessModal={false}
+      handleCloseBuyFixedPriceSuccessModal={action(
+        'handleCloseBuyFixedPriceSuccessModal'
+      )}
       bidPrice={bidPrice}
       handleDoBid={action('handleDoBid')}
       handleDoBuy={action('handleDoBuy')}
       isValidationError={false}
       errorText={''}
-      status={undefined}
-      bidHash={''}
+      taHash={''}
     />
   )
 }
@@ -52,6 +57,12 @@ export const AuctionIsOutOfDate: React.VFC = () => {
     <Presentation
       loading={false}
       item={loseItem}
+      handleCloseBidSuccessModal={action('handleClose')}
+      showBidSuccessModal={false}
+      showBuyFixedPriceSuccessModal={false}
+      handleCloseBuyFixedPriceSuccessModal={action(
+        'handleCloseBuyFixedPriceSuccessModal'
+      )}
       aboutPhysicalModalIsOpen={physicalOpen}
       handleClosePhysicalModal={() => setPhysicalOpen(false)}
       handleOpenPhysicalModal={() => setPhysicalOpen(true)}
@@ -64,7 +75,7 @@ export const AuctionIsOutOfDate: React.VFC = () => {
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
       handleConnectWallet={action('handleConnectWallet')}
       userWalletBalance={'1.4'}
-      bidModalOpen={bidModalOpen}
+      actionModalOpen={bidModalOpen}
       handleOpenSaleActionModal={() => setBidModalOpen(true)}
       handleCloseBidModal={() => setBidModalOpen(false)}
       handleChangeInputPrice={(e) => setBidPrice(e.target.value)}
@@ -74,8 +85,7 @@ export const AuctionIsOutOfDate: React.VFC = () => {
       handleDoBuy={action('handleDoBuy')}
       isValidationError={false}
       errorText={''}
-      status={undefined}
-      bidHash={''}
+      taHash={''}
     />
   )
 }
@@ -90,6 +100,12 @@ export const Loading: React.VFC = () => {
     <Presentation
       loading={true}
       item={undefined}
+      handleCloseBidSuccessModal={action('handleClose')}
+      showBidSuccessModal={false}
+      showBuyFixedPriceSuccessModal={false}
+      handleCloseBuyFixedPriceSuccessModal={action(
+        'handleCloseBuyFixedPriceSuccessModal'
+      )}
       aboutPhysicalModalIsOpen={physicalOpen}
       handleClosePhysicalModal={() => setPhysicalOpen(false)}
       handleOpenPhysicalModal={() => setPhysicalOpen(true)}
@@ -102,7 +118,7 @@ export const Loading: React.VFC = () => {
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
       handleConnectWallet={action('handleConnectWallet')}
       userWalletBalance={'1.4'}
-      bidModalOpen={bidModalOpen}
+      actionModalOpen={bidModalOpen}
       handleOpenSaleActionModal={() => setBidModalOpen(true)}
       handleCloseBidModal={() => setBidModalOpen(false)}
       handleChangeInputPrice={(e) => setBidPrice(e.target.value)}
@@ -112,8 +128,7 @@ export const Loading: React.VFC = () => {
       handleDoBuy={action('handleDoBuy')}
       isValidationError={false}
       errorText={''}
-      status={undefined}
-      bidHash={''}
+      taHash={''}
     />
   )
 }
@@ -122,7 +137,6 @@ export default {
   title: 'organism/ItemDetail',
 }
 
-// const userWalletAddress = '0x000000'
 const otherWalletAddress = '0x000001'
 
 const loseItem: Item = {
