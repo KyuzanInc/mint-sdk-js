@@ -83,12 +83,12 @@ export const SaleActionModal: React.VFC<Props> = ({
             </MediaContainer>
             <InfoContainer>
               <ItemName>{itemName}</ItemName>
-              <StatusDetail
+              <ModalStatusDetail
                 endAt={endAt}
                 price={price}
                 unit={unit}
                 tradeType={itemTradeType}
-              />
+              ></ModalStatusDetail>
             </InfoContainer>
           </Left>
           <Right>
@@ -307,6 +307,7 @@ const MediaContainer = styled.div`
   padding: 32px;
   width: 100%;
   height: 100%;
+  transform: translateY(-15%);
   img,
   video {
     width: 100%;
@@ -350,7 +351,11 @@ const ItemName = styled.p`
   ${font.mont.subtitle1}
   margin-bottom: 16px;
 `
-
+const ModalStatusDetail = styled(StatusDetail)`
+  .value{
+    ${font.mont.h4}
+  }
+`
 const Right = styled.div`
   flex-basis: 50%;
   padding: 40px;

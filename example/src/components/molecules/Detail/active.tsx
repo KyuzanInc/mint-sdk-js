@@ -37,13 +37,13 @@ const renderer = ({
     // Render a countdown
     return (
       <StatusValue>
-        <Time>{days}</Time>
+        <Time className={'value'}>{days}</Time>
         <TimeUnit>日</TimeUnit>
-        <Time>{hours}</Time>
+        <Time className={'value'}>{hours}</Time>
         <TimeUnit>時間</TimeUnit>
-        <Time>{minutes}</Time>
+        <Time className={'value'}>{minutes}</Time>
         <TimeUnit>分</TimeUnit>
-        <Time>{seconds}</Time>
+        <Time className={'value'}>{seconds}</Time>
         <TimeUnit>秒</TimeUnit>
       </StatusValue>
     )
@@ -61,7 +61,7 @@ export const LiveStatus: React.FC<LiveProps> = ({
       <PriceContent>
         <StatusTitle>現在価格</StatusTitle>
         <StatusValue>
-          <Value>{price}</Value>
+          <Value className={'value'}>{price}</Value>
           <Unit>{unit}</Unit>
         </StatusValue>
       </PriceContent>
@@ -82,8 +82,8 @@ export const StatusContainer = styled.div`
   /* background: ${color.white}; */
 `
 
-export const Time = styled.div`
-  ${font.mont.h2}
+export const Time = styled.h3`
+  ${font.mont.h3}
   color: ${color.content.dark};
   margin-right: 4px;
   ${media.sp`
@@ -118,12 +118,12 @@ export const StatusValue = styled.div`
   align-items: center;
 `
 
-export const Value = styled.div`
+export const Value = styled.h3`
   display: flex;
-  ${font.mont.h2}
+  ${font.mont.h3}
   color: ${color.content.dark};
   ${media.sp`
-    ${font.mont.h2}
+    ${font.mont.h3}
   `}
 `
 
