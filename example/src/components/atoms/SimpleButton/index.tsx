@@ -39,7 +39,7 @@ export const SimpleButton: React.FC<Props> = ({
 
 const ButtonBase = styled.button`
   cursor: pointer;
-  ${font.lg.button}
+  ${font.mont.button}
   height: 44px;
   line-height: 44px;
   border-radius: 22px;

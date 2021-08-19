@@ -68,7 +68,7 @@ const ToolTip = styled.div`
   border-radius: 16px;
   padding: 8px 16px;
   color: ${color.white};
-  ${font.lg.caption}
+  ${font.mont.caption}
   position: absolute;
   width: 222px;
   height: 31px;

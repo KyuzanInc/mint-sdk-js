@@ -70,19 +70,19 @@ const StatusContainer = styled.div`
 `
 
 const Title = styled.div`
-  ${font.lg.caption}
+  ${font.mont.caption}
   color: ${color.content.middle};
 `
 
 const Status = styled.p`
   margin-top: 8px;
-  ${font.lg.label}
+  ${font.mont.label}
   color: ${color.content.dark};
 `
 
 const TransactionContainer = styled.div``
 const TransactionLink = styled.a`
-  ${font.lg.subtitle2}
+  ${font.mont.subtitle2}
   color: ${color.primary};
   display: flex;
   margin-top: 2px;

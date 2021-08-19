@@ -1,5 +1,6 @@
 import React, { ReactNode, useEffect } from 'react'
 import styled from '@emotion/styled'
+import { color } from '../style'
 import { useAppDispatch } from '../redux/getStore'
 import { initialWalletActionCreator, walletSlice } from '../redux/wallet'
 import { Header } from './organisms/Header'
@@ -47,4 +48,7 @@ const Layout = ({ children }: Props) => {
 
 export default Layout
 
-const Container = styled.div``
+const Container = styled.div`
+  background-color: ${color.background.white};
+  position: relative;
+`

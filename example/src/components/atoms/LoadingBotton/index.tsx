@@ -59,7 +59,7 @@ export const PrimaryLoadingButtonSubmit: React.FC<Props> = ({
 
 const SubmitBase = styled.input`
   cursor: pointer;
-  ${font.lg.button}
+  ${font.mont.button}
   height: 44px;
   line-height: 44px;
   border-radius: 22px;
@@ -76,7 +76,7 @@ const SubmitBase = styled.input`
 
 const ButtonBase = styled.button`
   cursor: pointer;
-  ${font.lg.button}
+  ${font.mont.button}
   height: 44px;
   line-height: 44px;
   border-radius: 22px;
@@ -90,6 +90,10 @@ const ButtonBase = styled.button`
   border: 0;
 `
 
+// const Primary = styled(ButtonBase)`
+//   background-color: ${color.primary};
+// `
+
 const Primary = styled(ButtonBase)`
   background-color: ${color.primary};
 `
@@ -97,5 +101,6 @@ const Primary = styled(ButtonBase)`
 const Disabled = styled(ButtonBase)`
   background-color: ${color.content.superLight};
   color: ${color.content.middle};
+  border-radius: 0px;
   cursor: not-allowed;
 `

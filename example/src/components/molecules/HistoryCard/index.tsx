@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { ItemLog, NetworkId } from '@kyuzan/mint-sdk-js'
 import { format } from 'date-fns'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 import { LoadingHistoryCard } from './loading'
 import Link from 'next/link'
@@ -52,8 +52,8 @@ export const HistoryCard: React.FC<Props> = ({ log, networkId, loading }) => {
 }
 
 export const HistoryContainer = styled.div`
-  width: 426px;
-  height: 70px;
+  /* width: 426px; */
+  /* height: 70px; */
   padding: 8px 16px 8px 16px;
   justify-content: space-between;
   align-items: center;
@@ -77,18 +77,21 @@ const Avatar = styled.div`
 export const BidderDetail = styled.div`
   width: 200px;
   overflow-wrap: break-word;
+  ${media.sp`
+    overflow-wrap: anywhere;
+  `}
 `
 export const BidderId = styled.div`
-  ${font.lg.caption}
+  ${font.mont.caption}
 `
 export const BidTime = styled.div`
   padding: 4px 0 0 0;
-  ${font.lg.caption}
+  ${font.mont.caption}
   color: ${color.content.gray1};
 `
 export const BidPrice = styled.div`
   min-width: 100px;
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   justify-content: center;
   display: flex;
   margin: auto;

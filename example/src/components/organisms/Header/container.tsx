@@ -39,7 +39,9 @@ export const Container: React.VFC = () => {
       onClickConnectWallet={connectWallet}
       connectWalletLoading={waitingWallet}
       walletAddress={walletInfo?.address}
-      walletBalance={`${walletInfo?.balance}${walletInfo?.currencyUnit}`}
+      walletBalance={`${
+        Math.floor(parseFloat(`${walletInfo?.balance}`) * 1000) / 1000
+      }${walletInfo?.currencyUnit}`}
     />
   )
 }

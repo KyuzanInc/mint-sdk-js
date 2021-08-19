@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { getPriceUnit } from '../../../util/getItemPriceUnit'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { MediaContent } from '../../atoms/MediaContent'
@@ -34,6 +34,9 @@ export const CardMyPage: React.VFC<Props> = ({
   onComplete,
 }) => {
   const router = useRouter()
+
+  const moduleHeight = 240
+
   // TODO: 固定価格販売
   if (loading || typeof item === 'undefined') {
     return <Loading />
@@ -41,33 +44,35 @@ export const CardMyPage: React.VFC<Props> = ({
   if (isToken(item)) {
     return (
       <Container>
-        <MediaContainer>
-          <MediaContent media={item?.previews[0]} height={240} />
-        </MediaContainer>
-        <Center>
-          <CenterTitleContainer>
-            <CenterTitle>{item?.name}</CenterTitle>
-          </CenterTitleContainer>
-          <CenterTagsContainer>
-            {item?.item.type === 'nftWithPhysicalProduct' && (
-              <CenterTags
-                label={'フィジカルアイテムつき'}
-                iconPath={'/images/cardboard.svg'}
+        <Left>
+          <MediaContainer height={moduleHeight}>
+            <MediaContent media={item?.previews[0]} height={moduleHeight} />
+          </MediaContainer>
+          <Center>
+            <CenterTitleContainer>
+              <CenterTitle>{item?.name}</CenterTitle>
+            </CenterTitleContainer>
+            <CenterTagsContainer>
+              {item?.item.type === 'nftWithPhysicalProduct' && (
+                <CenterTags
+                  label={'フィジカルアイテムつき'}
+                  iconPath={'/images/cardboard.svg'}
+                />
+              )}
+            </CenterTagsContainer>
+            <AuctionInfoContainer>
+              <SaleInfo
+                startAt={item.item.startAt}
+                endAt={item.item.endAt}
+                tradeType={item.item.tradeType}
+                networkId={item.item.networkId}
+                initialPrice={item.item.initialPrice}
+                currentPrice={item.item.currentPrice}
+                onComplete={onComplete}
               />
-            )}
-          </CenterTagsContainer>
-          <AuctionInfoContainer>
-            <SaleInfo
-              startAt={item.item.startAt}
-              endAt={item.item.endAt}
-              tradeType={item.item.tradeType}
-              networkId={item.item.networkId}
-              initialPrice={item.item.initialPrice}
-              currentPrice={item.item.currentPrice}
-              onComplete={onComplete}
-            />
-          </AuctionInfoContainer>
-        </Center>
+            </AuctionInfoContainer>
+          </Center>
+        </Left>
         <Right>
           <TokenRight
             token={item}
@@ -94,33 +99,35 @@ export const CardMyPage: React.VFC<Props> = ({
 
     return (
       <Container>
-        <MediaContainer>
-          <MediaContent media={item?.previews[0]} height={240} />
-        </MediaContainer>
-        <Center>
-          <CenterTitleContainer>
-            <CenterTitle>{item?.name}</CenterTitle>
-          </CenterTitleContainer>
-          <CenterTagsContainer>
-            {item?.type === 'nftWithPhysicalProduct' && (
-              <CenterTags
-                label={'フィジカルアイテムつき'}
-                iconPath={'/images/cardboard.svg'}
+        <Left>
+          <MediaContainer height={moduleHeight}>
+            <MediaContent media={item?.previews[0]} height={moduleHeight} />
+          </MediaContainer>
+          <Center>
+            <CenterTitleContainer>
+              <CenterTitle>{item?.name}</CenterTitle>
+            </CenterTitleContainer>
+            <CenterTagsContainer>
+              {item?.type === 'nftWithPhysicalProduct' && (
+                <CenterTags
+                  label={'フィジカルアイテムつき'}
+                  iconPath={'/images/cardboard.svg'}
+                />
+              )}
+            </CenterTagsContainer>
+            <AuctionInfoContainer>
+              <SaleInfo
+                startAt={item.startAt}
+                endAt={item.endAt}
+                tradeType={item.tradeType}
+                networkId={item.networkId}
+                initialPrice={item.initialPrice}
+                currentPrice={item.currentPrice}
+                onComplete={onComplete}
               />
-            )}
-          </CenterTagsContainer>
-          <AuctionInfoContainer>
-            <SaleInfo
-              startAt={item.startAt}
-              endAt={item.endAt}
-              tradeType={item.tradeType}
-              networkId={item.networkId}
-              initialPrice={item.initialPrice}
-              currentPrice={item.currentPrice}
-              onComplete={onComplete}
-            />
-          </AuctionInfoContainer>
-        </Center>
+            </AuctionInfoContainer>
+          </Center>
+        </Left>
         <Right>
           {winning && (
             <>
@@ -212,17 +219,16 @@ export const CardMyPage: React.VFC<Props> = ({
 }
 
 const Loading: React.VFC = () => {
+  const moduleHeight = 240
   return (
     <Container>
-      <MediaContainer>
-        <MediaContent waitingItem={true} media={undefined} height={240} />
+      <MediaContainer height={moduleHeight}>
+        <MediaContent
+          waitingItem={true}
+          media={undefined}
+          height={moduleHeight}
+        />
       </MediaContainer>
-      <Center>
-        <Skeleton width={250} height={20} style={{ margin: '0 0 32px 0' }} />
-        <Skeleton width={102} height={24} style={{ marginRight: '8px' }} />
-        <Skeleton width={114} height={24} />
-      </Center>
-      <VerticalLine />
       <Right style={{ alignItems: 'flex-start' }}>
         <Skeleton width={120} height={20} style={{ marginBottom: 16 }} />
         <Skeleton width={222} height={12} count={3} />
@@ -241,34 +247,74 @@ const isToken = (target: any): target is Token => {
 }
 
 const Container = styled.article`
+  position: relative;
   overflow: hidden;
-  max-width: 840px;
+  width: 100%;
   display: flex;
   background: ${color.white};
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 8px;
+  flex-direction: row;
+  ${media.mdsp`
+    flex-direction:column;
+  `}
 `
 
-const MediaContainer = styled.div`
+const MediaContainer = styled.div<{ height: number }>`
   position: relative;
-  width: 240px;
-  height: 240px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  /* height:${({ height }) => height}; */
+  ${(props) => ({ height: props.height })}
+  width:${(props) => props.height}px;
+  //skeleton用の記述
+  span {
+    width: 100%;
+    height: 100%;
+  }
+  ${media.mdsp`
+    width:100%;
+  `}
 `
 
+const Left = styled.div`
+  position: relative;
+  flex-grow: 2;
+  background-color: ${color.background.bague};
+`
 const Center = styled.div`
-  width: 316px;
-  padding: 32px;
+  /* width: 316px; */
+  padding: 16px;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translate(0px, -50%);
+  background-color: rgba(255, 255, 255, 0.56);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  ${media.lg`
+    min-width:266px;
+  `}
+  ${media.mdsp`
+    position:absolute;
+    right:16px;
+    left:16px;
+    bottom:16px;
+    top:auto;
+    transform:translate(0,0);
+  `}
 `
-const VerticalLine = styled.div`
-  border-left: thin solid ${color.content.gray1};
-  margin: 32px 0;
-`
+// const VerticalLine = styled.div`
+//   border-left: thin solid ${color.content.gray1};
+//   margin: 32px 0;
+// `
 const CenterTitleContainer = styled.div``
 
 const CenterTitle = styled.h1`
-  ${font.lg.h3}
+  ${font.mont.h3}
 `
 
 const CenterTagsContainer = styled.div`
@@ -282,7 +328,7 @@ const CenterTags = styled(Tag)`
 `
 
 const AuctionInfoContainer = styled.div`
-  margin-top: 32px;
+  margin-top: 8px;
 `
 
 const Right = styled.div`
@@ -290,8 +336,16 @@ const Right = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 254px;
+  /* width: 254px; */
   padding: 32px;
+  /* flex-grow: 1; */
+  ${media.lg`
+    /* min-width:280px; */
+    width:280px;
+  `}
+  ${media.mdsp`
+    min-width:100%;
+  `}
 `
 
 const RightTitleContainer = styled.div`
@@ -310,38 +364,38 @@ const CurrentPriceContainer = styled.div`
 `
 
 const CurrentPriceTitle = styled.p`
-  ${font.lg.label}
+  ${font.mont.label}
   margin-bottom: 8px;
 `
 
 const CurrentPriceValue = styled.span`
-  ${font.lg.h4}
+  ${font.mont.h4}
 `
 
 const CurrentPriceUnit = styled.span`
-  ${font.lg.overline}
+  ${font.mont.overline}
 `
 
 const WonTitle = styled.div`
-  ${font.lg.subtitle2};
+  ${font.mont.subtitle2};
   color: ${color.primary};
   display: flex;
   align-items: center;
 `
 
 const WonDescription = styled.div`
-  ${font.lg.overline};
+  ${font.mont.overline};
 `
 
 const WinningTitle = styled.div`
-  ${font.lg.subtitle2};
+  ${font.mont.subtitle2};
   color: ${color.subColor.blue};
   display: flex;
   align-items: center;
 `
 
 const LosingTitle = styled.div`
-  ${font.lg.subtitle2};
+  ${font.mont.subtitle2};
   color: ${color.utils.error};
   display: flex;
   align-items: center;
@@ -352,6 +406,9 @@ const ReverseButton = styled(PrimaryLoadingButton)`
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};
+  &:hover {
+    background-color: ${color.content.superLight};
+  }
 `
 
 const PrimaryButton = styled(PrimaryLoadingButton)`

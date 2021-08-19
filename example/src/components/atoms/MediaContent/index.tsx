@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Skeleton from 'react-loading-skeleton'
+import { media } from '../../../style'
 
 type Props = {
   height: number
@@ -33,6 +34,10 @@ const Image = styled.img<{ height: number }>`
   height: ${({ height }) => `${height}px`};
   width: 100%;
   object-fit: cover;
+  ${media.sp`
+    width:100%;
+    height:auto;
+  `}
 `
 
 const Video = styled.video<{ height: number }>`

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Image from 'next/image'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 
 type Props = {
   className?: string
@@ -27,9 +27,12 @@ const TagBase = styled.span`
   align-items: center;
   justify-content: flex-start;
   width: fit-content;
-  border-radius: 4px;
+  border-radius: 2px;
   background-color: ${color.content.gray2};
-  padding: 7px 10px;
+  padding: 2px 6px;
+  ${media.mdsp`
+    /* padding:1px 6px; */
+  `}
 `
 
 const Icon = styled.span`
@@ -40,7 +43,8 @@ const Icon = styled.span`
 `
 
 const Label = styled.span`
-  ${font.lg.subtitle2}
-  color: ${color.content.gray1};
+  ${font.mont.overline}
+  font-weight: 700;
+  color: ${color.content.middle};
   line-height: 1;
 `

@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 
 type Props = {
@@ -63,25 +63,33 @@ const FooterContainer = styled.nav`
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
-  z-index: 1;
+  z-index: 10;
   color: ${color.content.light};
+  ${media.mdsp`
+    min-width:100%;
+  `}
 `
 
 const FooterInner = styled.div`
-  max-width: 980px;
   width: 100%;
   display: flex;
   align-items: center;
+  ${media.lg`
+    max-width: 1040px;
+  `}
 `
 
 const FooterLink = styled.a`
   padding: 18px 8px;
-  ${font.lg.label};
+  ${font.mont.label};
   color: ${color.content.light};
   align-items: center;
   justify-content: center;
   display: flex;
   text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `
 const Icon = styled.img`
   margin-left: 8px;

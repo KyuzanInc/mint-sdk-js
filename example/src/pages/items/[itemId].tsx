@@ -4,7 +4,7 @@ import React, { useCallback, useEffect } from 'react'
 import { History } from '../../components/organisms/History'
 import { useAppDispatch, useAppSelector } from '../../redux/getStore'
 import { getItemActionCreator } from '../../redux/item'
-import { color } from '../../style'
+import { color, media } from '../../style'
 import { ItemDetail } from '../../components/organisms/ItemDetail'
 import { getHistoryActionCreator } from '../../redux/history'
 import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
@@ -78,11 +78,17 @@ const Container = styled.div`
 
 const MediaContainer = styled.div`
   background: ${color.background.bague};
-  max-height: 480px;
+
   display: flex;
   justify-content: center;
   width: 100%;
   margin: 0 auto;
+  padding: 64px 0;
+  background: #f5f5f5
+    linear-gradient(0deg, rgb(230, 230, 230) 60%, rgba(230, 230, 230, 0) 100%);
+  ${media.sp`
+    padding:0;
+  `}
 `
 
 const MediaInner = styled.div`
@@ -91,9 +97,26 @@ const MediaInner = styled.div`
 `
 
 const DetailContainer = styled.div`
-  background: ${color.white};
-  display: flex;
-  justify-content: center;
+  /* background: ${color.white}; */
+  display: grid;
   width: 100%;
-  padding: 0 150px;
+  margin: auto;
+  /* padding: 0 128px; */
+  ${media.lg`
+    max-width:1040px;
+    gap: 128px;
+    grid-template-columns: 1fr 1fr;
+  `}
+  ${media.md`
+    width:100%;
+    padding:0 24px;
+    gap: 64px;
+    grid-template-columns: 1fr 1fr;
+  `}
+  ${media.sp`
+    width:100%;
+    padding:0 24px;
+    gap: 64px;
+    grid-template-rows: 1fr 1fr;
+  `}
 `

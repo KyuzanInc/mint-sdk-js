@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React, { ChangeEventHandler } from 'react'
 import { Tag as TagBase } from '../../atoms/Tag'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { BidButton } from '../../molecules/Button/bid'
 import { WalletModal } from '../../molecules/WalletModal'
 import { SaleActionModal } from '../../molecules/SaleActionModal'
@@ -147,14 +147,14 @@ export const Presentation: React.VFC<Props> = ({
         <ExternalLinkUL>
           <ExternalLinkList>
             <ExternalLink
-              label={'View On IPFS'}
+              label={'IPFSで見る'}
               href={item?.tokenURIHTTP ?? ''}
             />
           </ExternalLinkList>
           <ExternalLinkList>
             {item?.buyerAddress ? (
               <ExternalLink
-                label={'View On OpenSea'}
+                label={'OpenSeaで見る'}
                 href={getOpenSeaLink(item)}
               />
             ) : null}
@@ -204,20 +204,23 @@ const Tag = styled(TagBase)`
 `
 
 export const Detail = styled.div`
-  width: 426px;
+  /* width: 426px; */
   padding: 64px 0;
-  margin-right: 128px;
+  /* margin-right: 128px; */
 `
 
 export const Title = styled.div`
-  ${font.lg.h2}
+  ${font.mont.h2}
   margin-bottom: 8px;
 `
 
 export const Description = styled.div`
-  ${font.lg.body1}
+  ${font.mont.article1}
   min-height: 192px;
-  margin-top: 32px;
+  margin: 32px 0 32px;
+  ${media.sp`
+    ${font.mont.article2}
+  `}
 `
 
 const TradeInfoContainer = styled.div`
@@ -250,7 +253,7 @@ const QuestionIcon = styled.div`
 
 const QuestionText = styled.div`
   color: ${color.content.middle};
-  ${font.lg.caption};
+  ${font.mont.caption};
   text-decoration: underline;
   line-height: 1;
 `

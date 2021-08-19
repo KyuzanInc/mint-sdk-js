@@ -52,7 +52,7 @@ const Container = styled.div`
 const Attention = styled.div`
   width: 100%;
   background-color: ${color.secondary};
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   padding: 32px;
   color: ${color.white};
   text-align: center;

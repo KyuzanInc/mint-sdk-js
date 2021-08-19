@@ -72,14 +72,14 @@ const Wrapper = styled.div`
 `
 
 const Title = styled.div`
-  ${font.lg.h4};
+  ${font.mont.h4};
   margin-bottom: 16px;
   text-align: center;
   max-width: 302px;
 `
 
 const Content = styled.div`
-  ${font.lg.body1};
+  ${font.mont.body1};
   text-align: center;
   max-width: 261px;
   line-height: 1.5;

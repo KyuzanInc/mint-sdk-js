@@ -51,11 +51,11 @@ const Container = styled.div`
 
 const Title = styled.p`
   color: ${color.white};
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   margin-bottom: 4px;
 `
 
 const Description = styled.p`
   color: ${color.white};
-  ${font.lg.caption}
+  ${font.mont.caption}
 `

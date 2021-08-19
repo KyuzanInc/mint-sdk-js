@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { color } from '../../../style'
+import { color, font, media } from '../../../style'
 import { format } from 'date-fns'
 import {
   StatusContainer,
@@ -24,14 +24,14 @@ export const EndedStatus: React.FC<Props> = ({ price, endAt, unit }) => {
   return (
     <StatusContainer>
       <PriceContent>
-        <StatusTitle>sold for</StatusTitle>
+        <StatusTitle>落札価格</StatusTitle>
         <StatusValue>
           <Value>{price}</Value>
           <Unit>{unit}</Unit>
         </StatusValue>
       </PriceContent>
       <TimeContent>
-        <StatusTitle>ending time</StatusTitle>
+        <StatusTitle>終了までの残り時間</StatusTitle>
         <EndedStatusValue>{date}</EndedStatusValue>
       </TimeContent>
     </StatusContainer>
@@ -39,10 +39,11 @@ export const EndedStatus: React.FC<Props> = ({ price, endAt, unit }) => {
 }
 
 const EndedStatusValue = styled.div`
-  font-weight: 700;
-  font-size: 30px;
-  line-height: 1.3;
+  ${font.mont.h2}
   color: ${color.content.dark};
   display: flex;
   align-items: center;
+  ${media.sp`
+    ${font.mont.h3}
+  `}
 `

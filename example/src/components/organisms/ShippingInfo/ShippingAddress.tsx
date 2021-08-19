@@ -143,7 +143,7 @@ const Container = styled.div``
 
 const Title = styled.h1`
   margin-top: 64px;
-  ${font.lg.h3}
+  ${font.mont.h3}
   text-align: center;
 `
 
@@ -166,7 +166,7 @@ const FormGroup = styled.div`
 `
 
 const Label = styled.span`
-  ${font.lg.subtitle2}
+  ${font.mont.subtitle2}
   width: 160px;
 `
 
@@ -182,7 +182,7 @@ const Input = styled.input<{ fullWidth: boolean }>`
   border: 0.5px solid ${color.content.light};
   box-sizing: border-box;
   border-radius: 4px;
-  ${font.lg.body1}
+  ${font.mont.body1}
   padding: 12px 16px;
   width: ${({ fullWidth }) => (fullWidth ? '100%' : '184px')};
 `
@@ -192,7 +192,7 @@ const Memo = styled.textarea`
   border: 0.5px solid ${color.content.light};
   box-sizing: border-box;
   border-radius: 4px;
-  ${font.lg.body1}
+  ${font.mont.body1}
   padding: 12px 16px;
   width: 100%;
 `

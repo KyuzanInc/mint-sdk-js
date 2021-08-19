@@ -18,7 +18,7 @@ export const ExternalLink: React.FC<Props> = ({ label, href }) => {
 
 const LinkBase = styled.a`
   cursor: pointer;
-  ${font.lg.article1}
+  ${font.mont.article1}
   height: 33px;
   line-height: 33px;
   border-radius: 22px;
@@ -29,7 +29,7 @@ const LinkBase = styled.a`
   justify-content: center;
   text-align: center;
   padding: 0 32px;
-  border: 2px solid ${color.content.dark};
+  border: 1px solid ${color.content.dark};
   text-decoration: none;
 `
 

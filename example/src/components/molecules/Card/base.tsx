@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import React, { ReactNode } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
 
@@ -55,45 +55,74 @@ export const CardBase: React.FC<Props> = ({
   )
 }
 
+const cardMediaHeight = '220px'
+
+const CardMedia = styled.div`
+  background: transparent;
+  height: ${cardMediaHeight};
+  width: fit-content;
+  margin: auto;
+  ${media.sp`
+  height:fit-content;
+  `}
+`
 const Container = styled.div`
   cursor: pointer;
-  background: ${color.white};
-  ${font.lg.button}
+  /* background: ${color.white}; */
+  ${font.mont.button}
   height: 402px;
   width: 264px;
   line-height: 44px;
-  color: ${color.white};
+  /* color: ${color.white}; */
   padding: 0;
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 12px;
   overflow: hidden;
+  &:hover {
+    ${CardMedia} {
+      opacity: 0.82;
+    }
+  }
+  ${media.sp`
+    margin:0 0 8px 0;
+  `}
 `
 
-const cardMediaHeight = '220px'
-
-const CardMedia = styled.div`
-  background: ${color.background.bague};
-  height: ${cardMediaHeight};
-  width: 100%;
-`
+// const CardBase = styled.div`
+//   display: inline-table;
+//   cursor: pointer;
+//   ${font.mont.button}
+//   line-height: 44px;
+//   padding: 0;
+//   overflow: hidden;
+//   /* margin:0 0 0 8px; */
+//   &:hover{
+//     ${CardMedia}{
+//       opacity:0.82;
+//     }
+//   }
+//   ${media.sp`
+//     margin:0 0 8px 0;
+//   `}
+// `
 
 const CardContent = styled.div`
-  background: ${color.white};
+  /* background: ${color.white}; */
   width: 100%;
   height: calc(100% - ${cardMediaHeight});
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   padding: 16px 16px 24px 16px;
   border-radius: 0 0 12px 12px;
 `
 const Typography = styled.div`
-  background: ${color.white};
+  /* background: ${color.white}; */
   width: 100%;
   height: 38px;
-  ${font.lg.body1}
+  ${font.mont.body1}
   color: ${color.content.dark};
   text-align: left;
   /* 3点リーダー */
@@ -108,12 +137,12 @@ const LoadingTypography = styled.div`
 `
 
 const CardAction = styled.div`
-  background: ${color.white};
+  /* background: ${color.white}; */
   height: 52px;
   width: 100%;
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   display: flex;
   align-items: center;
   color: ${color.content.dark};
-  align-items: center;
+  /* align-items: center; */
 `

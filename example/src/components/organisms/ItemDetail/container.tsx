@@ -63,10 +63,10 @@ export const Container: React.VFC = () => {
   useEffect(() => {
     if (bidPrice < (item?.minBidPrice ?? bidPrice)) {
       setError(true)
-      setErrorText(`Your bid must be at least ${item?.minBidPrice} ETH`)
+      setErrorText(`${item?.minBidPrice} ETH以上の価格を入力してください`)
     } else if ((walletInfo?.balance ?? bidPrice) < bidPrice) {
       setError(true)
-      setErrorText(`You don’t have enough ETH`)
+      setErrorText(`お手持ちの金額を超えています`)
     } else {
       setError(false)
       setErrorText('')

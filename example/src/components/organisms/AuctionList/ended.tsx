@@ -21,7 +21,7 @@ export const EndedAuctionList: React.FC<Props> = ({ items }) => {
         <ListTitle>
           <Title>End</Title>
         </ListTitle>
-        <EmptyTitle>No Items</EmptyTitle>
+        <EmptyTitle>商品はありません</EmptyTitle>
       </ListComponent>
     )
   }
