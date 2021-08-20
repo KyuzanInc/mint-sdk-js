@@ -1,6 +1,5 @@
 import React, { ReactNode, useEffect } from 'react'
 import styled from '@emotion/styled'
-import { color } from '../style'
 import { useAppDispatch } from '../redux/getStore'
 import { initialWalletActionCreator, walletSlice } from '../redux/wallet'
 import { Header } from './organisms/Header'
