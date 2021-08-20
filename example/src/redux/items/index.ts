@@ -39,13 +39,13 @@ export const getItemsActionCreator = createAsyncThunk<
 >('app/items/get', async (_, thunkApi) => {
   try {
     const [live, ended] = await Promise.all([
-      getSdk()?.getItems({
+      getSdk().getItems({
         onSale: true,
         perPage: 1000,
         page: 1,
         sort: { sortBy: 'endAt', order: 'desc' },
       }),
-      getSdk()?.getItems({
+      getSdk().getItems({
         onSale: false,
         perPage: 1000,
         page: 1,

@@ -26,7 +26,7 @@ export const initialItemActionCreator = createAsyncThunk(
   'app/item/init',
   async (itemId: string) => {
     if (getSdk()) {
-      const item = await getSdk()?.getItemById(itemId)
+      const item = await getSdk().getItemById(itemId)
       return item
     } else {
       return undefined
@@ -42,7 +42,7 @@ export const getItemActionCreator = createAsyncThunk<
   }
 >('app/item/get', async (itemId, thunkApi) => {
   try {
-    const item = await getSdk()!.getItemById(itemId)
+    const item = await getSdk().getItemById(itemId)
     return item
   } catch (err) {
     return thunkApi.rejectWithValue(

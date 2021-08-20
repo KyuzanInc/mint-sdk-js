@@ -100,6 +100,18 @@ const reducer = (
       // preserve router value on client side navigation
       nextState.router = state.router
     }
+    if (typeof window !== 'undefined' && state?.app.wallet) {
+      // preserve wallet state
+      nextState.app.wallet = state.app.wallet
+    }
+    if (typeof window !== 'undefined' && state?.app.accountInfo) {
+      // preserve accountInfo state
+      nextState.app.accountInfo = state.app.accountInfo
+    }
+    if (typeof window !== 'undefined' && state?.app.myAccountInfo) {
+      // preserve myAccountInfo state
+      nextState.app.myAccountInfo = state.app.myAccountInfo
+    }
     return nextState
   } else {
     return rootReducer(state, action)
@@ -130,4 +142,7 @@ const getStore: MakeStore<StoreState> = (context: any) => {
   })
   return store
 }
-export const wrapper = createWrapper(getStore)
+export const wrapper = createWrapper(getStore, {
+  serializeState: (state) => JSON.stringify(state),
+  deserializeState: (state) => JSON.parse(state),
+})

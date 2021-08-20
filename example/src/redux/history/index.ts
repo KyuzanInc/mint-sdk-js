@@ -25,7 +25,7 @@ export const initialHistoryActionCreator = createAsyncThunk(
   'app/history/init',
   async (itemId: string) => {
     if (getSdk()) {
-      const history = await getSdk()?.getItemLogs(itemId)
+      const history = await getSdk().getItemLogs(itemId)
       return history
     } else {
       return []
