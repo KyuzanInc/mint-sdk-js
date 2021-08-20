@@ -59,9 +59,9 @@ const FooterContainer = styled.nav`
   align-items: center;
   justify-content: center;
   background: #ffffff;
-  box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
+  /* box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
   0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
-  0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+  0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557); */
   z-index: 10;
   color: ${color.content.light};
   ${media.lg`
@@ -78,6 +78,9 @@ const FooterInner = styled.div`
   align-items: center;
   ${media.lg`
     max-width: 1040px;
+  `}
+  ${media.sp`
+    justify-content: center;
   `}
 `
 

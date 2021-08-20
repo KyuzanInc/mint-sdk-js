@@ -54,6 +54,9 @@ const Tab = styled.div<{ active: boolean }>`
 `
 
 const TabText = styled.span<{ active: boolean }>`
-  ${font.mont.button};
+  ${font.mont.subtitle2};
   color: ${({ active }) => (active ? color.primary : color.content.gray1)};
+  ${media.sp`
+    ${font.mont.label};
+  `}
 `
