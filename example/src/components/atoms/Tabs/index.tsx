@@ -39,8 +39,8 @@ const Container = styled.div`
 const Tab = styled.div<{ active: boolean }>`
   cursor: pointer;
   height: 43px;
+  min-width: 100px;
   flex-grow: 1;
-  /* width: 200px; */
   border-radius: 22px;
   background-color: ${({ active }) =>
     active ? color.white : color.content.gray2};

@@ -1,4 +1,4 @@
-import { AppComponent } from 'next/dist/next-server/lib/router/router'
+import { AppProps } from 'next/app'
 import { Global, css } from '@emotion/react'
 import emotionReset from 'emotion-reset'
 import * as React from 'react'
@@ -7,7 +7,7 @@ import { color } from '../style'
 import { ConnectedRouter } from 'connected-next-router'
 import { wrapper } from '../redux/getStore'
 
-const MyApp: AppComponent = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <ConnectedRouter>
       <Global

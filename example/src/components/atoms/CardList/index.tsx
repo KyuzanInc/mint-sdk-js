@@ -30,8 +30,11 @@ export const EmptyTitle = styled(ListComponent)`
 `
 
 export const CardList = styled.li`
-  /* margin: 0 16px 24px 0; */
-  /* float: left; */
+  margin: 0 16px 24px 0;
+  float: left;
+  ${media.mdsp`
+    margin: 0 0 24px;
+  `}
 `
 
 export const CardUL = styled.ul`

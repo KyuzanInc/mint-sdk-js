@@ -32,7 +32,6 @@ export const MediaContent: React.VFC<Props> = ({
 
 const Image = styled.img<{ height: number }>`
   height: ${({ height }) => `${height}px`};
-  width: 100%;
   object-fit: cover;
   ${media.sp`
     width:100%;
@@ -42,6 +41,5 @@ const Image = styled.img<{ height: number }>`
 
 const Video = styled.video<{ height: number }>`
   height: ${({ height }) => `${height}px`};
-  width: 100%;
   object-fit: cover;
 `

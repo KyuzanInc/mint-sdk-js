@@ -80,7 +80,7 @@ export const Presentation: React.VFC<Props> = ({
 
 const Container = styled.div`
   background: ${color.background.bague};
-  min-width: 840px;
+  max-width: 840px;
   min-height: 100vh;
   padding-top: 144px;
   display: flex;
@@ -88,6 +88,10 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin: auto;
+  ${media.mdsp`
+    max-width:100%;
+    padding:144px 16px;
+  `}
 `
 
 const InnerContainer = styled.div`
