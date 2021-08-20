@@ -12,9 +12,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <ConnectedRouter>
       <Global
         styles={css`
-          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600;700&display=swap');
           ${emotionReset}
-          *, html, body {
+          @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600;700&display=swap');
+          *,
+          html,
+          body {
             font-family: 'Montserrat', sans-serif;
             color: ${color.content.dark};
           }
