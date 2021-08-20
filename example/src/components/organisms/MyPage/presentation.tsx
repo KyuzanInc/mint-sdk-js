@@ -201,7 +201,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding:144px 0px;
+  padding: 144px 0px;
   margin: auto;
   ${media.mdsp`
     max-width:100%;

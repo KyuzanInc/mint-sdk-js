@@ -134,5 +134,4 @@ export const Unit = styled.div`
   align-items: center;
   display: flex;
   margin-left: 4px;
-  
 `

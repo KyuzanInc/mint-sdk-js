@@ -249,7 +249,7 @@ const Unit = styled.div`
 
 const Icon = styled.div`
   margin-left: 4px;
-  height:16px;
+  height: 16px;
 `
 
 const EndedDate = styled.div`
@@ -269,8 +269,8 @@ const Time = styled.div`
   text-align: right;
   ${font.mont.body2};
   color: ${color.content.dark};
-  &:first-of-type{
-   margin:0; 
+  &:first-of-type {
+    margin: 0;
   }
 `
 

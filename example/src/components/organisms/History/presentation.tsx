@@ -47,7 +47,7 @@ const History = styled.div`
 const Label = styled.div`
   ${font.mont.h4}
   margin-bottom: 16px;
-  color:${color.content.middle}
+  color: ${color.content.middle};
 `
 
 const HistoryUL = styled.ul``

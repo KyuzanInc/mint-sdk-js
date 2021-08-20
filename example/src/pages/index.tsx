@@ -70,5 +70,4 @@ const Container = styled.div`
 const InnerContainer = styled.div`
   width: 100%;
   min-height: 100vh;
-
 `

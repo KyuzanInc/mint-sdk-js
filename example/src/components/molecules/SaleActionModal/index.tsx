@@ -352,7 +352,7 @@ const ItemName = styled.p`
   margin-bottom: 16px;
 `
 const ModalStatusDetail = styled(StatusDetail)`
-  .value{
+  .value {
     ${font.mont.h4}
   }
 `

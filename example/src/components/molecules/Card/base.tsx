@@ -43,13 +43,12 @@ export const CardBase: React.FC<Props> = ({
             )}
           </Typography>
           <TagWrap>
-          {withPhysicalProduct && (
-            
+            {withPhysicalProduct && (
               <Tag
                 label={'フィジカルアイテムつき'}
                 iconPath={'/images/cardboard.svg'}
               ></Tag>
-          )}
+            )}
           </TagWrap>
           <CardAction>{children}</CardAction>
         </CardContent>
@@ -79,8 +78,8 @@ const Container = styled.div`
   /* color: ${color.white}; */
   padding: 0;
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
-  0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
-  0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+    0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
+    0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 12px;
   overflow: hidden;
   &:hover {
@@ -99,7 +98,6 @@ const Container = styled.div`
     height:auto;
   `}
 `
-
 
 const CardContent = styled.div`
   /* background: ${color.white}; */

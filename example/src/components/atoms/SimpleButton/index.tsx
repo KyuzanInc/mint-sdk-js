@@ -62,7 +62,7 @@ const Disabled = styled(ButtonBase)`
   background-color: ${color.content.superLight};
   color: ${color.content.light};
   cursor: not-allowed;
-  border:0px;
+  border: 0px;
   width: 100%;
 `
 

@@ -8,7 +8,7 @@ import { Anchor } from '../../atoms/Anchor'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { ClipBoard } from '../../atoms/Clipboard'
-import {useMedia} from '../../../util/useMedia'
+import { useMedia } from '../../../util/useMedia'
 
 type Props = {
   loading: boolean
@@ -38,8 +38,8 @@ export const Presentation: React.VFC<Props> = ({
             <Anchor>
               <Image
                 src={'/images/logo.svg'}
-                width={!isMobile? 89.53:55}
-                height={!isMobile? 30:22.8}
+                width={!isMobile ? 89.53 : 55}
+                height={!isMobile ? 30 : 22.8}
                 layout={'fixed'}
               />
             </Anchor>

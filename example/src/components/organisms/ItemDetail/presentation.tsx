@@ -93,16 +93,16 @@ export const Presentation: React.VFC<Props> = ({
       <Detail>
         <Title>{item?.name}</Title>
         <TagWrap>
-        {item?.type === 'nftWithPhysicalProduct' && (
-          <Tag
-            label={'フィジカルアイテムつき'}
-            iconPath={'/images/cardboard.svg'}
-          />
-        )}
-        {item?.tradeType === 'autoExtensionAuction' && (
-          <Tag label={'自動延長オークション'} />
-        )}
-        {item?.tradeType === 'fixedPrice' && <Tag label={'固定価格販売'} />}
+          {item?.type === 'nftWithPhysicalProduct' && (
+            <Tag
+              label={'フィジカルアイテムつき'}
+              iconPath={'/images/cardboard.svg'}
+            />
+          )}
+          {item?.tradeType === 'autoExtensionAuction' && (
+            <Tag label={'自動延長オークション'} />
+          )}
+          {item?.tradeType === 'fixedPrice' && <Tag label={'固定価格販売'} />}
         </TagWrap>
         <TradeInfoContainer>
           <StatusDetail
@@ -239,9 +239,9 @@ export const Presentation: React.VFC<Props> = ({
 const Tag = styled(TagBase)`
   width: fit-content;
   display: inline-flex;
-  margin:0 0 0 8px;
-  &:first-of-type{
-    margin:0;
+  margin: 0 0 0 8px;
+  &:first-of-type {
+    margin: 0;
   }
 `
 
@@ -269,7 +269,7 @@ export const Description = styled.div`
     ${font.mont.article2}
   `}
 `
-const TagWrap=styled.div`
+const TagWrap = styled.div`
   display: inline-flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -294,7 +294,7 @@ const QuestionButton = styled.div`
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
-  margin:16px 0 0 0;
+  margin: 16px 0 0 0;
 `
 
 const QuestionIcon = styled.div`
