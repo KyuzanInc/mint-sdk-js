@@ -3,7 +3,9 @@ import { Item } from '@kyuzan/mint-sdk-js'
 import { addDays } from 'date-fns'
 import { Presentation } from './presentation'
 
-export const Basic: React.VFC = () => <Presentation item={item} bidHash={''} />
+export const Basic: React.VFC = () => (
+  <Presentation item={item} bidHash={''} shareUrl={''} />
+)
 
 export default {
   title: 'organism/WithDrawSuccess',

@@ -7,13 +7,14 @@ import { color } from '../../../style'
 type Props = {
   item: Item
   bidHash: string
+  shareUrl: string
 }
 
-export const Presentation: React.VFC<Props> = ({ item }) => {
+export const Presentation: React.VFC<Props> = ({ item, bidHash, shareUrl }) => {
   return (
     <Container>
       <InnerContainer>
-        <WithdrawModal item={item} bidHash={''} />
+        <WithdrawModal item={item} bidHash={bidHash} shareUrl={shareUrl} />
       </InnerContainer>
     </Container>
   )

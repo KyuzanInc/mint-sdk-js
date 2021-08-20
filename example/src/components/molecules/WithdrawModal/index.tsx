@@ -1,4 +1,7 @@
 import styled from '@emotion/styled'
+import copy from 'clipboard-copy'
+import Image from 'next/image'
+
 import { Item } from '@kyuzan/mint-sdk-js'
 import React from 'react'
 import { color, font } from '../../../style'
@@ -9,6 +12,7 @@ import { IconButton } from '../../atoms/IconButton'
 type Props = {
   item: Item
   bidHash?: string
+  shareUrl?: string
 }
 
 type ModalContentProps = {
@@ -16,16 +20,27 @@ type ModalContentProps = {
   tweetUrl: string
   item: Item
   bidHash?: string
+  shareUrl: string
 }
 
-export const WithdrawModal: React.VFC<Props> = ({ item }) => {
+export const WithdrawModal: React.VFC<Props> = ({
+  item,
+  bidHash,
+  shareUrl,
+}) => {
   return (
     <Container>
       <MediaContainer>
         <MediaContent media={item?.previews[0]} height={520} />
       </MediaContainer>
       <Right>
-        <ModalContent url={''} tweetUrl={''} item={item} />
+        <ModalContent
+          url={''}
+          tweetUrl={''}
+          item={item}
+          bidHash={bidHash}
+          shareUrl={shareUrl ?? ''}
+        />
       </Right>
     </Container>
   )
@@ -34,8 +49,16 @@ export const WithdrawModal: React.VFC<Props> = ({ item }) => {
 const ModalContent: React.VFC<ModalContentProps> = ({
   item,
   bidHash,
+  shareUrl,
 }) => {
-  const url = window.location.href;
+  const [showToolTip, setShowToolTip] = useState(false)
+  const onClickCopy = useCallback(() => {
+    copy(shareUrl)
+    setShowToolTip(true)
+    setTimeout(() => {
+      setShowToolTip(false)
+    }, 2000)
+  }, [])
   return (
     <ModalContainer>
       <Typography>Congratulation on getting your NFT !</Typography>
@@ -54,31 +77,36 @@ const ModalContent: React.VFC<ModalContentProps> = ({
           <Icon>
             <IconButton
               imagePath={'/images/twitter_icon.svg'}
-              href={`http://twitter.com/share?url=${url}&text=NFTアイテムを手に入れました！`}
+              href={`http://twitter.com/share?url=${shareUrl}&text=NFTアイテムを手に入れました！`}
             />
           </Icon>
           <Icon>
             <IconButton
               imagePath={'/images/facebook.svg'}
-              href={""}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
             />
           </Icon>
           <Icon>
-            <IconButton
-              imagePath={'/images/paperclip.svg'}
-              href={'//twitter.com/share'}
-            />
+            <DummyIconButton onClick={onClickCopy}>
+              <Image
+                width={24}
+                height={24}
+                layout={'fixed'}
+                src={'/images/paperclip.svg'}
+              />
+            </DummyIconButton>
           </Icon>
         </IconList>
       </PromotionContainer>
+      {showToolTip && <ToolTip>クリックボードにコピーしました</ToolTip>}
     </ModalContainer>
   )
 }
 
 const Container = styled.article`
   max-width: 880px;
+  max-height: 520px;
   overflow: hidden;
-  width: 100%;
   display: flex;
   flex-direction: row;
   background: ${color.white};
@@ -152,4 +180,32 @@ const IconList = styled.div`
 
 const Icon = styled.div`
   padding-left: 16px;
+`
+
+const DummyIconButton = styled.div`
+  margin 0;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: 44px;
+  border: 2px solid ${color.content.gray1};
+  box-sizing: border-box;
+  border-radius: 22px;
+  padding: 10px;
+  &:hover {
+    cursor: pointer;
+  };
+`
+
+const ToolTip = styled.div`
+  background-color: ${color.background.dark};
+  border-radius: 16px;
+  padding: 8px 16px;
+  color: ${color.white};
+  ${font.lg.caption}
+  position: relative;
+  width: 222px;
+  height: 31px;
+  top: -100px;
+  right: -150px;
 `

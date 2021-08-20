@@ -24,7 +24,7 @@ export const IconButton: React.VFC<Props> = ({
       href={href}
       data-text={text}
       data-url={dataUrl}
-      target='blank'
+      target="blank"
     >
       <Icon>
         <Image width={24} height={24} layout={'fixed'} src={imagePath} />
