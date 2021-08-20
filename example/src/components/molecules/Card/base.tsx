@@ -63,19 +63,16 @@ const CardMedia = styled.div`
   background: transparent;
   height: ${cardMediaHeight};
   width: 100%;
-  margin: auto;
   ${media.sp`
-  height:fit-content;
+    height:fit-content;
   `}
 `
 const Container = styled.div`
   cursor: pointer;
-  /* background: ${color.white}; */
   ${font.mont.button}
   /* height: 392px; */
   height:100%;
   line-height: 44px;
-  /* color: ${color.white}; */
   padding: 0;
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
