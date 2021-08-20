@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import styled from '@emotion/styled'
 import { Item, Token } from '@kyuzan/mint-sdk-js'
 import { isBefore } from 'date-fns'
