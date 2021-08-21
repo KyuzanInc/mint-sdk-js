@@ -48,7 +48,7 @@ export const getAccountInfoActionCreator = createAsyncThunk<
   }
 >('app/myAccountInfo/get', async (arg, thunkApi) => {
   try {
-    const data = await getSdk()?.getAccountInfo({
+    const data = await getSdk().getAccountInfo({
       walletAddress: arg.walletAddress,
     })
     return data
@@ -70,7 +70,7 @@ export const uploadAvatarActionCreator = createAsyncThunk<
   }
 >('app/myAccountInfo/uploadAvatar', async (arg, thunkApi) => {
   try {
-    return await getSdk()?.uploadAccountInfoAvatar({
+    return await getSdk().uploadAccountInfoAvatar({
       file: arg.file,
     })
   } catch (err) {
@@ -106,7 +106,7 @@ export const updateAccountInfoActionCreator = createAsyncThunk<
     thunkApi
   ) => {
     try {
-      await getSdk()?.updateAccountInfo(arg)
+      await getSdk().updateAccountInfo(arg)
       thunkApi.dispatch(push('/me'))
     } catch (err) {
       console.error(err)
