@@ -31,7 +31,7 @@ export const LoadingHistoryCard: React.FC<Props> = () => {
       </BidderDetail>
       <BidPrice>
         <Skeleton width={60} />
-        <Icon src={'/images/external-link.svg'} />
+        <Icon/>
       </BidPrice>
     </HistoryContainer>
   )

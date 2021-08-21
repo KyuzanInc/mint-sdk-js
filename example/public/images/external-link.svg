@@ -1,5 +1,15 @@
-<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 8.66667V12.6667C12 13.403 11.403 14 10.6667 14H3.33333C2.59695 14 2 13.403 2 12.6667V5.33333C2 4.59695 2.59695 4 3.33333 4H7.33333" stroke="black" stroke-opacity="0.82" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M10 2H14V6" stroke="black" stroke-opacity="0.82" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6.66699 9.33333L14.0003 2" stroke="black" stroke-opacity="0.82" stroke-linecap="round" stroke-linejoin="round"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.82;}
+</style>
+<path class="st0" d="M10.7,14.5H3.3c-1,0-1.8-0.8-1.8-1.8V5.3c0-1,0.8-1.8,1.8-1.8h4c0.3,0,0.5,0.2,0.5,0.5S7.6,4.5,7.3,4.5h-4
+	c-0.5,0-0.8,0.4-0.8,0.8v7.3c0,0.5,0.4,0.8,0.8,0.8h7.3c0.5,0,0.8-0.4,0.8-0.8v-4c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v4
+	C12.5,13.7,11.7,14.5,10.7,14.5z"/>
+<path class="st0" d="M14,6.5c-0.3,0-0.5-0.2-0.5-0.5V2.5H10C9.7,2.5,9.5,2.3,9.5,2S9.7,1.5,10,1.5h4c0.3,0,0.5,0.2,0.5,0.5v4
+	C14.5,6.3,14.3,6.5,14,6.5z"/>
+<path class="st0" d="M6.7,9.8c-0.1,0-0.3,0-0.4-0.1C6.1,9.5,6.1,9.2,6.3,9l7.3-7.3c0.2-0.2,0.5-0.2,0.7,0s0.2,0.5,0,0.7L7,9.7
+	C6.9,9.8,6.8,9.8,6.7,9.8z"/>
 </svg>

@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import React, { ReactNode } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { color, font, media } from '../../../style'
+import { color, font, media, curve } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
 
@@ -64,8 +64,9 @@ const CardMedia = styled.div`
   height: ${cardMediaHeight};
   width: 100%;
   margin: auto;
+  ${curve.button}
   ${media.sp`
-  height:fit-content;
+    height:fit-content;
   `}
 `
 const Container = styled.div`

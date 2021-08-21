@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { ItemLog, NetworkId } from '@kyuzan/mint-sdk-js'
 import { format } from 'date-fns'
-import { color, font, media } from '../../../style'
+import { color, curve, font, media } from '../../../style'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 import { LoadingHistoryCard } from './loading'
 import Link from 'next/link'
@@ -43,7 +43,7 @@ export const HistoryCard: React.FC<Props> = ({ log, networkId, loading }) => {
         <Anchor target={'_blank'}>
           <BidPrice>
             {price} ETH
-            <Icon src={'/images/external-link.svg'} />
+            <Icon/>
           </BidPrice>
         </Anchor>
       </Link>
@@ -92,13 +92,20 @@ export const BidTime = styled.div`
 export const BidPrice = styled.div`
   min-width: 100px;
   ${font.mont.subtitle1}
-  justify-content: center;
+  justify-content: flex-end;
   display: flex;
   margin: auto;
 `
-export const Icon = styled.img`
-  text-align: center;
-  margin-left: 4px;
+export const Icon = styled.span`
+  &:after{
+    text-align: center;
+    margin-left: 4px;
+    margin-bottom: 3px;
+    font-family:'icomoon';
+    color: ${color.content.middle};
+    content: '\\e904';
+    ${curve.button}
+  }
 `
 
 const AvatarImage = styled.img`

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Skeleton from 'react-loading-skeleton'
 import React from 'react'
-import { color, font, media } from '../../../style'
+import { color, font, media, zIndex } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
@@ -110,7 +110,7 @@ const HeaderContainer = styled.nav`
   align-items: center;
   justify-content: center;
   background: ${color.background.white};
-  z-index: 10;
+  z-index:${zIndex.elevation.ev10};
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);

@@ -8,7 +8,7 @@ import { SaleActionModal } from '../../molecules/SaleActionModal'
 import { AboutPhysicalModal } from '../../molecules/AboutPhysicalModal'
 import { AboutAutoExtensionAuctionModal } from '../../molecules/AboutAutoExtensionAuctionModal'
 import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
-import { ExternalLink } from '../../atoms/ExternalLink'
+import { SecondaryButton } from '../../atoms/SecondaryButton'
 import { getItemPrice } from '../../../util/getItemPrice'
 import { getItemPriceUnit, getPriceUnit } from '../../../util/getItemPriceUnit'
 import Image from 'next/image'
@@ -17,7 +17,7 @@ import { Item } from '@kyuzan/mint-sdk-js'
 import { LoadingItemDetailComponent } from './loading'
 import { BidSuccessModal } from '../../molecules/BidSuccessModal'
 import { BoughtFixedPriceSuccessModal } from '../../molecules/BoughtFixedPriceSuccessModal'
-import { SimpleButton } from '../../atoms/SimpleButton'
+import { SimpleButton } from '../../atoms/PrimaryButton'
 
 type Props = {
   loading: boolean
@@ -160,22 +160,22 @@ export const Presentation: React.VFC<Props> = ({
         )}
 
         <Description>{item?.description}</Description>
-        <ExternalLinkUL>
-          <ExternalLinkList>
-            <ExternalLink
+        <SecondaryButtonUL>
+          <SecondaryButtonList>
+            <SecondaryButton
               label={'IPFSで見る'}
               href={item?.tokenURIHTTP ?? ''}
             />
-          </ExternalLinkList>
-          <ExternalLinkList>
+          </SecondaryButtonList>
+          <SecondaryButtonList>
             {item?.buyerAddress ? (
-              <ExternalLink
+              <SecondaryButton
                 label={'OpenSeaで見る'}
                 href={getOpenSeaLink(item)}
               />
             ) : null}
-          </ExternalLinkList>
-        </ExternalLinkUL>
+          </SecondaryButtonList>
+        </SecondaryButtonUL>
       </Detail>
       <WalletModal
         isOpen={connectWalletModalIsOpen}
@@ -279,12 +279,12 @@ const TradeInfoContainer = styled.div`
   margin: 32px 0;
 `
 
-const ExternalLinkUL = styled.ul`
+const SecondaryButtonUL = styled.ul`
   display: flex;
   flex-direction: column;
 `
 
-const ExternalLinkList = styled.li`
+const SecondaryButtonList = styled.li`
   margin: 16px 0px 0 0;
   width: 100%;
 `

@@ -307,7 +307,6 @@ const MediaContainer = styled.div`
   padding: 32px;
   width: 100%;
   height: 100%;
-  transform: translateY(-15%);
   img,
   video {
     width: 100%;

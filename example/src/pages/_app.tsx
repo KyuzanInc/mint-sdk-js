@@ -13,6 +13,11 @@ const MyApp: AppComponent = ({ Component, pageProps }) => {
       <Global
         styles={css`
           @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600;700&display=swap');
+          @font-face{
+            font-family:'icomoon';
+            src:url('/fonts/icomoon.woff') format('woff'),
+            url('/fonts/icomoon.ttf') format('truetype');
+          }
           ${emotionReset}
           *, html, body {
             font-family: 'Montserrat', sans-serif;

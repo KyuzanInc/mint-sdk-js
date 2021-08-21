@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { color, font, media } from '../../../style'
+import { color, curve, font, media, zIndex } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 
 type Props = {
@@ -43,7 +43,7 @@ export const Presentation: React.VFC<Props> = ({
         {FAQ && (
           <FooterLink href={FAQ} target="blank">
             このストアに関するお問い合わせ
-            <Icon src={'/images/external-link-gray.svg'} />
+            <Icon/>
           </FooterLink>
         )}
       </FooterInner>
@@ -62,7 +62,7 @@ const FooterContainer = styled.nav`
   /* box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
   0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
   0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557); */
-  z-index: 10;
+  z-index:${zIndex.elevation.ev10};
   color: ${color.content.light};
   ${media.lg`
     padding: 0px 180px;
@@ -97,5 +97,14 @@ const FooterLink = styled.a`
   }
 `
 const Icon = styled.img`
-  margin-left: 8px;
+  &:after{
+    text-align: center;
+    margin-left: 8px;
+    margin-bottom: 3px;
+    font-family:'icomoon';
+    color: ${color.content.middle};
+    content: '\\e904';
+    ${curve.button}
+  }
+  
 `

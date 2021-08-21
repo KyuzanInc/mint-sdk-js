@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Image from 'next/image'
-import { color, font } from '../../../style'
+import { color, curve, font } from '../../../style'
 import { NetworkId } from '@kyuzan/mint-sdk-js'
 import { getTransactionLink } from '../../../util/getTransactionLink'
 
@@ -22,14 +22,7 @@ export const TransactionStatus: React.FC<Props> = ({ networkId, hash }) => {
         <Title>トランザクション</Title>
         <TransactionLink href={url} target="blank">
           トランザクションをみる
-          <LinkContainer>
-            <Image
-              src={'/images/external-link.svg'}
-              layout={'fixed'}
-              width={24}
-              height={24}
-            />
-          </LinkContainer>
+          <Icon/>
         </TransactionLink>
       </TransactionContainer>
     </Container>
@@ -65,10 +58,18 @@ const TransactionLink = styled.a`
   ${font.mont.subtitle2}
   color: ${color.primary};
   display: flex;
-  margin-top: 2px;
+  margin-top: 6px;
   align-items: center;
   text-decoration: none;
 `
-const LinkContainer = styled.div`
-  margin-left: 4px;
+
+const Icon = styled.span`
+  &:after{
+    text-align: center;
+    margin-left: 4px;
+    font-family:'icomoon';
+    color: ${color.primary};
+    content: '\\e904';
+    ${curve.button}
+  }
 `
