@@ -6,7 +6,7 @@ import React from 'react'
 import { color, font, media, zIndex } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
-import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { ClipBoard } from '../../atoms/Clipboard'
 import { useMedia } from '../../../util/useMedia'
 
@@ -86,7 +86,7 @@ export const Presentation: React.VFC<Props> = ({
                 </WalletDetail>
               </LoadingContainer>
             ) : (
-              <PrimaryLoadingButton
+              <PrimaryButton
                 label={'接続する'}
                 isLoading={connectWalletLoading}
                 onClick={onClickConnectWallet}

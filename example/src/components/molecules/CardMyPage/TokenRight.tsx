@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 import { color, font } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
-import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 
 type Props = {
   token: Token
@@ -100,11 +100,11 @@ const Container = styled.div`
   justify-content: space-around;
 `
 
-const InputAddressButton = styled(PrimaryLoadingButton)`
+const InputAddressButton = styled(PrimaryButton)`
   line-height: 19px;
 `
 
-const ReverseButton = styled(PrimaryLoadingButton)`
+const ReverseButton = styled(PrimaryButton)`
   width: 100%;
   background-color: transparent;
   border: 1px solid ${color.primary};

@@ -6,7 +6,7 @@ import Skeleton from 'react-loading-skeleton'
 import { color, font, media } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 import { WalletAddressWithClipBoard } from '../WalletAddressWithClipBoard'
-import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 
 type Props = {
@@ -114,7 +114,7 @@ export const AccountInfo: React.VFC<Props> = ({
       ) : null}
       {onEdit && (
         <EditButton>
-          <PrimaryLoadingButton
+          <PrimaryButton
             label={'編集'}
             isLoading={false}
             onClick={onEdit}

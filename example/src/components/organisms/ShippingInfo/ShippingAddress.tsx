@@ -4,10 +4,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { color, font } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
-import {
-  PrimaryLoadingButton,
-  PrimaryLoadingButtonSubmit,
-} from '../../atoms/LoadingBotton'
+import {PrimaryButton} from '../../atoms/PrimaryButton'
 
 type Props = {
   onSubmit: (data: FormType) => void
@@ -132,7 +129,7 @@ export const ShippingInfo: React.VFC<Props> = ({ loading, onSubmit }) => {
               <BackButton isLoading={false} label={'マイページに戻る'} />
             </Anchor>
           </Link>
-          <PrimaryLoadingButtonSubmit isLoading={loading} label={'保存する'} />
+          <PrimaryButton isLoading={loading} label={'保存する'} />
         </ButtonsContainer>
       </form>
     </Container>
@@ -205,7 +202,7 @@ const ButtonsContainer = styled.div`
   width: 100%;
 `
 
-const BackButton = styled(PrimaryLoadingButton)`
+const BackButton = styled(PrimaryButton)`
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};

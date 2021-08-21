@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import React from 'react'
 import Modal, { Styles } from 'react-modal'
 import { color, font } from '../../../style'
-import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 
 type Props = {
   isOpen: boolean
@@ -92,4 +92,4 @@ const ButtonsContainer = styled.div`
   align-items: center;
 `
 
-const ConfirmButton = styled(PrimaryLoadingButton)``
+const ConfirmButton = styled(PrimaryButton)``

@@ -2,7 +2,6 @@ import styled from '@emotion/styled'
 import React, { ChangeEventHandler } from 'react'
 import { Tag as TagBase } from '../../atoms/Tag'
 import { color, font, media } from '../../../style'
-import { BidButton } from '../../molecules/Button/bid'
 import { WalletModal } from '../../molecules/WalletModal'
 import { SaleActionModal } from '../../molecules/SaleActionModal'
 import { AboutPhysicalModal } from '../../molecules/AboutPhysicalModal'
@@ -17,7 +16,7 @@ import { Item } from '@kyuzan/mint-sdk-js'
 import { LoadingItemDetailComponent } from './loading'
 import { BidSuccessModal } from '../../molecules/BidSuccessModal'
 import { BoughtFixedPriceSuccessModal } from '../../molecules/BoughtFixedPriceSuccessModal'
-import { SimpleButton } from '../../atoms/PrimaryButton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 
 type Props = {
   loading: boolean
@@ -141,7 +140,7 @@ export const Presentation: React.VFC<Props> = ({
         </TradeInfoContainer>
 
         {!saleIsOutOfDate && !isBought && (
-          <BidButton
+          <PrimaryButton
             label={
               item?.tradeType === 'autoExtensionAuction'
                 ? '入札する'
@@ -152,7 +151,7 @@ export const Presentation: React.VFC<Props> = ({
         )}
 
         {isBought && (
-          <SimpleButton
+          <PrimaryButton
             label={'売り切れ'}
             // onClick={action('onClick')}
             disabled={true}

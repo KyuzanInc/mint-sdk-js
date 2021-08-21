@@ -6,7 +6,7 @@ import { color, font, media } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
 import { StatusDetail } from '../Detail'
 import { TransactionStatus } from '../../atoms/TransactionStatus'
-import { SimpleButton } from '../../atoms/PrimaryButton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { format, subMinutes } from 'date-fns'
 import { NetworkId } from '@kyuzan/mint-sdk-js'
 import { useMedia } from '../../../util/useMedia'
@@ -207,7 +207,7 @@ const InfoContainer = styled.div`
   bottom: 32px;
   top: auto;
   background-color: rgba(255, 255, 255, 0.56);
-  backdrop-filter: blur(32px);
+  /* backdrop-filter: blur(32px); */
   border-radius: 8px;
   padding: 16px;
   margin-top: 8px;
@@ -290,6 +290,6 @@ const AnchorLink = styled.a`
   text-decoration: none;
 `
 
-const CalenderButton = styled(SimpleButton)`
+const CalenderButton = styled(PrimaryButton)`
   width: 100%;
 `

@@ -1,10 +1,14 @@
 import { action } from '@storybook/addon-actions'
 import React from 'react'
-import { SimpleButton } from '.'
+import { PrimaryButton } from '.'
 
 export const Basic: React.VFC = () => {
+  return <PrimaryButton label={'button text'} onClick={action('onClick')} />
+}
+
+export const WithIcon: React.VFC = () => {
   return (
-    <SimpleButton
+    <PrimaryButton
       label={'button text'}
       iconPath={'/images/icons/calendar.svg'}
       onClick={action('onClick')}
@@ -12,13 +16,9 @@ export const Basic: React.VFC = () => {
   )
 }
 
-export const NoIcon: React.VFC = () => {
-  return <SimpleButton label={'button text'} onClick={action('onClick')} />
-}
-
 export const Disabled: React.VFC = () => {
   return (
-    <SimpleButton
+    <PrimaryButton
       label={'button text'}
       onClick={action('onClick')}
       disabled={true}
@@ -26,6 +26,16 @@ export const Disabled: React.VFC = () => {
   )
 }
 
+export const Loading: React.VFC = () => {
+  return (
+    <PrimaryButton
+      label={'button text'}
+      isLoading={true}
+      onClick={action('onClick')}
+    />
+  )
+}
+
 export default {
-  title: 'atoms/SimpleButton',
+  title: 'atoms/PrimaryButton',
 }

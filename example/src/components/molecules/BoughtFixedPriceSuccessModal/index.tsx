@@ -169,7 +169,7 @@ const InfoContainer = styled.div`
   bottom: 32px;
   top: auto;
   background-color: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(32px);
+  /* backdrop-filter: blur(32px); */
   border-radius: 8px;
   padding: 16px;
   margin-top: 8px;

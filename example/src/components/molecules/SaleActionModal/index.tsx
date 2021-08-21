@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Modal from 'react-modal'
 import { color, font, media } from '../../../style'
-import { PrimaryLoadingButton as ButtonBase } from '../../atoms/LoadingBotton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { Chip } from '../../atoms/Chip'
 import { MediaContent } from '../../atoms/MediaContent'
 import { StatusDetail } from '../Detail'
@@ -187,7 +187,7 @@ const AuctionSaleAction: React.VFC<{
       </InputPriceContainer>
       <ContentButtonContainer>
         {isValidationError && (
-          <BidButton
+          <PrimaryButton
             label={errorText ?? ''}
             isLoading={false}
             onClick={doBid}
@@ -195,7 +195,7 @@ const AuctionSaleAction: React.VFC<{
           />
         )}
         {!isValidationError && (
-          <BidButton
+          <PrimaryButton
             label={loading ? '取引処理中です' : '入札する'}
             isLoading={loading}
             onClick={doBid}
@@ -249,7 +249,7 @@ const FixedSaleAction: React.VFC<{
       </CheckInJapanContainer>
       <ContentButtonContainer>
         {isValidationError && (
-          <BidButton
+          <PrimaryButton
             label={errorText ?? ''}
             isLoading={false}
             onClick={() => doBuy(inJapan)}
@@ -257,7 +257,7 @@ const FixedSaleAction: React.VFC<{
           />
         )}
         {!isValidationError && (
-          <BidButton
+          <PrimaryButton
             label={loading ? '取引処理中です' : '購入'}
             isLoading={loading}
             onClick={() => doBuy(inJapan)}
@@ -332,7 +332,7 @@ const InfoContainer = styled.div`
   bottom: 32px;
   top: auto;
   background-color: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(32px);
+  /* backdrop-filter: blur(32px); */
   border-radius: 8px;
   padding: 16px;
   margin-top: 8px;
@@ -459,14 +459,6 @@ const CloseButton = styled.div`
   `}
 `
 
-const BidButton = styled(ButtonBase)`
-  width: 100%;
-  margin-top: 32px;
-  line-height: 1.5;
-  ${media.sp`
-    margin-top: 16px;
-  `}
-`
 
 const NotFoundIcon = styled.span`
   margin-left: 4px;

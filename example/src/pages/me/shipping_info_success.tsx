@@ -4,7 +4,7 @@ import { color, font } from '../../style'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { Anchor } from '../../components/atoms/Anchor'
-import { PrimaryLoadingButton } from '../../components/atoms/LoadingBotton'
+import { PrimaryButton } from '../../components/atoms/PrimaryButton'
 
 const Page: NextPage = () => {
   return (
@@ -61,7 +61,7 @@ const ButtonContainer = styled.div`
   margin-top: 64px;
 `
 
-const BackButton = styled(PrimaryLoadingButton)`
+const BackButton = styled(PrimaryButton)`
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};
