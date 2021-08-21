@@ -45,7 +45,7 @@ export const StatusDetail: React.FC<Props> = ({
     return (
       <PriceContent>
         <StatusValue>
-          <Value>{price}</Value>
+          <Value className={'value'}>{price}</Value>
           <Unit>{unit}</Unit>
         </StatusValue>
       </PriceContent>
@@ -54,7 +54,7 @@ export const StatusDetail: React.FC<Props> = ({
 }
 
 export const PriceContent = styled.div`
-  margin-right: 24px;
+  margin: 0 24px 0px 0;
 `
 
 export const StatusTitle = styled.div`
@@ -70,9 +70,9 @@ export const StatusValue = styled.div`
   align-items: center;
 `
 
-export const Value = styled.div`
+export const Value = styled.h3`
   display: flex;
-  ${font.mont.h2}
+  ${font.mont.h3}
   color: ${color.content.dark};
 `
 

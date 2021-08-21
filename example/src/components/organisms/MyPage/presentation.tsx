@@ -108,7 +108,7 @@ export const Presentation: React.VFC<Props> = ({
                   height={16}
                 />
               </NotFoundIcon>
-              <NotFoundText>商品が見当たらない</NotFoundText>
+              <NotFoundText>商品が見当たらないときは</NotFoundText>
             </NotFoundIconText>
           </ToolTip>
         </NotFoundContainer>
@@ -199,13 +199,13 @@ const Container = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  padding-top: 144px;
+  padding: 144px 0px;
   margin: auto;
   ${media.mdsp`
     max-width:100%;
-    padding:0 16px;
+    padding:108px 16px;
   `}
 `
 

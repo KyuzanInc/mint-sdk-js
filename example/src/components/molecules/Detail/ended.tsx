@@ -26,7 +26,7 @@ export const EndedStatus: React.FC<Props> = ({ price, endAt, unit }) => {
       <PriceContent>
         <StatusTitle>落札価格</StatusTitle>
         <StatusValue>
-          <Value>{price}</Value>
+          <Value className={'value'}>{price}</Value>
           <Unit>{unit}</Unit>
         </StatusValue>
       </PriceContent>

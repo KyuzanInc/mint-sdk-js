@@ -17,6 +17,7 @@ import { Item } from '@kyuzan/mint-sdk-js'
 import { LoadingItemDetailComponent } from './loading'
 import { BidSuccessModal } from '../../molecules/BidSuccessModal'
 import { BoughtFixedPriceSuccessModal } from '../../molecules/BoughtFixedPriceSuccessModal'
+import { SimpleButton } from '../../atoms/SimpleButton'
 
 type Props = {
   loading: boolean
@@ -91,16 +92,18 @@ export const Presentation: React.VFC<Props> = ({
     <>
       <Detail>
         <Title>{item?.name}</Title>
-        {item?.type === 'nftWithPhysicalProduct' && (
-          <Tag
-            label={'フィジカルアイテムつき'}
-            iconPath={'/images/cardboard.svg'}
-          />
-        )}
-        {item?.tradeType === 'autoExtensionAuction' && (
-          <Tag label={'自動延長オークション'} />
-        )}
-        {item?.tradeType === 'fixedPrice' && <Tag label={'固定価格販売'} />}
+        <TagWrap>
+          {item?.type === 'nftWithPhysicalProduct' && (
+            <Tag
+              label={'フィジカルアイテムつき'}
+              iconPath={'/images/cardboard.svg'}
+            />
+          )}
+          {item?.tradeType === 'autoExtensionAuction' && (
+            <Tag label={'自動延長オークション'} />
+          )}
+          {item?.tradeType === 'fixedPrice' && <Tag label={'固定価格販売'} />}
+        </TagWrap>
         <TradeInfoContainer>
           <StatusDetail
             unit={getPriceUnit(item ? item.networkId : 4)}
@@ -108,35 +111,35 @@ export const Presentation: React.VFC<Props> = ({
             endAt={item?.endAt ?? new Date()}
             tradeType={item?.tradeType ?? 'fixedPrice'}
           />
+          {item?.type === 'nftWithPhysicalProduct' && (
+            <QuestionButton onClick={handleOpenPhysicalModal}>
+              <QuestionIcon>
+                <Image
+                  src={'/images/icons/info.svg'}
+                  layout={'fixed'}
+                  width={16}
+                  height={16}
+                />
+              </QuestionIcon>
+              <QuestionText>フィジカルアイテムつきとは</QuestionText>
+            </QuestionButton>
+          )}
+
+          {item?.tradeType === 'autoExtensionAuction' && (
+            <QuestionButton onClick={handleOpenAutoExtensionModal}>
+              <QuestionIcon>
+                <Image
+                  src={'/images/icons/info.svg'}
+                  layout={'fixed'}
+                  width={16}
+                  height={16}
+                />
+              </QuestionIcon>
+              <QuestionText>自動延長オークション</QuestionText>
+            </QuestionButton>
+          )}
         </TradeInfoContainer>
 
-        {item?.type === 'nftWithPhysicalProduct' && (
-          <QuestionButton onClick={handleOpenPhysicalModal}>
-            <QuestionIcon>
-              <Image
-                src={'/images/icons/info.svg'}
-                layout={'fixed'}
-                width={16}
-                height={16}
-              />
-            </QuestionIcon>
-            <QuestionText>フィジカルアイテムつきとは</QuestionText>
-          </QuestionButton>
-        )}
-
-        {item?.tradeType === 'autoExtensionAuction' && (
-          <QuestionButton onClick={handleOpenAutoExtensionModal}>
-            <QuestionIcon>
-              <Image
-                src={'/images/icons/info.svg'}
-                layout={'fixed'}
-                width={16}
-                height={16}
-              />
-            </QuestionIcon>
-            <QuestionText>自動延長オークション</QuestionText>
-          </QuestionButton>
-        )}
         {!saleIsOutOfDate && !isBought && (
           <BidButton
             label={
@@ -148,7 +151,13 @@ export const Presentation: React.VFC<Props> = ({
           />
         )}
 
-        {isBought && 'Sold'}
+        {isBought && (
+          <SimpleButton
+            label={'売り切れ'}
+            // onClick={action('onClick')}
+            disabled={true}
+          />
+        )}
 
         <Description>{item?.description}</Description>
         <ExternalLinkUL>
@@ -229,17 +238,27 @@ export const Presentation: React.VFC<Props> = ({
 
 const Tag = styled(TagBase)`
   width: fit-content;
+  display: inline-flex;
+  margin: 0 0 0 8px;
+  &:first-of-type {
+    margin: 0;
+  }
 `
 
 export const Detail = styled.div`
   /* width: 426px; */
   padding: 64px 0;
-  /* margin-right: 128px; */
+  ${media.sp`
+    padding: 32px 0;
+  `}
 `
 
 export const Title = styled.div`
   ${font.mont.h2}
   margin-bottom: 8px;
+  ${media.sp`
+    ${font.mont.h3}
+  `}
 `
 
 export const Description = styled.div`
@@ -249,6 +268,11 @@ export const Description = styled.div`
   ${media.sp`
     ${font.mont.article2}
   `}
+`
+const TagWrap = styled.div`
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: flex-start;
 `
 
 const TradeInfoContainer = styled.div`
@@ -270,6 +294,7 @@ const QuestionButton = styled.div`
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
+  margin: 16px 0 0 0;
 `
 
 const QuestionIcon = styled.div`

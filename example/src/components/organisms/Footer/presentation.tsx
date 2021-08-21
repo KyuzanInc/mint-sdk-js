@@ -53,18 +53,20 @@ export const Presentation: React.VFC<Props> = ({
 
 const FooterContainer = styled.nav`
   height: 128px;
-  padding: 0px 180px;
   width: 100%;
-  min-width: 1000px;
+  /* min-width: 1000px; */
   display: flex;
   align-items: center;
   justify-content: center;
   background: #ffffff;
-  box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
-    0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
-    0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+  /* box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
+  0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
+  0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557); */
   z-index: 10;
   color: ${color.content.light};
+  ${media.lg`
+    padding: 0px 180px;
+  `}
   ${media.mdsp`
     min-width:100%;
   `}
@@ -76,6 +78,9 @@ const FooterInner = styled.div`
   align-items: center;
   ${media.lg`
     max-width: 1040px;
+  `}
+  ${media.sp`
+    justify-content: center;
   `}
 `
 

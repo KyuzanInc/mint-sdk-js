@@ -42,12 +42,14 @@ export const CardBase: React.FC<Props> = ({
               </LoadingTypography>
             )}
           </Typography>
-          {withPhysicalProduct && (
-            <Tag
-              label={'フィジカルアイテムつき'}
-              iconPath={'/images/cardboard.svg'}
-            ></Tag>
-          )}
+          <TagWrap>
+            {withPhysicalProduct && (
+              <Tag
+                label={'フィジカルアイテムつき'}
+                iconPath={'/images/cardboard.svg'}
+              ></Tag>
+            )}
+          </TagWrap>
           <CardAction>{children}</CardAction>
         </CardContent>
       </Container>
@@ -60,7 +62,7 @@ const cardMediaHeight = '220px'
 const CardMedia = styled.div`
   background: transparent;
   height: ${cardMediaHeight};
-  width: fit-content;
+  width: 100%;
   margin: auto;
   ${media.sp`
   height:fit-content;
@@ -70,8 +72,8 @@ const Container = styled.div`
   cursor: pointer;
   /* background: ${color.white}; */
   ${font.mont.button}
-  height: 402px;
-  width: 264px;
+  /* height: 392px; */
+  height:100%;
   line-height: 44px;
   /* color: ${color.white}; */
   padding: 0;
@@ -85,28 +87,17 @@ const Container = styled.div`
       opacity: 0.82;
     }
   }
+  ${media.lg`
+    max-width: 264px;
+  `}
+  ${media.mdsp`
+    /* height: auto; */
+    width: auto;
+  `}
   ${media.sp`
-    margin:0 0 8px 0;
+    height:auto;
   `}
 `
-
-// const CardBase = styled.div`
-//   display: inline-table;
-//   cursor: pointer;
-//   ${font.mont.button}
-//   line-height: 44px;
-//   padding: 0;
-//   overflow: hidden;
-//   /* margin:0 0 0 8px; */
-//   &:hover{
-//     ${CardMedia}{
-//       opacity:0.82;
-//     }
-//   }
-//   ${media.sp`
-//     margin:0 0 8px 0;
-//   `}
-// `
 
 const CardContent = styled.div`
   /* background: ${color.white}; */
@@ -114,14 +105,14 @@ const CardContent = styled.div`
   height: calc(100% - ${cardMediaHeight});
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   padding: 16px 16px 24px 16px;
   border-radius: 0 0 12px 12px;
 `
 const Typography = styled.div`
   /* background: ${color.white}; */
+  /* margin:0 0 8px 0; */
   width: 100%;
-  height: 38px;
   ${font.mont.body1}
   color: ${color.content.dark};
   text-align: left;
@@ -134,6 +125,9 @@ const Typography = styled.div`
 
 const LoadingTypography = styled.div`
   display: flex;
+`
+const TagWrap = styled.div`
+  margin: 8px 0 16px 0;
 `
 
 const CardAction = styled.div`

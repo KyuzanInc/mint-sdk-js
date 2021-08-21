@@ -8,6 +8,7 @@ import { Anchor } from '../../atoms/Anchor'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
 import { ClipBoard } from '../../atoms/Clipboard'
+import { useMedia } from '../../../util/useMedia'
 
 type Props = {
   loading: boolean
@@ -28,6 +29,7 @@ export const Presentation: React.VFC<Props> = ({
   accountAvatarImgUrl,
   loading,
 }) => {
+  const isMobile = useMedia().isMobile
   return (
     <HeaderContainer>
       <HeaderInner>
@@ -36,8 +38,8 @@ export const Presentation: React.VFC<Props> = ({
             <Anchor>
               <Image
                 src={'/images/logo.svg'}
-                width={89.53}
-                height={30}
+                width={!isMobile ? 89.53 : 55}
+                height={!isMobile ? 30 : 22.8}
                 layout={'fixed'}
               />
             </Anchor>
@@ -133,7 +135,10 @@ const Right = styled.div`
   justify-content: flex-end;
 `
 const WalletSection = styled.div`
-  margin-left: 40px;
+  margin-left: 32px;
+  ${media.sp`
+    margin-left: 16px;
+  `}
 `
 
 const WalletInfoContainer = styled.div`

@@ -14,7 +14,7 @@ export const LoadingItemDetailComponent: React.VFC = () => {
         <Skeleton width={160} height={32} />
       </Status>
       <LoadingButton>
-        <Skeleton width={426} height={44} style={{ borderRadius: 22 }} />
+        <Skeleton width={280} height={44} style={{ borderRadius: 22 }} />
       </LoadingButton>
       <Description>
         <Skeleton count={3} />

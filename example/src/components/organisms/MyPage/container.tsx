@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
 import { getAccountInfoActionCreator } from '../../../redux/myAccountInfo'

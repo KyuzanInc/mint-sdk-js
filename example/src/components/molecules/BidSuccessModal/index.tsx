@@ -67,7 +67,7 @@ export const BidSuccessModal: React.VFC<Props> = ({
             </MediaContainer>
             <InfoContainer>
               <ItemName>{itemName}</ItemName>
-              <StatusDetail
+              <ModalStatusDetail
                 endAt={endAt}
                 price={price}
                 unit={unit}
@@ -185,6 +185,7 @@ const MediaContainer = styled.div`
     width: 100%;
     height: 100%;
     object-fit: contain;
+    object-position: top;
   }
   ${media.sp`
     padding:0;
@@ -194,6 +195,7 @@ const MediaContainer = styled.div`
       width: 100%;
       height:100%;
       object-fit:cover;
+      object-position: top;
     }
   `}
 `
@@ -204,7 +206,7 @@ const InfoContainer = styled.div`
   right: 24px;
   bottom: 32px;
   top: auto;
-  background-color: rgba(255, 255, 255, 0.82);
+  background-color: rgba(255, 255, 255, 0.56);
   backdrop-filter: blur(32px);
   border-radius: 8px;
   padding: 16px;
@@ -222,6 +224,12 @@ const InfoContainer = styled.div`
 const ItemName = styled.p`
   ${font.mont.subtitle1}
   margin-bottom: 16px;
+`
+
+const ModalStatusDetail = styled(StatusDetail)`
+  .value {
+    ${font.mont.h4}
+  }
 `
 
 const Right = styled.div`
