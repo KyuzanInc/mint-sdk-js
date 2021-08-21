@@ -33,14 +33,17 @@ const Page = ({
   const items = useAppSelector((state) => {
     return state.app.items.data
   })
-  console.log(items)
 
   const waitingItems = useAppSelector((state) => {
     return state.app.items.meta.waitingItemAction
   })
   return (
     <Container>
-      <CommonMeta baseUrl={baseUrl} currentPath={currentPath} />
+      <CommonMeta
+        url={`${currentPath}/${baseUrl}`}
+        title={'トップ'}
+        ogpImagePath={`${baseUrl}/images/ogp/ogp.png`}
+      />
       <InnerContainer>
         {waitingItems && <LoadingList />}
         {!waitingItems && <LiveAuctionList items={items.live} />}

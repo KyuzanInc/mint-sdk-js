@@ -1,14 +1,11 @@
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
-import { getAccountInfoActionCreator } from '../../../redux/accountInfo'
-import { getTokensActionCreator } from '../../../redux/accountTokens'
-import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
+import React from 'react'
+import { useAppSelector } from '../../../redux/getStore'
 import { Presentation } from './presentation'
 
 export const Container: React.VFC = () => {
   const router = useRouter()
   const walletAddress = router.query.walletAddress as string
-  const dispatch = useAppDispatch()
 
   const tokens = useAppSelector(
     (state) => state.app.accountTokens.data.tokens[walletAddress]
@@ -23,13 +20,6 @@ export const Container: React.VFC = () => {
   const accountInfo = useAppSelector(
     (state) => state.app.accountInfo.data.accountInfoMap[walletAddress]
   )
-  useEffect(() => {
-    if (typeof accountInfo === 'undefined') {
-      dispatch(getAccountInfoActionCreator({ walletAddress }) as any)
-    }
-
-    dispatch(getTokensActionCreator({ walletAddress }) as any)
-  }, [walletAddress, accountInfo])
   return (
     <Presentation
       waitingOwnTokens={
