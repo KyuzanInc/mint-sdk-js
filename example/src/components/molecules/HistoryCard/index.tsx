@@ -18,7 +18,7 @@ export const HistoryCard: React.FC<Props> = ({ log, networkId, loading }) => {
   if (loading) return <LoadingHistoryCard />
   if (!log) return <LoadingHistoryCard />
   const price = log?.price
-  const date = format(log.createAt, 'yyyy/MM/dd HH:mm')
+  const date = format(new Date(log.createAt), 'yyyy/MM/dd HH:mm')
   const link = getLink(log.transactionHash, networkId)
 
   return (

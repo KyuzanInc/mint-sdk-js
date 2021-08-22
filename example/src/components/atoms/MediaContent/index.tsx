@@ -35,7 +35,6 @@ const Image = styled.img<{ height: number }>`
   width: 100%;
   object-fit: cover;
   ${media.sp`
-    width:100%;
     height:auto;
   `}
 `

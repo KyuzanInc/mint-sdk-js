@@ -3,11 +3,14 @@ import styled from '@emotion/styled'
 import React from 'react'
 import { color, font, media } from '../../../style'
 import Countdown from 'react-countdown'
-import { format, isAfter, isBefore } from 'date-fns'
+import { format } from 'date-fns'
 import Image from 'next/image'
 import { getPriceUnit } from '../../../util/getItemPriceUnit'
 import { getNetworkIconPath } from '../../../util/getNetworkIconPath'
 import { NetworkId, ItemTradeType } from '@kyuzan/mint-sdk-js'
+import { isOnSale } from '../../../util/isOnSale'
+import { isSaleBeforeStart } from '../../../util/isSaleBeforeStart'
+import { isSaleEnd } from '../../../util/isSaleEnd'
 
 type Props = {
   tradeType: ItemTradeType
@@ -18,19 +21,6 @@ type Props = {
   currentPrice?: number // 固定価格はここに値段を入れる
   hasBought?: boolean // 固定価格
   onComplete?: () => void
-}
-
-type FormattedProps = {
-  total: number
-  days: number
-  hours: number
-  minutes: number
-  seconds: number
-  milliseconds: number
-  completed: boolean
-  api: any
-  props: any
-  formatted: any
 }
 
 export const SaleInfo: React.VFC<Props> = ({
@@ -44,11 +34,16 @@ export const SaleInfo: React.VFC<Props> = ({
   hasBought,
 }) => {
   const isAuction = tradeType === 'autoExtensionAuction'
+  const startDate =
+    (typeof startAt === 'string' ? new Date(startAt) : startAt) ?? new Date()
+  const endDate =
+    (typeof endAt === 'string' ? new Date(endAt) : endAt) ?? new Date()
+  const saleOnGoing = isOnSale(startDate, endDate)
+  const saleIsNotYetStarted = isSaleBeforeStart(startDate)
+  const saleIsEnded = isSaleEnd(endDate)
+  const formattedStartDate = format(startDate, 'yyyy.MM.dd HH:mm')
+  const formattedEndDate = format(endDate, 'yyyy.MM.dd HH:mm')
   if (isAuction) {
-    const endDate =
-      (typeof endAt === 'string' ? new Date(endAt) : endAt) ?? new Date()
-    const auctionIsEnded = isAfter(new Date(), endDate)
-    const formattedEndDate = format(endDate, 'yyyy.MM.dd HH:mm')
     let price = currentPrice || initialPrice || 0
     if (price < 0.01) {
       price = 0.01
@@ -58,10 +53,12 @@ export const SaleInfo: React.VFC<Props> = ({
     return (
       <Container>
         <StatusContainer>
-          <StatusBar active={!auctionIsEnded} />
+          <StatusBar active={!saleIsEnded} />
           <StatusContent>
             <StatusTitle>
-              <span>{auctionIsEnded ? '終了価格' : '現在価格'}</span>
+              {saleIsNotYetStarted && '開始価格'}
+              {saleIsEnded && '落札価格'}
+              {saleOnGoing && '現在価格'}
               <Icon>
                 <Image
                   src={getNetworkIconPath(networkId)}
@@ -79,13 +76,21 @@ export const SaleInfo: React.VFC<Props> = ({
         </StatusContainer>
         <PriceContainer>
           <StatusTitle>
-            {auctionIsEnded ? '終了時間' : '終了する時刻'}
+            {saleIsNotYetStarted && '開始時間'}
+            {saleIsEnded && '終了時間'}
+            {saleOnGoing && '終了までの残り時間'}
           </StatusTitle>
-          {auctionIsEnded ? (
+          {saleIsNotYetStarted && (
+            <StatusValue>
+              <EndedDate>{formattedStartDate}</EndedDate>
+            </StatusValue>
+          )}
+          {saleIsEnded && (
             <StatusValue>
               <EndedDate>{formattedEndDate}</EndedDate>
             </StatusValue>
-          ) : (
+          )}
+          {saleOnGoing && (
             <Countdown
               date={endAt ?? 0 - Date.now()}
               renderer={renderer}
@@ -96,13 +101,6 @@ export const SaleInfo: React.VFC<Props> = ({
       </Container>
     )
   } else {
-    const startDate =
-      (typeof startAt === 'string' ? new Date(startAt) : startAt) ?? new Date()
-    const endDate =
-      (typeof endAt === 'string' ? new Date(endAt) : endAt) ?? new Date()
-    const now = new Date()
-    const onSale = isAfter(now, startDate) && isBefore(now, endDate)
-    const formattedStartDate = format(startDate, 'yyyy.MM.dd HH:mm')
     let price = currentPrice!
     if (price < 0.01) {
       price = 0.01
@@ -112,7 +110,7 @@ export const SaleInfo: React.VFC<Props> = ({
     return (
       <Container>
         <StatusContainer>
-          <StatusBar active={onSale && !hasBought} />
+          <StatusBar active={saleOnGoing && !hasBought} />
           <StatusContent>
             <StatusTitle>
               <span>{'即決価格'}</span>
@@ -132,7 +130,11 @@ export const SaleInfo: React.VFC<Props> = ({
           </StatusContent>
         </StatusContainer>
         <PriceContainer>
-          <StatusTitle>{hasBought ? '' : '開始時間'}</StatusTitle>
+          <StatusTitle>
+            {saleIsNotYetStarted && '開始時間'}
+            {saleIsEnded && '終了時間'}
+            {saleOnGoing && ''}
+          </StatusTitle>
           <StatusValue>
             <EndedDate>
               {hasBought ? '売り切れ' : `${formattedStartDate}`}
@@ -151,7 +153,18 @@ const renderer = ({
   minutes,
   seconds,
   completed,
-}: FormattedProps) => {
+}: {
+  total: number
+  days: number
+  hours: number
+  minutes: number
+  seconds: number
+  milliseconds: number
+  completed: boolean
+  api: any
+  props: any
+  formatted: any
+}) => {
   if (completed) {
     return <StatusValue>ended</StatusValue>
   } else {

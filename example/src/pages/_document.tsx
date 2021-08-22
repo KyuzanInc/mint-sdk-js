@@ -1,6 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import React from 'react'
-import CommonMeta from '../components/atoms/CommonMeta'
 
 class MyDocument extends Document {
   render() {
@@ -13,8 +12,11 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
             rel="stylesheet"
           />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600;700&display=swap"
+            rel="stylesheet"
+          />
         </Head>
-        <CommonMeta />
         <body>
           <Main />
           <NextScript />

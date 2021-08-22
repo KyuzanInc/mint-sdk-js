@@ -25,7 +25,7 @@ export const initialHistoryActionCreator = createAsyncThunk(
   'app/history/init',
   async (itemId: string) => {
     if (getSdk()) {
-      const history = await getSdk()?.getItemLogs(itemId)
+      const history = await getSdk().getItemLogs(itemId)
       return history
     } else {
       return []
@@ -61,7 +61,10 @@ export const historySlice = createSlice({
         if (typeof payload === 'undefined') {
           state.data = []
         } else {
-          state.data = payload
+          state.data = payload.map((i) => ({
+            ...i,
+            createAt: new Date(i.createAt),
+          }))
         }
       }
     )
@@ -69,7 +72,10 @@ export const historySlice = createSlice({
       state.meta.waitingHistoryAction = true
     })
     builder.addCase(getHistoryActionCreator.fulfilled, (state, { payload }) => {
-      state.data = payload
+      state.data = payload.map((i) => ({
+        ...i,
+        createAt: new Date(i.createAt),
+      }))
       state.meta.waitingHistoryAction = false
     })
     builder.addCase(getHistoryActionCreator.rejected, (state, { payload }) => {

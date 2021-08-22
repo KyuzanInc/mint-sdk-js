@@ -39,7 +39,7 @@ export const getAccountInfoActionCreator = createAsyncThunk<
   }
 >('app/myAccountInfo/get', async (arg, thunkApi) => {
   try {
-    const data = await getSdk()?.getAccountInfo({
+    const data = await getSdk().getAccountInfo({
       walletAddress: arg.walletAddress,
     })
     return data

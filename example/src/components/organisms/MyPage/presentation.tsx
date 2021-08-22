@@ -171,9 +171,9 @@ export const Presentation: React.VFC<Props> = ({
               ownTokens.length !== 0 &&
               ownTokens.map((item) => {
                 return (
-                  <ItemContainer key={item.item.itemId}>
+                  <OwnedItemContainer key={item.item.itemId}>
                     <Card item={item.item} loading={false} />
-                  </ItemContainer>
+                  </OwnedItemContainer>
                 )
               })}
           </ItemsContainer>
@@ -233,6 +233,10 @@ const ItemContainer = styled.div`
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 8px;
+`
+
+const OwnedItemContainer = styled(ItemContainer)`
+  width: auto;
 `
 
 const TabsContainer = styled.div`

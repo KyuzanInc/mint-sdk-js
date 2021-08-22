@@ -1,59 +1,51 @@
 import styled from '@emotion/styled'
-import { useRouter } from 'next/router'
-import React, { useCallback, useEffect } from 'react'
+import React from 'react'
 import { History } from '../../components/organisms/History'
-import { useAppDispatch, useAppSelector } from '../../redux/getStore'
+import { useAppSelector, wrapper } from '../../redux/getStore'
 import { getItemActionCreator } from '../../redux/item'
 import { color, media } from '../../style'
 import { ItemDetail } from '../../components/organisms/ItemDetail'
 import { getHistoryActionCreator } from '../../redux/history'
-import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import CommonMeta from '../../components/atoms/CommonMeta'
 import { MediaContent } from '../../components/atoms/MediaContent'
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const host = context.req.headers.host
-  const baseUrl = `http://${host}`
-  const currentPath = context.req.url
-  return {
-    props: {
-      baseUrl,
-      currentPath,
-    },
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const host = context.req.headers.host
+    const baseUrl = `http://${host}`
+    const currentPath = context.req.url
+    const itemId = context.query['itemId'] as string
+    await Promise.all([
+      context.store.dispatch(getHistoryActionCreator(itemId) as any),
+      context.store.dispatch(getItemActionCreator(itemId) as any),
+    ])
+    return {
+      props: {
+        baseUrl,
+        currentPath,
+      },
+    }
   }
-}
+)
 
-const ItemDetailPage: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ baseUrl, currentPath }) => {
-  const router = useRouter()
-  const { itemId } = router.query
-  const dispatch = useAppDispatch()
-
+const ItemDetailPage = ({
+  baseUrl,
+  currentPath,
+}: {
+  baseUrl: string
+  currentPath: string
+}) => {
   const item = useAppSelector((state) => {
     return state.app.item.data
   })
 
-  const getHistory = useCallback(() => {
-    if (typeof itemId === 'string') {
-      dispatch(getHistoryActionCreator(itemId) as any)
-    }
-  }, [itemId])
-
-  const getItem = useCallback(() => {
-    if (typeof itemId === 'string') {
-      dispatch(getItemActionCreator(itemId) as any)
-    }
-  }, [itemId])
-
-  useEffect(() => {
-    getItem()
-    getHistory()
-  }, [itemId])
-
   return (
     <Container>
-      <CommonMeta baseUrl={baseUrl} currentPath={currentPath} />
+      <CommonMeta
+        url={`${currentPath}/${baseUrl}`}
+        title={`${item?.name}`}
+        ogpImagePath={item?.previews[0].url ?? ''}
+      />
       <MediaContainer>
         <MediaInner>
           <MediaContent media={item?.imageURIHTTP} height={480} />
@@ -96,11 +88,9 @@ const MediaInner = styled.div`
 `
 
 const DetailContainer = styled.div`
-  /* background: ${color.white}; */
   display: grid;
   width: 100%;
   margin: auto;
-  /* padding: 0 128px; */
   ${media.lg`
     max-width:1040px;
     gap: 128px;

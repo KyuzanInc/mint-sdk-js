@@ -26,7 +26,7 @@
     "date-fns": "^2.21.2",
     "date-fns-tz": "^1.1.4",
     "emotion-reset": "^3.0.0",
-    "next": "^11.0.1",
+    "next": "^11.1.0",
     "next-redux-wrapper": "^6.0.2",
     "react": "^17.0.2",
     "react-countdown": "^2.3.1",

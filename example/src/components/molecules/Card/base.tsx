@@ -71,7 +71,6 @@ const CardMedia = styled.div`
 `
 const Container = styled.div`
   cursor: pointer;
-  /* background: ${color.white}; */
   ${font.mont.button}
   /* height: 392px; */
   height:100%;

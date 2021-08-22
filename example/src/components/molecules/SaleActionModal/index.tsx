@@ -201,6 +201,25 @@ const AuctionSaleAction: React.VFC<{
             onClick={doBid}
           />
         )}
+        <NotFinishedContainer>
+          <ToolTip
+            description={
+              'ブロックチェーンの状況に応じて、数分かかることがあります。'
+            }
+          >
+            <NotFinishedIconText>
+              <NotFinishedIcon>
+                <Image
+                  src={'/images/icons/help.svg'}
+                  layout={'fixed'}
+                  width={16}
+                  height={16}
+                />
+              </NotFinishedIcon>
+              <NotFinnishedText>処理が終わらない</NotFinnishedText>
+            </NotFinishedIconText>
+          </ToolTip>
+        </NotFinishedContainer>
       </ContentButtonContainer>
     </>
   )
@@ -263,6 +282,25 @@ const FixedSaleAction: React.VFC<{
             onClick={() => doBuy(inJapan)}
           />
         )}
+        <NotFinishedContainer>
+          <ToolTip
+            description={
+              'ブロックチェーンの状況に応じて、数分かかることがあります。'
+            }
+          >
+            <NotFinishedIconText>
+              <NotFinishedIcon>
+                <Image
+                  src={'/images/icons/help.svg'}
+                  layout={'fixed'}
+                  width={16}
+                  height={16}
+                />
+              </NotFinishedIcon>
+              <NotFinnishedText>処理が終わらない</NotFinnishedText>
+            </NotFinishedIconText>
+          </ToolTip>
+        </NotFinishedContainer>
       </ContentButtonContainer>
     </>
   )
@@ -473,4 +511,32 @@ const NotFoundIcon = styled.span`
 
 const CheckInJapanContainer = styled.div`
   margin-top: 8px;
+`
+
+const NotFinishedContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  width: 100%;
+`
+
+const NotFinishedIconText = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+`
+
+const NotFinishedIcon = styled.div`
+  margin-right: 4px;
+  line-height: 1;
+  height: 16px;
+  width: 16px;
+`
+
+const NotFinnishedText = styled.div`
+  color: ${color.content.middle};
+  ${font.mont.caption};
+  text-decoration: underline;
+  line-height: 1;
 `
