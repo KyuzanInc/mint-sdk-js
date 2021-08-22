@@ -88,9 +88,12 @@ export const Presentation: React.VFC<Props> = ({
 
   const isBought = typeof item?.buyerAddress === 'string'
   const startDate =
-    (typeof item?.startAt === 'string' ? new Date(item?.startAt) : item?.startAt) ?? new Date()
+    (typeof item?.startAt === 'string'
+      ? new Date(item?.startAt)
+      : item?.startAt) ?? new Date()
   const endDate =
-    (typeof item?.endAt === 'string' ? new Date(item?.endAt) : item?.endAt) ?? new Date()
+    (typeof item?.endAt === 'string' ? new Date(item?.endAt) : item?.endAt) ??
+    new Date()
   const saleOnGoing = isOnSale(startDate, endDate)
 
   return (
