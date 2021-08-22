@@ -85,7 +85,7 @@ const FooterInner = styled.div`
 `
 
 const FooterLink = styled.a`
-  padding: 18px 8px;
+  padding: 16px 8px;
   ${font.mont.label};
   color: ${color.content.light};
   align-items: center;
