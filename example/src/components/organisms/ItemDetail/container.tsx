@@ -211,7 +211,6 @@ export const Container: React.VFC = () => {
       }
       handleOpenAutoExtensionModal={openAutoExtensionModal}
       handleCloseAutoExtensionModal={closeAutoExtensionModal}
-      saleIsOutOfDate={auctionIsOutOfDate}
       connectingWallet={waitingWallet}
       connectWalletModalIsOpen={walletModalIsOpen}
       handleCloseConnectWalletModal={closeWalletModal}

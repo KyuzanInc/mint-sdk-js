@@ -22,7 +22,6 @@ export const Basic: React.VFC = () => {
       aboutAutoExtensionAuctionModalIsOpen={autoExtensionOpen}
       handleCloseAutoExtensionModal={() => setAutoExtensionOpen(false)}
       handleOpenAutoExtensionModal={() => setAutoExtensionOpen(true)}
-      saleIsOutOfDate={false}
       connectingWallet={false}
       connectWalletModalIsOpen={connectWalletOpen}
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
@@ -69,7 +68,6 @@ export const AuctionIsOutOfDate: React.VFC = () => {
       aboutAutoExtensionAuctionModalIsOpen={autoExtensionOpen}
       handleCloseAutoExtensionModal={() => setAutoExtensionOpen(false)}
       handleOpenAutoExtensionModal={() => setAutoExtensionOpen(true)}
-      saleIsOutOfDate={true}
       connectingWallet={false}
       connectWalletModalIsOpen={connectWalletOpen}
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
@@ -112,7 +110,6 @@ export const Loading: React.VFC = () => {
       aboutAutoExtensionAuctionModalIsOpen={autoExtensionOpen}
       handleCloseAutoExtensionModal={() => setAutoExtensionOpen(false)}
       handleOpenAutoExtensionModal={() => setAutoExtensionOpen(true)}
-      saleIsOutOfDate={false}
       connectingWallet={false}
       connectWalletModalIsOpen={connectWalletOpen}
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
