@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import React, { useCallback } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import Modal from 'react-modal'
 import { color, font, media } from '../../../style'

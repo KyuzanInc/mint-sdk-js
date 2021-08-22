@@ -273,7 +273,7 @@ const FixedSaleAction: React.VFC<{
       </CheckInJapanContainer>
       <ContentButtonContainer>
         {isValidationError && (
-          <PrimaryButton
+          < BidButton
             label={errorText ?? ''}
             isLoading={false}
             onClick={() => doBuy(inJapan)}
@@ -281,7 +281,7 @@ const FixedSaleAction: React.VFC<{
           />
         )}
         {!isValidationError && (
-          <PrimaryButton
+          < BidButton
             label={loading ? '取引処理中です' : '購入'}
             isLoading={loading}
             onClick={() => doBuy(inJapan)}
@@ -491,6 +491,7 @@ const InputUnit = styled.span`
 
 const ContentButtonContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 32px 0 0 0;
