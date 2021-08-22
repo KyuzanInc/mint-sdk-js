@@ -32,7 +32,7 @@ const renderer = ({
   completed,
 }: FormattedProps) => {
   if (completed) {
-    return <StatusValue>ended</StatusValue>
+    return <StatusValue>終了</StatusValue>
   } else {
     // Render a countdown
     return (
@@ -112,7 +112,7 @@ export const StatusTitle = styled.div`
 `
 
 export const StatusValue = styled.div`
-  ${font.mont.h2}
+  ${font.mont.h3}
   color: ${color.content.dark};
   display: flex;
   align-items: center;
