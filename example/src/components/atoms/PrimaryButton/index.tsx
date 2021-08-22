@@ -86,6 +86,12 @@ const Button = styled.button`
       0px 0.598509px 0.798012px rgba(0, 0, 0, 0.0807786);
     transform: scale(1.02);
   }
+  &:active{
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.12),
+    0px 0.893452px 1.11682px rgba(0, 0, 0, 0.0715329),
+    0px 0.266004px 0.332505px rgba(0, 0, 0, 0.0484671);
+    transform: scale(1.0);
+  }
 `
 
 const Disabled = styled(Button)`

@@ -85,6 +85,9 @@ const Avatar = styled.div`
   &:hover {
     opacity: 0.82;
   }
+  &:active {
+    opacity: 1;
+  }
 `
 
 export const BidderDetail = styled.div`
@@ -112,6 +115,9 @@ export const BidPrice = styled.div`
   ${curve.button}
   &:hover {
     opacity: 0.72;
+  }
+  &:active {
+    opacity: 1;
   }
 `
 export const Icon = styled.span`

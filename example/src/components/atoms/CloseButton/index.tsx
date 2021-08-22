@@ -23,13 +23,16 @@ export const CloseButton: React.VFC<Props> = ({ isMobile, onClick }) => {
 
 const Icon = styled.div`
   cursor: pointer;
-  margin-top: 96px;
+  margin-top: 32px;
   ${media.sp`
         margin-top:16px;
     `}
   transform:scale(1);
   ${curve.button}
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.05);
+  }
+  &:active {
+    transform: scale(1.0);
   }
 `

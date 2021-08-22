@@ -127,7 +127,16 @@ const HeaderInner = styled.div`
   align-items: center;
 `
 
-const Left = styled.div``
+const Left = styled.div`
+  opacity: 1;
+  ${curve.button}
+  &:hover {
+    opacity: 0.82;
+  }
+  &:active {
+    opacity: 1;
+  }
+`
 
 const Right = styled.div`
   display: flex;
@@ -159,6 +168,9 @@ const WalletInfoContainer = styled.div`
   ${curve.button}
   &:hover {
     opacity: 0.82;
+  }
+  &:active {
+    opacity: 1;
   }
 `
 

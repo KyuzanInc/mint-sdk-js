@@ -98,6 +98,10 @@ const Button = styled.button`
   &:hover {
     transform: scale(1.02);
   }
+  &:active{
+    box-shadow:none;
+    transform: scale(1.0);
+  }
 `
 
 const Disabled = styled(Button)`
