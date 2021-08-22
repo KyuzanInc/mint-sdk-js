@@ -182,7 +182,12 @@ const AuctionSaleAction: React.VFC<{
         </PriceRangeItem>
       </PriceRangeContainer>
       <InputPriceContainer>
-        <InputPrice type={'number'} value={bidPrice} onChange={onChangeInput} autoFocus/>
+        <InputPrice
+          type={'number'}
+          value={bidPrice}
+          onChange={onChangeInput}
+          autoFocus
+        />
         <InputUnit>{unit}</InputUnit>
       </InputPriceContainer>
       <ContentButtonContainer>
@@ -460,7 +465,7 @@ const InputPrice = styled.input`
   border-radius: 34px;
   flex-grow: 2;
   text-align: center;
-  caret-color:${color.primary};
+  caret-color: ${color.primary};
   :focus {
     outline: 0px;
   }
@@ -488,10 +493,10 @@ const ContentButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin:32px 0 0 0;
+  margin: 32px 0 0 0;
 `
 const BidButton = styled(PrimaryButton)`
-  width:100%;
+  width: 100%;
 `
 
 const CloseButton = styled.div`
@@ -501,7 +506,6 @@ const CloseButton = styled.div`
     margin-top:16px;
   `}
 `
-
 
 const NotFoundIcon = styled.span`
   margin-left: 4px;

@@ -4,7 +4,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { color, font } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
-import {PrimaryButton} from '../../atoms/PrimaryButton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 
 type Props = {
   onSubmit: (data: FormType) => void
@@ -207,8 +207,8 @@ const BackButton = styled(PrimaryButton)`
   border: 1px solid ${color.primary};
   color: ${color.primary};
   margin-right: 16px;
-  box-shadow:none;
-  &:hover{
+  box-shadow: none;
+  &:hover {
     box-shadow: none;
   }
 `

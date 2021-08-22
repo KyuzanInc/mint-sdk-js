@@ -11,8 +11,8 @@ type Props = {
   disabled?: boolean
   className?: string
   href?: string
-  iconSize?:number
-  isExternal?:boolean
+  iconSize?: number
+  isExternal?: boolean
 }
 
 export const SecondaryButton: React.FC<Props> = ({
@@ -24,7 +24,7 @@ export const SecondaryButton: React.FC<Props> = ({
   href,
   disabled,
   iconSize,
-  isExternal
+  isExternal,
 }) => {
   if (disabled) {
     return (
@@ -33,18 +33,14 @@ export const SecondaryButton: React.FC<Props> = ({
       </Disabled>
     )
   }
-  
+
   return (
-    <Button 
-      onClick={()=> {
-        isExternal?(
-          window.open(href, "_blank")
-        ):(
-          window.open(href)
-        )
+    <Button
+      onClick={() => {
+        isExternal ? window.open(href, '_blank') : window.open(href)
       }}
-      className={className} 
-      >
+      className={className}
+    >
       {isLoading && (
         <Image
           src={'/images/spinner_dark.svg'}
@@ -55,13 +51,23 @@ export const SecondaryButton: React.FC<Props> = ({
       )}
       {iconPathFront && (
         <IconFrontContainer>
-          <Image src={iconPathFront} layout={'fixed'} width={iconSize?iconSize:24} height={iconSize?iconSize:24} />
+          <Image
+            src={iconPathFront}
+            layout={'fixed'}
+            width={iconSize ? iconSize : 24}
+            height={iconSize ? iconSize : 24}
+          />
         </IconFrontContainer>
       )}
       {label}
       {iconPathBack && (
         <IconBackContainer>
-          <Image src={iconPathBack} layout={'fixed'} width={iconSize?iconSize:24} height={iconSize?iconSize:24} />
+          <Image
+            src={iconPathBack}
+            layout={'fixed'}
+            width={iconSize ? iconSize : 24}
+            height={iconSize ? iconSize : 24}
+          />
         </IconBackContainer>
       )}
     </Button>
@@ -70,7 +76,7 @@ export const SecondaryButton: React.FC<Props> = ({
 
 const Button = styled.button`
   overflow: hidden;
-  position:relative;
+  position: relative;
   cursor: pointer;
   ${font.mont.button}
   height: 44px;
@@ -87,10 +93,10 @@ const Button = styled.button`
   padding: 0 32px;
   ${curve.button}
   z-index:${zIndex.base};
-  transform:scale(1.0);
+  transform: scale(1);
   backface-visibility: hidden;
-  &:hover{
-    transform:scale(1.02);
+  &:hover {
+    transform: scale(1.02);
   }
 `
 
@@ -99,11 +105,10 @@ const Disabled = styled(Button)`
   cursor: not-allowed;
   width: 100%;
   border: 0.5px solid ${color.content.superLight};
-  transform:scale(1.0);
-  &:hover{
-    transform:scale(1.0);
+  transform: scale(1);
+  &:hover {
+    transform: scale(1);
   }
-  
 `
 
 const IconFrontContainer = styled.div`

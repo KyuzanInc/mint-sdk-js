@@ -43,7 +43,7 @@ export const Presentation: React.VFC<Props> = ({
         {FAQ && (
           <FooterLink href={FAQ} target="blank">
             このストアに関するお問い合わせ
-            <Icon/>
+            <Icon />
           </FooterLink>
         )}
       </FooterInner>
@@ -62,7 +62,7 @@ const FooterContainer = styled.nav`
   /* box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
   0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
   0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557); */
-  z-index:${zIndex.elevation.ev10};
+  z-index: ${zIndex.elevation.ev10};
   color: ${color.content.light};
   ${media.lg`
     padding: 0px 180px;
@@ -97,14 +97,13 @@ const FooterLink = styled.a`
   }
 `
 const Icon = styled.img`
-  &:after{
+  &:after {
     text-align: center;
     margin-left: 8px;
     margin-bottom: 3px;
-    font-family:'icomoon';
+    font-family: 'icomoon';
     color: ${color.content.middle};
     content: '\\e904';
     ${curve.button}
   }
-  
 `

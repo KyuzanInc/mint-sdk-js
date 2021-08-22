@@ -279,7 +279,7 @@ const TagWrap = styled.div`
 `
 
 const BidButton = styled(PrimaryButton)`
-  width:100%;
+  width: 100%;
 `
 
 const TradeInfoContainer = styled.div`
@@ -297,8 +297,8 @@ const SecondaryButtonList = styled.li`
 `
 
 const ExternalButton = styled(SecondaryButton)`
-  height:32px;
-  width:100%;
+  height: 32px;
+  width: 100%;
 `
 
 const QuestionButton = styled.div`

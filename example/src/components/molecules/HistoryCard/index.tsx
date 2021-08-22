@@ -43,7 +43,7 @@ export const HistoryCard: React.FC<Props> = ({ log, networkId, loading }) => {
         <Anchor target={'_blank'}>
           <BidPrice>
             {price} ETH
-            <Icon/>
+            <Icon />
           </BidPrice>
         </Anchor>
       </Link>
@@ -64,9 +64,11 @@ export const HistoryContainer = styled.div`
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   ${curve.fade}
-  
-  &:hover{
-    box-shadow: 0px 22px 43px rgba(0, 0, 0, 0.08), 0px 4.91399px 9.60461px rgba(0, 0, 0, 0.0476886), 0px 1.46302px 2.85954px rgba(0, 0, 0, 0.0323114);
+
+  &:hover {
+    box-shadow: 0px 22px 43px rgba(0, 0, 0, 0.08),
+      0px 4.91399px 9.60461px rgba(0, 0, 0, 0.0476886),
+      0px 1.46302px 2.85954px rgba(0, 0, 0, 0.0323114);
   }
 `
 
@@ -102,11 +104,11 @@ export const BidPrice = styled.div`
   margin: auto;
 `
 export const Icon = styled.span`
-  &:after{
+  &:after {
     text-align: center;
     margin-left: 4px;
     margin-bottom: 3px;
-    font-family:'icomoon';
+    font-family: 'icomoon';
     color: ${color.content.middle};
     content: '\\e904';
     ${curve.button}

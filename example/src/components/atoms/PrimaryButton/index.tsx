@@ -29,7 +29,7 @@ export const PrimaryButton: React.FC<Props> = ({
       </Disabled>
     )
   }
-  
+
   return (
     <Button onClick={onClick} className={className} type={'submit'}>
       {isLoading && (
@@ -56,7 +56,7 @@ export const PrimaryButton: React.FC<Props> = ({
 }
 
 const Button = styled.button`
-  position:relative;
+  position: relative;
   overflow: hidden;
   cursor: pointer;
   ${font.mont.button}
@@ -74,13 +74,17 @@ const Button = styled.button`
   padding: 0 32px;
   ${curve.button}
   z-index:${zIndex.base};
-  border:0px;
-  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.12), 0px 0.893452px 1.11682px rgba(0, 0, 0, 0.0715329), 0px 0.266004px 0.332505px rgba(0, 0, 0, 0.0484671);
-  transform:scale(1.0);
+  border: 0px;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.12),
+    0px 0.893452px 1.11682px rgba(0, 0, 0, 0.0715329),
+    0px 0.266004px 0.332505px rgba(0, 0, 0, 0.0484671);
+  transform: scale(1);
   backface-visibility: hidden;
-  &:hover{
-    box-shadow: 0px 9px 12px rgba(0, 0, 0, 0.2), 0px 2.01027px 2.68036px rgba(0, 0, 0, 0.119221), 0px 0.598509px 0.798012px rgba(0, 0, 0, 0.0807786);
-    transform:scale(1.02);
+  &:hover {
+    box-shadow: 0px 9px 12px rgba(0, 0, 0, 0.2),
+      0px 2.01027px 2.68036px rgba(0, 0, 0, 0.119221),
+      0px 0.598509px 0.798012px rgba(0, 0, 0, 0.0807786);
+    transform: scale(1.02);
   }
 `
 
@@ -90,13 +94,12 @@ const Disabled = styled(Button)`
   cursor: not-allowed;
   border: 0px;
   width: 100%;
-  box-shadow:none;
-  transform:scale(1.0);
-  &:hover{
-    transform:scale(1.0);
-    box-shadow:none;
+  box-shadow: none;
+  transform: scale(1);
+  &:hover {
+    transform: scale(1);
+    box-shadow: none;
   }
-  
 `
 
 const IconFrontContainer = styled.div`

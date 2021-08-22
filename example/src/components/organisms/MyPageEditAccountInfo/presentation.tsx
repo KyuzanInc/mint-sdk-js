@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import Skeleton from 'react-loading-skeleton'
 import { color, font } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
-import {PrimaryButton} from '../../atoms/PrimaryButton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 import {
   TextField as BaseTextField,
   TextAreaField as BaseTextAreaField,
@@ -119,10 +119,7 @@ export const Presentation: React.VFC<Props> = ({
                   <BackButton isLoading={false} label={'マイページに戻る'} />
                 </Anchor>
               </Link>
-              <PrimaryButton
-                isLoading={submitting}
-                label={'保存する'}
-              />
+              <PrimaryButton isLoading={submitting} label={'保存する'} />
             </ButtonsContainer>
           </>
         )}
@@ -199,8 +196,8 @@ const BackButton = styled(PrimaryButton)`
   border: 1px solid ${color.primary};
   color: ${color.primary};
   margin-right: 16px;
-  box-shadow:none;
-  &:hover{
+  box-shadow: none;
+  &:hover {
     box-shadow: none;
   }
 `

@@ -22,7 +22,7 @@ export const TransactionStatus: React.FC<Props> = ({ networkId, hash }) => {
         <Title>トランザクション</Title>
         <TransactionLink href={url} target="blank">
           トランザクションをみる
-          <Icon/>
+          <Icon />
         </TransactionLink>
       </TransactionContainer>
     </Container>
@@ -64,10 +64,10 @@ const TransactionLink = styled.a`
 `
 
 const Icon = styled.span`
-  &:after{
+  &:after {
     text-align: center;
     margin-left: 4px;
-    font-family:'icomoon';
+    font-family: 'icomoon';
     color: ${color.primary};
     content: '\\e904';
     ${curve.button}

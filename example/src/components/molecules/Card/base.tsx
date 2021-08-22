@@ -85,7 +85,9 @@ const Container = styled.div`
   ${curve.fade}
 
   &:hover {
-    box-shadow: 0px 22px 43px rgba(0, 0, 0, 0.08), 0px 4.91399px 9.60461px rgba(0, 0, 0, 0.0476886), 0px 1.46302px 2.85954px rgba(0, 0, 0, 0.0323114);
+    box-shadow: 0px 22px 43px rgba(0, 0, 0, 0.08),
+      0px 4.91399px 9.60461px rgba(0, 0, 0, 0.0476886),
+      0px 1.46302px 2.85954px rgba(0, 0, 0, 0.0323114);
     ${CardMedia} {
       opacity: 0.82;
     }

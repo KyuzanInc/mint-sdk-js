@@ -288,6 +288,6 @@ const AnchorLink = styled.a`
 
 const CalenderButton = styled(SecondaryButton)`
   width: 100%;
-  color:${color.primary};
-  border:1px solid ${color.primary};
+  color: ${color.primary};
+  border: 1px solid ${color.primary};
 `
