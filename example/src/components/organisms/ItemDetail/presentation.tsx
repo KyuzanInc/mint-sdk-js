@@ -29,7 +29,6 @@ type Props = {
   handleCloseAutoExtensionModal: () => void
   handleOpenAutoExtensionModal: () => void
   handleOpenSaleActionModal: () => void
-  saleIsOutOfDate: boolean
   connectWalletModalIsOpen: boolean
   handleConnectWallet: () => void
   handleCloseConnectWalletModal: () => void
@@ -64,7 +63,6 @@ export const Presentation: React.VFC<Props> = ({
   handleOpenPhysicalModal,
   handleOpenAutoExtensionModal,
   handleOpenSaleActionModal: handleOpenBidModal,
-  saleIsOutOfDate,
   connectWalletModalIsOpen,
   connectingWallet,
   handleConnectWallet,
@@ -86,7 +84,6 @@ export const Presentation: React.VFC<Props> = ({
     return <LoadingItemDetailComponent />
   }
 
-  const isBought = typeof item?.buyerAddress === 'string'
   const startDate =
     (typeof item?.startAt === 'string'
       ? new Date(item?.startAt)
