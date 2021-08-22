@@ -59,6 +59,7 @@ export const HistoryContainer = styled.div`
   align-items: center;
   display: flex;
   background: ${color.white};
+  border-radius: 4px;
   text-decoration: none;
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),

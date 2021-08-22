@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Image from 'next/image'
-import Modal from 'react-modal'
+import { ModalWrap } from '../../atoms/ModalWrap'
 import { color, font, media } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
 import { StatusDetail } from '../Detail'
@@ -35,29 +35,7 @@ export const BoughtFixedPriceSuccessModal: React.VFC<Props> = ({
 }) => {
   const isMobile = useMedia().isMobile
   return (
-    <Modal
-      isOpen={isOpen}
-      style={{
-        overlay: {
-          zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-        content: {
-          border: 'none',
-          background: 'transparent',
-          top: '50%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -50%)',
-        },
-      }}
-      contentLabel="Wallet"
-      ariaHideApp={false}
-    >
+    <ModalWrap isOpen={isOpen} contentLabel="boughtFixedPriceSccessfulModal">
       <ModalContainer>
         <Content>
           <Left>
@@ -95,7 +73,7 @@ export const BoughtFixedPriceSuccessModal: React.VFC<Props> = ({
         </Content>
         <CloseButton onClick={closeModal} isMobile={isMobile} />
       </ModalContainer>
-    </Modal>
+    </ModalWrap>
   )
 }
 

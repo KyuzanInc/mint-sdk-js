@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import Modal, { Styles } from 'react-modal'
+import { ModalWrap } from '../../atoms/ModalWrap'
 import { color, font } from '../../../style'
 import { useMedia } from '../../../util/useMedia'
 import { CloseButton } from '../../atoms/CloseButton'
@@ -10,37 +10,13 @@ type Props = {
   closeModal: () => void
 }
 
-const customStyles: Styles = {
-  overlay: {
-    zIndex: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  content: {
-    border: 'none',
-    background: 'transparent',
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-}
-
 export const AboutAutoExtensionAuctionModal: React.VFC<Props> = ({
   closeModal,
   isOpen,
 }) => {
   const isMobile = useMedia().isMobile
   return (
-    <Modal
-      isOpen={isOpen}
-      style={customStyles}
-      contentLabel="AboutPhysicalModal"
-      ariaHideApp={false}
-    >
+    <ModalWrap isOpen={isOpen} contentLabel="AboutPhysicalModal">
       <ModalContainer>
         <Content>
           <Title>自動延長オークションとは</Title>
@@ -50,7 +26,7 @@ export const AboutAutoExtensionAuctionModal: React.VFC<Props> = ({
         </Content>
         <CloseButton onClick={closeModal} isMobile={isMobile} />
       </ModalContainer>
-    </Modal>
+    </ModalWrap>
   )
 }
 

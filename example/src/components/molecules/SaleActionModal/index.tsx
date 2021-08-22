@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import Image from 'next/image'
-import Modal from 'react-modal'
 import { color, font, media } from '../../../style'
 import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { Chip } from '../../atoms/Chip'
@@ -11,6 +10,7 @@ import { ToolTip } from '../../atoms/ToolTip'
 import { useMedia } from '../../../util/useMedia'
 import { ItemTradeType } from '@kyuzan/mint-sdk-js'
 import { CloseButton } from '../../atoms/CloseButton'
+import { ModalWrap } from '../../atoms/ModalWrap'
 
 type Props = {
   itemName: string
@@ -53,29 +53,7 @@ export const SaleActionModal: React.VFC<Props> = ({
 }) => {
   const isMobile = useMedia().isMobile
   return (
-    <Modal
-      isOpen={isOpen}
-      style={{
-        overlay: {
-          zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-        content: {
-          border: 'none',
-          background: 'transparent',
-          top: '50%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -50%)',
-        },
-      }}
-      contentLabel="Wallet"
-      ariaHideApp={false}
-    >
+    <ModalWrap isOpen={isOpen}>
       <ModalContainer>
         <Content>
           <Left>
@@ -120,7 +98,7 @@ export const SaleActionModal: React.VFC<Props> = ({
         </Content>
         <CloseButton onClick={closeModal} isMobile={isMobile} />
       </ModalContainer>
-    </Modal>
+    </ModalWrap>
   )
 }
 
