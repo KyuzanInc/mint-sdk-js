@@ -61,7 +61,7 @@ const CopyIcon = styled.div`
   &:hover {
     opacity: 0.26;
   }
-  &:active{
+  &:active {
     opacity: 0.56;
   }
 `

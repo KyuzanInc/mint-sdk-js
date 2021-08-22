@@ -33,6 +33,6 @@ const Icon = styled.div`
     transform: scale(1.05);
   }
   &:active {
-    transform: scale(1.0);
+    transform: scale(1);
   }
 `
