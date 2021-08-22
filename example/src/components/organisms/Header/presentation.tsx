@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Skeleton from 'react-loading-skeleton'
 import React from 'react'
-import { color, font, media, zIndex } from '../../../style'
+import { color, curve, font, media, zIndex } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 import { PrimaryButton } from '../../atoms/PrimaryButton'
@@ -52,7 +52,7 @@ export const Presentation: React.VFC<Props> = ({
           <WalletSection>
             {isLogin ? (
               <Link passHref href={'/me'}>
-                <Anchor>
+                <WalletAnchor>
                   <WalletInfoContainer>
                     {accountAvatarImgUrl ? (
                       <AvatarContainer>
@@ -65,11 +65,11 @@ export const Presentation: React.VFC<Props> = ({
                       <WalletBalance>{walletBalance}</WalletBalance>
                       <WalletAddress>
                         {walletAddress?.slice(0, 8)}
-                        <ClipBoard text={walletAddress} />
                       </WalletAddress>
                     </WalletDetail>
                   </WalletInfoContainer>
-                </Anchor>
+                  <HeaderClipBoard text={walletAddress} />
+                </WalletAnchor>
               </Link>
             ) : loading ? (
               <LoadingContainer>
@@ -134,6 +134,16 @@ const Right = styled.div`
   align-items: center;
   justify-content: flex-end;
 `
+const WalletAnchor = styled(Anchor)`
+  display: inline-block;
+  position: relative;
+`
+const HeaderClipBoard = styled(ClipBoard)`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+`
+
 const WalletSection = styled.div`
   margin-left: 32px;
   ${media.sp`
@@ -145,6 +155,11 @@ const WalletInfoContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  opacity: 1;
+  ${curve.button}
+  &:hover {
+    opacity: 0.82;
+  }
 `
 
 const WalletDetail = styled.div`

@@ -5,9 +5,9 @@ import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
 import { color, font, media } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
-import { WalletAddressWithClipBoard } from '../WalletAddressWithClipBoard'
 import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
+import { ClipBoard } from '../../atoms/Clipboard'
 
 type Props = {
   loading: boolean
@@ -60,7 +60,8 @@ export const AccountInfo: React.VFC<Props> = ({
       {displayName ? <DisplayName>{displayName}</DisplayName> : null}
 
       <WalletAddressContainer>
-        <WalletAddressWithClipBoard walletAddress={walletAddress ?? ''} />
+        {walletAddress?.slice(0, 8) + '...'}
+        <ClipBoard text={walletAddress} iconSize={24} />
       </WalletAddressContainer>
       <Bio>{bio}</Bio>
       {twitterAccountName || instagramAccountName || siteUrl ? (
@@ -153,6 +154,8 @@ const WalletAddressContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  ${font.mont.subtitle1}
+  color:${color.content.middle}
 `
 
 const Bio = styled.div`

@@ -79,6 +79,11 @@ const Avatar = styled.div`
   object-fit: cover;
   border-radius: 50%;
   overflow: hidden;
+  opacity: 1;
+  ${curve.button}
+  &:hover {
+    opacity: 0.82;
+  }
 `
 
 export const BidderDetail = styled.div`
@@ -102,6 +107,11 @@ export const BidPrice = styled.div`
   justify-content: flex-end;
   display: flex;
   margin: auto;
+  opacity: 1;
+  ${curve.button}
+  &:hover {
+    opacity: 0.72;
+  }
 `
 export const Icon = styled.span`
   &:after {
