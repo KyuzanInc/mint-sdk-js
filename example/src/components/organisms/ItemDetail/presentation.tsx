@@ -17,6 +17,7 @@ import { LoadingItemDetailComponent } from './loading'
 import { BidSuccessModal } from '../../molecules/BidSuccessModal'
 import { BoughtFixedPriceSuccessModal } from '../../molecules/BoughtFixedPriceSuccessModal'
 import { PrimaryButton } from '../../atoms/PrimaryButton'
+import { isOnSale } from '../../../util/isOnSale'
 
 type Props = {
   loading: boolean
@@ -86,6 +87,11 @@ export const Presentation: React.VFC<Props> = ({
   }
 
   const isBought = typeof item?.buyerAddress === 'string'
+  const startDate =
+    (typeof item?.startAt === 'string' ? new Date(item?.startAt) : item?.startAt) ?? new Date()
+  const endDate =
+    (typeof item?.endAt === 'string' ? new Date(item?.endAt) : item?.endAt) ?? new Date()
+  const saleOnGoing = isOnSale(startDate, endDate)
 
   return (
     <>
@@ -139,7 +145,7 @@ export const Presentation: React.VFC<Props> = ({
           )}
         </TradeInfoContainer>
 
-        {!saleIsOutOfDate && !isBought && (
+        {saleOnGoing && (
           <BidButton
             label={
               item?.tradeType === 'autoExtensionAuction'
@@ -150,7 +156,7 @@ export const Presentation: React.VFC<Props> = ({
           />
         )}
 
-        {saleIsOutOfDate ||isBought && (
+        {!saleOnGoing && (
           <BidButton
             label={'売り切れ'}
             // onClick={action('onClick')}
