@@ -2,13 +2,12 @@ import styled from '@emotion/styled'
 import React, { ChangeEventHandler } from 'react'
 import { Tag as TagBase } from '../../atoms/Tag'
 import { color, font, media } from '../../../style'
-import { BidButton } from '../../molecules/Button/bid'
 import { WalletModal } from '../../molecules/WalletModal'
 import { SaleActionModal } from '../../molecules/SaleActionModal'
 import { AboutPhysicalModal } from '../../molecules/AboutPhysicalModal'
 import { AboutAutoExtensionAuctionModal } from '../../molecules/AboutAutoExtensionAuctionModal'
 import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
-import { ExternalLink } from '../../atoms/ExternalLink'
+import { SecondaryButton } from '../../atoms/SecondaryButton'
 import { getItemPrice } from '../../../util/getItemPrice'
 import { getItemPriceUnit, getPriceUnit } from '../../../util/getItemPriceUnit'
 import Image from 'next/image'
@@ -17,7 +16,7 @@ import { Item } from '@kyuzan/mint-sdk-js'
 import { LoadingItemDetailComponent } from './loading'
 import { BidSuccessModal } from '../../molecules/BidSuccessModal'
 import { BoughtFixedPriceSuccessModal } from '../../molecules/BoughtFixedPriceSuccessModal'
-import { SimpleButton } from '../../atoms/SimpleButton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 
 type Props = {
   loading: boolean
@@ -151,8 +150,8 @@ export const Presentation: React.VFC<Props> = ({
           />
         )}
 
-        {isBought && (
-          <SimpleButton
+        {saleIsOutOfDate && (
+          <BidButton
             label={'売り切れ'}
             // onClick={action('onClick')}
             disabled={true}
@@ -160,22 +159,26 @@ export const Presentation: React.VFC<Props> = ({
         )}
 
         <Description>{item?.description}</Description>
-        <ExternalLinkUL>
-          <ExternalLinkList>
-            <ExternalLink
+        <SecondaryButtonUL>
+          <SecondaryButtonList>
+            <ExternalButton
               label={'IPFSで見る'}
               href={item?.tokenURIHTTP ?? ''}
+              iconSize={16}
+              iconPathBack={'/images/external-link.svg'}
+              isExternal={true}
             />
-          </ExternalLinkList>
-          <ExternalLinkList>
+          </SecondaryButtonList>
+          <SecondaryButtonList>
             {item?.buyerAddress ? (
-              <ExternalLink
+              <ExternalButton
                 label={'OpenSeaで見る'}
                 href={getOpenSeaLink(item)}
+                isExternal={true}
               />
             ) : null}
-          </ExternalLinkList>
-        </ExternalLinkUL>
+          </SecondaryButtonList>
+        </SecondaryButtonUL>
       </Detail>
       <WalletModal
         isOpen={connectWalletModalIsOpen}
@@ -275,17 +278,26 @@ const TagWrap = styled.div`
   justify-content: flex-start;
 `
 
+const BidButton = styled(PrimaryButton)`
+  width: 100%;
+`
+
 const TradeInfoContainer = styled.div`
   margin: 32px 0;
 `
 
-const ExternalLinkUL = styled.ul`
+const SecondaryButtonUL = styled.ul`
   display: flex;
   flex-direction: column;
 `
 
-const ExternalLinkList = styled.li`
+const SecondaryButtonList = styled.li`
   margin: 16px 0px 0 0;
+  width: 100%;
+`
+
+const ExternalButton = styled(SecondaryButton)`
+  height: 32px;
   width: 100%;
 `
 

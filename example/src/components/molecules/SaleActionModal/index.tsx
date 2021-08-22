@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Modal from 'react-modal'
 import { color, font, media } from '../../../style'
-import { PrimaryLoadingButton as ButtonBase } from '../../atoms/LoadingBotton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { Chip } from '../../atoms/Chip'
 import { MediaContent } from '../../atoms/MediaContent'
 import { StatusDetail } from '../Detail'
@@ -186,7 +186,7 @@ const AuctionSaleAction: React.VFC<{
           type={'number'}
           value={bidPrice}
           onChange={onChangeInput}
-          placeholder={'0'}
+          autoFocus
         />
         <InputUnit>{unit}</InputUnit>
       </InputPriceContainer>
@@ -350,7 +350,6 @@ const MediaContainer = styled.div`
   padding: 32px;
   width: 100%;
   height: 100%;
-  transform: translateY(-15%);
   img,
   video {
     width: 100%;
@@ -376,7 +375,7 @@ const InfoContainer = styled.div`
   bottom: 32px;
   top: auto;
   background-color: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(32px);
+  /* backdrop-filter: blur(32px); */
   border-radius: 8px;
   padding: 16px;
   margin-top: 8px;
@@ -466,6 +465,7 @@ const InputPrice = styled.input`
   border-radius: 34px;
   flex-grow: 2;
   text-align: center;
+  caret-color: ${color.primary};
   :focus {
     outline: 0px;
   }
@@ -491,9 +491,13 @@ const InputUnit = styled.span`
 
 const ContentButtonContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  margin: 32px 0 0 0;
+`
+const BidButton = styled(PrimaryButton)`
+  width: 100%;
 `
 
 const CloseButton = styled.div`
@@ -501,15 +505,6 @@ const CloseButton = styled.div`
   margin-top: 96px;
   ${media.sp`
     margin-top:16px;
-  `}
-`
-
-const BidButton = styled(ButtonBase)`
-  width: 100%;
-  margin-top: 32px;
-  line-height: 1.5;
-  ${media.sp`
-    margin-top: 16px;
   `}
 `
 

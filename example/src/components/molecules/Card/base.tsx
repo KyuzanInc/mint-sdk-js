@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import React, { ReactNode } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { color, font, media } from '../../../style'
+import { color, font, media, curve } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
 
@@ -63,6 +63,8 @@ const CardMedia = styled.div`
   background: transparent;
   height: ${cardMediaHeight};
   width: 100%;
+  margin: auto;
+  ${curve.fade}
   ${media.sp`
     height:fit-content;
   `}
@@ -72,14 +74,20 @@ const Container = styled.div`
   ${font.mont.button}
   /* height: 392px; */
   height:100%;
-  line-height: 44px;
+  line-height: 0px;
+  /* color: ${color.white}; */
   padding: 0;
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 12px;
   overflow: hidden;
+  ${curve.fade}
+
   &:hover {
+    box-shadow: 0px 22px 43px rgba(0, 0, 0, 0.08),
+      0px 4.91399px 9.60461px rgba(0, 0, 0, 0.0476886),
+      0px 1.46302px 2.85954px rgba(0, 0, 0, 0.0323114);
     ${CardMedia} {
       opacity: 0.82;
     }

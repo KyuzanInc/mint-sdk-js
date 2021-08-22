@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { color, font, media } from '../../../style'
 import { getPriceUnit } from '../../../util/getItemPriceUnit'
-import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
 import { ToolTip } from '../../atoms/ToolTip'
@@ -194,9 +194,10 @@ export const CardMyPage: React.VFC<Props> = ({
               <WonDescription>
                 おめとうございます。オークションに競り勝ち、NFTを勝ち取りました。オークション終了5分以降に下のボタンからNFTを受け取れます。
               </WonDescription>
-              <DisabledButton
+              <PrimaryButtonDisabled
                 isLoading={withdrawing!}
                 label={'NFTを受け取る'}
+                disabled={true}
               />
             </>
           )}
@@ -232,7 +233,7 @@ export const CardMyPage: React.VFC<Props> = ({
                   </ToolTip>
                 </CheckInJapanLabel>
               </CheckInJapanContainer>
-              <PrimaryButton
+              <PrimaryButtonDefault
                 isLoading={withdrawing!}
                 label={'NFTを受け取る'}
                 onClick={() => onWithdraw && onWithdraw(inJapan)}
@@ -320,7 +321,7 @@ const Center = styled.div`
   top: 50%;
   transform: translate(0px, -50%);
   background-color: rgba(255, 255, 255, 0.56);
-  backdrop-filter: blur(8px);
+  /* backdrop-filter: blur(8px); */
   border-radius: 8px;
   ${media.lg`
     min-width:266px;
@@ -428,23 +429,24 @@ const LosingTitle = styled.div`
   align-items: center;
 `
 
-const ReverseButton = styled(PrimaryLoadingButton)`
+const ReverseButton = styled(PrimaryButton)`
   width: 100%;
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};
+  box-shadow: none;
   &:hover {
-    background-color: ${color.content.superLight};
+    box-shadow: none;
   }
 `
 
-const PrimaryButton = styled(PrimaryLoadingButton)`
+const PrimaryButtonDefault = styled(PrimaryButton)`
   margin-top: 16px;
   width: 100%;
 `
 
-const DisabledButton = styled(PrimaryLoadingButton)`
-  background-color: ${color.content.middle};
+const PrimaryButtonDisabled = styled(PrimaryButton)`
+  /* background-color: ${color.content.middle}; */
   margin-top: 16px;
   width: 100%;
   cursor: not-allowed;

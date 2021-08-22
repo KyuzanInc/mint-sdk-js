@@ -76,8 +76,8 @@ const MediaContainer = styled.div`
   width: 100%;
   margin: 0 auto;
   padding: 64px 0;
-  background: #f5f5f5
-    linear-gradient(0deg, rgb(230, 230, 230) 60%, rgba(230, 230, 230, 0) 100%);
+  background: rgb(245 245 245)
+    linear-gradient(0deg, rgb(230, 230, 230) 2%, rgba(230, 230, 230, 0) 100%);
   ${media.sp`
     padding:0;
   `}

@@ -31,7 +31,7 @@ export const EndedStatus: React.FC<Props> = ({ price, endAt, unit }) => {
         </StatusValue>
       </PriceContent>
       <TimeContent>
-        <StatusTitle>終了までの残り時間</StatusTitle>
+        <StatusTitle>終了時間</StatusTitle>
         <EndedStatusValue>{date}</EndedStatusValue>
       </TimeContent>
     </StatusContainer>
@@ -39,7 +39,7 @@ export const EndedStatus: React.FC<Props> = ({ price, endAt, unit }) => {
 }
 
 const EndedStatusValue = styled.div`
-  ${font.mont.h2}
+  ${font.mont.h3}
   color: ${color.content.dark};
   display: flex;
   align-items: center;

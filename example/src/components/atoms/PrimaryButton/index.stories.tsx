@@ -1,22 +1,16 @@
 import { action } from '@storybook/addon-actions'
 import React from 'react'
-import { PrimaryLoadingButton } from '.'
+import { PrimaryButton } from '.'
 
 export const Basic: React.VFC = () => {
-  return (
-    <PrimaryLoadingButton
-      isLoading={false}
-      label={'button text'}
-      onClick={action('onClick')}
-    />
-  )
+  return <PrimaryButton label={'button text'} onClick={action('onClick')} />
 }
 
-export const Loading: React.VFC = () => {
+export const WithIcon: React.VFC = () => {
   return (
-    <PrimaryLoadingButton
-      isLoading={true}
+    <PrimaryButton
       label={'button text'}
+      iconPathFront={'/images/icons/calendar.svg'}
       onClick={action('onClick')}
     />
   )
@@ -24,8 +18,7 @@ export const Loading: React.VFC = () => {
 
 export const Disabled: React.VFC = () => {
   return (
-    <PrimaryLoadingButton
-      isLoading={false}
+    <PrimaryButton
       label={'button text'}
       onClick={action('onClick')}
       disabled={true}
@@ -33,16 +26,16 @@ export const Disabled: React.VFC = () => {
   )
 }
 
-export const Submit: React.VFC = () => {
+export const Loading: React.VFC = () => {
   return (
-    <PrimaryLoadingButton
-      isLoading={false}
+    <PrimaryButton
       label={'button text'}
+      isLoading={true}
       onClick={action('onClick')}
     />
   )
 }
 
 export default {
-  title: 'atoms/LoadingButton',
+  title: 'atoms/PrimaryButton',
 }

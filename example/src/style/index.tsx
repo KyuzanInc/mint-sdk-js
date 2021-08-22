@@ -98,3 +98,19 @@ export const media = {
     }
   `,
 }
+
+export const curve = {
+  button: 'transition: all 0.15s 0.0s cubic-bezier(0.4, 0, 0.1, 1);',
+  fade: 'transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;',
+  ripple: 'transition: all 0.35s cubic-bezier(0.74, 0.11, 0.17, 0.51);',
+} as const
+
+export const zIndex = {
+  base: 0,
+  effect: -1,
+  elevation: {
+    ev5: 5,
+    ev10: 10,
+    ev15: 15,
+  },
+} as const

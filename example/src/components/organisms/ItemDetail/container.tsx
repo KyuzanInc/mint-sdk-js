@@ -14,6 +14,7 @@ import {
 } from '../../../redux/wallet'
 import { getNetworkIdLabel } from '../../../util/getNetworkIdLabel'
 import { Presentation } from './presentation'
+import { useMedia } from '../../../util/useMedia'
 
 export const Container: React.VFC = () => {
   const dispatch = useAppDispatch()
@@ -56,14 +57,18 @@ export const Container: React.VFC = () => {
     setBidPrice('')
   }, [])
 
-  const [bidPrice, setBidPrice] = useState('')
+  const [bidPrice, setBidPrice] = useState(`0.0`)
   const [isError, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
+
+  const isMobile = useMedia()
 
   useEffect(() => {
     if (bidPrice < (item?.minBidPrice ?? bidPrice)) {
       setError(true)
-      setErrorText(`${item?.minBidPrice} ETH以上の価格を入力してください`)
+      isMobile
+        ? setErrorText(`${item?.minBidPrice} ETH以上で入札`)
+        : setErrorText(`${item?.minBidPrice} ETH以上で入札してください`)
     } else if ((walletInfo?.balance ?? bidPrice) < bidPrice) {
       setError(true)
       setErrorText(`お手持ちの金額を超えています`)

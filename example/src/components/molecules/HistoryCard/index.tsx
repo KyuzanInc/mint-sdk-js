@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { ItemLog, NetworkId } from '@kyuzan/mint-sdk-js'
 import { format } from 'date-fns'
-import { color, font, media } from '../../../style'
+import { color, curve, font, media } from '../../../style'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 import { LoadingHistoryCard } from './loading'
 import Link from 'next/link'
@@ -43,7 +43,7 @@ export const HistoryCard: React.FC<Props> = ({ log, networkId, loading }) => {
         <Anchor target={'_blank'}>
           <BidPrice>
             {price} ETH
-            <Icon src={'/images/external-link.svg'} />
+            <Icon />
           </BidPrice>
         </Anchor>
       </Link>
@@ -63,6 +63,13 @@ export const HistoryContainer = styled.div`
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+  ${curve.fade}
+
+  &:hover {
+    box-shadow: 0px 22px 43px rgba(0, 0, 0, 0.08),
+      0px 4.91399px 9.60461px rgba(0, 0, 0, 0.0476886),
+      0px 1.46302px 2.85954px rgba(0, 0, 0, 0.0323114);
+  }
 `
 
 const Avatar = styled.div`
@@ -92,13 +99,20 @@ export const BidTime = styled.div`
 export const BidPrice = styled.div`
   min-width: 100px;
   ${font.mont.subtitle1}
-  justify-content: center;
+  justify-content: flex-end;
   display: flex;
   margin: auto;
 `
-export const Icon = styled.img`
-  text-align: center;
-  margin-left: 4px;
+export const Icon = styled.span`
+  &:after {
+    text-align: center;
+    margin-left: 4px;
+    margin-bottom: 3px;
+    font-family: 'icomoon';
+    color: ${color.content.middle};
+    content: '\\e904';
+    ${curve.button}
+  }
 `
 
 const AvatarImage = styled.img`
