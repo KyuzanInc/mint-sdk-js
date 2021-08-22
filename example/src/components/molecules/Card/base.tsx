@@ -75,7 +75,7 @@ const Container = styled.div`
   ${font.mont.button}
   /* height: 392px; */
   height:100%;
-  line-height: 44px;
+  line-height: 0px;
   /* color: ${color.white}; */
   padding: 0;
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),

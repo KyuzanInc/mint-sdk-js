@@ -150,7 +150,7 @@ export const Presentation: React.VFC<Props> = ({
           />
         )}
 
-        {isBought && (
+        {saleIsOutOfDate && (
           <BidButton
             label={'売り切れ'}
             // onClick={action('onClick')}

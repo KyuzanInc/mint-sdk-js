@@ -57,7 +57,7 @@ export const Container: React.VFC = () => {
     setBidPrice('')
   }, [])
 
-  const [bidPrice, setBidPrice] = useState('')
+  const [bidPrice, setBidPrice] = useState(`0.0`)
   const [isError, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
 

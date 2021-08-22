@@ -182,12 +182,12 @@ const AuctionSaleAction: React.VFC<{
         </PriceRangeItem>
       </PriceRangeContainer>
       <InputPriceContainer>
-        <InputPrice type={'number'} value={bidPrice} onChange={onChangeInput} />
+        <InputPrice type={'number'} value={bidPrice} onChange={onChangeInput} autoFocus/>
         <InputUnit>{unit}</InputUnit>
       </InputPriceContainer>
       <ContentButtonContainer>
         {isValidationError && (
-          <PrimaryButton
+          <BidButton
             label={errorText ?? ''}
             isLoading={false}
             onClick={doBid}
@@ -195,7 +195,7 @@ const AuctionSaleAction: React.VFC<{
           />
         )}
         {!isValidationError && (
-          <PrimaryButton
+          <BidButton
             label={loading ? '取引処理中です' : '入札する'}
             isLoading={loading}
             onClick={doBid}
@@ -422,6 +422,7 @@ const InputPrice = styled.input`
   border-radius: 34px;
   flex-grow: 2;
   text-align: center;
+  caret-color:${color.primary};
   :focus {
     outline: 0px;
   }
@@ -450,6 +451,9 @@ const ContentButtonContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin:32px 0 0 0;
+`
+const BidButton = styled(PrimaryButton)`
+  width:100%;
 `
 
 const CloseButton = styled.div`
