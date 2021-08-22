@@ -10,6 +10,7 @@ import { SecondaryButton } from '../../atoms/SecondaryButton'
 import { format, subMinutes } from 'date-fns'
 import { NetworkId } from '@kyuzan/mint-sdk-js'
 import { useMedia } from '../../../util/useMedia'
+import { CloseButton } from '../../atoms/CloseButton'
 
 type Props = {
   itemName: string
@@ -84,14 +85,7 @@ export const BidSuccessModal: React.VFC<Props> = ({
             />
           </Right>
         </Content>
-        <CloseButton onClick={closeModal}>
-          <Image
-            src={'/images/close_button.svg'}
-            width={isMobile ? 32 : 64}
-            layout={'fixed'}
-            height={isMobile ? 32 : 64}
-          />
-        </CloseButton>
+        <CloseButton onClick={closeModal} isMobile={isMobile} />
       </ModalContainer>
     </Modal>
   )
@@ -241,14 +235,6 @@ const ContentButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  margin-top: 96px;
-  ${media.sp`
-    margin-top:16px;
-  `}
 `
 
 const TitleContainer = styled.div`

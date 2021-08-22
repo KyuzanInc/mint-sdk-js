@@ -10,6 +10,7 @@ import { StatusDetail } from '../Detail'
 import { ToolTip } from '../../atoms/ToolTip'
 import { useMedia } from '../../../util/useMedia'
 import { ItemTradeType } from '@kyuzan/mint-sdk-js'
+import { CloseButton } from '../../atoms/CloseButton'
 
 type Props = {
   itemName: string
@@ -117,14 +118,7 @@ export const SaleActionModal: React.VFC<Props> = ({
             )}
           </Right>
         </Content>
-        <CloseButton onClick={closeModal}>
-          <Image
-            src={'/images/close_button.svg'}
-            width={isMobile ? 32 : 64}
-            layout={'fixed'}
-            height={isMobile ? 32 : 64}
-          />
-        </CloseButton>
+        <CloseButton onClick={closeModal} isMobile={isMobile} />
       </ModalContainer>
     </Modal>
   )
@@ -498,14 +492,6 @@ const ContentButtonContainer = styled.div`
 `
 const BidButton = styled(PrimaryButton)`
   width: 100%;
-`
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  margin-top: 96px;
-  ${media.sp`
-    margin-top:16px;
-  `}
 `
 
 const NotFoundIcon = styled.span`

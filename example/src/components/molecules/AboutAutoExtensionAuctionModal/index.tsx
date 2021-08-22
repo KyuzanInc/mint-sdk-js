@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
 import { color, font } from '../../../style'
+import { useMedia } from '../../../util/useMedia'
+import { CloseButton } from '../../atoms/CloseButton'
 
 type Props = {
   isOpen: boolean
@@ -32,6 +33,7 @@ export const AboutAutoExtensionAuctionModal: React.VFC<Props> = ({
   closeModal,
   isOpen,
 }) => {
+  const isMobile = useMedia().isMobile
   return (
     <Modal
       isOpen={isOpen}
@@ -46,14 +48,7 @@ export const AboutAutoExtensionAuctionModal: React.VFC<Props> = ({
             オークション終了5分以内に最高値を更新する入札があった場合は、オークションの終了時間が5分延長されます。
           </Description>
         </Content>
-        <CloseButton onClick={closeModal}>
-          <Image
-            src={'/images/close_button.svg'}
-            width={64}
-            layout={'fixed'}
-            height={64}
-          />
-        </CloseButton>
+        <CloseButton onClick={closeModal} isMobile={isMobile} />
       </ModalContainer>
     </Modal>
   )
@@ -86,9 +81,4 @@ const Title = styled.p`
 const Description = styled.p`
   ${font.mont.body1}
   line-height: 1.6;
-`
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  margin-top: 96px;
 `

@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
 import { color, font, media } from '../../../style'
 import { PrimaryButton } from '../../atoms/PrimaryButton'
+import { useMedia } from '../../../util/useMedia'
+import { CloseButton } from '../../atoms/CloseButton'
 
 type Props = {
   isOpen: boolean
@@ -37,6 +38,7 @@ export const WalletModal: React.VFC<Props> = ({
   isOpen,
   loading,
 }) => {
+  const isMobile = useMedia().isMobile
   return (
     <Modal
       isOpen={isOpen}
@@ -58,16 +60,7 @@ export const WalletModal: React.VFC<Props> = ({
             </ContentRightButtonContainer>
           </ContentRight>
         </Content>
-        {closeModal && (
-          <CloseButton onClick={closeModal}>
-            <Image
-              src={'/images/close_button.svg'}
-              width={64}
-              layout={'fixed'}
-              height={64}
-            />
-          </CloseButton>
-        )}
+        {closeModal && <CloseButton onClick={closeModal} isMobile={isMobile} />}
       </ModalContainer>
     </Modal>
   )
@@ -127,9 +120,4 @@ const ContentRightButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  margin-top: 96px;
 `

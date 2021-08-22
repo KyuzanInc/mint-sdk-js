@@ -3,6 +3,8 @@ import React from 'react'
 import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
 import { color } from '../../../style'
+import { useMedia } from '../../../util/useMedia'
+import { CloseButton } from '../../atoms/CloseButton'
 
 type Props = {
   isOpen: boolean
@@ -32,6 +34,7 @@ export const AboutPhysicalModal: React.VFC<Props> = ({
   closeModal,
   isOpen,
 }) => {
+  const isMobile = useMedia().isMobile
   return (
     <Modal
       isOpen={isOpen}
@@ -48,14 +51,7 @@ export const AboutPhysicalModal: React.VFC<Props> = ({
             height={443}
           />
         </Content>
-        <CloseButton onClick={closeModal}>
-          <Image
-            src={'/images/close_button.svg'}
-            width={64}
-            layout={'fixed'}
-            height={64}
-          />
-        </CloseButton>
+        <CloseButton onClick={closeModal} isMobile={isMobile} />
       </ModalContainer>
     </Modal>
   )
@@ -78,9 +74,4 @@ const Content = styled.div`
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
-`
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  margin-top: 96px;
 `

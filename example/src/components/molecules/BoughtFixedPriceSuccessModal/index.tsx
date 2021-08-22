@@ -8,6 +8,7 @@ import { StatusDetail } from '../Detail'
 import { TransactionStatus } from '../../atoms/TransactionStatus'
 import { NetworkId } from '@kyuzan/mint-sdk-js'
 import { useMedia } from '../../../util/useMedia'
+import { CloseButton } from '../../atoms/CloseButton'
 
 type Props = {
   itemName: string
@@ -92,14 +93,7 @@ export const BoughtFixedPriceSuccessModal: React.VFC<Props> = ({
             </TransactionContainer>
           </Right>
         </Content>
-        <CloseButton onClick={closeModal}>
-          <Image
-            src={'/images/close_button.svg'}
-            width={isMobile ? 32 : 64}
-            layout={'fixed'}
-            height={isMobile ? 32 : 64}
-          />
-        </CloseButton>
+        <CloseButton onClick={closeModal} isMobile={isMobile} />
       </ModalContainer>
     </Modal>
   )
@@ -194,14 +188,6 @@ const Right = styled.div`
   /* width: 440px; */
   ${media.sp`
     padding:16px 24px 32px;
-  `}
-`
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  margin-top: 96px;
-  ${media.sp`
-    margin-top:16px;
   `}
 `
 
