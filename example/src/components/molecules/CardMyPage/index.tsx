@@ -197,6 +197,7 @@ export const CardMyPage: React.VFC<Props> = ({
               <PrimaryButtonDisabled
                 isLoading={withdrawing!}
                 label={'NFTを受け取る'}
+                disabled={true}
               />
             </>
           )}
@@ -433,6 +434,10 @@ const ReverseButton = styled(PrimaryButton)`
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};
+  box-shadow:none;
+  &:hover{
+    box-shadow: none;
+  }
 `
 
 const PrimaryButtonDefault = styled(PrimaryButton)`
@@ -441,7 +446,7 @@ const PrimaryButtonDefault = styled(PrimaryButton)`
 `
 
 const PrimaryButtonDisabled = styled(PrimaryButton)`
-  background-color: ${color.content.middle};
+  /* background-color: ${color.content.middle}; */
   margin-top: 16px;
   width: 100%;
   cursor: not-allowed;

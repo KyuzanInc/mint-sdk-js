@@ -140,7 +140,7 @@ export const Presentation: React.VFC<Props> = ({
         </TradeInfoContainer>
 
         {!saleIsOutOfDate && !isBought && (
-          <PrimaryButton
+          <BidButton
             label={
               item?.tradeType === 'autoExtensionAuction'
                 ? '入札する'
@@ -151,7 +151,7 @@ export const Presentation: React.VFC<Props> = ({
         )}
 
         {isBought && (
-          <PrimaryButton
+          <BidButton
             label={'売り切れ'}
             // onClick={action('onClick')}
             disabled={true}
@@ -161,16 +161,20 @@ export const Presentation: React.VFC<Props> = ({
         <Description>{item?.description}</Description>
         <SecondaryButtonUL>
           <SecondaryButtonList>
-            <SecondaryButton
+            <ExternalButton
               label={'IPFSで見る'}
               href={item?.tokenURIHTTP ?? ''}
+              iconSize={16}
+              iconPathBack={'/images/external-link.svg'}
+              isExternal={true}
             />
           </SecondaryButtonList>
           <SecondaryButtonList>
             {item?.buyerAddress ? (
-              <SecondaryButton
+              <ExternalButton
                 label={'OpenSeaで見る'}
                 href={getOpenSeaLink(item)}
+                isExternal={true}
               />
             ) : null}
           </SecondaryButtonList>
@@ -274,6 +278,10 @@ const TagWrap = styled.div`
   justify-content: flex-start;
 `
 
+const BidButton = styled(PrimaryButton)`
+  width:100%;
+`
+
 const TradeInfoContainer = styled.div`
   margin: 32px 0;
 `
@@ -286,6 +294,11 @@ const SecondaryButtonUL = styled.ul`
 const SecondaryButtonList = styled.li`
   margin: 16px 0px 0 0;
   width: 100%;
+`
+
+const ExternalButton = styled(SecondaryButton)`
+  height:32px;
+  width:100%;
 `
 
 const QuestionButton = styled.div`

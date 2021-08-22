@@ -1,78 +1,117 @@
 import styled from '@emotion/styled'
+import Image from 'next/image'
 import React from 'react'
 import { color, curve, font, zIndex } from '../../../style'
 
 type Props = {
+  isLoading?: boolean
   label: string
-  href: string
+  iconPathFront?: string
+  iconPathBack?: string
+  disabled?: boolean
+  className?: string
+  href?: string
+  iconSize?:number
+  isExternal?:boolean
 }
 
-export const SecondaryButton: React.FC<Props> = ({ label, href }) => {
+export const SecondaryButton: React.FC<Props> = ({
+  isLoading,
+  label,
+  iconPathFront,
+  iconPathBack,
+  className,
+  href,
+  disabled,
+  iconSize,
+  isExternal
+}) => {
+  if (disabled) {
+    return (
+      <Disabled className={className} disabled>
+        {label}
+      </Disabled>
+    )
+  }
+  
   return (
-    <Secondary href={href} target="blank">
+    <Button 
+      onClick={()=> {
+        isExternal?(
+          window.open(href, "_blank")
+        ):(
+          window.open(href)
+        )
+      }}
+      className={className} 
+      >
+      {isLoading && (
+        <Image
+          src={'/images/spinner_dark.svg'}
+          width={24}
+          layout={'fixed'}
+          height={24}
+        />
+      )}
+      {iconPathFront && (
+        <IconFrontContainer>
+          <Image src={iconPathFront} layout={'fixed'} width={iconSize?iconSize:24} height={iconSize?iconSize:24} />
+        </IconFrontContainer>
+      )}
       {label}
-      <Icon/>
-    </Secondary>
+      {iconPathBack && (
+        <IconBackContainer>
+          <Image src={iconPathBack} layout={'fixed'} width={iconSize?iconSize:24} height={iconSize?iconSize:24} />
+        </IconBackContainer>
+      )}
+    </Button>
   )
 }
 
-const LinkBase = styled.a`
+const Button = styled.button`
+  overflow: hidden;
+  position:relative;
   cursor: pointer;
-  ${font.mont.subtitle2}
-  height: 33px;
-  line-height: 33px;
+  ${font.mont.button}
+  height: 44px;
+  width: fit-content;
+  line-height: 44px;
   border-radius: 22px;
+  background-color: transparent;
+  border: 1px solid ${color.background.dark};
   color: ${color.content.dark};
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 0 32px;
-  border: 1px solid ${color.content.dark};
-  text-decoration: none;
-`
-
-const Icon = styled.span`
-  &:after{
-    text-align: center;
-    margin-left: 4px;
-    margin-bottom: 3px;
-    font-family:'icomoon';
-    color: ${color.background.dark};
-    content: '\\e904';
-    ${curve.button}
-  }
-`
-
-const Secondary = styled(LinkBase)`
-  position:relative;
-  background-color: transparent;
-  color: ${color.content.dark};
-  overflow: hidden;
   ${curve.button}
   z-index:${zIndex.base};
-  &:after{
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    display: block;
-    width: 120%;
-    height: 26rem;
-    background: ${color.background.dark};
-    border-radius: 50%;
-    z-index:${zIndex.effect};
-    ${curve.ripple}
-  }
+  transform:scale(1.0);
+  backface-visibility: hidden;
   &:hover{
-    color: ${color.white};
-    ${Icon}:after{
-      color: ${color.white};
-    }
-    &:after{
-      transform: translate(-50%, -50%) scale(1);
-    }
+    transform:scale(1.02);
   }
+`
+
+const Disabled = styled(Button)`
+  color: ${color.content.light};
+  cursor: not-allowed;
+  width: 100%;
+  border: 0.5px solid ${color.content.superLight};
+  transform:scale(1.0);
+  &:hover{
+    transform:scale(1.0);
+  }
+  
+`
+
+const IconFrontContainer = styled.div`
+  padding-right: 8px;
+  display: flex;
+`
+
+const IconBackContainer = styled.div`
+  padding-left: 8px;
+  display: flex;
 `

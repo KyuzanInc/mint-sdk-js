@@ -63,6 +63,11 @@ export const HistoryContainer = styled.div`
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+  ${curve.fade}
+  
+  &:hover{
+    box-shadow: 0px 22px 43px rgba(0, 0, 0, 0.08), 0px 4.91399px 9.60461px rgba(0, 0, 0, 0.0476886), 0px 1.46302px 2.85954px rgba(0, 0, 0, 0.0323114);
+  }
 `
 
 const Avatar = styled.div`

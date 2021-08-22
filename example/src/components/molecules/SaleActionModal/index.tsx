@@ -449,6 +449,7 @@ const ContentButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin:32px 0 0 0;
 `
 
 const CloseButton = styled.div`

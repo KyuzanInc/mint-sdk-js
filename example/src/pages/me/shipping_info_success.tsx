@@ -66,4 +66,8 @@ const BackButton = styled(PrimaryButton)`
   border: 1px solid ${color.primary};
   color: ${color.primary};
   margin-right: 16px;
+  box-shadow:none;
+  &:hover{
+    box-shadow: none;
+  }
 `

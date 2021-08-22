@@ -109,8 +109,9 @@ const ReverseButton = styled(PrimaryButton)`
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};
+  box-shadow:none;
   &:hover {
-    background-color: ${color.content.superLight};
+    box-shadow: none;
   }
 `
 

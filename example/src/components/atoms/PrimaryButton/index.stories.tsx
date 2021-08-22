@@ -10,7 +10,7 @@ export const WithIcon: React.VFC = () => {
   return (
     <PrimaryButton
       label={'button text'}
-      iconPath={'/images/icons/calendar.svg'}
+      iconPathFront={'/images/icons/calendar.svg'}
       onClick={action('onClick')}
     />
   )

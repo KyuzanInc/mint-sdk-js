@@ -6,7 +6,8 @@ import { color, curve, font, zIndex } from '../../../style'
 type Props = {
   isLoading?: boolean
   label: string
-  iconPath?: string
+  iconPathFront?: string
+  iconPathBack?: string
   disabled?: boolean
   className?: string
   onClick?: () => any
@@ -16,7 +17,8 @@ export const PrimaryButton: React.FC<Props> = ({
   isLoading,
   label,
   onClick,
-  iconPath,
+  iconPathFront,
+  iconPathBack,
   className,
   disabled,
 }) => {
@@ -38,12 +40,17 @@ export const PrimaryButton: React.FC<Props> = ({
           height={24}
         />
       )}
-      {iconPath && (
-        <IconContainer>
-          <Image src={iconPath} layout={'fixed'} width={24} height={24} />
-        </IconContainer>
+      {iconPathFront && (
+        <IconFrontContainer>
+          <Image src={iconPathFront} layout={'fixed'} width={24} height={24} />
+        </IconFrontContainer>
       )}
       {label}
+      {iconPathBack && (
+        <IconBackContainer>
+          <Image src={iconPathBack} layout={'fixed'} width={24} height={24} />
+        </IconBackContainer>
+      )}
     </Button>
   )
 }
@@ -54,12 +61,12 @@ const Button = styled.button`
   cursor: pointer;
   ${font.mont.button}
   height: 44px;
+  width: fit-content;
   line-height: 44px;
   border-radius: 22px;
   background-color: ${color.primary};
   /* border: 0.5px solid ${color.primary}; */
   color: ${color.white};
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,27 +76,11 @@ const Button = styled.button`
   z-index:${zIndex.base};
   border:0px;
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.12), 0px 0.893452px 1.11682px rgba(0, 0, 0, 0.0715329), 0px 0.266004px 0.332505px rgba(0, 0, 0, 0.0484671);
-  &:after{
-    /* Ripple */
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    display: block;
-    width: 120%;
-    height: 26rem;
-    background: rgba(255,255,255,.08);
-    border-radius: 50%;
-    z-index:${zIndex.effect};
-    ${curve.ripple}
-  }
+  transform:scale(1.0);
+  backface-visibility: hidden;
   &:hover{
     box-shadow: 0px 9px 12px rgba(0, 0, 0, 0.2), 0px 2.01027px 2.68036px rgba(0, 0, 0, 0.119221), 0px 0.598509px 0.798012px rgba(0, 0, 0, 0.0807786);
-    
-    &:after{
-      /* transform: translate(-50%, -50%) scale(1); */
-    }
+    transform:scale(1.02);
   }
 `
 
@@ -99,13 +90,21 @@ const Disabled = styled(Button)`
   cursor: not-allowed;
   border: 0px;
   width: 100%;
-  &:after{
-    display: none;
+  box-shadow:none;
+  transform:scale(1.0);
+  &:hover{
+    transform:scale(1.0);
+    box-shadow:none;
   }
   
 `
 
-const IconContainer = styled.div`
+const IconFrontContainer = styled.div`
   padding-right: 8px;
+  display: flex;
+`
+
+const IconBackContainer = styled.div`
+  padding-left: 8px;
   display: flex;
 `

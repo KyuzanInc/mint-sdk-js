@@ -6,7 +6,7 @@ import { color, font, media } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
 import { StatusDetail } from '../Detail'
 import { TransactionStatus } from '../../atoms/TransactionStatus'
-import { PrimaryButton } from '../../atoms/PrimaryButton'
+import { SecondaryButton } from '../../atoms/SecondaryButton'
 import { format, subMinutes } from 'date-fns'
 import { NetworkId } from '@kyuzan/mint-sdk-js'
 import { useMedia } from '../../../util/useMedia'
@@ -108,9 +108,6 @@ const BidSuccessStatus: React.VFC<{
   const formattedBefore = format(before, "yyyyMMd'T'HHmmss")
   const formattedEndAt = format(endAt, "yyyyMMd'T'HHmmss")
   const calendarUrl = `http://www.google.com/calendar/event?action=TEMPLATE&text=${title}&dates=${formattedBefore}/${formattedEndAt}`
-  const onClick = useCallback(() => {
-    // donothing
-  }, [])
   const isMobile = useMedia().isMobile
   return (
     <>
@@ -132,9 +129,8 @@ const BidSuccessStatus: React.VFC<{
       <ContentButtonContainer>
         <AnchorLink href={calendarUrl} target="blank">
           <CalenderButton
-            iconPath={'/images/icons/calendar.svg'}
+            iconPathFront={'/images/icons/calendar.svg'}
             label={'終了時刻をカレンダーに登録する'}
-            onClick={onClick}
           />
         </AnchorLink>
       </ContentButtonContainer>
@@ -290,6 +286,8 @@ const AnchorLink = styled.a`
   text-decoration: none;
 `
 
-const CalenderButton = styled(PrimaryButton)`
+const CalenderButton = styled(SecondaryButton)`
   width: 100%;
+  color:${color.primary};
+  border:1px solid ${color.primary};
 `
