@@ -13,6 +13,7 @@ export const TransactionStatus: React.FC<Props> = ({ item, hash }) => {
   const url = getTransactionLink(item, hash)
   return (
     <Container>
+      <InnerContainer>
       <StatusContainer>
         <Title>ステータス</Title>
         <Status>入札処理中</Status>
@@ -31,6 +32,7 @@ export const TransactionStatus: React.FC<Props> = ({ item, hash }) => {
           </LinkContainer>
         </TransactionLink>
       </TransactionContainer>
+      </InnerContainer>
     </Container>
   )
 }
@@ -57,39 +59,65 @@ const getTransactionLink = (item: Item | undefined, hash: string) => {
 }
 
 const Container = styled.div`
+  max-height: 74px;
+  width: 100%;
+  max-width: 310px;
+  display: flex;
+  background-color: ${color.white};
+`
+
+const InnerContainer = styled.div`
   border: 0.5px solid ${color.content.gray2};
   border-radius: 4px;
-  padding: 16px;
-  height: 74px;
-  min-width: 310px;
+  padding: 5%;
+  width: 100%;
   display: flex;
   background-color: ${color.white};
 `
 
 const StatusContainer = styled.div`
-  margin-right: 32px;
+  margin-right: 4%;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
 `
 
 const Title = styled.div`
   ${font.lg.caption}
   color: ${color.content.middle};
+  @media (max-width: 480px) {
+    font-size: 10px;
+  };
 `
 
-const Status = styled.p`
-  margin-top: 8px;
+const Status = styled.div`
+  align-items: center;
   ${font.lg.label}
+  line-height: 24px;
   color: ${color.content.dark};
+  height: 24px;
+  @media (max-width: 480px) {
+    font-size: 10px;
+  };
+  margin: 2px 0;
 `
 
-const TransactionContainer = styled.div``
+const TransactionContainer = styled.div`
+  width: 70%;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+`
 const TransactionLink = styled.a`
   ${font.lg.subtitle2}
   color: ${color.primary};
   display: flex;
-  margin-top: 2px;
   align-items: center;
   text-decoration: none;
+  @media (max-width: 480px) {
+    font-size: 12px;
+  };
 `
 const LinkContainer = styled.div`
-  margin-left: 4px;
+  margin-left: 2%;
 `

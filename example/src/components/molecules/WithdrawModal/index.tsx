@@ -3,7 +3,7 @@ import copy from 'clipboard-copy'
 import Image from 'next/image'
 
 import { Item } from '@kyuzan/mint-sdk-js'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { color, font } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
 import { TransactionStatus } from '../../atoms/TransactionStatus'
@@ -104,30 +104,43 @@ const ModalContent: React.VFC<ModalContentProps> = ({
 }
 
 const Container = styled.article`
-  max-width: 880px;
-  max-height: 520px;
   overflow: hidden;
-  display: flex;
-  flex-direction: row;
   background: ${color.white};
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 8px;
+  margin: auto;
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    max-width:480px;
+    width: 90vmin;
+  };
+  @media (min-width: 481px) {
+    display: flex;
+    flex-direction: row;
+    width: 90vw;
+    max-width: 880px;
+    max-height: 520px;
+  };
 `
 
 const MediaContainer = styled.div`
   position: relative;
-  width: 440px;
-  height: 520px;
+  width: 100%;
+  height: 100%;
+  max-width: 440px;
+  max-height: 520px;
 `
 
 const Right = styled.div`
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 440px;
+  height: 100%;
+  width: 100%;
+  max-width: 440px;
+  max-height: 520px;
 `
 
 const ModalContainer = styled.div`
@@ -135,7 +148,7 @@ const ModalContainer = styled.div`
   height: 100%;
   align-items: center;
   justify-content: space-around;
-  padding: 44px 42px;
+  padding: 10% 10%;
 `
 
 const Typography = styled.h2`

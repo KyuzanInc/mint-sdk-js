@@ -22,17 +22,18 @@ export const Presentation: React.VFC<Props> = ({ item, bidHash, shareUrl }) => {
 
 const Container = styled.div`
   background: ${color.background.bague};
-  min-width: 840px;
-  min-height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 170px;
   margin: auto;
 `
 
 const InnerContainer = styled.div`
-  min-width: 840px;
-  min-height: 100vh;
+@media (max-width: 480px) {
+  padding: 40% 0;
+};
+  padding-top: 10%;
+  width: 100%;
 `
