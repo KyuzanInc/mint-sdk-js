@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 
 type Props = {
   items: { value: string; label: string }[]
@@ -30,12 +30,17 @@ const Container = styled.div`
   border-radius: 22px;
   background-color: ${color.content.gray2};
   display: flex;
+  width: 100%;
+  ${media.lg`
+    max-width:600px;
+  `}
 `
 
 const Tab = styled.div<{ active: boolean }>`
   cursor: pointer;
   height: 43px;
-  width: 200px;
+  min-width: 100px;
+  flex-grow: 1;
   border-radius: 22px;
   background-color: ${({ active }) =>
     active ? color.white : color.content.gray2};
@@ -49,6 +54,9 @@ const Tab = styled.div<{ active: boolean }>`
 `
 
 const TabText = styled.span<{ active: boolean }>`
-  ${font.lg.button};
+  ${font.mont.subtitle2};
   color: ${({ active }) => (active ? color.primary : color.content.gray1)};
+  ${media.sp`
+    ${font.mont.label};
+  `}
 `

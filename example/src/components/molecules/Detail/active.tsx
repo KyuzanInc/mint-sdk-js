@@ -1,7 +1,7 @@
 import React from 'react'
 import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 
 type LiveProps = {
   endAt: Date
@@ -32,19 +32,19 @@ const renderer = ({
   completed,
 }: FormattedProps) => {
   if (completed) {
-    return <StatusValue>ended</StatusValue>
+    return <StatusValue>終了</StatusValue>
   } else {
     // Render a countdown
     return (
       <StatusValue>
-        <Time>{days}</Time>
-        <TimeUnit>d</TimeUnit>
-        <Time>{hours}</Time>
-        <TimeUnit>h</TimeUnit>
-        <Time>{minutes}</Time>
-        <TimeUnit>m</TimeUnit>
-        <Time>{seconds}</Time>
-        <TimeUnit>s</TimeUnit>
+        <Time className={'value'}>{days}</Time>
+        <TimeUnit>日</TimeUnit>
+        <Time className={'value'}>{hours}</Time>
+        <TimeUnit>時間</TimeUnit>
+        <Time className={'value'}>{minutes}</Time>
+        <TimeUnit>分</TimeUnit>
+        <Time className={'value'}>{seconds}</Time>
+        <TimeUnit>秒</TimeUnit>
       </StatusValue>
     )
   }
@@ -59,14 +59,14 @@ export const LiveStatus: React.FC<LiveProps> = ({
   return (
     <StatusContainer>
       <PriceContent>
-        <StatusTitle>current bid</StatusTitle>
+        <StatusTitle>現在価格</StatusTitle>
         <StatusValue>
-          <Value>{price}</Value>
+          <Value className={'value'}>{price}</Value>
           <Unit>{unit}</Unit>
         </StatusValue>
       </PriceContent>
       <TimeContent>
-        <StatusTitle>ending in</StatusTitle>
+        <StatusTitle>終了までの残り時間</StatusTitle>
         <Countdown
           date={endAt ?? 0 - Date.now()}
           renderer={renderer}
@@ -79,17 +79,20 @@ export const LiveStatus: React.FC<LiveProps> = ({
 
 export const StatusContainer = styled.div`
   display: flex;
-  background: ${color.white};
+  /* background: ${color.white}; */
 `
 
-export const Time = styled.div`
-  ${font.lg.h2}
+export const Time = styled.h3`
+  ${font.mont.h3}
   color: ${color.content.dark};
   margin-right: 4px;
+  ${media.sp`
+    ${font.mont.h3}
+  `}
 `
 
 export const TimeUnit = styled.div`
-  ${font.lg.label}
+  ${font.mont.label}
   color: ${color.content.dark};
   margin-right: 4px;
 `
@@ -99,30 +102,33 @@ export const PriceContent = styled.div`
 `
 
 export const TimeContent = styled.div`
-  background: ${color.white};
+  /* background: ${color.white}; */
 `
 
 export const StatusTitle = styled.div`
   color: ${color.content.dark};
-  ${font.lg.label}
+  ${font.mont.label}
   margin-bottom: 16px;
 `
 
 export const StatusValue = styled.div`
-  ${font.lg.h2}
+  ${font.mont.h3}
   color: ${color.content.dark};
   display: flex;
   align-items: center;
 `
 
-export const Value = styled.div`
+export const Value = styled.h3`
   display: flex;
-  ${font.lg.h2}
+  ${font.mont.h3}
   color: ${color.content.dark};
+  ${media.sp`
+    ${font.mont.h3}
+  `}
 `
 
 export const Unit = styled.div`
-  ${font.lg.unit}
+  ${font.mont.label}
   color: ${color.content.dark};
   justify-content: center;
   align-items: center;

@@ -1,21 +1,23 @@
 import styled from '@emotion/styled'
 import React, { ChangeEventHandler } from 'react'
 import { Tag as TagBase } from '../../atoms/Tag'
-import { color, font } from '../../../style'
-import { BidButton } from '../../molecules/Button/bid'
+import { color, font, media } from '../../../style'
 import { WalletModal } from '../../molecules/WalletModal'
-import { BidModal } from '../../molecules/BidModal'
+import { SaleActionModal } from '../../molecules/SaleActionModal'
 import { AboutPhysicalModal } from '../../molecules/AboutPhysicalModal'
 import { AboutAutoExtensionAuctionModal } from '../../molecules/AboutAutoExtensionAuctionModal'
 import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
-import { ExternalLink } from '../../atoms/ExternalLink'
+import { SecondaryButton } from '../../atoms/SecondaryButton'
 import { getItemPrice } from '../../../util/getItemPrice'
 import { getItemPriceUnit, getPriceUnit } from '../../../util/getItemPriceUnit'
 import Image from 'next/image'
 import { StatusDetail } from '../../molecules/Detail'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { LoadingItemDetailComponent } from './loading'
-import { Status } from '../../../redux/transaction'
+import { BidSuccessModal } from '../../molecules/BidSuccessModal'
+import { BoughtFixedPriceSuccessModal } from '../../molecules/BoughtFixedPriceSuccessModal'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
+import { isOnSale } from '../../../util/isOnSale'
 
 type Props = {
   loading: boolean
@@ -26,23 +28,26 @@ type Props = {
   aboutAutoExtensionAuctionModalIsOpen: boolean
   handleCloseAutoExtensionModal: () => void
   handleOpenAutoExtensionModal: () => void
-  handleOpenBidModal: () => void
-  auctionIsOutOfDate: boolean
+  handleOpenSaleActionModal: () => void
   connectWalletModalIsOpen: boolean
   handleConnectWallet: () => void
   handleCloseConnectWalletModal: () => void
   connectingWallet: boolean
   userWalletBalance: string | undefined
-  bidModalOpen: boolean
+  actionModalOpen: boolean
   bidding: boolean
   handleCloseBidModal: () => void
+  handleCloseBidSuccessModal: () => void
+  showBidSuccessModal: boolean
+  handleCloseBuyFixedPriceSuccessModal: () => void
+  showBuyFixedPriceSuccessModal: boolean
   handleChangeInputPrice: ChangeEventHandler<HTMLInputElement>
   bidPrice: string
   handleDoBid: () => void
+  handleDoBuy: (inJapan: boolean) => void
   isValidationError: boolean
   errorText: string
-  status?: Status
-  bidHash?: string
+  taHash?: string
 }
 
 export const Presentation: React.VFC<Props> = ({
@@ -50,101 +55,136 @@ export const Presentation: React.VFC<Props> = ({
   handleClosePhysicalModal,
   aboutAutoExtensionAuctionModalIsOpen,
   handleCloseAutoExtensionModal,
+  handleCloseBidSuccessModal,
+  showBidSuccessModal,
+  handleCloseBuyFixedPriceSuccessModal,
+  showBuyFixedPriceSuccessModal,
   item,
   handleOpenPhysicalModal,
   handleOpenAutoExtensionModal,
-  handleOpenBidModal,
-  auctionIsOutOfDate,
+  handleOpenSaleActionModal: handleOpenBidModal,
   connectWalletModalIsOpen,
   connectingWallet,
   handleConnectWallet,
   handleCloseConnectWalletModal,
   userWalletBalance,
-  bidModalOpen,
+  actionModalOpen,
   bidding,
   handleCloseBidModal,
   handleChangeInputPrice,
   bidPrice,
   handleDoBid,
+  handleDoBuy,
   loading,
   isValidationError,
   errorText,
-  status,
-  bidHash,
+  taHash: bidHash,
 }) => {
   if (loading) {
     return <LoadingItemDetailComponent />
   }
 
+  const startDate =
+    (typeof item?.startAt === 'string'
+      ? new Date(item?.startAt)
+      : item?.startAt) ?? new Date()
+  const endDate =
+    (typeof item?.endAt === 'string' ? new Date(item?.endAt) : item?.endAt) ??
+    new Date()
+  const saleOnGoing = isOnSale(startDate, endDate)
+
   return (
     <>
       <Detail>
         <Title>{item?.name}</Title>
-        {item?.type === 'nftWithPhysicalProduct' && (
-          <Tag
-            label={'フィジカルアイテムつき'}
-            iconPath={'/images/cardboard.svg'}
-          />
-        )}
-        {item?.tradeType === 'autoExtensionAuction' && (
-          <Tag label={'自動延長オークション'} />
-        )}
+        <TagWrap>
+          {item?.type === 'nftWithPhysicalProduct' && (
+            <Tag
+              label={'フィジカルアイテムつき'}
+              iconPath={'/images/cardboard.svg'}
+            />
+          )}
+          {item?.tradeType === 'autoExtensionAuction' && (
+            <Tag label={'自動延長オークション'} />
+          )}
+          {item?.tradeType === 'fixedPrice' && <Tag label={'固定価格販売'} />}
+        </TagWrap>
         <TradeInfoContainer>
           <StatusDetail
             unit={getPriceUnit(item ? item.networkId : 4)}
             price={getItemPrice(item)}
             endAt={item?.endAt ?? new Date()}
+            tradeType={item?.tradeType ?? 'fixedPrice'}
           />
+          {item?.type === 'nftWithPhysicalProduct' && (
+            <QuestionButton onClick={handleOpenPhysicalModal}>
+              <QuestionIcon>
+                <Image
+                  src={'/images/icons/info.svg'}
+                  layout={'fixed'}
+                  width={16}
+                  height={16}
+                />
+              </QuestionIcon>
+              <QuestionText>フィジカルアイテムつきとは</QuestionText>
+            </QuestionButton>
+          )}
+
+          {item?.tradeType === 'autoExtensionAuction' && (
+            <QuestionButton onClick={handleOpenAutoExtensionModal}>
+              <QuestionIcon>
+                <Image
+                  src={'/images/icons/info.svg'}
+                  layout={'fixed'}
+                  width={16}
+                  height={16}
+                />
+              </QuestionIcon>
+              <QuestionText>自動延長オークション</QuestionText>
+            </QuestionButton>
+          )}
         </TradeInfoContainer>
 
-        {item?.type === 'nftWithPhysicalProduct' && (
-          <QuestionButton onClick={handleOpenPhysicalModal}>
-            <QuestionIcon>
-              <Image
-                src={'/images/info.svg'}
-                layout={'fixed'}
-                width={16}
-                height={16}
-              />
-            </QuestionIcon>
-            <QuestionText>フィジカルアイテムつきとは</QuestionText>
-          </QuestionButton>
+        {saleOnGoing && (
+          <BidButton
+            label={
+              item?.tradeType === 'autoExtensionAuction'
+                ? '入札する'
+                : '購入する'
+            }
+            onClick={handleOpenBidModal}
+          />
         )}
 
-        {item?.tradeType === 'autoExtensionAuction' && (
-          <QuestionButton onClick={handleOpenAutoExtensionModal}>
-            <QuestionIcon>
-              <Image
-                src={'/images/info.svg'}
-                layout={'fixed'}
-                width={16}
-                height={16}
-              />
-            </QuestionIcon>
-            <QuestionText>自動延長オークション</QuestionText>
-          </QuestionButton>
-        )}
-        {!auctionIsOutOfDate && (
-          <BidButton label={'PLACE A BID'} onClick={handleOpenBidModal} />
+        {!saleOnGoing && (
+          <BidButton
+            label={'売り切れ'}
+            // onClick={action('onClick')}
+            disabled={true}
+          />
         )}
 
         <Description>{item?.description}</Description>
-        <ExternalLinkUL>
-          <ExternalLinkList>
-            <ExternalLink
-              label={'View On IPFS'}
+        <SecondaryButtonUL>
+          <SecondaryButtonList>
+            <ExternalButton
+              label={'IPFSで見る'}
               href={item?.tokenURIHTTP ?? ''}
+              iconSize={16}
+              iconPathBack={'/images/external-link.svg'}
+              isExternal={true}
             />
-          </ExternalLinkList>
-          <ExternalLinkList>
+          </SecondaryButtonList>
+          <SecondaryButtonList>
             {item?.buyerAddress ? (
-              <ExternalLink
-                label={'View On OpenSea'}
+              <ExternalButton
+                label={'OpenSeaで見る'}
                 href={getOpenSeaLink(item)}
+                isExternal={true}
               />
             ) : null}
-          </ExternalLinkList>
-        </ExternalLinkUL>
+          </SecondaryButtonList>
+        </SecondaryButtonUL>
       </Detail>
       <WalletModal
         isOpen={connectWalletModalIsOpen}
@@ -152,24 +192,46 @@ export const Presentation: React.VFC<Props> = ({
         connectWallet={handleConnectWallet}
         closeModal={handleCloseConnectWalletModal}
       />
-      <BidModal
-        item={item}
+      <SaleActionModal
+        itemTradeType={item?.tradeType ?? 'fixedPrice'}
+        itemName={item?.name ?? ''}
         price={getItemPrice(item)}
         endAt={item?.endAt ?? new Date()}
         media={item?.imageURIHTTP}
         unit={getItemPriceUnit(item)}
         minBidPrice={item?.minBidPrice}
         walletBalance={userWalletBalance}
-        isOpen={bidModalOpen}
+        isOpen={actionModalOpen}
         loading={bidding}
         closeModal={handleCloseBidModal}
         doBid={handleDoBid}
+        doBuy={handleDoBuy}
         bidPrice={bidPrice}
         onChangeInput={handleChangeInputPrice}
         isValidationError={isValidationError}
         errorText={errorText}
-        status={status}
-        bidHash={bidHash}
+      />
+      <BidSuccessModal
+        closeModal={handleCloseBidSuccessModal}
+        isOpen={showBidSuccessModal}
+        media={item?.imageURIHTTP}
+        unit={getItemPriceUnit(item)}
+        bidHash={bidHash ?? ''}
+        itemName={item?.name ?? ''}
+        itemNetworkId={item?.networkId ?? 1}
+        endAt={item?.endAt ?? new Date()}
+        price={getItemPrice(item)}
+      />
+      <BoughtFixedPriceSuccessModal
+        itemName={item?.name ?? ''}
+        price={getItemPrice(item)}
+        media={item?.imageURIHTTP}
+        isOpen={showBuyFixedPriceSuccessModal}
+        itemNetworkId={item?.networkId ?? 1}
+        unit={getItemPriceUnit(item)}
+        closeModal={handleCloseBuyFixedPriceSuccessModal}
+        endAt={item?.endAt ?? new Date()}
+        txHash={bidHash ?? ''}
       />
       <AboutPhysicalModal
         isOpen={aboutPhysicalModalIsOpen}
@@ -185,36 +247,63 @@ export const Presentation: React.VFC<Props> = ({
 
 const Tag = styled(TagBase)`
   width: fit-content;
+  display: inline-flex;
+  margin: 0 0 0 8px;
+  &:first-of-type {
+    margin: 0;
+  }
 `
 
 export const Detail = styled.div`
-  width: 426px;
+  /* width: 426px; */
   padding: 64px 0;
-  margin-right: 128px;
+  ${media.sp`
+    padding: 32px 0;
+  `}
 `
 
 export const Title = styled.div`
-  ${font.lg.h2}
+  ${font.mont.h2}
   margin-bottom: 8px;
+  ${media.sp`
+    ${font.mont.h3}
+  `}
 `
 
 export const Description = styled.div`
-  ${font.lg.body1}
+  ${font.mont.article1}
   min-height: 192px;
-  margin-top: 32px;
+  margin: 32px 0 32px;
+  ${media.sp`
+    ${font.mont.article2}
+  `}
+`
+const TagWrap = styled.div`
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+`
+
+const BidButton = styled(PrimaryButton)`
+  width: 100%;
 `
 
 const TradeInfoContainer = styled.div`
   margin: 32px 0;
 `
 
-const ExternalLinkUL = styled.ul`
+const SecondaryButtonUL = styled.ul`
   display: flex;
   flex-direction: column;
 `
 
-const ExternalLinkList = styled.li`
+const SecondaryButtonList = styled.li`
   margin: 16px 0px 0 0;
+  width: 100%;
+`
+
+const ExternalButton = styled(SecondaryButton)`
+  height: 32px;
   width: 100%;
 `
 
@@ -223,6 +312,7 @@ const QuestionButton = styled.div`
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
+  margin: 16px 0 0 0;
 `
 
 const QuestionIcon = styled.div`
@@ -234,7 +324,7 @@ const QuestionIcon = styled.div`
 
 const QuestionText = styled.div`
   color: ${color.content.middle};
-  ${font.lg.caption};
+  ${font.mont.caption};
   text-decoration: underline;
   line-height: 1;
 `

@@ -8,7 +8,7 @@ import {
   CardList,
   EmptyTitle,
 } from '../../atoms/CardList'
-import { EndedCard } from '../../molecules/Card/ended'
+import { Card } from '../../molecules/Card'
 
 type Props = {
   items: Item[]
@@ -19,22 +19,22 @@ export const EndedAuctionList: React.FC<Props> = ({ items }) => {
     return (
       <ListComponent>
         <ListTitle>
-          <Title>Ended Auctions</Title>
+          <Title>終了した商品</Title>
         </ListTitle>
-        <EmptyTitle>No Items</EmptyTitle>
+        <EmptyTitle>商品はありません</EmptyTitle>
       </ListComponent>
     )
   }
   return (
     <ListComponent>
       <ListTitle>
-        <Title>Ended Auctions</Title>
+        <Title>終了した商品</Title>
       </ListTitle>
       <CardUL>
         {items.map((item, i) => {
           return (
             <CardList key={i}>
-              <EndedCard item={item} />
+              <Card item={item} loading={false} />
             </CardList>
           )
         })}

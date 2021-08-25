@@ -4,10 +4,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { color, font } from '../../../style'
 import { Anchor } from '../../atoms/Anchor'
-import {
-  PrimaryLoadingButton,
-  PrimaryLoadingButtonSubmit,
-} from '../../atoms/LoadingBotton'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
 
 type Props = {
   onSubmit: (data: FormType) => void
@@ -132,7 +129,7 @@ export const ShippingInfo: React.VFC<Props> = ({ loading, onSubmit }) => {
               <BackButton isLoading={false} label={'マイページに戻る'} />
             </Anchor>
           </Link>
-          <PrimaryLoadingButtonSubmit isLoading={loading} label={'保存する'} />
+          <PrimaryButton isLoading={loading} label={'保存する'} />
         </ButtonsContainer>
       </form>
     </Container>
@@ -143,7 +140,7 @@ const Container = styled.div``
 
 const Title = styled.h1`
   margin-top: 64px;
-  ${font.lg.h3}
+  ${font.mont.h3}
   text-align: center;
 `
 
@@ -166,7 +163,7 @@ const FormGroup = styled.div`
 `
 
 const Label = styled.span`
-  ${font.lg.subtitle2}
+  ${font.mont.subtitle2}
   width: 160px;
 `
 
@@ -182,7 +179,7 @@ const Input = styled.input<{ fullWidth: boolean }>`
   border: 0.5px solid ${color.content.light};
   box-sizing: border-box;
   border-radius: 4px;
-  ${font.lg.body1}
+  ${font.mont.body1}
   padding: 12px 16px;
   width: ${({ fullWidth }) => (fullWidth ? '100%' : '184px')};
 `
@@ -192,7 +189,7 @@ const Memo = styled.textarea`
   border: 0.5px solid ${color.content.light};
   box-sizing: border-box;
   border-radius: 4px;
-  ${font.lg.body1}
+  ${font.mont.body1}
   padding: 12px 16px;
   width: 100%;
 `
@@ -205,9 +202,13 @@ const ButtonsContainer = styled.div`
   width: 100%;
 `
 
-const BackButton = styled(PrimaryLoadingButton)`
+const BackButton = styled(PrimaryButton)`
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};
   margin-right: 16px;
+  box-shadow: none;
+  &:hover {
+    box-shadow: none;
+  }
 `

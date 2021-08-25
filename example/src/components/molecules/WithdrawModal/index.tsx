@@ -152,7 +152,7 @@ const ModalContainer = styled.div`
 `
 
 const Typography = styled.h2`
-  ${font.lg.h2}
+  ${font.mont.h2}
   color: #FF8C00;
   background: -webkit-linear-gradient(0deg, #fd80a8 0%, #fccf42 100%);
   -webkit-background-clip: text;
@@ -161,7 +161,7 @@ const Typography = styled.h2`
   padding-bottom: 22px;
 `
 const Description = styled.div`
-  ${font.lg.body1}
+  ${font.mont.body1}
   color: black;
   text-align: left;
   padding: 22px 0;
@@ -181,7 +181,7 @@ const PromotionContainer = styled.div`
 `
 
 const PromotionText = styled.div`
-  ${font.lg.body2}
+  ${font.mont.body2}
   color: black;
   text-align: left;
 `
@@ -215,7 +215,7 @@ const ToolTip = styled.div`
   border-radius: 16px;
   padding: 8px 16px;
   color: ${color.white};
-  ${font.lg.caption}
+  ${font.mont.caption}
   position: relative;
   width: 222px;
   height: 31px;

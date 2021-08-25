@@ -20,7 +20,7 @@ hide_title: true
 
 **`memberof`** ItemShippingInfo
 
-Defined in: [src/apiClient/api.ts:595](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L595)
+Defined in: [src/apiClient/api.ts:643](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/apiClient/api.ts#L643)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 **`memberof`** ItemShippingInfo
 
-Defined in: [src/apiClient/api.ts:601](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L601)
+Defined in: [src/apiClient/api.ts:649](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/apiClient/api.ts#L649)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 **`memberof`** ItemShippingInfo
 
-Defined in: [src/apiClient/api.ts:589](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L589)
+Defined in: [src/apiClient/api.ts:637](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/apiClient/api.ts#L637)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 **`memberof`** ItemShippingInfo
 
-Defined in: [src/apiClient/api.ts:571](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L571)
+Defined in: [src/apiClient/api.ts:619](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/apiClient/api.ts#L619)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 **`memberof`** ItemShippingInfo
 
-Defined in: [src/apiClient/api.ts:613](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L613)
+Defined in: [src/apiClient/api.ts:661](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/apiClient/api.ts#L661)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 **`memberof`** ItemShippingInfo
 
-Defined in: [src/apiClient/api.ts:565](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L565)
+Defined in: [src/apiClient/api.ts:613](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/apiClient/api.ts#L613)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 **`memberof`** ItemShippingInfo
 
-Defined in: [src/apiClient/api.ts:577](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L577)
+Defined in: [src/apiClient/api.ts:625](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/apiClient/api.ts#L625)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 **`memberof`** ItemShippingInfo
 
-Defined in: [src/apiClient/api.ts:583](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L583)
+Defined in: [src/apiClient/api.ts:631](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/apiClient/api.ts#L631)
 
 ___
 
@@ -100,4 +100,4 @@ ___
 
 **`memberof`** ItemShippingInfo
 
-Defined in: [src/apiClient/api.ts:607](https://github.com/KyuzanInc/annapurna-sdk-js/blob/9186327/src/apiClient/api.ts#L607)
+Defined in: [src/apiClient/api.ts:655](https://github.com/KyuzanInc/annapurna-sdk-js/blob/5eef657/src/apiClient/api.ts#L655)

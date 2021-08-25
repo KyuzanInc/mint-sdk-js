@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
-import { color, font } from '../../../style'
-import { PrimaryLoadingButton } from '../../atoms/LoadingBotton'
+import { color, font, media } from '../../../style'
+import { PrimaryButton } from '../../atoms/PrimaryButton'
+import { useMedia } from '../../../util/useMedia'
+import { CloseButton } from '../../atoms/CloseButton'
 
 type Props = {
   isOpen: boolean
@@ -37,6 +38,7 @@ export const WalletModal: React.VFC<Props> = ({
   isOpen,
   loading,
 }) => {
+  const isMobile = useMedia().isMobile
   return (
     <Modal
       isOpen={isOpen}
@@ -50,24 +52,15 @@ export const WalletModal: React.VFC<Props> = ({
           <ContentRight>
             <ContentRightTitle>ウォレットに接続してください </ContentRightTitle>
             <ContentRightButtonContainer>
-              <PrimaryLoadingButton
-                label={'CONNECT'}
+              <PrimaryButton
+                label={'接続する'}
                 isLoading={loading}
                 onClick={connectWallet}
               />
             </ContentRightButtonContainer>
           </ContentRight>
         </Content>
-        {closeModal && (
-          <CloseButton onClick={closeModal}>
-            <Image
-              src={'/images/close_button.svg'}
-              width={64}
-              layout={'fixed'}
-              height={64}
-            />
-          </CloseButton>
-        )}
+        {closeModal && <CloseButton onClick={closeModal} isMobile={isMobile} />}
       </ModalContainer>
     </Modal>
   )
@@ -81,7 +74,7 @@ const ModalContainer = styled.div`
 `
 
 const Content = styled.div`
-  width: 878px;
+  width: 840px;
   display: flex;
   border-radius: 16px;
   overflow: hidden;
@@ -90,35 +83,41 @@ const Content = styled.div`
   box-shadow: 0px 9px 16px rgba(0, 0, 0, 0.04),
     0px 2.01027px 3.57381px rgba(0, 0, 0, 0.0238443),
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
+  ${media.mdsp`
+    width:320px;
+    flex-direction:column;
+  `}
 `
 
 const ContentLeft = styled.img`
-  height: 100%;
-  width: 50%;
+  /* height: 100%; */
+  /* width: 50%; */
   object-fit: cover;
   display: block;
+  ${media.mdsp`
+    height:270px;
+  `}
 `
 
 const ContentRight = styled.div`
-  width: 50%;
+  /* width: 50%; */
   padding: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  ${media.mdsp`
+    padding:32px 16px 24px;
+  `}
 `
 
 const ContentRightTitle = styled.p`
-  ${font.lg.h2};
+  ${font.mont.h2};
+  margin: 0 0 32px;
 `
 
 const ContentRightButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  margin-top: 96px;
 `

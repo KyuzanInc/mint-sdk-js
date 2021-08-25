@@ -31,9 +31,9 @@ const Container = styled.div`
 `
 
 const InnerContainer = styled.div`
-@media (max-width: 480px) {
-  padding: 40% 0;
-};
-  padding-top: 10%;
+  @media (max-width: 480px) {
+    padding: 40% 0;
+  };
+  padding-top: 5%;
   width: 100%;
 `

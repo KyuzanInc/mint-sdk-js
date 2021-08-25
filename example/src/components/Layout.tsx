@@ -47,4 +47,6 @@ const Layout = ({ children }: Props) => {
 
 export default Layout
 
-const Container = styled.div``
+const Container = styled.div`
+  position: relative;
+`

@@ -1,12 +1,12 @@
 import styled from '@emotion/styled'
 import { Token } from '@kyuzan/mint-sdk-js'
 import React from 'react'
-import { color } from '../../../style'
+import { color, media } from '../../../style'
 import { EmptyTitle, CardList } from '../../atoms/CardList'
 import { CardUL } from '../../atoms/CardList'
 import { Tabs } from '../../atoms/Tabs'
 import { AccountInfo } from '../../molecules/AccountInfo'
-import { EndedCard } from '../../molecules/Card/ended'
+import { Card } from '../../molecules/Card'
 import { LoadingCard } from '../../molecules/Card/loading'
 
 type Props = {
@@ -53,14 +53,14 @@ export const Presentation: React.VFC<Props> = ({
         <OwnTokensContainer>
           <TabsContainer>
             <Tabs
-              items={[{ label: 'コレクション', value: 'コレクション' }]}
+              items={[{ label: '購入済み', value: 'コレクション' }]}
               value={'コレクション'}
             />
           </TabsContainer>
         </OwnTokensContainer>
         {waitingOwnTokens && <LoadingCard />}
         {!waitingOwnTokens && ownTokens.length === 0 && (
-          <EmptyTitle>No Items</EmptyTitle>
+          <EmptyTitle>商品はありません</EmptyTitle>
         )}
         <CardUL>
           {!waitingOwnTokens &&
@@ -68,7 +68,7 @@ export const Presentation: React.VFC<Props> = ({
             ownTokens.map((item) => {
               return (
                 <CardList key={item.item.itemId}>
-                  <EndedCard item={item.item} />
+                  <Card item={item.item} loading={false} />
                 </CardList>
               )
             })}
@@ -80,7 +80,7 @@ export const Presentation: React.VFC<Props> = ({
 
 const Container = styled.div`
   background: ${color.background.bague};
-  min-width: 840px;
+  max-width: 840px;
   min-height: 100vh;
   padding-top: 144px;
   display: flex;
@@ -88,6 +88,10 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin: auto;
+  ${media.mdsp`
+    max-width:100%;
+    padding:144px 16px;
+  `}
 `
 
 const InnerContainer = styled.div`
@@ -97,6 +101,9 @@ const InnerContainer = styled.div`
 
 const AccountInfoContainer = styled.div`
   margin-bottom: 64px;
+  ${media.mdsp`
+    margin-bottom:32px;
+  `}
 `
 
 const OwnTokensContainer = styled.div``

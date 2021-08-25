@@ -4,7 +4,7 @@ import { color, font } from '../../style'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { Anchor } from '../../components/atoms/Anchor'
-import { PrimaryLoadingButton } from '../../components/atoms/LoadingBotton'
+import { PrimaryButton } from '../../components/atoms/PrimaryButton'
 
 const Page: NextPage = () => {
   return (
@@ -44,14 +44,14 @@ const Container = styled.div`
 const Attention = styled.div`
   width: 100%;
   background-color: ${color.secondary};
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   padding: 32px;
   color: ${color.white};
   text-align: center;
 `
 
 const Description = styled.p`
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   margin-top: 64px;
   text-align: center;
   line-height: 2;
@@ -61,9 +61,13 @@ const ButtonContainer = styled.div`
   margin-top: 64px;
 `
 
-const BackButton = styled(PrimaryLoadingButton)`
+const BackButton = styled(PrimaryButton)`
   background-color: transparent;
   border: 1px solid ${color.primary};
   color: ${color.primary};
   margin-right: 16px;
+  box-shadow: none;
+  &:hover {
+    box-shadow: none;
+  }
 `

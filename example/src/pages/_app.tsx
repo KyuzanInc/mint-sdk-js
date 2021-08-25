@@ -1,4 +1,4 @@
-import { AppComponent } from 'next/dist/next-server/lib/router/router'
+import { AppProps } from 'next/app'
 import { Global, css } from '@emotion/react'
 import emotionReset from 'emotion-reset'
 import * as React from 'react'
@@ -7,13 +7,21 @@ import { color } from '../style'
 import { ConnectedRouter } from 'connected-next-router'
 import { wrapper } from '../redux/getStore'
 
-const MyApp: AppComponent = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <ConnectedRouter>
       <Global
         styles={css`
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600;700&display=swap');
+          @font-face {
+            font-family: 'icomoon';
+            src: url('/fonts/icomoon.woff') format('woff'),
+              url('/fonts/icomoon.ttf') format('truetype');
+          }
           ${emotionReset}
-          *, html, body {
+          *,
+          html,
+          body {
             font-family: 'Montserrat', sans-serif;
             color: ${color.content.dark};
           }

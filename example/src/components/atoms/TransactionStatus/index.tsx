@@ -1,22 +1,23 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import Image from 'next/image'
-import { color, font } from '../../../style'
-import { Item } from '@kyuzan/mint-sdk-js'
+import Image from 'next/image';
+import { color, curve, font } from '../../../style'
+import { NetworkId } from '@kyuzan/mint-sdk-js'
+import { getTransactionLink } from '../../../util/getTransactionLink'
 
 type Props = {
-  item?: Item
+  networkId: NetworkId
   hash: string
 }
 
-export const TransactionStatus: React.FC<Props> = ({ item, hash }) => {
-  const url = getTransactionLink(item, hash)
+export const TransactionStatus: React.FC<Props> = ({ networkId, hash }) => {
+  const url = getTransactionLink(hash, networkId)
   return (
     <Container>
       <InnerContainer>
       <StatusContainer>
         <Title>ステータス</Title>
-        <Status>入札処理中</Status>
+        <Status>処理中</Status>
       </StatusContainer>
       <TransactionContainer>
         <Title>トランザクション</Title>
@@ -35,27 +36,6 @@ export const TransactionStatus: React.FC<Props> = ({ item, hash }) => {
       </InnerContainer>
     </Container>
   )
-}
-
-const getTransactionLink = (item: Item | undefined, hash: string) => {
-  const networkId = item?.networkId
-  if (networkId === 1) {
-    return `https://etherscan.io/tx/${hash}`
-  }
-
-  if (networkId === 4) {
-    return `https://rinkeby.etherscan.io/tx/${hash}`
-  }
-
-  if (networkId === 137) {
-    return `https://explorer-mainnet.maticvigil.com/tx/${hash}`
-  }
-
-  if (networkId === 80001) {
-    return `https://explorer-mumbai.maticvigil.com/tx/${hash}`
-  }
-
-  return ''
 }
 
 const Container = styled.div`
@@ -83,7 +63,7 @@ const StatusContainer = styled.div`
 `
 
 const Title = styled.div`
-  ${font.lg.caption}
+  ${font.mont.caption}
   color: ${color.content.middle};
   @media (max-width: 480px) {
     font-size: 10px;
@@ -92,7 +72,7 @@ const Title = styled.div`
 
 const Status = styled.div`
   align-items: center;
-  ${font.lg.label}
+  ${font.mont.label}
   line-height: 24px;
   color: ${color.content.dark};
   height: 24px;
@@ -109,7 +89,7 @@ const TransactionContainer = styled.div`
   flex-direction: column;
 `
 const TransactionLink = styled.a`
-  ${font.lg.subtitle2}
+  ${font.mont.subtitle2}
   color: ${color.primary};
   display: flex;
   align-items: center;

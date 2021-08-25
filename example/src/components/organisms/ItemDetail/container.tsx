@@ -3,13 +3,18 @@ import { dialogSlice } from '../../../redux/dialog'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import { getHistoryActionCreator } from '../../../redux/history'
 import { getItemActionCreator } from '../../../redux/item'
-import { bidActionCreator, transactionSlice } from '../../../redux/transaction'
+import {
+  bidActionCreator,
+  buyFixedPriceItemActionCreator,
+  transactionSlice,
+} from '../../../redux/transaction'
 import {
   connectWalletActionCreator,
   initialWalletActionCreator,
 } from '../../../redux/wallet'
 import { getNetworkIdLabel } from '../../../util/getNetworkIdLabel'
 import { Presentation } from './presentation'
+import { useMedia } from '../../../util/useMedia'
 
 export const Container: React.VFC = () => {
   const dispatch = useAppDispatch()
@@ -52,17 +57,21 @@ export const Container: React.VFC = () => {
     setBidPrice('')
   }, [])
 
-  const [bidPrice, setBidPrice] = useState('')
+  const [bidPrice, setBidPrice] = useState(`0.0`)
   const [isError, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
+
+  const isMobile = useMedia()
 
   useEffect(() => {
     if (bidPrice < (item?.minBidPrice ?? bidPrice)) {
       setError(true)
-      setErrorText(`Your bid must be at least ${item?.minBidPrice} ETH`)
+      isMobile
+        ? setErrorText(`${item?.minBidPrice} ETH以上で入札`)
+        : setErrorText(`${item?.minBidPrice} ETH以上で入札してください`)
     } else if ((walletInfo?.balance ?? bidPrice) < bidPrice) {
       setError(true)
-      setErrorText(`You don’t have enough ETH`)
+      setErrorText(`お手持ちの金額を超えています`)
     } else {
       setError(false)
       setErrorText('')
@@ -84,6 +93,19 @@ export const Container: React.VFC = () => {
     )
   }, [item, bidPrice])
 
+  const doBuy = useCallback(
+    async (inJapan: boolean) => {
+      if (!item) return
+      dispatch(
+        buyFixedPriceItemActionCreator({
+          itemId: item.itemId,
+          inJapan,
+        }) as any
+      )
+    },
+    [item]
+  )
+
   const [walletModalIsOpen, setWalletModalIsOpen] = useState(false)
   const closeWalletModal = useCallback(() => setWalletModalIsOpen(false), [])
   const openWalletModal = useCallback(() => setWalletModalIsOpen(true), [])
@@ -91,13 +113,13 @@ export const Container: React.VFC = () => {
   const bidding = useAppSelector((state) => state.app.transaction.meta.bidding)
   const status = useAppSelector((state) => state.app.transaction.meta.status)
   const bidHash = useAppSelector((state) => state.app.transaction.meta.bidHash)
-  const [bidModalIsOpen, setBidModalIsOpen] = useState(false)
-  const closeBidModal = useCallback(() => {
-    setBidModalIsOpen(false)
+  const [actionModalIsOpen, setActionModalIsOpen] = useState(false)
+  const closeActionModal = useCallback(() => {
+    setActionModalIsOpen(false)
     updateInfo()
     dispatch(transactionSlice.actions.changeStatus('bid'))
   }, [status])
-  const openBidModal = useCallback(() => setBidModalIsOpen(true), [])
+  const openBidModal = useCallback(() => setActionModalIsOpen(true), [])
 
   const [aboutPhysicalModalIsOpen, setAboutPhysicalModalIsOpen] =
     useState(false)
@@ -148,6 +170,35 @@ export const Container: React.VFC = () => {
     openBidModal()
   }, [item, walletIsConnect, auctionIsOutOfDate, connectedNetworkId])
 
+  const [bidSuccessModalIsOpen, setBidSuccessModalIsOpen] = useState(false)
+  const closeBidSuccessModal = useCallback(
+    () => setBidSuccessModalIsOpen(false),
+    []
+  )
+  const openBidSuccessModal = useCallback(
+    () => setBidSuccessModalIsOpen(true),
+    []
+  )
+  const [buySuccessModalIsOpen, setBuySuccessModalIsOpen] = useState(false)
+  const closeBuySuccessModal = useCallback(
+    () => setBuySuccessModalIsOpen(false),
+    []
+  )
+  const openBuySuccessModal = useCallback(
+    () => setBuySuccessModalIsOpen(true),
+    []
+  )
+
+  useEffect(() => {
+    if (status === 'bidSuccess') {
+      openBidSuccessModal()
+      closeActionModal()
+    } else if (status === 'buySuccess') {
+      openBuySuccessModal()
+      closeActionModal()
+    }
+  }, [status])
+
   return (
     <Presentation
       loading={waitingItem}
@@ -160,23 +211,26 @@ export const Container: React.VFC = () => {
       }
       handleOpenAutoExtensionModal={openAutoExtensionModal}
       handleCloseAutoExtensionModal={closeAutoExtensionModal}
-      auctionIsOutOfDate={auctionIsOutOfDate}
       connectingWallet={waitingWallet}
       connectWalletModalIsOpen={walletModalIsOpen}
       handleCloseConnectWalletModal={closeWalletModal}
       handleConnectWallet={connectWallet}
       userWalletBalance={walletInfo?.balance}
-      bidModalOpen={bidModalIsOpen}
-      handleOpenBidModal={handleDoBid}
-      handleCloseBidModal={closeBidModal}
+      actionModalOpen={actionModalIsOpen}
+      handleOpenSaleActionModal={handleDoBid}
+      handleCloseBidModal={closeActionModal}
       handleChangeInputPrice={onChangeInput}
       bidding={bidding}
+      handleCloseBidSuccessModal={closeBidSuccessModal}
+      showBidSuccessModal={bidSuccessModalIsOpen}
+      handleCloseBuyFixedPriceSuccessModal={closeBuySuccessModal}
+      showBuyFixedPriceSuccessModal={buySuccessModalIsOpen}
       bidPrice={bidPrice}
       handleDoBid={doBid}
+      handleDoBuy={doBuy}
       isValidationError={isError}
       errorText={errorText}
-      status={status}
-      bidHash={bidHash}
+      taHash={bidHash}
     />
   )
 }

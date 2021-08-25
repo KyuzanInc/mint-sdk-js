@@ -1,0 +1,91 @@
+---
+title: NFTの発行から販売(固定価格)
+---
+
+import Image from '@theme/IdealImage'
+import useBaseUrl from '@docusaurus/useBaseUrl'
+
+このチュートリアルを終えると、Rinkeby ネットワークでの NFT の固定販売取引を一通り行うことができます。
+
+## 0.事前に必要なこと
+
+1. Kyuzan Inc. に問い合わせ、プロジェクトの`access-token`を取得する
+2. [Fortmatic](https://fortmatic.com/)から Rinkeby 用のアクセストークンを取得する
+3. [#how-to-get-eth-for-rinkebytest-env](/docs/api#how-to-get-eth-for-rinkebytest-env)を参考に Rinkeby の ETH を取得する
+
+## 1.パッケージのインストール
+
+```sh
+% npm i @kyuzan/mint-sdk-js
+```
+
+## 2.SDK の初期化
+
+```typescript
+import { MintSDK } from '@kyuzan/mint-sdk-js'
+const sdk = new MintSDK({
+  'YOUR_ACCESS_KEY',
+  [4],
+  {
+    fortmatic: {
+      key: 'YOUR_FORTMATIC_KEY',
+    },
+  }
+})
+```
+
+## 3. アイテム リスト を取得する
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/items_fixed_price.png')} />
+
+```jsx
+const items = sdk.getItems()
+```
+
+## 3. アイテムの個別取得とアイテムの入札などのヒストリー取得
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/item_detail.png')} />
+
+```jsx
+const item = sdk.getItemById('hoo')
+```
+
+### アイテムの入札などのヒストリー取得
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/history.png')} />
+
+```jsx
+const itemLogs = sdk.getItemLogs('hoo')
+```
+
+## 4. アイテムを購入する
+
+アイテムの入札などには、ユーザーにウォレットに接続してもらう必要があります。
+
+### ウォレットへ接続
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/connect_wallet.png')} />
+
+```jsx
+await sdk.isWalletConnect() // false
+await sdk.connectWallet()
+await sdk.isWalletConnect() // true
+```
+
+### 購入
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/buy_fixed_price.png')} />
+
+```jsx
+await sdk.sendTxBuyItem('itemId', 'jp')
+```
+
+第二引数には、ユーザーの居住地のフラグを渡してください。NFT 購入に関しての消費税処理を行うために必要です。適宜、UI を準備してユーザーの居住地をユーザーに問うてください。
+
+## 5. 購入したアイテムの取得
+
+<img alt="Item List" src={useBaseUrl('/img/tutorial/items_collection.png')} />
+
+```jsx
+const tokens = await sdk.getTokensByAddress('0x11111...')
+```

@@ -2,7 +2,7 @@ import { sleep } from './../../util/sleep'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
-export type Status = 'bid' | 'success'
+export type Status = null | 'bidSuccess' | 'buySuccess'
 
 export type TransactionState = {
   meta: {
@@ -17,7 +17,7 @@ export type TransactionState = {
 export const initialTransactionState: TransactionState = {
   meta: {
     bidding: false,
-    status: 'bid',
+    status: null,
     bidHash: '',
     withdrawingItemId: undefined,
     error: undefined,
@@ -47,13 +47,16 @@ export const bidActionCreator = createAsyncThunk<
 
 export const withDrawItemActionCreator = createAsyncThunk<
   string,
-  { itemId: string },
+  { itemId: string; inJapan: boolean },
   {
     rejectValue: string
   }
->('app/myItems/withdraw', async ({ itemId }, thunkApi) => {
+>('app/myItems/withdraw', async ({ itemId, inJapan }, thunkApi) => {
   try {
-    const tx = await getSdk()!.sendTxMakeSuccessfulBid(itemId, 'unknown')
+    const tx = await getSdk()!.sendTxMakeSuccessfulBid(
+      itemId,
+      inJapan ? 'jp' : 'unknown'
+    )
     await tx.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
@@ -61,6 +64,25 @@ export const withDrawItemActionCreator = createAsyncThunk<
     return tx.hash
   } catch (err) {
     return thunkApi.rejectWithValue('引き出しに失敗しました')
+  }
+})
+
+export const buyFixedPriceItemActionCreator = createAsyncThunk<
+  string,
+  { itemId: string; inJapan: boolean },
+  {
+    rejectValue: string
+  }
+>('app/myItems/buyFixedPrice', async ({ itemId, inJapan }, thunkApi) => {
+  try {
+    const tx = await getSdk()!.sendTxBuyItem(itemId, inJapan ? 'jp' : 'unknown')
+    await tx.wait()
+    // すぐ遷移するとキャッシュの関係で反映されない
+    await sleep(6000)
+    // TODO: おめでとう画面に遷移させる
+    return tx.hash
+  } catch (err) {
+    return thunkApi.rejectWithValue('取引に失敗しました')
   }
 })
 
@@ -73,11 +95,14 @@ export const transactionSlice = createSlice({
     changeStatus: (state, action) => {
       state.meta.status = action.payload
     },
+    reset: (state) => {
+      state.meta = initialTransactionState.meta
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(bidActionCreator.fulfilled, (state, { payload }) => {
       state.meta.bidding = false
-      state.meta.status = 'success'
+      state.meta.status = 'bidSuccess'
       state.meta.bidHash = payload
     })
     builder.addCase(bidActionCreator.pending, (state) => {
@@ -88,6 +113,25 @@ export const transactionSlice = createSlice({
       state.meta.error = payload
       state.meta.bidding = false
     })
+    builder.addCase(
+      buyFixedPriceItemActionCreator.fulfilled,
+      (state, { payload }) => {
+        state.meta.bidding = false
+        state.meta.status = 'buySuccess'
+        state.meta.bidHash = payload
+      }
+    )
+    builder.addCase(buyFixedPriceItemActionCreator.pending, (state) => {
+      state.meta.error = undefined
+      state.meta.bidding = true
+    })
+    builder.addCase(
+      buyFixedPriceItemActionCreator.rejected,
+      (state, { payload }) => {
+        state.meta.error = payload
+        state.meta.bidding = false
+      }
+    )
     builder.addCase(
       withDrawItemActionCreator.fulfilled,
       (state, { payload }) => {

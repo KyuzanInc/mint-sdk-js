@@ -13,6 +13,7 @@ module.exports = [
     "type": "category",
     "label": "Interfaces",
     "items": [
+      "api/interfaces/accountinfo",
       "api/interfaces/itemshippinginfo",
       "api/interfaces/registeritemshippinginforequestbody"
     ]

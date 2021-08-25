@@ -1,59 +1,51 @@
 import styled from '@emotion/styled'
-import { useRouter } from 'next/router'
-import React, { useCallback, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
-import { getItemActionCreator } from '../../../redux/item'
-import { color } from '../../../style'
-import { getHistoryActionCreator } from '../../../redux/history'
-import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import React from 'react'
 import CommonMeta from '../../../components/atoms/CommonMeta'
 import { MediaContent } from '../../../components/atoms/MediaContent'
-import { ItemDetail } from '../../../components/organisms/ItemDetail'
 import { HistoryList } from '../../../components/organisms/HistoryList'
+import { ItemDetail } from '../../../components/organisms/ItemDetail'
+import { useAppSelector, wrapper } from '../../../redux/getStore'
+import { getHistoryActionCreator } from '../../../redux/history'
+import { getItemActionCreator } from '../../../redux/item'
+import { color, media } from '../../../style'
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const host = context.req.headers.host
-  const baseUrl = `http://${host}`
-  const currentPath = context.req.url
-  return {
-    props: {
-      baseUrl,
-      currentPath,
-    },
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const host = context.req.headers.host
+    const baseUrl = `http://${host}`
+    const currentPath = context.req.url
+    const itemId = context.query['itemId'] as string
+    await Promise.all([
+      context.store.dispatch(getHistoryActionCreator(itemId) as any),
+      context.store.dispatch(getItemActionCreator(itemId) as any),
+    ])
+    return {
+      props: {
+        baseUrl,
+        currentPath,
+      },
+    }
   }
-}
+)
 
-const ItemDetailPage: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ baseUrl, currentPath }) => {
-  const router = useRouter()
-  const { itemId } = router.query
-  const dispatch = useAppDispatch()
-
+const ItemDetailPage = ({
+  baseUrl,
+  currentPath,
+}: {
+  baseUrl: string
+  currentPath: string
+}) => {
   const item = useAppSelector((state) => {
     return state.app.item.data
   })
 
-  const getHistory = useCallback(() => {
-    if (typeof itemId === 'string') {
-      dispatch(getHistoryActionCreator(itemId) as any)
-    }
-  }, [itemId])
-
-  const getItem = useCallback(() => {
-    if (typeof itemId === 'string') {
-      dispatch(getItemActionCreator(itemId) as any)
-    }
-  }, [itemId])
-
-  useEffect(() => {
-    getItem()
-    getHistory()
-  }, [itemId])
-
   return (
     <Container>
-      <CommonMeta baseUrl={baseUrl} currentPath={currentPath} />
+      <CommonMeta
+        url={`${currentPath}/${baseUrl}`}
+        title={`${item?.name}`}
+        ogpImagePath={item?.previews[0].url ?? ''}
+      />
       <MediaContainer>
         <MediaInner>
           <MediaContent media={item?.imageURIHTTP} height={480} />
@@ -78,11 +70,17 @@ const Container = styled.div`
 
 const MediaContainer = styled.div`
   background: ${color.background.bague};
-  max-height: 480px;
+
   display: flex;
   justify-content: center;
   width: 100%;
   margin: 0 auto;
+  padding: 64px 0;
+  background: rgb(245 245 245)
+    linear-gradient(0deg, rgb(230, 230, 230) 2%, rgba(230, 230, 230, 0) 100%);
+  ${media.sp`
+    padding:0;
+  `}
 `
 
 const MediaInner = styled.div`
@@ -91,9 +89,24 @@ const MediaInner = styled.div`
 `
 
 const DetailContainer = styled.div`
-  background: ${color.white};
-  display: flex;
-  justify-content: center;
+  display: grid;
   width: 100%;
-  padding: 0 150px;
+  margin: auto;
+  ${media.lg`
+    max-width:1040px;
+    gap: 128px;
+    grid-template-columns: 1fr 1fr;
+  `}
+  ${media.md`
+    width:100%;
+    padding:0 24px;
+    gap: 64px;
+    grid-template-columns: 1fr 1fr;
+  `}
+  ${media.sp`
+    width:100%;
+    padding:0 24px;
+    gap: 64px;
+    grid-template-rows: 1fr 1fr;
+  `}
 `

@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Skeleton from 'react-loading-skeleton'
-import Image from 'next/image'
 import Modal, { Styles } from 'react-modal'
 import { color, font } from '../../../style'
+import { useMedia } from '../../../util/useMedia'
+import { CloseButton } from '../../atoms/CloseButton'
 
 type Props = {
   isOpen: boolean
@@ -46,6 +47,7 @@ export const ShippingInfoModal: React.VFC<Props> = ({
   isOpen,
   shippingInfo,
 }) => {
+  const isMobile = useMedia().isMobile
   return (
     <Modal
       isOpen={isOpen}
@@ -81,14 +83,7 @@ export const ShippingInfoModal: React.VFC<Props> = ({
             </>
           )}
         </Content>
-        <CloseButton onClick={closeModal}>
-          <Image
-            src={'/images/close_button.svg'}
-            width={64}
-            layout={'fixed'}
-            height={64}
-          />
-        </CloseButton>
+        <CloseButton onClick={closeModal} isMobile={isMobile} />
       </ModalContainer>
     </Modal>
   )
@@ -113,20 +108,15 @@ const Content = styled.div`
 `
 
 const ContentTitle = styled.p`
-  ${font.lg.h2};
+  ${font.mont.h2};
   margin-bottom: 16px;
 `
 
 const Label = styled.div`
-  ${font.lg.subtitle2};
+  ${font.mont.subtitle2};
 `
 
 const ContentDescription = styled.p`
-  ${font.lg.body1};
+  ${font.mont.body1};
   line-height: 2;
-`
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  margin-top: 96px;
 `

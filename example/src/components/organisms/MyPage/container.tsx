@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
 import { getAccountInfoActionCreator } from '../../../redux/myAccountInfo'
@@ -53,7 +54,7 @@ export const Container: React.VFC = () => {
   const connectedNetworkId = useAppSelector(
     (state) => state.app.wallet.data.connectedNetwork
   )
-  const withdrawItem = async (itemId: string) => {
+  const withdrawItem = async (itemId: string, inJapan: boolean) => {
     const item = bidedItems.find((i) => i.itemId === itemId)
     if (connectedNetworkId !== item!.networkId) {
       dispatch(
@@ -68,7 +69,6 @@ export const Container: React.VFC = () => {
     }
     await dispatch(withDrawItemActionCreator({ itemId }) as any)
     router.push(`/items/${itemId}/withdraw`)
-    // window.location.reload()
   }
 
   const shippingInfo = useAppSelector(

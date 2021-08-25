@@ -2,14 +2,15 @@ import styled from '@emotion/styled'
 import React, { useCallback, useState } from 'react'
 import copy from 'clipboard-copy'
 import Image from 'next/image'
-import { color, font } from '../../../style'
+import { color, curve, font } from '../../../style'
 
 type Props = {
   text?: string
   className?: string
+  iconSize?: number
 }
 
-export const ClipBoard: React.VFC<Props> = ({ text, className }) => {
+export const ClipBoard: React.VFC<Props> = ({ text, className, iconSize }) => {
   const [showCheck, setShowCheck] = useState(false)
   const clickCopy = useCallback(() => {
     copy(text ?? '')
@@ -25,8 +26,8 @@ export const ClipBoard: React.VFC<Props> = ({ text, className }) => {
           <Image
             src={'/images/icons/clipboard.svg'}
             layout={'fixed'}
-            width={16}
-            height={16}
+            width={iconSize ? iconSize : 16}
+            height={iconSize ? iconSize : 16}
           />
         </CopyIcon>
       )}
@@ -36,8 +37,8 @@ export const ClipBoard: React.VFC<Props> = ({ text, className }) => {
           <Image
             src={'/images/icons/check.svg'}
             layout={'fixed'}
-            width={16}
-            height={16}
+            width={iconSize ? iconSize : 16}
+            height={iconSize ? iconSize : 16}
           />
         </CheckIcon>
       )}
@@ -55,6 +56,14 @@ const Container = styled.div`
 const CopyIcon = styled.div`
   margin-left: 8px;
   cursor: pointer;
+  opacity: 0.56;
+  ${curve.button}
+  &:hover {
+    opacity: 0.26;
+  }
+  &:active {
+    opacity: 0.56;
+  }
 `
 
 const CheckIcon = styled.div`
@@ -68,7 +77,7 @@ const ToolTip = styled.div`
   border-radius: 16px;
   padding: 8px 16px;
   color: ${color.white};
-  ${font.lg.caption}
+  ${font.mont.caption}
   position: absolute;
   width: 222px;
   height: 31px;

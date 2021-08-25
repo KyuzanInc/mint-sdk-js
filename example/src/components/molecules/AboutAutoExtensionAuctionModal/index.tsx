@@ -1,44 +1,22 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import Image from 'next/image'
-import Modal, { Styles } from 'react-modal'
+import { ModalWrap } from '../../atoms/ModalWrap'
 import { color, font } from '../../../style'
+import { useMedia } from '../../../util/useMedia'
+import { CloseButton } from '../../atoms/CloseButton'
 
 type Props = {
   isOpen: boolean
   closeModal: () => void
 }
 
-const customStyles: Styles = {
-  overlay: {
-    zIndex: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  content: {
-    border: 'none',
-    background: 'transparent',
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-}
-
 export const AboutAutoExtensionAuctionModal: React.VFC<Props> = ({
   closeModal,
   isOpen,
 }) => {
+  const isMobile = useMedia().isMobile
   return (
-    <Modal
-      isOpen={isOpen}
-      style={customStyles}
-      contentLabel="AboutPhysicalModal"
-      ariaHideApp={false}
-    >
+    <ModalWrap isOpen={isOpen} contentLabel="AboutPhysicalModal">
       <ModalContainer>
         <Content>
           <Title>自動延長オークションとは</Title>
@@ -46,16 +24,9 @@ export const AboutAutoExtensionAuctionModal: React.VFC<Props> = ({
             オークション終了5分以内に最高値を更新する入札があった場合は、オークションの終了時間が5分延長されます。
           </Description>
         </Content>
-        <CloseButton onClick={closeModal}>
-          <Image
-            src={'/images/close_button.svg'}
-            width={64}
-            layout={'fixed'}
-            height={64}
-          />
-        </CloseButton>
+        <CloseButton onClick={closeModal} isMobile={isMobile} />
       </ModalContainer>
-    </Modal>
+    </ModalWrap>
   )
 }
 
@@ -79,16 +50,11 @@ const Content = styled.div`
 `
 
 const Title = styled.p`
-  ${font.lg.subtitle1}
+  ${font.mont.subtitle1}
   margin-bottom: 24px;
 `
 
 const Description = styled.p`
-  ${font.lg.body1}
+  ${font.mont.body1}
   line-height: 1.6;
-`
-
-const CloseButton = styled.div`
-  cursor: pointer;
-  margin-top: 96px;
 `

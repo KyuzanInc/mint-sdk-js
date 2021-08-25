@@ -1,24 +1,57 @@
 import { Item } from '@kyuzan/mint-sdk-js'
 import { addDays, subDays } from 'date-fns'
 import React from 'react'
-import { ActiveCard } from './active'
-import { EndedCard } from './ended'
-import { LoadingCard } from './loading'
+import { Card } from '.'
 
-export const Active: React.VFC = () => <ActiveCard item={loseItem} />
-export const ActiveWithLongTitle: React.VFC = () => (
-  <ActiveCard
+export const AuctionActive: React.VFC = () => (
+  <Card item={loseItem} loading={false} />
+)
+export const AuctionActiveWithLongTitle: React.VFC = () => (
+  <Card
     item={{
       ...loseItem,
       name: '宮沢賢治の作品を読み解く上での重要なキーワードに「イーハトーブ」がある。彼の心の中の理想郷とも言うべきこの言葉は、故郷の岩手をモチーフに生まれた。賢治生誕120年を迎えた今、この言葉の意味を中国人の賢治研究家が再考する。',
     }}
+    loading={false}
   />
 )
 export const ActiveWithPhysicalItem: React.VFC = () => (
-  <ActiveCard item={{ ...loseItem, type: 'nftWithPhysicalProduct' }} />
+  <Card
+    item={{ ...loseItem, type: 'nftWithPhysicalProduct' }}
+    loading={false}
+  />
 )
-export const Ended: React.VFC = () => <EndedCard item={doneItem} />
-export const Loading: React.VFC = () => <LoadingCard />
+export const AuctionEnded: React.VFC = () => (
+  <Card item={doneItem} loading={false} />
+)
+
+export const FixedPriceOnSale: React.VFC = () => (
+  <Card
+    item={{
+      ...loseItem,
+      buyerAddress: null,
+      tradeType: 'fixedPrice',
+      currentPrice: undefined,
+      startAt: subDays(new Date(), 2),
+      price: 1,
+    }}
+    loading={false}
+  />
+)
+
+export const FixedPriceEnded: React.VFC = () => (
+  <Card
+    item={{
+      ...doneItem,
+      tradeType: 'fixedPrice',
+      currentPrice: undefined,
+      price: 1,
+    }}
+    loading={false}
+  />
+)
+
+export const Loading: React.VFC = () => <Card loading={true} />
 
 export default {
   title: 'molecules/Card',
@@ -31,7 +64,7 @@ const loseItem: Item = {
   itemId: '0001',
   type: 'nft',
   physicalOrderStatus: 'shippingInfoIsBlank',
-  tradeType: 'auction',
+  tradeType: 'autoExtensionAuction',
   tokenId: 1,
   name: 'test',
   description: 'ddeded',
@@ -56,9 +89,6 @@ const loseItem: Item = {
   startAt: new Date(),
   endAt: addDays(new Date(), 1),
   initialPrice: 1,
-  signatureBuyAuction: undefined,
-  signatureBidAuction: undefined,
-  signatureBuyFixedPrice: undefined,
   chainType: 'ethereum',
   collectionId: 'xxxx', // uuidv4
   mintContractAddress: '',

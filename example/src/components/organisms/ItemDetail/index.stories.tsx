@@ -15,28 +15,33 @@ export const Basic: React.VFC = () => {
       loading={false}
       item={loseItem}
       aboutPhysicalModalIsOpen={physicalOpen}
+      handleCloseBidSuccessModal={action('handleClose')}
+      showBidSuccessModal={false}
       handleClosePhysicalModal={() => setPhysicalOpen(false)}
       handleOpenPhysicalModal={() => setPhysicalOpen(true)}
       aboutAutoExtensionAuctionModalIsOpen={autoExtensionOpen}
       handleCloseAutoExtensionModal={() => setAutoExtensionOpen(false)}
       handleOpenAutoExtensionModal={() => setAutoExtensionOpen(true)}
-      auctionIsOutOfDate={false}
       connectingWallet={false}
       connectWalletModalIsOpen={connectWalletOpen}
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
       handleConnectWallet={action('handleConnectWallet')}
       userWalletBalance={'1.4'}
-      bidModalOpen={bidModalOpen}
-      handleOpenBidModal={() => setBidModalOpen(true)}
+      actionModalOpen={bidModalOpen}
+      handleOpenSaleActionModal={() => setBidModalOpen(true)}
       handleCloseBidModal={() => setBidModalOpen(false)}
       handleChangeInputPrice={(e) => setBidPrice(e.target.value)}
       bidding={false}
+      showBuyFixedPriceSuccessModal={false}
+      handleCloseBuyFixedPriceSuccessModal={action(
+        'handleCloseBuyFixedPriceSuccessModal'
+      )}
       bidPrice={bidPrice}
       handleDoBid={action('handleDoBid')}
+      handleDoBuy={action('handleDoBuy')}
       isValidationError={false}
       errorText={''}
-      status={'bid'}
-      bidHash={''}
+      taHash={''}
     />
   )
 }
@@ -51,29 +56,34 @@ export const AuctionIsOutOfDate: React.VFC = () => {
     <Presentation
       loading={false}
       item={loseItem}
+      handleCloseBidSuccessModal={action('handleClose')}
+      showBidSuccessModal={false}
+      showBuyFixedPriceSuccessModal={false}
+      handleCloseBuyFixedPriceSuccessModal={action(
+        'handleCloseBuyFixedPriceSuccessModal'
+      )}
       aboutPhysicalModalIsOpen={physicalOpen}
       handleClosePhysicalModal={() => setPhysicalOpen(false)}
       handleOpenPhysicalModal={() => setPhysicalOpen(true)}
       aboutAutoExtensionAuctionModalIsOpen={autoExtensionOpen}
       handleCloseAutoExtensionModal={() => setAutoExtensionOpen(false)}
       handleOpenAutoExtensionModal={() => setAutoExtensionOpen(true)}
-      auctionIsOutOfDate={true}
       connectingWallet={false}
       connectWalletModalIsOpen={connectWalletOpen}
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
       handleConnectWallet={action('handleConnectWallet')}
       userWalletBalance={'1.4'}
-      bidModalOpen={bidModalOpen}
-      handleOpenBidModal={() => setBidModalOpen(true)}
+      actionModalOpen={bidModalOpen}
+      handleOpenSaleActionModal={() => setBidModalOpen(true)}
       handleCloseBidModal={() => setBidModalOpen(false)}
       handleChangeInputPrice={(e) => setBidPrice(e.target.value)}
       bidding={false}
       bidPrice={bidPrice}
       handleDoBid={action('handleDoBid')}
+      handleDoBuy={action('handleDoBuy')}
       isValidationError={false}
       errorText={''}
-      status={'bid'}
-      bidHash={''}
+      taHash={''}
     />
   )
 }
@@ -88,29 +98,34 @@ export const Loading: React.VFC = () => {
     <Presentation
       loading={true}
       item={undefined}
+      handleCloseBidSuccessModal={action('handleClose')}
+      showBidSuccessModal={false}
+      showBuyFixedPriceSuccessModal={false}
+      handleCloseBuyFixedPriceSuccessModal={action(
+        'handleCloseBuyFixedPriceSuccessModal'
+      )}
       aboutPhysicalModalIsOpen={physicalOpen}
       handleClosePhysicalModal={() => setPhysicalOpen(false)}
       handleOpenPhysicalModal={() => setPhysicalOpen(true)}
       aboutAutoExtensionAuctionModalIsOpen={autoExtensionOpen}
       handleCloseAutoExtensionModal={() => setAutoExtensionOpen(false)}
       handleOpenAutoExtensionModal={() => setAutoExtensionOpen(true)}
-      auctionIsOutOfDate={false}
       connectingWallet={false}
       connectWalletModalIsOpen={connectWalletOpen}
       handleCloseConnectWalletModal={() => setConnectWalletOpen(false)}
       handleConnectWallet={action('handleConnectWallet')}
       userWalletBalance={'1.4'}
-      bidModalOpen={bidModalOpen}
-      handleOpenBidModal={() => setBidModalOpen(true)}
+      actionModalOpen={bidModalOpen}
+      handleOpenSaleActionModal={() => setBidModalOpen(true)}
       handleCloseBidModal={() => setBidModalOpen(false)}
       handleChangeInputPrice={(e) => setBidPrice(e.target.value)}
       bidding={false}
       bidPrice={bidPrice}
       handleDoBid={action('handleDoBid')}
+      handleDoBuy={action('handleDoBuy')}
       isValidationError={false}
       errorText={''}
-      status={'bid'}
-      bidHash={''}
+      taHash={''}
     />
   )
 }
@@ -119,7 +134,6 @@ export default {
   title: 'organism/ItemDetail',
 }
 
-// const userWalletAddress = '0x000000'
 const otherWalletAddress = '0x000001'
 
 const loseItem: Item = {
@@ -152,9 +166,6 @@ const loseItem: Item = {
   startAt: new Date(),
   endAt: addDays(new Date(), 1),
   initialPrice: 1,
-  signatureBuyAuction: undefined,
-  signatureBidAuction: undefined,
-  signatureBuyFixedPrice: undefined,
   chainType: 'ethereum',
   collectionId: 'xxxx', // uuidv4
   mintContractAddress: '',
