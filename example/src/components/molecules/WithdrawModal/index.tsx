@@ -114,16 +114,16 @@ const Container = styled.article`
   @media (max-width: 480px) {
     display: flex;
     flex-direction: column;
-    max-width:480px;
+    max-width: 480px;
     width: 90vmin;
-  };
+  }
   @media (min-width: 481px) {
     display: flex;
     flex-direction: row;
     width: 90vw;
     max-width: 880px;
     max-height: 520px;
-  };
+  } ;
 `
 
 const MediaContainer = styled.div`

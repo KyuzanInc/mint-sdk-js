@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import Image from 'next/image';
+import Image from 'next/image'
 import { color, font } from '../../../style'
 import { NetworkId } from '@kyuzan/mint-sdk-js'
 import { getTransactionLink } from '../../../util/getTransactionLink'
@@ -15,24 +15,24 @@ export const TransactionStatus: React.FC<Props> = ({ networkId, hash }) => {
   return (
     <Container>
       <InnerContainer>
-      <StatusContainer>
-        <Title>ステータス</Title>
-        <Status>処理中</Status>
-      </StatusContainer>
-      <TransactionContainer>
-        <Title>トランザクション</Title>
-        <TransactionLink href={url} target="blank">
-          トランザクションをみる
-          <LinkContainer>
-            <Image
-              src={'/images/external-link.svg'}
-              layout={'fixed'}
-              width={24}
-              height={24}
-            />
-          </LinkContainer>
-        </TransactionLink>
-      </TransactionContainer>
+        <StatusContainer>
+          <Title>ステータス</Title>
+          <Status>処理中</Status>
+        </StatusContainer>
+        <TransactionContainer>
+          <Title>トランザクション</Title>
+          <TransactionLink href={url} target="blank">
+            トランザクションをみる
+            <LinkContainer>
+              <Image
+                src={'/images/external-link.svg'}
+                layout={'fixed'}
+                width={24}
+                height={24}
+              />
+            </LinkContainer>
+          </TransactionLink>
+        </TransactionContainer>
       </InnerContainer>
     </Container>
   )
@@ -67,7 +67,7 @@ const Title = styled.div`
   color: ${color.content.middle};
   @media (max-width: 480px) {
     font-size: 10px;
-  };
+  } ;
 `
 
 const Status = styled.div`
@@ -78,7 +78,7 @@ const Status = styled.div`
   height: 24px;
   @media (max-width: 480px) {
     font-size: 10px;
-  };
+  }
   margin: 2px 0;
 `
 
@@ -96,7 +96,7 @@ const TransactionLink = styled.a`
   text-decoration: none;
   @media (max-width: 480px) {
     font-size: 12px;
-  };
+  } ;
 `
 const LinkContainer = styled.div`
   margin-left: 2%;
