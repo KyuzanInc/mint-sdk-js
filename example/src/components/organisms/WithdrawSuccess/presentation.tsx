@@ -23,6 +23,7 @@ export const Presentation: React.VFC<Props> = ({ item, bidHash, shareUrl }) => {
 const Container = styled.div`
   background: ${color.background.bague};
   width: 100vw;
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
