@@ -69,7 +69,7 @@ const ModalContent: React.VFC<ModalContentProps> = ({
         <br />
       </Description>
       <TransactionContainer>
-        <TransactionStatus item={item} hash={bidHash ?? ''} />
+        <TransactionStatus networkId={item.networkId} hash={bidHash ?? ''} />
       </TransactionContainer>
       <PromotionContainer>
         <PromotionText>待っている間、 ちょっと自慢しませんか？</PromotionText>
