@@ -67,7 +67,7 @@ export const Container: React.VFC = () => {
       )
       return
     }
-    await dispatch(withDrawItemActionCreator({ itemId }) as any)
+    await dispatch(withDrawItemActionCreator({ itemId, inJapan }) as any)
     router.push(`/items/${itemId}/withdraw`)
   }
 

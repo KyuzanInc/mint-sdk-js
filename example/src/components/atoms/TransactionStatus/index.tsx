@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Image from 'next/image';
-import { color, curve, font } from '../../../style'
+import { color, font } from '../../../style'
 import { NetworkId } from '@kyuzan/mint-sdk-js'
 import { getTransactionLink } from '../../../util/getTransactionLink'
 
