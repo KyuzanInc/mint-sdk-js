@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import React from 'react'
-import { WithdrawModal } from '../../molecules/WithdrawModal'
+import { WithdrawModal } from './modal'
 import { color } from '../../../style'
 
 type Props = {
