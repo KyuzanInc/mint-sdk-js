@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import { Item } from '@kyuzan/mint-sdk-js'
 import React, { useCallback, useState } from 'react'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
 import { TransactionStatus } from '../../atoms/TransactionStatus'
 import { IconButton } from '../../atoms/IconButton'
@@ -16,8 +16,6 @@ type Props = {
 }
 
 type ModalContentProps = {
-  url: string
-  tweetUrl: string
   item: Item
   bidHash?: string
   shareUrl: string
@@ -35,8 +33,6 @@ export const WithdrawModal: React.VFC<Props> = ({
       </MediaContainer>
       <Right>
         <ModalContent
-          url={''}
-          tweetUrl={''}
           item={item}
           bidHash={bidHash}
           shareUrl={shareUrl ?? ''}
@@ -69,7 +65,7 @@ const ModalContent: React.VFC<ModalContentProps> = ({
         <br />
       </Description>
       <TransactionContainer>
-        <TransactionStatus networkId={item.networkId} hash={bidHash ?? ''} />
+        <TransactionStatus networkId={item?.networkId} hash={bidHash ?? ''} />
       </TransactionContainer>
       <PromotionContainer>
         <PromotionText>待っている間、 ちょっと自慢しませんか？</PromotionText>
@@ -111,19 +107,18 @@ const Container = styled.article`
     0px 0.598509px 1.06402px rgba(0, 0, 0, 0.0161557);
   border-radius: 8px;
   margin: auto;
-  @media (max-width: 480px) {
+  display: flex;
+  flex-direction: row;
+  width: 90vw;
+  max-width: 880px;
+  max-height: 520px;
+  ${media.sp`
     display: flex;
     flex-direction: column;
     max-width: 480px;
     width: 90vmin;
-  }
-  @media (min-width: 481px) {
-    display: flex;
-    flex-direction: row;
-    width: 90vw;
-    max-width: 880px;
-    max-height: 520px;
-  } ;
+    max-height: none;
+  `}
 `
 
 const MediaContainer = styled.div`

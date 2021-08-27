@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import Image from 'next/image'
-import { color, font } from '../../../style'
+import { color, font, media } from '../../../style'
 import { NetworkId } from '@kyuzan/mint-sdk-js'
 import { getTransactionLink } from '../../../util/getTransactionLink'
 
@@ -65,9 +65,9 @@ const StatusContainer = styled.div`
 const Title = styled.div`
   ${font.mont.caption}
   color: ${color.content.middle};
-  @media (max-width: 480px) {
+  ${media.sp`
     font-size: 10px;
-  } ;
+  `}
 `
 
 const Status = styled.div`
@@ -76,10 +76,10 @@ const Status = styled.div`
   line-height: 24px;
   color: ${color.content.dark};
   height: 24px;
-  @media (max-width: 480px) {
-    font-size: 10px;
-  }
   margin: 2px 0;
+  ${media.sp`
+    font-size: 10px;
+  `}
 `
 
 const TransactionContainer = styled.div`
@@ -94,9 +94,9 @@ const TransactionLink = styled.a`
   display: flex;
   align-items: center;
   text-decoration: none;
-  @media (max-width: 480px) {
+  ${media.sp`
     font-size: 12px;
-  } ;
+  `}
 `
 const LinkContainer = styled.div`
   margin-left: 2%;

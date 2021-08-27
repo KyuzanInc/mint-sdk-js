@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { Item } from '@kyuzan/mint-sdk-js'
 import React from 'react'
 import { WithdrawModal } from './modal'
-import { color } from '../../../style'
+import { color, media } from '../../../style'
 
 type Props = {
   item: Item
@@ -32,9 +32,7 @@ const Container = styled.div`
 `
 
 const InnerContainer = styled.div`
-  @media (max-width: 480px) {
+  ${media.sp`
     padding: 40% 0;
-  }
-  padding-top: 5%;
-  width: 100%;
+  `}
 `
