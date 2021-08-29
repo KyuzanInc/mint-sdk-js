@@ -1,6 +1,7 @@
 import { sleep } from './../../util/sleep'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
+import { action } from '@storybook/addon-actions'
 
 export type Status = null | 'bidSuccess' | 'buySuccess'
 
@@ -11,6 +12,7 @@ export type TransactionState = {
     bidHash: string
     error: string | undefined
     withdrawingItemId: string | undefined
+    successItemId: string | undefined
   }
 }
 
@@ -20,6 +22,7 @@ export const initialTransactionState: TransactionState = {
     status: null,
     bidHash: '',
     withdrawingItemId: undefined,
+    successItemId: undefined,
     error: undefined,
   },
 }
@@ -115,10 +118,11 @@ export const transactionSlice = createSlice({
     })
     builder.addCase(
       buyFixedPriceItemActionCreator.fulfilled,
-      (state, { payload }) => {
+      (state, { meta, payload }) => {
         state.meta.bidding = false
         state.meta.status = 'buySuccess'
         state.meta.bidHash = payload
+        state.meta.successItemId = meta.arg.itemId
       }
     )
     builder.addCase(buyFixedPriceItemActionCreator.pending, (state) => {
@@ -134,9 +138,10 @@ export const transactionSlice = createSlice({
     )
     builder.addCase(
       withDrawItemActionCreator.fulfilled,
-      (state, { payload }) => {
+      (state, { meta, payload }) => {
         state.meta.withdrawingItemId = undefined
         state.meta.bidHash = payload
+        state.meta.successItemId = meta.arg.itemId
       }
     )
     builder.addCase(withDrawItemActionCreator.pending, (state, action) => {

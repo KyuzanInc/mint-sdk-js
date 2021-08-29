@@ -54,6 +54,11 @@ export const Container: React.VFC = () => {
   const connectedNetworkId = useAppSelector(
     (state) => state.app.wallet.data.connectedNetwork
   )
+
+  const bidHash = useAppSelector(
+    (state: { app: { transaction: { meta: { bidHash: string } } } }) =>
+      state.app.transaction.meta.bidHash
+  )
   const withdrawItem = async (itemId: string, inJapan: boolean) => {
     const item = bidedItems.find((i) => i.itemId === itemId)
     if (connectedNetworkId !== item!.networkId) {
@@ -68,7 +73,9 @@ export const Container: React.VFC = () => {
       return
     }
     await dispatch(withDrawItemActionCreator({ itemId, inJapan }) as any)
-    router.push(`/items/${itemId}/withdraw`)
+    if(bidHash){
+      router.push(`/items/success`)
+    }
   }
 
   const shippingInfo = useAppSelector(

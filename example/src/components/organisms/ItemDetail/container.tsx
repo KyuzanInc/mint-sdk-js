@@ -15,6 +15,7 @@ import {
 import { getNetworkIdLabel } from '../../../util/getNetworkIdLabel'
 import { Presentation } from './presentation'
 import { useMedia } from '../../../util/useMedia'
+import router from 'next/router'
 
 export const Container: React.VFC = () => {
   const dispatch = useAppDispatch()
@@ -96,12 +97,16 @@ export const Container: React.VFC = () => {
   const doBuy = useCallback(
     async (inJapan: boolean) => {
       if (!item) return
-      dispatch(
+      await dispatch(
         buyFixedPriceItemActionCreator({
           itemId: item.itemId,
           inJapan,
         }) as any
       )
+
+      if(bidHash){
+        router.push(`/items/success`)
+      }
     },
     [item]
   )
