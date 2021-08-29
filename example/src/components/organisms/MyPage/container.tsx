@@ -73,7 +73,7 @@ export const Container: React.VFC = () => {
       return
     }
     await dispatch(withDrawItemActionCreator({ itemId, inJapan }) as any)
-    if(bidHash){
+    if (bidHash) {
       router.push(`/items/success`)
     }
   }

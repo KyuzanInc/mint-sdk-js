@@ -104,7 +104,7 @@ export const Container: React.VFC = () => {
         }) as any
       )
 
-      if(bidHash){
+      if (bidHash) {
         router.push(`/items/success`)
       }
     },

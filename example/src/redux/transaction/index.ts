@@ -1,7 +1,6 @@
 import { sleep } from './../../util/sleep'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
-import { action } from '@storybook/addon-actions'
 
 export type Status = null | 'bidSuccess' | 'buySuccess'
 

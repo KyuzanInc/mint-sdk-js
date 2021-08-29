@@ -32,11 +32,7 @@ export const WithdrawModal: React.VFC<Props> = ({
         <MediaContent media={item?.previews[0]} height={520} />
       </MediaContainer>
       <Right>
-        <ModalContent
-          item={item}
-          bidHash={bidHash}
-          shareUrl={shareUrl ?? ''}
-        />
+        <ModalContent item={item} bidHash={bidHash} shareUrl={shareUrl ?? ''} />
       </Right>
     </Container>
   )

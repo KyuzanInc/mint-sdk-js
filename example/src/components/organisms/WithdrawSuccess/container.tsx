@@ -17,8 +17,7 @@ export const Container: React.VFC = () => {
   )
 
   const itemId = useAppSelector(
-    (state) =>
-      state.app.transaction.meta.successItemId
+    (state) => state.app.transaction.meta.successItemId
   )
 
   useEffect(() => {
