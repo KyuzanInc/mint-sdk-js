@@ -109,7 +109,6 @@ const Container = styled.article`
   max-width: 880px;
   max-height: 520px;
   ${media.sp`
-    display: flex;
     flex-direction: column;
     max-width: 480px;
     width: 90vmin;
