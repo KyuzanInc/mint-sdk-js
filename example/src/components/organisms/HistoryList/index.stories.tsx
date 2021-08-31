@@ -11,7 +11,7 @@ export const Loading: React.VFC = () => (
 )
 
 export default {
-  title: 'organism/History',
+  title: 'organism/HistoryList',
 }
 
 const itemLogs: ItemLog[] = [

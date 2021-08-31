@@ -43,4 +43,7 @@ const Video = styled.video<{ height: number }>`
   height: ${({ height }) => `${height}px`};
   width: 100%;
   object-fit: cover;
+  ${media.sp`
+    height: auto;
+  `}
 `

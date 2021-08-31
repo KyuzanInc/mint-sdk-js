@@ -1,13 +1,13 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import { History } from '../../components/organisms/History'
-import { useAppSelector, wrapper } from '../../redux/getStore'
-import { getItemActionCreator } from '../../redux/item'
-import { color, media } from '../../style'
-import { ItemDetail } from '../../components/organisms/ItemDetail'
-import { getHistoryActionCreator } from '../../redux/history'
-import CommonMeta from '../../components/atoms/CommonMeta'
-import { MediaContent } from '../../components/atoms/MediaContent'
+import CommonMeta from '../../../components/atoms/CommonMeta'
+import { MediaContent } from '../../../components/atoms/MediaContent'
+import { HistoryList } from '../../../components/organisms/HistoryList'
+import { ItemDetail } from '../../../components/organisms/ItemDetail'
+import { useAppSelector, wrapper } from '../../../redux/getStore'
+import { getHistoryActionCreator } from '../../../redux/history'
+import { getItemActionCreator } from '../../../redux/item'
+import { color, media } from '../../../style'
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
@@ -53,7 +53,7 @@ const ItemDetailPage = ({
       </MediaContainer>
       <DetailContainer>
         <ItemDetail />
-        <History />
+        <HistoryList />
       </DetailContainer>
     </Container>
   )

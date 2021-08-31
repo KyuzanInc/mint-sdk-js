@@ -11,6 +11,7 @@ export type TransactionState = {
     bidHash: string
     error: string | undefined
     withdrawingItemId: string | undefined
+    successItemId: string | undefined
   }
 }
 
@@ -20,6 +21,7 @@ export const initialTransactionState: TransactionState = {
     status: null,
     bidHash: '',
     withdrawingItemId: undefined,
+    successItemId: undefined,
     error: undefined,
   },
 }
@@ -46,7 +48,7 @@ export const bidActionCreator = createAsyncThunk<
 })
 
 export const withDrawItemActionCreator = createAsyncThunk<
-  void,
+  string,
   { itemId: string; inJapan: boolean },
   {
     rejectValue: string
@@ -61,6 +63,7 @@ export const withDrawItemActionCreator = createAsyncThunk<
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
     // TODO: おめでとう画面に遷移させる
+    return tx.hash
   } catch (err) {
     return thunkApi.rejectWithValue('引き出しに失敗しました')
   }
@@ -114,10 +117,11 @@ export const transactionSlice = createSlice({
     })
     builder.addCase(
       buyFixedPriceItemActionCreator.fulfilled,
-      (state, { payload }) => {
+      (state, { meta, payload }) => {
         state.meta.bidding = false
         state.meta.status = 'buySuccess'
         state.meta.bidHash = payload
+        state.meta.successItemId = meta.arg.itemId
       }
     )
     builder.addCase(buyFixedPriceItemActionCreator.pending, (state) => {
@@ -131,9 +135,14 @@ export const transactionSlice = createSlice({
         state.meta.bidding = false
       }
     )
-    builder.addCase(withDrawItemActionCreator.fulfilled, (state) => {
-      state.meta.withdrawingItemId = undefined
-    })
+    builder.addCase(
+      withDrawItemActionCreator.fulfilled,
+      (state, { meta, payload }) => {
+        state.meta.withdrawingItemId = undefined
+        state.meta.bidHash = payload
+        state.meta.successItemId = meta.arg.itemId
+      }
+    )
     builder.addCase(withDrawItemActionCreator.pending, (state, action) => {
       state.meta.withdrawingItemId = action.meta.arg.itemId
       state.meta.error = undefined
