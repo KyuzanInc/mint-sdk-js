@@ -2,10 +2,8 @@ import styled from '@emotion/styled'
 import React from 'react'
 import { color, font } from '../../../../style'
 import { NextPage } from 'next'
-import {
-  ShippingInfo,
-  FormType,
-} from '../../../../components/organisms/ShippingInfo/ShippingAddress'
+import { FormType } from '../../../../components/organisms/ShippingInfo/presentation'
+import { ShippingInfo } from '../../../../components/organisms/ShippingInfo'
 import { useAppDispatch, useAppSelector } from '../../../../redux/getStore'
 import { submitShippingInfoActionCreator } from '../../../../redux/shippingInfo'
 import { useRouter } from 'next/router'
