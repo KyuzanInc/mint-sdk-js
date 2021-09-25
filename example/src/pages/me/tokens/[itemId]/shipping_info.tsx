@@ -3,7 +3,7 @@ import React from 'react'
 import { color, font } from '../../../../style'
 import { NextPage } from 'next'
 import { FormType } from '../../../../components/organisms/ShippingInfo/presentation'
-import { ShoppingInfo } from '../../../../components/organisms/ShippingInfo'
+import { ShippingInfo } from '../../../../components/organisms/ShippingInfo'
 import { useAppDispatch, useAppSelector } from '../../../../redux/getStore'
 import { submitShippingInfoActionCreator } from '../../../../redux/shippingInfo'
 import { useRouter } from 'next/router'
@@ -26,7 +26,7 @@ const Page: NextPage = () => {
         このページは、MintDeveloper用に用意したデモページです。実際の住所を入力しても、商品が届くことはありません。ご注意ください。
       </Attention>
       <InnerContainer>
-        <ShoppingInfo loading={loading} onSubmit={handleSubmit} />
+        <ShippingInfo loading={loading} onSubmit={handleSubmit} />
       </InnerContainer>
     </Container>
   )
