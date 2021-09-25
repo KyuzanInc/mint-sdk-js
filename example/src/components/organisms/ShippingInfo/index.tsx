@@ -1,1 +1,1 @@
-export { Presentation as ShippingInfo } from "./presentation";
+export { Presentation as ShippingInfo } from './presentation'
