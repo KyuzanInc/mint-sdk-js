@@ -11,5 +11,5 @@ export const Loading: React.VFC = () => (
 )
 
 export default {
-  title: 'organism/ShoppingInfo',
+  title: 'organism/ShippingInfo',
 }
