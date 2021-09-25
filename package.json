@@ -1,7 +1,7 @@
 {
   "name": "@kyuzan/mint-sdk-js",
   "description": "MINT NFT Platform Client SDK",
-  "version": "5.10.0",
+  "version": "5.11.0",
   "dependencies": {
     "@emotion/babel-plugin": "^11.3.0",
     "agentkeepalive": "^4.1.4",
