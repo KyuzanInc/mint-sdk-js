@@ -17,7 +17,7 @@
   "dependencies": {
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@hookform/resolvers": "^2.8.1",
+    "@hookform/resolvers": "2.8.0",
     "@kyuzan/mint-sdk-js": "latest",
     "@reduxjs/toolkit": "^1.5.1",
     "@tippyjs/react": "^4.2.5",
