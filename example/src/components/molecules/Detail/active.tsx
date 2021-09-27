@@ -8,6 +8,7 @@ type LiveProps = {
   price: number
   unit: string
   onComplete: () => void
+  onTick: (calcTimeData: object) => void
 }
 
 type FormattedProps = {
@@ -55,6 +56,7 @@ export const LiveStatus: React.FC<LiveProps> = ({
   unit,
   endAt,
   onComplete,
+  onTick,
 }) => {
   return (
     <StatusContainer>
@@ -71,6 +73,7 @@ export const LiveStatus: React.FC<LiveProps> = ({
           date={endAt ?? 0 - Date.now()}
           renderer={renderer}
           onComplete={onComplete}
+          onTick={onTick}
         />
       </TimeContent>
     </StatusContainer>

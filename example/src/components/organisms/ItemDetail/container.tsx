@@ -61,8 +61,23 @@ export const Container: React.VFC = () => {
   const [bidPrice, setBidPrice] = useState(`0.0`)
   const [isError, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
+  const [counter, setCounter] = useState(0)
 
   const isMobile = useMedia()
+
+  const onTick = useCallback(
+    (calcTimeDelta) => {
+      // within 5 minutes
+      if (calcTimeDelta.total < 300000) {
+        console.log('call')
+        if (counter === 0) {
+          updateInfo()
+        }
+        setCounter((prev) => (prev + 1) % 30)
+      }
+    },
+    [counter]
+  )
 
   useEffect(() => {
     if (bidPrice < (item?.minBidPrice ?? bidPrice)) {
@@ -236,6 +251,7 @@ export const Container: React.VFC = () => {
       isValidationError={isError}
       errorText={errorText}
       taHash={bidHash}
+      onTick={onTick}
     />
   )
 }
