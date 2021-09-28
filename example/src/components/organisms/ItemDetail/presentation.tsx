@@ -48,7 +48,7 @@ type Props = {
   isValidationError: boolean
   errorText: string
   taHash?: string
-  onTick: (time: object) => void
+  onTick: (time: any) => void
 }
 
 export const Presentation: React.VFC<Props> = ({

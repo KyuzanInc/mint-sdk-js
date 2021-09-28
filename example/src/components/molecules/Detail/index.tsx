@@ -11,7 +11,7 @@ type Props = {
   endAt: Date
   price: number
   unit: string
-  onTick: (time: object) => void
+  onTick: (time: any) => void
 }
 
 export const StatusDetail: React.FC<Props> = ({
