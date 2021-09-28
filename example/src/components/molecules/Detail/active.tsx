@@ -2,13 +2,14 @@ import React from 'react'
 import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
 import { color, font, media } from '../../../style'
+import { CountdownTimeDelta } from 'react-countdown'
 
 type LiveProps = {
   endAt: Date
   price: number
   unit: string
   onComplete: () => void
-  onTick: (calcTimeData: any) => void
+  onTick: (countdownTimeDelta: CountdownTimeDelta) => void
 }
 
 type FormattedProps = {

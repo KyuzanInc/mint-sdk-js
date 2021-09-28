@@ -16,6 +16,10 @@ import { getNetworkIdLabel } from '../../../util/getNetworkIdLabel'
 import { Presentation } from './presentation'
 import { useMedia } from '../../../util/useMedia'
 import router from 'next/router'
+import { CountdownTimeDelta } from 'react-countdown'
+
+const WITHIN_TIME = 300000 //5 minutes
+const EACH_TIME = 30000 // 30 seconds
 
 export const Container: React.VFC = () => {
   const dispatch = useAppDispatch()
@@ -61,23 +65,17 @@ export const Container: React.VFC = () => {
   const [bidPrice, setBidPrice] = useState(`0.0`)
   const [isError, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
-  const [counter, setCounter] = useState(0)
 
   const isMobile = useMedia()
 
-  const onTick = useCallback(
-    (calcTimeDelta) => {
-      // within 5 minutes
-      if (calcTimeDelta.total < 300000) {
-        console.log('call')
-        if (counter === 0) {
-          updateInfo()
-        }
-        setCounter((prev) => (prev + 1) % 30)
+  const onTick = useCallback((calcTimeDelta: CountdownTimeDelta) => {
+    // within 5 minutes
+    if (calcTimeDelta.total < WITHIN_TIME) {
+      if (calcTimeDelta.total % EACH_TIME === 0) {
+        updateInfo()
       }
-    },
-    [counter]
-  )
+    }
+  }, [])
 
   useEffect(() => {
     if (bidPrice < (item?.minBidPrice ?? bidPrice)) {

@@ -5,13 +5,14 @@ import { LiveStatus } from './active'
 import { EndedStatus } from './ended'
 import styled from '@emotion/styled'
 import { color, font } from '../../../style'
+import { CountdownTimeDelta } from 'react-countdown'
 
 type Props = {
   tradeType: ItemTradeType
   endAt: Date
   price: number
   unit: string
-  onTick: (time: any) => void
+  onTick: (countdownTimeDelta: CountdownTimeDelta) => void
 }
 
 export const StatusDetail: React.FC<Props> = ({
