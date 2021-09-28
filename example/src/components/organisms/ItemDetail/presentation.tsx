@@ -18,6 +18,7 @@ import { BidSuccessModal } from '../../molecules/BidSuccessModal'
 import { BoughtFixedPriceSuccessModal } from '../../molecules/BoughtFixedPriceSuccessModal'
 import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { isOnSale } from '../../../util/isOnSale'
+import { CountdownTimeDelta } from 'react-countdown'
 
 type Props = {
   loading: boolean
@@ -48,7 +49,7 @@ type Props = {
   isValidationError: boolean
   errorText: string
   taHash?: string
-  onTick: (time: any) => void
+  onTick: (calcTimeDelta: CountdownTimeDelta) => void
 }
 
 export const Presentation: React.VFC<Props> = ({
