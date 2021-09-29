@@ -12,7 +12,7 @@ type Props = {
   endAt: Date
   price: number
   unit: string
-  onTick: (calcTimeData: CountdownTimeDelta) => void
+  onTick?: (calcTimeData: CountdownTimeDelta) => void
 }
 
 export const StatusDetail: React.FC<Props> = ({

@@ -9,7 +9,7 @@ type LiveProps = {
   price: number
   unit: string
   onComplete: () => void
-  onTick: (calcTimeData: CountdownTimeDelta) => void
+  onTick?: (calcTimeData: CountdownTimeDelta) => void
 }
 
 type FormattedProps = {
