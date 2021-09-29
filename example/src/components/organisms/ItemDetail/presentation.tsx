@@ -18,6 +18,7 @@ import { BidSuccessModal } from '../../molecules/BidSuccessModal'
 import { BoughtFixedPriceSuccessModal } from '../../molecules/BoughtFixedPriceSuccessModal'
 import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { isOnSale } from '../../../util/isOnSale'
+import { CountdownTimeDelta } from 'react-countdown'
 
 type Props = {
   loading: boolean
@@ -48,6 +49,7 @@ type Props = {
   isValidationError: boolean
   errorText: string
   taHash?: string
+  onTick: (calcTimeDelta: CountdownTimeDelta) => void
 }
 
 export const Presentation: React.VFC<Props> = ({
@@ -79,6 +81,7 @@ export const Presentation: React.VFC<Props> = ({
   isValidationError,
   errorText,
   taHash: bidHash,
+  onTick,
 }) => {
   if (loading) {
     return <LoadingItemDetailComponent />
@@ -115,6 +118,7 @@ export const Presentation: React.VFC<Props> = ({
             price={getItemPrice(item)}
             endAt={item?.endAt ?? new Date()}
             tradeType={item?.tradeType ?? 'fixedPrice'}
+            onTick={onTick}
           />
           {item?.type === 'nftWithPhysicalProduct' && (
             <QuestionButton onClick={handleOpenPhysicalModal}>

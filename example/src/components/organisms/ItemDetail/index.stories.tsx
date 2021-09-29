@@ -42,6 +42,7 @@ export const Basic: React.VFC = () => {
       isValidationError={false}
       errorText={''}
       taHash={''}
+      onTick={action('onTick')}
     />
   )
 }
@@ -84,6 +85,7 @@ export const AuctionIsOutOfDate: React.VFC = () => {
       isValidationError={false}
       errorText={''}
       taHash={''}
+      onTick={action('onTick')}
     />
   )
 }
@@ -126,6 +128,7 @@ export const Loading: React.VFC = () => {
       isValidationError={false}
       errorText={''}
       taHash={''}
+      onTick={action('onTick')}
     />
   )
 }

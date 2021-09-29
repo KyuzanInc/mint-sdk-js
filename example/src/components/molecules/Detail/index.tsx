@@ -5,12 +5,14 @@ import { LiveStatus } from './active'
 import { EndedStatus } from './ended'
 import styled from '@emotion/styled'
 import { color, font } from '../../../style'
+import { CountdownTimeDelta } from 'react-countdown'
 
 type Props = {
   tradeType: ItemTradeType
   endAt: Date
   price: number
   unit: string
+  onTick?: (calcTimeData: CountdownTimeDelta) => void
 }
 
 export const StatusDetail: React.FC<Props> = ({
@@ -18,6 +20,7 @@ export const StatusDetail: React.FC<Props> = ({
   price,
   unit,
   tradeType,
+  onTick,
 }) => {
   const isAuction = tradeType === 'autoExtensionAuction'
 
@@ -36,6 +39,7 @@ export const StatusDetail: React.FC<Props> = ({
             price={price}
             unit={unit}
             onComplete={updateTime}
+            onTick={onTick}
           />
         )}
         {isEnded && <EndedStatus endAt={endAt} unit={unit} price={price} />}

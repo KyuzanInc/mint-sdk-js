@@ -2,12 +2,14 @@ import React from 'react'
 import Countdown from 'react-countdown'
 import styled from '@emotion/styled'
 import { color, font, media } from '../../../style'
+import { CountdownTimeDelta } from 'react-countdown'
 
 type LiveProps = {
   endAt: Date
   price: number
   unit: string
   onComplete: () => void
+  onTick?: (calcTimeData: CountdownTimeDelta) => void
 }
 
 type FormattedProps = {
@@ -55,6 +57,7 @@ export const LiveStatus: React.FC<LiveProps> = ({
   unit,
   endAt,
   onComplete,
+  onTick,
 }) => {
   return (
     <StatusContainer>
@@ -71,6 +74,7 @@ export const LiveStatus: React.FC<LiveProps> = ({
           date={endAt ?? 0 - Date.now()}
           renderer={renderer}
           onComplete={onComplete}
+          onTick={onTick}
         />
       </TimeContent>
     </StatusContainer>
