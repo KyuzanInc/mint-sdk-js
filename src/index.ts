@@ -1,6 +1,7 @@
 import Axios, { AxiosInstance } from 'axios'
 import * as Agent from 'agentkeepalive'
 import * as ethers from 'ethers'
+import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import {
   DefaultApiFactory,
   RegisterItemShippingInfoRequestBody,
@@ -1092,6 +1093,48 @@ export class MintSDK {
         .catch(reject)
     })
   }
+
+  /**
+   * 署名します 
+   * 
+   * **Required**
+   * - ウォレットに接続していること
+   * @param arg 
+   * 
+   * @returns
+   */
+
+  public signTypedData = async (arg: { domain: any, types: any, value: any}) => {
+    if(!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const wallet = await this.walletStrategy.getProvider();
+
+    const signature = await wallet.getSigner()._signTypedData(arg.domain, arg.types, arg.value)
+    const signData = JSON.stringify(
+      ethers.utils._TypedDataEncoder.getPayload(arg.domain, arg.types, arg.value))
+
+    return {
+      data: signData,
+      sig: signature,
+    }
+  }
+
+  /**
+   * 署名されたデータを復号してウォレットアドレスを返します
+   * @param arg 
+   * @returns 
+   */
+
+  public static recoverySignData = (arg: { data: any, sig: any }) => {
+    const recoveredAddress = recoverTypedSignature_v4({
+        data: JSON.parse(arg.data),
+        sig: arg.sig,
+      });
+    return recoveredAddress;
+  }
+
 
   /**
    * signedUrlを用いてFileをアップロード

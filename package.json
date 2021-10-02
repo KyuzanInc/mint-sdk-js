@@ -6,6 +6,7 @@
     "@emotion/babel-plugin": "^11.3.0",
     "agentkeepalive": "^4.1.4",
     "axios": "^0.21.1",
+    "eth-sig-util": "^3.0.1",
     "ethers": "^5.0.31",
     "fortmatic": "^2.2.1"
   },
