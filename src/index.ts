@@ -2,6 +2,7 @@ import Axios, { AxiosInstance } from 'axios'
 import * as Agent from 'agentkeepalive'
 import * as ethers from 'ethers'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
+import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 import {
   DefaultApiFactory,
   RegisterItemShippingInfoRequestBody,
@@ -1104,7 +1105,12 @@ export class MintSDK {
    * @returns
    */
 
-  public signTypedData = async (arg: { domain: any, types: any, value: any}) => {
+  public signTypedData = async (
+    arg: {
+      domain: TypedDataDomain,
+      types: Record<string, Array<TypedDataField>>,
+      value: Record<string, any>
+    }) => {
     if(!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
@@ -1127,7 +1133,7 @@ export class MintSDK {
    * @returns 
    */
 
-  public static recoverySignData = (arg: { data: any, sig: any }) => {
+  public static recoverySignData = (arg: { data: string, sig: string }) => {
     const recoveredAddress = recoverTypedSignature_v4({
         data: JSON.parse(arg.data),
         sig: arg.sig,
