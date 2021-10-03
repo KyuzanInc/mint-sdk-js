@@ -1096,13 +1096,24 @@ export class MintSDK {
   }
 
   /**
-   * 署名します 
+   * EIP-712仕様で与えられたデータを署名します。
    * 
    * **Required**
    * - ウォレットに接続していること
-   * @param arg 
    * 
+   * @param arg 
    * @returns
+   * ``` typesctipt
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * const arg = {
+   *  domain: {name: "Member"},
+   *  types: {Person: [ { name: 'name', type: 'string'}]},
+   *  value: { Man: { name: 'Tom'}}
+   * }
+   * const { data, sig } = await sdk.signTypedData(arg)
+   * ```
    */
 
   public signTypedData = async (
@@ -1115,11 +1126,12 @@ export class MintSDK {
       throw new Error('Wallet is not connected')
     }
 
-    const wallet = await this.walletStrategy.getProvider();
+    const wallet = await this.walletStrategy.getProvider()
 
     const signature = await wallet.getSigner()._signTypedData(arg.domain, arg.types, arg.value)
     const signData = JSON.stringify(
-      ethers.utils._TypedDataEncoder.getPayload(arg.domain, arg.types, arg.value))
+      ethers.utils._TypedDataEncoder.getPayload(arg.domain, arg.types, arg.value)
+    )
 
     return {
       data: signData,
@@ -1128,9 +1140,22 @@ export class MintSDK {
   }
 
   /**
-   * 署名されたデータを復号してウォレットアドレスを返します
+   * 署名されたデータを復号してウォレットアドレスを返します。
+   * 返される文字列は小文字で返ってきます。
    * @param arg 
    * @returns 
+   * ``` typesctipt
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * const { address } = await this.getWalletInfo()
+   * const { data, sig } = await sdk.signTypedData(arg)
+   * const recoverdAddress = MintSDK.recoverdSignData({data, sig})
+   * 
+   * if(address.toLowerCase() === recoverdAddress){
+   *  console.log("success")
+   * }
+   * ```
    */
 
   public static recoverySignData = (arg: { data: string, sig: string }) => {
