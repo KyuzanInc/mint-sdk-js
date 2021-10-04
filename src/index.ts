@@ -1,6 +1,8 @@
 import Axios, { AxiosInstance } from 'axios'
 import * as Agent from 'agentkeepalive'
 import * as ethers from 'ethers'
+import { recoverTypedSignature_v4 } from 'eth-sig-util'
+import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 import {
   DefaultApiFactory,
   RegisterItemShippingInfoRequestBody,
@@ -1091,6 +1093,82 @@ export class MintSDK {
         })
         .catch(reject)
     })
+  }
+
+  /**
+   * EIP-712仕様で与えられたデータを署名します。
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param arg
+   * @returns
+   * ``` typesctipt
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * const arg = {
+   *  domain: {name: "Member"},
+   *  types: {Person: [ { name: 'name', type: 'string'}]},
+   *  value: { Man: { name: 'Tom'}}
+   * }
+   * const { data, sig } = await sdk.signTypedData(arg)
+   * ```
+   */
+
+  public signTypedData = async (arg: {
+    domain: TypedDataDomain
+    types: Record<string, Array<TypedDataField>>
+    value: Record<string, any>
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const wallet = await this.walletStrategy.getProvider()
+
+    const signature = await wallet
+      .getSigner()
+      ._signTypedData(arg.domain, arg.types, arg.value)
+    const signData = JSON.stringify(
+      ethers.utils._TypedDataEncoder.getPayload(
+        arg.domain,
+        arg.types,
+        arg.value
+      )
+    )
+
+    return {
+      data: signData,
+      sig: signature,
+    }
+  }
+
+  /**
+   * 署名されたデータを復号してウォレットアドレスを返します。
+   * 返される文字列は小文字で返ってきます。
+   * @param arg
+   * @returns
+   * ``` typesctipt
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * const { address } = await this.getWalletInfo()
+   * const { data, sig } = await sdk.signTypedData(arg)
+   * const recoverdAddress = MintSDK.recoverdSignData({data, sig})
+   *
+   * if(address.toLowerCase() === recoverdAddress){
+   *  console.log("success")
+   * }
+   * ```
+   */
+
+  public static recoverySignData = (arg: { data: string; sig: string }) => {
+    const recoveredAddress = recoverTypedSignature_v4({
+      data: JSON.parse(arg.data),
+      sig: arg.sig,
+    })
+    return recoveredAddress
   }
 
   /**
