@@ -1097,11 +1097,11 @@ export class MintSDK {
 
   /**
    * EIP-712仕様で与えられたデータを署名します。
-   * 
+   *
    * **Required**
    * - ウォレットに接続していること
-   * 
-   * @param arg 
+   *
+   * @param arg
    * @returns
    * ``` typesctipt
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -1116,21 +1116,26 @@ export class MintSDK {
    * ```
    */
 
-  public signTypedData = async (
-    arg: {
-      domain: TypedDataDomain,
-      types: Record<string, Array<TypedDataField>>,
-      value: Record<string, any>
-    }) => {
-    if(!(await this.isWalletConnect())) {
+  public signTypedData = async (arg: {
+    domain: TypedDataDomain
+    types: Record<string, Array<TypedDataField>>
+    value: Record<string, any>
+  }) => {
+    if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
 
     const wallet = await this.walletStrategy.getProvider()
 
-    const signature = await wallet.getSigner()._signTypedData(arg.domain, arg.types, arg.value)
+    const signature = await wallet
+      .getSigner()
+      ._signTypedData(arg.domain, arg.types, arg.value)
     const signData = JSON.stringify(
-      ethers.utils._TypedDataEncoder.getPayload(arg.domain, arg.types, arg.value)
+      ethers.utils._TypedDataEncoder.getPayload(
+        arg.domain,
+        arg.types,
+        arg.value
+      )
     )
 
     return {
@@ -1142,8 +1147,8 @@ export class MintSDK {
   /**
    * 署名されたデータを復号してウォレットアドレスを返します。
    * 返される文字列は小文字で返ってきます。
-   * @param arg 
-   * @returns 
+   * @param arg
+   * @returns
    * ``` typesctipt
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
@@ -1151,21 +1156,20 @@ export class MintSDK {
    * const { address } = await this.getWalletInfo()
    * const { data, sig } = await sdk.signTypedData(arg)
    * const recoverdAddress = MintSDK.recoverdSignData({data, sig})
-   * 
+   *
    * if(address.toLowerCase() === recoverdAddress){
    *  console.log("success")
    * }
    * ```
    */
 
-  public static recoverySignData = (arg: { data: string, sig: string }) => {
+  public static recoverySignData = (arg: { data: string; sig: string }) => {
     const recoveredAddress = recoverTypedSignature_v4({
-        data: JSON.parse(arg.data),
-        sig: arg.sig,
-      });
-    return recoveredAddress;
+      data: JSON.parse(arg.data),
+      sig: arg.sig,
+    })
+    return recoveredAddress
   }
-
 
   /**
    * signedUrlを用いてFileをアップロード
