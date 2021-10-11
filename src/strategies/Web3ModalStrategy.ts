@@ -3,29 +3,36 @@ import { WalletSetting } from '../types/WalletSetting'
 import { NetworkId } from 'index'
 import { ethers } from 'ethers'
 import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
-const Fortmatic = require('fortmatic')
+import Web3Modal from 'web3modal'
+import Fortmatic from 'fortmatic'
+// import Torus from '@toruslabs/torus-embed'
 
-export class FortmaticStrategy implements WalletStrategy {
+export class Web3ModalStrategy implements WalletStrategy {
   private fortmatic: WidgetMode
-  private networkIds: NetworkId[]
+  // private networkIds: NetworkId[]
+  private web3Modal: Web3Modal
   private eventConnectCallbacks: Array<() => any> = []
   private eventDisconnectCallbacks: Array<() => any> = []
   private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
 
   constructor(
-    networkIds: NetworkId[],
-    walletSetting: WalletSetting,
-    devOption?: { backendUrl?: string; jsonRPCUrl?: string }
+    private networkIds: NetworkId[],
+    private walletSetting: WalletSetting,
+    private devOption?: { backendUrl?: string; jsonRPCUrl?: string }
   ) {
-    this.networkIds = networkIds
-    this.fortmatic = new Fortmatic(
-      walletSetting.fortmatic.key,
-      devOption?.jsonRPCUrl
-        ? {
-            rpcUrl: devOption.jsonRPCUrl,
-          }
-        : undefined
-    )
+      this.web3Modal = new Web3Modal({
+        // network: this.getConnectedNetworkId(),
+        // cacheProvider: true,
+        providerOptions: this.getProviderOptions()
+      })
+      this.fortmatic = new Fortmatic(
+        walletSetting.fortmatic.key,
+        devOption?.jsonRPCUrl
+          ? {
+              rpcUrl: devOption.jsonRPCUrl,
+            }
+          : undefined
+      )
   }
 
   async isWalletConnect() {
@@ -55,7 +62,8 @@ export class FortmaticStrategy implements WalletStrategy {
   }
 
   async connectWallet() {
-    await this.fortmatic.getProvider().enable()
+    // await this.fortmatic.getProvider().enable()
+    const provider = await this.web3Modal.connect()
     this.emitConnect()
   }
 
@@ -122,6 +130,40 @@ export class FortmaticStrategy implements WalletStrategy {
 
   changeNetwork = () => {
     console.log('hoge');
+  };
+
+  getProviderOptions = () => {
+    const providerOptions = {
+      injected: {
+        display: {
+          logo: "data:image/gif;base64,INSERT_BASE64_STRING",
+          name: "Injected",
+          description: "Connect with the provider in your Browser"
+        },
+        package: null
+      },
+      fortmatic: {
+        package: Fortmatic, // required
+        options: {
+          key: this.walletSetting.fortmatic.key // required
+        }
+      }
+      // torus: {
+      //   package: Torus // required
+      //   // package: Torus, // required
+      //   // options: {
+      //   //   // networkParams: {
+      //   //   //   host: "https://localhost:8545", // optional
+      //   //   //   chainId: 1337, // optional
+      //   //   //   networkId: 1337 // optional
+      //   //   // },
+      //   //   // config: {
+      //   //   //   buildEnv: "development" // optional
+      //   //   // }
+      //   // }
+      // }
+    };
+    return providerOptions;
   };
 
   private emitAccountChange = (accounts: string[]) => {

@@ -119,6 +119,10 @@ export class MetamaskStrategy implements WalletStrategy {
     }
   }
 
+  changeNetwork = () => {
+    console.log('hoge');
+  };
+
   private emitAccountChange = (accounts: string[]) => {
     this.eventAccountsChangeCallbacks.forEach((f) => f(accounts))
   }

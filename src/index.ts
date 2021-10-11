@@ -15,9 +15,10 @@ import { AxiosBody } from './types/AxiosBody'
 import { Token } from './types/Token'
 import {
   WalletStrategy,
-  MetamaskStrategy,
-  FortmaticStrategy,
+  // MetamaskStrategy,
+  // FortmaticStrategy,
   NodeStrategy,
+  Web3ModalStrategy
 } from './strategies'
 import { BACKEND_URL } from './constants/index'
 import { Item } from './types/Item'
@@ -113,11 +114,12 @@ export class MintSDK {
     }
   ) {
     if (typeof globalThis.window === 'undefined') {
-      this.walletStrategy = new NodeStrategy()
-    } else if (MetamaskStrategy.checkExistsWeb3ProviderInWindow()) {
-      this.walletStrategy = new MetamaskStrategy(networkIds)
+      this.walletStrategy = new NodeStrategy() // これ以下改変
+    // } else if (MetamaskStrategy.checkExistsWeb3ProviderInWindow()) {
+    //   this.walletStrategy = new MetamaskStrategy(networkIds)
     } else {
-      this.walletStrategy = new FortmaticStrategy(
+      // this.walletStrategy = new FortmaticStrategy(
+      this.walletStrategy = new Web3ModalStrategy(
         networkIds,
         walletSetting,
         devOption

@@ -58,4 +58,8 @@ export class NodeStrategy implements WalletStrategy {
   offDisconnect(_callback?: () => any) {
     // noop
   }
+
+  changeNetwork = () => {
+    // noop
+  };
 }

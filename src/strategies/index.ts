@@ -1,4 +1,5 @@
-export { FortmaticStrategy } from './FortmaticStrategy'
-export { MetamaskStrategy } from './MetamaskStrategy'
+// export { FortmaticStrategy } from './FortmaticStrategy'
+// export { MetamaskStrategy } from './MetamaskStrategy'
+export { Web3ModalStrategy } from './Web3ModalStrategy'
 export { NodeStrategy } from './NodeStrategy'
 export { WalletStrategy } from './interface'

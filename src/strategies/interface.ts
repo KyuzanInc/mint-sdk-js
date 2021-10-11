@@ -14,5 +14,5 @@ export interface WalletStrategy {
   offConnect(callback?: () => any): void
   onDisconnect(callback: () => any): void
   offDisconnect(callback?: () => any): void
-  changeNetwork(chainId: string[]): void
+  changeNetwork(): void
 }
