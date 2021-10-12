@@ -5,12 +5,12 @@ import { ethers } from 'ethers'
 import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
 import Web3Modal from 'web3modal'
 import Fortmatic from 'fortmatic'
-// import Torus from '@toruslabs/torus-embed'
 
 export class Web3ModalStrategy implements WalletStrategy {
-  private fortmatic: WidgetMode
+  // private fortmatic: WidgetMode
   // private networkIds: NetworkId[]
-  private web3Modal: Web3Modal
+  private web3Modal: Web3Modal | null
+  private ethersProvider: ethers.providers.Web3Provider | null
   private eventConnectCallbacks: Array<() => any> = []
   private eventDisconnectCallbacks: Array<() => any> = []
   private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
@@ -20,35 +20,39 @@ export class Web3ModalStrategy implements WalletStrategy {
     private walletSetting: WalletSetting,
     private devOption?: { backendUrl?: string; jsonRPCUrl?: string }
   ) {
-      this.web3Modal = new Web3Modal({
-        // network: this.getConnectedNetworkId(),
-        // cacheProvider: true,
-        providerOptions: this.getProviderOptions()
-      })
-      this.fortmatic = new Fortmatic(
-        walletSetting.fortmatic.key,
-        devOption?.jsonRPCUrl
-          ? {
-              rpcUrl: devOption.jsonRPCUrl,
-            }
-          : undefined
-      )
+    this.ethersProvider = null
+    this.web3Modal = null
+      // this.fortmatic = new Fortmatic(
+      //   walletSetting.fortmatic.key,
+      //   devOption?.jsonRPCUrl
+      //     ? {
+      //         rpcUrl: devOption.jsonRPCUrl,
+      //       }
+      //     : undefined
+      // )
   }
 
   async isWalletConnect() {
-    return await this.fortmatic.user.isLoggedIn()
+    if (this.ethersProvider === null) return false
+
+    const accounts =  await this.ethersProvider.listAccounts()
+    console.log(accounts)
+    if (accounts && accounts.length > 0) {
+      return true
+    } else {
+      return false
+    }
   }
 
   async getWalletInfo() {
     const networkId = await this.getConnectedNetworkId()
     const unit: 'MATIC' | 'ETH' =
       networkId === 137 || networkId === 80001 ? 'MATIC' : 'ETH'
-    const provider = this.fortmatic.getProvider()
-    const accounts = (await provider.send('eth_accounts')) as string[]
+    const provider = this.ethersProvider
+    if (provider === null) throw Error('not wallet connect')
+    const accounts =  await provider.listAccounts()
     const address = accounts[0]
-    const balance = await new ethers.providers.Web3Provider(
-      provider as any
-    ).getBalance(address)
+    const balance = await provider.getBalance(address)
     return {
       address,
       balance,
@@ -57,20 +61,24 @@ export class Web3ModalStrategy implements WalletStrategy {
   }
 
   getProvider() {
-    const provider = this.fortmatic.getProvider()
-    return new ethers.providers.Web3Provider(provider as any)
+    if (this.ethersProvider === null) throw Error('not wallet connect')
+    return this.ethersProvider
   }
 
   async connectWallet() {
-    // await this.fortmatic.getProvider().enable()
+    this.web3Modal = new Web3Modal({
+      disableInjectedProvider: true,
+      cacheProvider: true,
+      providerOptions: await this.getProviderOptions()
+    })
     const provider = await this.web3Modal.connect()
+    this.ethersProvider = new ethers.providers.Web3Provider(provider)
     this.emitConnect()
   }
 
   async getConnectedNetworkId() {
-    const provider = new ethers.providers.Web3Provider(
-      this.fortmatic.getProvider() as any
-    )
+    const provider = this.ethersProvider
+    if (provider === null) throw Error('not wallet connect')
     const network = await provider.getNetwork()
     return network.chainId
   }
@@ -92,7 +100,8 @@ export class Web3ModalStrategy implements WalletStrategy {
   }
 
   async disconnectWallet() {
-    await this.fortmatic.user.logout()
+    // TODO: 
+    // await this.fortmatic.user.logout()
     this.emitDisconnect()
   }
 
@@ -132,7 +141,9 @@ export class Web3ModalStrategy implements WalletStrategy {
     console.log('hoge');
   };
 
-  getProviderOptions = () => {
+  private getProviderOptions = async () => {
+    const { default: Torus } = await import('@toruslabs/torus-embed')
+    console.log(Fortmatic)
     const providerOptions = {
       injected: {
         display: {
@@ -147,22 +158,23 @@ export class Web3ModalStrategy implements WalletStrategy {
         options: {
           key: this.walletSetting.fortmatic.key // required
         }
+      },
+      torus: {
+        package: Torus // required
+        // package: Torus, // required
+        // options: {
+        //   // networkParams: {
+        //   //   host: "https://localhost:8545", // optional
+        //   //   chainId: 1337, // optional
+        //   //   networkId: 1337 // optional
+        //   // },
+        //   // config: {
+        //   //   buildEnv: "development" // optional
+        //   // }
+        // }
       }
-      // torus: {
-      //   package: Torus // required
-      //   // package: Torus, // required
-      //   // options: {
-      //   //   // networkParams: {
-      //   //   //   host: "https://localhost:8545", // optional
-      //   //   //   chainId: 1337, // optional
-      //   //   //   networkId: 1337 // optional
-      //   //   // },
-      //   //   // config: {
-      //   //   //   buildEnv: "development" // optional
-      //   //   // }
-      //   // }
-      // }
     };
+    console.log(providerOptions)
     return providerOptions;
   };
 
