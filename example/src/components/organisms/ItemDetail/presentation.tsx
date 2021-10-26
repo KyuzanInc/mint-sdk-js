@@ -95,6 +95,7 @@ export const Presentation: React.VFC<Props> = ({
     (typeof item?.endAt === 'string' ? new Date(item?.endAt) : item?.endAt) ??
     new Date()
   const saleOnGoing = isOnSale(startDate, endDate)
+  const hasBought = typeof item?.buyerAddress === 'string'
 
   return (
     <>
@@ -149,24 +150,19 @@ export const Presentation: React.VFC<Props> = ({
           )}
         </TradeInfoContainer>
 
-        {saleOnGoing && (
-          <BidButton
-            label={
-              item?.tradeType === 'autoExtensionAuction'
-                ? '入札する'
-                : '購入する'
-            }
-            onClick={handleOpenBidModal}
-          />
-        )}
+        {item?.tradeType === 'autoExtensionAuction' &&
+          (saleOnGoing ? (
+            <BidButton label={'入札する'} onClick={handleOpenBidModal} />
+          ) : (
+            <BidButton label={'売り切れ'} disabled={true} />
+          ))}
 
-        {!saleOnGoing && (
-          <BidButton
-            label={'売り切れ'}
-            // onClick={action('onClick')}
-            disabled={true}
-          />
-        )}
+        {item?.tradeType !== 'autoExtensionAuction' &&
+          (!hasBought ? (
+            <BidButton label={'購入する'} onClick={handleOpenBidModal} />
+          ) : (
+            <BidButton label={'売り切れ'} disabled={true} />
+          ))}
 
         <Description>{item?.description}</Description>
         <SecondaryButtonUL>
