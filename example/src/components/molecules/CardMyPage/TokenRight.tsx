@@ -24,7 +24,11 @@ export const TokenRight: React.VFC<Props> = ({
       <Container>
         <Link passHref href={`/items/${token.item.itemId}`}>
           <Anchor>
-            <ReverseButton isLoading={false} label={'商品を見る'} />
+            <ReverseButton
+              isLoading={false}
+              label={'商品を見る'}
+              type={'button'}
+            />
           </Anchor>
         </Link>
       </Container>
@@ -48,6 +52,7 @@ export const TokenRight: React.VFC<Props> = ({
           isLoading={false}
           onClick={onWriteShipAddress}
           label={'配送先の住所を入力する'}
+          type={'button'}
         />
       </Container>
     )
@@ -66,6 +71,7 @@ export const TokenRight: React.VFC<Props> = ({
           isLoading={false}
           onClick={onViewShipAddress}
           label={'配送先の住所を確認する'}
+          type={'button'}
         />
       </Container>
     )
@@ -84,6 +90,7 @@ export const TokenRight: React.VFC<Props> = ({
           isLoading={false}
           onClick={onViewShipAddress}
           label={'配送先の住所を確認する'}
+          type={'button'}
         />
       </Container>
     )

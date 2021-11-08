@@ -90,6 +90,7 @@ export const Presentation: React.VFC<Props> = ({
                 label={'接続する'}
                 isLoading={connectWalletLoading}
                 onClick={onClickConnectWallet}
+                type={'button'}
               />
             )}
           </WalletSection>

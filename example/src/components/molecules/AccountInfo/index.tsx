@@ -115,7 +115,12 @@ export const AccountInfo: React.VFC<Props> = ({
       ) : null}
       {onEdit && (
         <EditButton>
-          <PrimaryButton label={'編集'} isLoading={false} onClick={onEdit} />
+          <PrimaryButton
+            label={'編集'}
+            isLoading={false}
+            onClick={onEdit}
+            type={'button'}
+          />
         </EditButton>
       )}
     </Container>

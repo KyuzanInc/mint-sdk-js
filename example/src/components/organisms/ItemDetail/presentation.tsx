@@ -157,6 +157,7 @@ export const Presentation: React.VFC<Props> = ({
                 : '購入する'
             }
             onClick={handleOpenBidModal}
+            type={'button'}
           />
         )}
 
@@ -165,6 +166,7 @@ export const Presentation: React.VFC<Props> = ({
             label={'売り切れ'}
             // onClick={action('onClick')}
             disabled={true}
+            type={'button'}
           />
         )}
 

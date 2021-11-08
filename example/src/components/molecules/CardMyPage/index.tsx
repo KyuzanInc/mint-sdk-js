@@ -155,7 +155,11 @@ export const CardMyPage: React.VFC<Props> = ({
                 </CurrentPriceUnit>
               </CurrentPriceContainer>
               <Link href={`/items/${item.itemId}`}>
-                <ReverseButton isLoading={false} label={'商品を見る'} />
+                <ReverseButton
+                  isLoading={false}
+                  label={'商品を見る'}
+                  type={'button'}
+                />
               </Link>
             </>
           )}
@@ -182,7 +186,11 @@ export const CardMyPage: React.VFC<Props> = ({
                 </CurrentPriceUnit>
               </CurrentPriceContainer>
               <Link href={`/items/${item.itemId}`}>
-                <ReverseButton isLoading={false} label={'商品を見る'} />
+                <ReverseButton
+                  isLoading={false}
+                  label={'商品を見る'}
+                  type={'button'}
+                />
               </Link>
             </>
           )}
@@ -198,6 +206,7 @@ export const CardMyPage: React.VFC<Props> = ({
                 isLoading={withdrawing!}
                 label={'NFTを受け取る'}
                 disabled={true}
+                type={'button'}
               />
             </>
           )}
@@ -237,6 +246,7 @@ export const CardMyPage: React.VFC<Props> = ({
                 isLoading={withdrawing!}
                 label={'NFTを受け取る'}
                 onClick={() => onWithdraw && onWithdraw(inJapan)}
+                type={'button'}
               />
             </>
           )}
