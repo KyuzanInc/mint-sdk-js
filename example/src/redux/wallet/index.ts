@@ -39,9 +39,9 @@ export const initialState: WalletState = {
 export const initialWalletActionCreator = createAsyncThunk(
   'app/wallet/init',
   async () => {
-    if (await getSdk()!.isWalletConnect()) {
-      const walletInfo = await getSdk()!.getWalletInfo()
-      const connectingNetworkId = await getSdk()!.getConnectedNetworkId()
+    if (await getSdk().isWalletConnect()) {
+      const walletInfo = await getSdk().getWalletInfo()
+      const connectingNetworkId = await getSdk().getConnectedNetworkId()
       return {
         balance: MintSDK.formatEther(walletInfo.balance),
         currencyUnit: walletInfo.unit,
@@ -55,19 +55,22 @@ export const initialWalletActionCreator = createAsyncThunk(
 )
 
 export const connectWalletActionCreator = createAsyncThunk<
-  FormattedWalletInfo,
+  FormattedWalletInfo & { connectingNetworkId: NetworkId },
   void,
   {
     rejectValue: string
   }
 >('app/wallet/connect', async (_, thunkApi) => {
   try {
-    await getSdk()!.connectWallet()
-    const walletInfo = await getSdk()!.getWalletInfo()
+    await getSdk().connectWallet()
+    const walletInfo = await getSdk().getWalletInfo()
+    const connectingNetworkId =
+      (await getSdk().getConnectedNetworkId()) as NetworkId
     return {
       balance: MintSDK.formatEther(walletInfo.balance),
       currencyUnit: walletInfo.unit,
       address: walletInfo.address,
+      connectingNetworkId,
     }
   } catch (err) {
     return thunkApi.rejectWithValue('ウォレットの接続に失敗しました')
@@ -123,6 +126,7 @@ export const walletSlice = createSlice({
           currencyUnit: payload.currencyUnit,
           address: payload.address,
         }
+        state.data.connectedNetwork = payload.connectingNetworkId
         state.meta.waitingWalletAction = false
       }
     )
