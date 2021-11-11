@@ -31,7 +31,7 @@ export const getTokensActionCreator = createAsyncThunk<
   }
 >('app/accountTokens/get', async ({ walletAddress }, thunkApi) => {
   try {
-    const tokens = await getSdk()!.getTokensByAddress(walletAddress)
+    const tokens = await getSdk().getTokensByAddress(walletAddress)
     return { tokens, walletAddress }
   } catch (err) {
     return thunkApi.rejectWithValue('Tokenを取得できませんでした')
