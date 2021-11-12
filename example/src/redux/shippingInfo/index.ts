@@ -43,7 +43,7 @@ export const getShippingInfoActionCreator = createAsyncThunk<
     if (state.app.shippingInfo.data.shippingInfo[itemId]) {
       return state.app.shippingInfo.data.shippingInfo[itemId]
     }
-    const data = await getSdk()!.getItemShippingInfo({ itemId })
+    const data = await getSdk().getItemShippingInfo({ itemId })
     return data.data
   } catch (err) {
     return thunkApi.rejectWithValue('失敗しました')
@@ -72,7 +72,7 @@ export const submitShippingInfoActionCreator = createAsyncThunk<
   }
 >('app/shippingInfo/submit', async ({ itemId, data }, thunkApi) => {
   try {
-    await getSdk()!.registerItemShippingInfo({
+    await getSdk().registerItemShippingInfo({
       itemId,
       shippingInfo: {
         ...data,

@@ -41,7 +41,7 @@ export const getHistoryActionCreator = createAsyncThunk<
   }
 >('app/history/get', async (itemId, thunkApi) => {
   try {
-    const history = await getSdk()!.getItemLogs(itemId)
+    const history = await getSdk().getItemLogs(itemId)
     return history
   } catch (err) {
     return thunkApi.rejectWithValue(
