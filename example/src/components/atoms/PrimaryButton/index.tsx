@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import Image from 'next/image'
-import React from 'react'
+import React, { ButtonHTMLAttributes } from 'react'
 import { color, curve, font, zIndex } from '../../../style'
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
   iconPathBack?: string
   disabled?: boolean
   className?: string
-  type?: 'submit' | 'button' | 'reset' | undefined
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
   onClick?: () => any
 }
 
