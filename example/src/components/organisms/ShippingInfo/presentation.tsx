@@ -183,10 +183,18 @@ export const Presentation: React.VFC<Props> = ({ loading, onSubmit }) => {
         <ButtonsContainer>
           <Link href={'/me'} passHref>
             <Anchor>
-              <BackButton isLoading={false} label={'マイページに戻る'} />
+              <BackButton
+                isLoading={false}
+                label={'マイページに戻る'}
+                type={'button'}
+              />
             </Anchor>
           </Link>
-          <PrimaryButton isLoading={loading} label={'保存する'} />
+          <PrimaryButton
+            isLoading={loading}
+            label={'保存する'}
+            type={'submit'}
+          />
         </ButtonsContainer>
       </form>
     </Container>

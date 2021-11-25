@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import Image from 'next/image'
-import React from 'react'
+import React, { ButtonHTMLAttributes } from 'react'
 import { color, curve, font, zIndex } from '../../../style'
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
   iconPathBack?: string
   disabled?: boolean
   className?: string
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
   onClick?: () => any
 }
 
@@ -21,6 +22,7 @@ export const PrimaryButton: React.FC<Props> = ({
   iconPathBack,
   className,
   disabled,
+  type,
 }) => {
   if (disabled) {
     return (
@@ -31,7 +33,7 @@ export const PrimaryButton: React.FC<Props> = ({
   }
 
   return (
-    <Button onClick={onClick} className={className} type={'submit'}>
+    <Button onClick={onClick} className={className} type={type}>
       {isLoading && (
         <Image
           src={'/images/spinner_white.svg'}

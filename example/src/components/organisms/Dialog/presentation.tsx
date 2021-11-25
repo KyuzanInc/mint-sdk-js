@@ -53,6 +53,7 @@ export const Presentation: React.VFC<Props> = ({
             onClick={handleConfirm}
             isLoading={false}
             label={confirmText ?? 'OK'}
+            type={'button'}
           />
         </ButtonsContainer>
       </Wrapper>

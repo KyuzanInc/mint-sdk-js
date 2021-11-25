@@ -20,7 +20,11 @@ const Page: NextPage = () => {
       <ButtonContainer>
         <Link href={'/me'} passHref>
           <Anchor>
-            <BackButton isLoading={false} label={'マイページに戻る'} />
+            <BackButton
+              isLoading={false}
+              label={'マイページに戻る'}
+              type={'button'}
+            />
           </Anchor>
         </Link>
       </ButtonContainer>

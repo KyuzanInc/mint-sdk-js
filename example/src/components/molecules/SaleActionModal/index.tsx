@@ -169,6 +169,7 @@ const AuctionSaleAction: React.VFC<{
             isLoading={false}
             onClick={doBid}
             disabled={true}
+            type={'button'}
           />
         )}
         {!isValidationError && (
@@ -176,6 +177,7 @@ const AuctionSaleAction: React.VFC<{
             label={loading ? '取引処理中です' : '入札する'}
             isLoading={loading}
             onClick={doBid}
+            type={'button'}
           />
         )}
         <NotFinishedContainer>
@@ -250,6 +252,7 @@ const FixedSaleAction: React.VFC<{
             isLoading={false}
             onClick={() => doBuy(inJapan)}
             disabled={true}
+            type={'button'}
           />
         )}
         {!isValidationError && (
@@ -257,6 +260,7 @@ const FixedSaleAction: React.VFC<{
             label={loading ? '取引処理中です' : '購入'}
             isLoading={loading}
             onClick={() => doBuy(inJapan)}
+            type={'button'}
           />
         )}
         <NotFinishedContainer>

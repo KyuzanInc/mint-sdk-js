@@ -56,6 +56,7 @@ export const WalletModal: React.VFC<Props> = ({
                 label={'接続する'}
                 isLoading={loading}
                 onClick={connectWallet}
+                type={'button'}
               />
             </ContentRightButtonContainer>
           </ContentRight>

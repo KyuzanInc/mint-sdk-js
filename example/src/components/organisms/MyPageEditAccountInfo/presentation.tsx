@@ -84,6 +84,7 @@ export const Presentation: React.VFC<Props> = ({
                   <SelectImgButton
                     isLoading={uploadingImg}
                     label={'ファイルを選択'}
+                    type={'button'}
                   />
                 </label>
               </AvatarContainer>
@@ -116,10 +117,18 @@ export const Presentation: React.VFC<Props> = ({
             <ButtonsContainer>
               <Link href={'/me'} passHref>
                 <Anchor>
-                  <BackButton isLoading={false} label={'マイページに戻る'} />
+                  <BackButton
+                    isLoading={false}
+                    label={'マイページに戻る'}
+                    type={'button'}
+                  />
                 </Anchor>
               </Link>
-              <PrimaryButton isLoading={submitting} label={'保存する'} />
+              <PrimaryButton
+                isLoading={submitting}
+                label={'保存する'}
+                type={'submit'}
+              />
             </ButtonsContainer>
           </>
         )}
