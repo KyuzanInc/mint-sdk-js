@@ -35,7 +35,7 @@ export type FormType = {
 const schema = yup
   .object({
     firstName: yup.string().required(),
-    lastname: yup.string().required(),
+    lastName: yup.string().required(),
     postalCode: yup.string().required(),
     prefecture: yup.string().required(),
     city: yup.string().required(),
