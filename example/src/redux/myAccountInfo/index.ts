@@ -1,10 +1,17 @@
-import { AccountInfo } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getSdk } from '../../sdk'
 
 export type MyAccountInfoState = {
   data: {
-    accountInfo: AccountInfo
+    // TODO
+    accountInfo: {
+      avatarImgUrl: string
+      avatarImgId: string
+      displayName: string
+      bio: string
+      twitterAccountName: string
+      instagramAccountName: string
+      homepageUrl: string
+    }
   }
   meta: {
     loading: boolean
@@ -32,17 +39,18 @@ export const initialMyAccountInfoState: MyAccountInfoState = {
 
 // AsyncAction
 export const getAccountInfoActionCreator = createAsyncThunk<
-  AccountInfo | undefined,
+  undefined,
   { walletAddress: string },
   {
     rejectValue: string
   }
 >('app/myAccountInfo/get', async (arg, thunkApi) => {
   try {
-    const data = await getSdk().getAccountInfo({
-      walletAddress: arg.walletAddress,
-    })
-    return data
+    // TODO
+    // const data = await getSdk().getAccountInfo({
+    //   walletAddress: arg.walletAddress,
+    // })
+    return undefined
   } catch (err) {
     console.error(err)
     return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)

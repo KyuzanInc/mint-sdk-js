@@ -1,10 +1,8 @@
 import { WalletStrategy } from './interface'
 import * as ethers from 'ethers'
-import { NetworkId } from 'index'
 
 export class MetamaskStrategy implements WalletStrategy {
   private metamaskProvider: ethers.providers.Web3Provider
-  private networkIds: NetworkId[]
   private eventConnectCallbacks: Array<() => any> = []
   private eventDisconnectCallbacks: Array<() => any> = []
   private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
@@ -13,8 +11,7 @@ export class MetamaskStrategy implements WalletStrategy {
     return !!(window as any).ethereum
   }
 
-  constructor(networkIds: NetworkId[]) {
-    this.networkIds = networkIds
+  constructor() {
     this.metamaskProvider = new ethers.providers.Web3Provider(
       (window as any).ethereum,
       'any'

@@ -1,6 +1,5 @@
 import { sleep } from './../../util/sleep'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getSdk } from '../../sdk'
 
 export type Status = null | 'bidSuccess' | 'buySuccess'
 
@@ -34,13 +33,14 @@ export const bidActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/transaction/bid', async ({ itemId, bidPrice }, thunkApi) => {
+>('app/transaction/bid', async (_, thunkApi) => {
   try {
-    const tx = await getSdk().sendTxBid(itemId, bidPrice)
-    await tx.wait()
+    // TODO
+    // const tx = await getSdk().sendTxBid(itemId, bidPrice)
+    // await tx.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
-    return tx.hash
+    return ''
   } catch (err) {
     console.error(err)
     return thunkApi.rejectWithValue('入札に失敗しました')
@@ -53,17 +53,17 @@ export const withDrawItemActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/myItems/withdraw', async ({ itemId, inJapan }, thunkApi) => {
+>('app/myItems/withdraw', async (_, thunkApi) => {
   try {
-    const tx = await getSdk().sendTxMakeSuccessfulBid(
-      itemId,
-      inJapan ? 'jp' : 'unknown'
-    )
-    await tx.wait()
+    // TODO
+    // const tx = await getSdk().sendTxMakeSuccessfulBid(
+    //   itemId,
+    //   inJapan ? 'jp' : 'unknown'
+    // )
+    // await tx.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
-    // TODO: おめでとう画面に遷移させる
-    return tx.hash
+    return ''
   } catch (err) {
     return thunkApi.rejectWithValue('引き出しに失敗しました')
   }
@@ -75,14 +75,14 @@ export const buyFixedPriceItemActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/myItems/buyFixedPrice', async ({ itemId, inJapan }, thunkApi) => {
+>('app/myItems/buyFixedPrice', async (_, thunkApi) => {
   try {
-    const tx = await getSdk().sendTxBuyItem(itemId, inJapan ? 'jp' : 'unknown')
-    await tx.wait()
+    // TODO
+    // const tx = await getSdk().sendTxBuyItem(itemId, inJapan ? 'jp' : 'unknown')
+    // await tx.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
-    // TODO: おめでとう画面に遷移させる
-    return tx.hash
+    return ''
   } catch (err) {
     return thunkApi.rejectWithValue('取引に失敗しました')
   }
