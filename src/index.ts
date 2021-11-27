@@ -257,6 +257,28 @@ export class MintSDK {
     return data.data
   }
 
+  /**
+   * 指定したwalletAddressで購入または落札したItemStockを取得する
+   *
+   * #### 制限事項
+   *
+   * @param walletAddress
+   * @returns
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   *
+   * const items = await sdk.getBoughtItemStocksByWalletAddress(...)
+   * ```
+   */
+  public getBoughtItemStocksByWalletAddress= async (walletAddress: string) => {
+    const { data } = await this.apiClientV2.getBoughtItemStocksByWalletAddress(
+      this.accessToken,
+      walletAddress
+    )
+    return data.data
+  }
+
   // /**
   //  * 指定したアドレスがBidしたItemの一覧を取得
   //  *
