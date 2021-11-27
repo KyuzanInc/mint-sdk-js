@@ -23,13 +23,16 @@ const EACH_TIME = 30000 // 30 seconds
 
 export const Container: React.VFC = () => {
   const dispatch = useAppDispatch()
-  const item = useAppSelector((state) => {
+
+  const itemDetail = useAppSelector((state) => {
     return state.app.item.data
   })
 
-  const endDate = item?.endAt ?? new Date()
+  const item = itemDetail?.item
+
+  const endDate = item ? new Date(item.endAt) : new Date()
   const auctionIsEnded = endDate < new Date()
-  const startDate = item?.startAt ?? new Date()
+  const startDate = item ? new Date(item.startAt) : new Date()
   const auctionIsNotStarted = new Date() < startDate
   const auctionIsOutOfDate = auctionIsEnded || auctionIsNotStarted
 
@@ -56,8 +59,8 @@ export const Container: React.VFC = () => {
   }, [])
 
   const updateInfo = useCallback(async () => {
-    await dispatch(getItemActionCreator(item?.itemId ?? '') as any)
-    await dispatch(getHistoryActionCreator(item?.itemId ?? '') as any)
+    await dispatch(getItemActionCreator(item?.id ?? '') as any)
+    await dispatch(getHistoryActionCreator(item?.id ?? '') as any)
     await dispatch(initialWalletActionCreator() as any)
     setBidPrice('')
   }, [])
@@ -78,11 +81,12 @@ export const Container: React.VFC = () => {
   }, [])
 
   useEffect(() => {
-    if (bidPrice < (item?.minBidPrice ?? bidPrice)) {
+    // TODO
+    if (parseFloat(bidPrice) < 0) {
       setError(true)
       isMobile
-        ? setErrorText(`${item?.minBidPrice} ETH以上で入札`)
-        : setErrorText(`${item?.minBidPrice} ETH以上で入札してください`)
+        ? setErrorText(`0 ETH以上で入札`)
+        : setErrorText(`0 ETH以上で入札してください`)
     } else if ((walletInfo?.balance ?? bidPrice) < bidPrice) {
       setError(true)
       setErrorText(`お手持ちの金額を超えています`)
@@ -90,7 +94,7 @@ export const Container: React.VFC = () => {
       setError(false)
       setErrorText('')
     }
-  }, [bidPrice, walletInfo?.balance, item?.minBidPrice])
+  }, [bidPrice, walletInfo?.balance])
   const onChangeInput = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     (e) => {
       setBidPrice(e.target.value)
@@ -101,7 +105,7 @@ export const Container: React.VFC = () => {
     if (!item) return
     dispatch(
       bidActionCreator({
-        itemId: item.itemId,
+        itemId: item.id,
         bidPrice: parseFloat(bidPrice),
       }) as any
     )
@@ -112,7 +116,7 @@ export const Container: React.VFC = () => {
       if (!item) return
       await dispatch(
         buyFixedPriceItemActionCreator({
-          itemId: item.itemId,
+          itemId: item.id,
           inJapan,
         }) as any
       )
@@ -173,13 +177,12 @@ export const Container: React.VFC = () => {
       return
     }
 
-    if (connectedNetworkId !== item?.networkId) {
+    // TODO
+    if (connectedNetworkId !== 31337) {
       dispatch(
         dialogSlice.actions.showDialog({
           title: 'ネットワークを変更してください',
-          content: `${getNetworkIdLabel(
-            item?.networkId ?? 4
-          )}に接続してください。`,
+          content: `${getNetworkIdLabel(31337 ?? 4)}に接続してください。`,
         })
       )
       return
@@ -217,10 +220,14 @@ export const Container: React.VFC = () => {
     }
   }, [status])
 
+  if (waitingItem) {
+    return <Presentation loading={waitingItem} item={null} />
+  }
+
   return (
     <Presentation
       loading={waitingItem}
-      item={item}
+      item={itemDetail!}
       aboutPhysicalModalIsOpen={aboutPhysicalModalIsOpen}
       handleClosePhysicalModal={closePhysicalModal}
       handleOpenPhysicalModal={openPhysicalModal}

@@ -2,13 +2,11 @@ import { Item } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
-type ItemsInfo = {
-  live: Item[]
-  ended: Item[]
-}
-
 export type ItemsState = {
-  data: ItemsInfo
+  data: {
+    live: Item[]
+    ended: Item[]
+  }
   meta: {
     waitingItemAction: boolean
     initialized: boolean
@@ -31,30 +29,20 @@ export const initialItemsState: ItemsState = {
 // AsyncAction
 
 export const getItemsActionCreator = createAsyncThunk<
-  ItemsInfo,
+  {
+    live: Item[]
+    ended: Item[]
+  },
   void,
   {
     rejectValue: string
   }
 >('app/items/get', async (_, thunkApi) => {
   try {
-    const [live, ended] = await Promise.all([
-      getSdk().getItems({
-        onSale: true,
-        perPage: 1000,
-        page: 1,
-        sort: { sortBy: 'endAt', order: 'desc' },
-      }),
-      getSdk().getItems({
-        onSale: false,
-        perPage: 1000,
-        page: 1,
-        sort: { sortBy: 'endAt', order: 'desc' },
-      }),
-    ])
+    const items = await getSdk().getItems()
     return {
-      live: live ?? [],
-      ended: ended ?? [],
+      live: items,
+      ended: [],
     }
   } catch (err) {
     console.error(err)

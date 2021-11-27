@@ -1,5 +1,6 @@
 import { sleep } from './../../util/sleep'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { getSdk } from '../../sdk'
 
 export type Status = null | 'bidSuccess' | 'buySuccess'
 
@@ -33,11 +34,11 @@ export const bidActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/transaction/bid', async (_, thunkApi) => {
+>('app/transaction/bid', async ({ itemId, bidPrice }, thunkApi) => {
   try {
     // TODO
-    // const tx = await getSdk().sendTxBid(itemId, bidPrice)
-    // await tx.wait()
+    const tx = await getSdk().sendTxBid(itemId, bidPrice)
+    await tx!.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
     return ''
@@ -75,15 +76,15 @@ export const buyFixedPriceItemActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/myItems/buyFixedPrice', async (_, thunkApi) => {
+>('app/myItems/buyFixedPrice', async ({ itemId }, thunkApi) => {
   try {
-    // TODO
-    // const tx = await getSdk().sendTxBuyItem(itemId, inJapan ? 'jp' : 'unknown')
-    // await tx.wait()
+    const tx = await getSdk().sendTxBuyItem(itemId, 'jp')
+    await tx.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
     return ''
   } catch (err) {
+    console.log(err)
     return thunkApi.rejectWithValue('取引に失敗しました')
   }
 })

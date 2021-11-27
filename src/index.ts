@@ -3,7 +3,13 @@ import * as Agent from 'agentkeepalive'
 import * as ethers from 'ethers'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
-import { DefaultApiFactory as DefaultApiFactoryV2 } from './apiClientV2/api'
+import {
+  ResponseItemTypeEnum,
+  Item,
+  ResponseItem,
+  ItemStockStatus,
+  DefaultApiFactory as DefaultApiFactoryV2,
+} from './apiClientV2/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
@@ -16,9 +22,8 @@ import {
   NodeStrategy,
 } from './strategies'
 import { BACKEND_URL } from './constants/index'
-import { Item } from './types/Item'
 import { ItemLog } from './types/ItemLog'
-import { NetworkId, networkIdMapLabel } from './types/NetworkId'
+import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
 import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
@@ -27,6 +32,10 @@ import { ItemTradeType } from './types/ItemTradeType'
 
 export {
   Item,
+  ResponseItem,
+  ResponseItemTypeEnum as ItemWithPhysicalItemType,
+  ItemStockStatus,
+  // v1
   ItemLog,
   ItemTradeType,
   ItemsType,
@@ -227,86 +236,26 @@ export class MintSDK {
     await wallet.waitForTransaction(txHash)
   }
 
-  // /**
-  //  * 公開中(Items.openStatus === 'open')のアイテムを取得
-  //  * ステータスの変更は管理画面から行えます。
-  //  *
-  //  * #### 制限事項
-  //  *
-  //  * 次の制限事項に注意してください。
-  //  *
-  //  * - `tradeType === 'fixedPrice'`を指定した場合、`'endAt' | 'startAt'`によるsortは行えません
-  //  * - `tradeType === 'auction'`を指定した場合、`price`によるsortは行えません
-  //  * - `onSale`を指定した場合、`startAt`によるsortは行えません
-  //  *
-  //  * @param paging
-  //  * @returns
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  * const sdk = await MintSDK.initialize(...)
-  //  *
-  //  * const items = await sdk.getItems({ onSale: true })
-  //  * ```
-  //  */
+  /**
+   * 公開中の商品を取得
+   * ステータスの変更は管理画面から行えます。
+   *
+   * #### 制限事項
+   *
+   * @param paging
+   * @returns
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   *
+   * const items = await sdk.getItems(...)
+   * ```
+   */
 
-  // public getItems = async (
-  //   {
-  //     perPage,
-  //     page,
-  //     networkId,
-  //     itemType,
-  //     tradeType,
-  //     onSale,
-  //     sort,
-  //   }: {
-  //     /**
-  //      * 1ページあたりのアイテム数。
-  //      * デフォルトは30。
-  //      */
-  //     perPage: number
-  //     /**
-  //      * ページ数。
-  //      */
-  //     page: number
-  //     /**
-  //      * `'endAt','startAt'`はオークションの場合に有効で、オークションの終了・開始時間でsortを行います。`price`は固定価格販売の場合のみ有効です。
-  //      */
-  //     sort?: {
-  //       sortBy: 'endAt' | 'startAt' | 'price'
-  //       order: 'asc' | 'desc'
-  //     }
-  //     /**
-  //      * 指定しなければ、コンストラクターの値が使われます
-  //      */
-  //     networkId?: NetworkId[]
-  //     itemType?: ItemsType
-  //     tradeType?: ItemTradeType
-  //     /**
-  //      *
-  //      */
-  //     onSale?: boolean
-  //   } = {
-  //     perPage: 30,
-  //     page: 1,
-  //   }
-  // ) => {
-  //   const { data } = await this.apiClient.getItemList(
-  //     this.accessToken,
-  //     networkId
-  //       ? networkId.map((id) => id.toString())
-  //       : this.networkIds.map((id) => id.toString()),
-  //     itemType ? (itemType as ItemType) : undefined,
-  //     tradeType ? (tradeType as TradeType) : undefined,
-  //     typeof onSale !== 'undefined' ? (onSale ? 'true' : 'false') : undefined,
-  //     perPage.toString(),
-  //     page.toString(),
-  //     sort ? sort.sortBy : undefined,
-  //     sort ? sort.order : undefined
-  //   )
-  //   const items = data.data as Item[]
-  //   const formatItems = items.map(this.formatItem)
-  //   return formatItems
-  // }
+  public getItems = async () => {
+    const { data } = await this.apiClientV2.getItems(this.accessToken)
+    return data.data
+  }
 
   // /**
   //  * 指定したアドレスがBidしたItemの一覧を取得
@@ -331,23 +280,25 @@ export class MintSDK {
   //   return items.map(this.formatItem)
   // }
 
-  // /**
-  //  * ItemのitemId指定でアイテムを取得
-  //  *
-  //  * @param itemId {@link Item}のitemId
-  //  * @returns
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  * const sdk = await MintSDK.initialize(...)
-  //  * const item = await sdk.getItemById('item.itemId')
-  //  * ```
-  //  */
-  // public getItemById = async (itemId: string) => {
-  //   const { data } = await this.axios.get('v2_item', { params: { itemId } })
-  //   const item = data.data as Item
-  //   return this.formatItem(item)
-  // }
+  /**
+   * 商品をid指定でアイテムを取得
+   *
+   * @param itemId {@link ResponseItem}の`id`
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   * const item = await sdk.getItemById('item.id')
+   * ```
+   */
+  public getItemById = async (itemId: string) => {
+    const { data } = await this.apiClientV2.getItemById(
+      this.accessToken,
+      itemId
+    )
+    return data.data
+  }
 
   // /**
   //  * Tokenに紐づいたItemを取得
@@ -429,68 +380,74 @@ export class MintSDK {
   //   return data.data
   // }
 
-  // /**
-  //  * 指定した金額でBidするトランザクションを発行
-  //  * Bidする謹賀具の総額を`bidPrice`に指定する
-  //  *
-  //  * **Required**
-  //  * - ウォレットに接続していること
-  //  *
-  //  * @param itemId {@link Item}のitemId
-  //  * @param bidPrice 単位はether
-  //  * @returns
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  * const sdk = await MintSDK.initialize(...)
-  //  * await sdk.connectWallet() // required
-  //  * try {
-  //  *  const tx = await sdk.sendTxBid('item.itemId', 2)
-  //  *  // show loading
-  //  *  await tx.wait()
-  //  *  // success transaction
-  //  * } catch (err) {
-  //  *  // display error message
-  //  * }
-  //  * ```
-  //  */
-  // public sendTxBid = async (itemId: string, bidPrice: number) => {
-  //   if (!(await this.isWalletConnect())) {
-  //     throw new Error('Wallet is not connected')
-  //   }
-
-  //   const item = await this.getItemById(itemId)
-  //   await this.validateNetworkForItem(item)
-  //   const wallet = this.walletStrategy.getProvider()
-  //   const { abi, address } = await this.getMintShopContractInfo(item.networkId)
-  //   const signer = wallet.getSigner()
-  //   const shopContract = new ethers.Contract(address, abi, signer)
-  //   if (item.tradeType !== 'autoExtensionAuction') {
-  //     throw new Error("Item's tradeType is not auction")
-  //   }
-  //   const initialPrice = ethers.utils
-  //     .parseEther(String(item.initialPrice))
-  //     .toString()
-  //   const price = ethers.utils.parseEther(String(bidPrice)).toString()
-  //   const startAt = item.startAt!.getTime() / 1000
-  //   const endAt = item.endAt!.getTime() / 1000
-  //   const sign = await this.apiClient.getItemSignedDataBidAuction(
-  //     this.accessToken,
-  //     itemId
-  //   )
-  //   return (await shopContract.bidAuction(
-  //     item.mintContractAddress,
-  //     item.tokenId,
-  //     initialPrice,
-  //     startAt,
-  //     endAt,
-  //     price,
-  //     sign.data.data.signedData,
-  //     {
-  //       value: price,
-  //     }
-  //   )) as ethers.providers.TransactionResponse
-  // }
+  /**
+   * 指定した金額でBidするトランザクションを発行
+   * Bidする謹賀具の総額を`bidPrice`に指定する
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param itemId {@link Item}のitemId
+   * @param bidPrice 単位はether
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   * await sdk.connectWallet() // required
+   * try {
+   *  const tx = await sdk.sendTxBid('item.itemId', 2)
+   *  // show loading
+   *  await tx.wait()
+   *  // success transaction
+   * } catch (err) {
+   *  // display error message
+   * }
+   * ```
+   */
+  public sendTxBid = async (itemId: string, bidPrice: number) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const resItem = await this.getItemById(itemId)
+    if (
+      resItem.item.paymentMethodData.paymentMethod !==
+      'ethereum-contract-erc721-shop-auction'
+    ) {
+      return
+    }
+    const { data } = await this.apiClientV2.getItemStockDetailERC721Shop(
+      this.accessToken,
+      itemId
+    )
+    // TODO
+    // await this.validateNetworkForItem(item)
+    const wallet = this.walletStrategy.getProvider()
+    const signer = wallet.getSigner()
+    const shopContract = new ethers.Contract(
+      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      signer
+    )
+    const initialPrice = ethers.utils
+      .parseEther(String(resItem.item.price))
+      .toString()
+    const price = ethers.utils.parseEther(String(bidPrice)).toString()
+    const startAt = new Date(resItem.item.startAt).getTime() / 1000
+    const endAt = new Date(resItem.item.endAt).getTime() / 1000
+    return (await shopContract.bidAuction(
+      data.data.contractERC721.address,
+      data.data.productERC721.tokenId,
+      initialPrice,
+      startAt,
+      endAt,
+      price,
+      data.data.signiture,
+      {
+        value: price,
+      }
+    )) as ethers.providers.TransactionResponse
+  }
 
   // /**
   //  * オークションで勝利したアイテムを引き出すトランザクションを発行
@@ -583,55 +540,58 @@ export class MintSDK {
   //  * }
   //  * ```
   //  */
-  // public sendTxBuyItem = async (
-  //   itemId: string,
-  //   userResidence: Residence = 'unknown'
-  // ) => {
-  //   if (!(await this.isWalletConnect())) {
-  //     throw new Error('Wallet is not connected')
-  //   }
+  public sendTxBuyItem = async (itemId: string, _: Residence = 'unknown') => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
 
-  //   const item = await this.getItemById(itemId)
-  //   await this.validateNetworkForItem(item)
-  //   const wallet = this.walletStrategy.getProvider()
-  //   const { abi, address } = await this.getMintShopContractInfo(item.networkId)
-  //   const signer = wallet.getSigner()
-  //   const shopContract = new ethers.Contract(address, abi, signer)
-  //   if (item.tradeType !== 'fixedPrice') {
-  //     throw new Error("Item's tradeType is not fixedPrice")
-  //   }
+    const item = await this.getItemById(itemId)
+    // TODO
+    // await this.validateNetworkForItem(item)
+    const wallet = this.walletStrategy.getProvider()
+    const resItem = await this.getItemById(itemId)
+    if (
+      resItem.item.paymentMethodData.paymentMethod !==
+      'ethereum-contract-erc721-shop-fixed-price'
+    ) {
+      return
+    }
+    console.log(itemId)
+    const signer = wallet.getSigner()
+    const shopContract = new ethers.Contract(
+      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      signer
+    )
+    // TODO
+    // if (item.tradeType !== 'fixedPrice') {
+    //   throw new Error("Item's tradeType is not fixedPrice")
+    // }
 
-  //   const {
-  //     data: {
-  //       data: { signedData },
-  //     },
-  //   } = await this.apiClient.getItemSignedDataFixedPrice(
-  //     this.accessToken,
-  //     itemId
-  //   )
-
-  //   const price = ethers.utils
-  //     .parseEther((item.price as number).toString())
-  //     .toString()
-  //   const tx = (await shopContract.buyFixedPrice(
-  //     item.mintContractAddress,
-  //     item.tokenId,
-  //     item.tokenURI,
-  //     item.authorAddress,
-  //     price,
-  //     item.feeRatePermill,
-  //     signedData,
-  //     {
-  //       value: price,
-  //     }
-  //   )) as ethers.providers.TransactionResponse
-  //   await this.axios.post('/v2_registerTransactionReceiptsApp', {
-  //     txHash: tx.hash,
-  //     itemId,
-  //     residence: userResidence,
-  //   })
-  //   return tx
-  // }
+    const data = await this.apiClientV2.getItemStockDetailERC721Shop(
+      this.accessToken,
+      itemId
+    )
+    const price = ethers.utils.parseEther(item.item.price.toString()).toString()
+    const tx = (await shopContract.buyFixedPrice(
+      data.data.data.contractERC721.address,
+      data.data.data.productERC721.tokenId,
+      data.data.data.productERC721.tokenURI,
+      data.data.data.productERC721.creatorAddress,
+      price,
+      item.item.feeRatePermill,
+      data.data.data.signiture,
+      {
+        value: price,
+      }
+    )) as ethers.providers.TransactionResponse
+    // await this.axios.post('/v2_registerTransactionReceiptsApp', {
+    //   txHash: tx.hash,
+    //   itemId,
+    //   residence: userResidence,
+    // })
+    return tx
+  }
 
   /**
    * アカウントが変更された際に呼び出される関数を設定できる
@@ -970,39 +930,40 @@ export class MintSDK {
   /**
    * @ignore
    */
-  private validateNetworkForItem = async (item: Item) => {
-    const currentNetwork = await this.getConnectedNetworkId()
-    if (currentNetwork !== item.networkId) {
-      throw new WrongNetworkError('Network is not correct')
-    }
-  }
+  // private validateNetworkForItem = async (item: ItemStock) => {
+  //   // TODO: ItemStock？でバリデーションやな？
+  //   const currentNetwork = await this.getConnectedNetworkId()
+  //   if (currentNetwork !== item.itemStocks) {
+  //     throw new WrongNetworkError('Network is not correct')
+  //   }
+  // }
 
-  /**
-   * @ignore
-   */
-  private getMintShopContractInfo = async (networkId: NetworkId) => {
-    const { data } = await this.axios.get('/v2_projectConfig')
-    const networkLabel = networkIdMapLabel[networkId]
-    const abi = data.data.contract.mintShopContract[networkLabel].abi
-    const address = data.data.contract.mintShopContract[networkLabel].address
-    return {
-      abi,
-      address,
-    }
-  }
+  // /**
+  //  * @ignore
+  //  */
+  // private getMintShopContractInfo = async (networkId: NetworkId) => {
+  //   const { data } = await this.axios.get('/v2_projectConfig')
+  //   const networkLabel = networkIdMapLabel[networkId]
+  //   const abi = data.data.contract.mintShopContract[networkLabel].abi
+  //   const address = data.data.contract.mintShopContract[networkLabel].address
+  //   return {
+  //     abi,
+  //     address,
+  //   }
+  // }
 
-  /**
-   * @ignore
-   */
-  private formatItem = (item: Item) => {
-    return {
-      ...item,
-      startAt: item.startAt ? new Date(item.startAt) : undefined,
-      endAt: item.endAt ? new Date(item.endAt) : undefined,
-      defaultEndAt: item.defaultEndAt ? new Date(item.defaultEndAt) : undefined,
-      withdrawableAt: item.withdrawableAt
-        ? new Date(item.withdrawableAt)
-        : undefined,
-    } as Item
-  }
+  // /**
+  //  * @ignore
+  //  */
+  // private formatItem = (item: Item) => {
+  //   return {
+  //     ...item,
+  //     startAt: item.startAt ? new Date(item.startAt) : undefined,
+  //     endAt: item.endAt ? new Date(item.endAt) : undefined,
+  //     defaultEndAt: item.defaultEndAt ? new Date(item.defaultEndAt) : undefined,
+  //     withdrawableAt: item.withdrawableAt
+  //       ? new Date(item.withdrawableAt)
+  //       : undefined,
+  //   } as Item
+  // }
 }

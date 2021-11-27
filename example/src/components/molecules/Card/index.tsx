@@ -4,7 +4,7 @@ import { LoadingCard } from './loading'
 import { ActiveCard } from './active'
 type Props = {
   loading: boolean
-  item?: Item
+  item: Item
   onAuctionFinish?: () => void
 }
 

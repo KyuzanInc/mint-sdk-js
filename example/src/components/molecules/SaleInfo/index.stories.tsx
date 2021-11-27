@@ -11,8 +11,8 @@ export const AuctionLive: React.VFC = () => (
       startAt={subDays(new Date(), 1)}
       endAt={addDays(new Date(), 10)}
       networkId={1}
-      initialPrice={1}
-      currentPrice={21.1}
+      price={1}
+      hasBought={false}
       onComplete={action('onComplete')}
     />
   </Container>
@@ -25,8 +25,8 @@ export const AuctionLivePolygon: React.VFC = () => (
       startAt={subDays(new Date(), 1)}
       endAt={addDays(new Date(), 10)}
       networkId={137}
-      initialPrice={1}
-      currentPrice={21.1}
+      price={1}
+      hasBought={false}
       onComplete={action('onComplete')}
     />
   </Container>
@@ -39,8 +39,8 @@ export const AuctionEnd: React.VFC = () => (
       startAt={new Date()}
       endAt={subDays(new Date(), 10)}
       networkId={1}
-      initialPrice={1}
-      currentPrice={21.1}
+      price={1}
+      hasBought={false}
       onComplete={action('onComplete')}
     />
   </Container>
@@ -52,8 +52,8 @@ export const FixedPriceOnSale: React.VFC = () => (
       tradeType={'fixedPrice'}
       startAt={subDays(new Date(), 1)}
       endAt={addDays(new Date(), 10)}
-      networkId={1}
-      currentPrice={21.1}
+      price={1}
+      hasBought={false}
       onComplete={action('onComplete')}
     />
   </Container>
@@ -66,7 +66,7 @@ export const FixedPriceBought: React.VFC = () => (
       startAt={subDays(new Date(), 1)}
       endAt={addDays(new Date(), 10)}
       networkId={1}
-      currentPrice={21.1}
+      price={1}
       onComplete={action('onComplete')}
       hasBought={true}
     />
@@ -80,7 +80,8 @@ export const FixedPriceBefore: React.VFC = () => (
       startAt={subDays(new Date(), 2)}
       endAt={subDays(new Date(), 1)}
       networkId={1}
-      currentPrice={21.1}
+      price={1}
+      hasBought={false}
       onComplete={action('onComplete')}
     />
   </Container>
