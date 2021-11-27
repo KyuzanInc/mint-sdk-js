@@ -4,12 +4,12 @@ import * as ethers from 'ethers'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 import {
-  DefaultApiFactory,
-  RegisterItemShippingInfoRequestBody,
-  ItemShippingInfo,
-  ItemType,
-  TradeType,
-} from './apiClient/api'
+  ResponseItemTypeEnum,
+  Item,
+  ResponseItem,
+  ItemStockStatus,
+  DefaultApiFactory as DefaultApiFactoryV2,
+} from './apiClientV2/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
@@ -22,18 +22,20 @@ import {
   NodeStrategy,
 } from './strategies'
 import { BACKEND_URL } from './constants/index'
-import { Item } from './types/Item'
 import { ItemLog } from './types/ItemLog'
-import { NetworkId, networkIdMapLabel } from './types/NetworkId'
+import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
 import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
 import { ItemsType } from './types/ItemsType'
 import { ItemTradeType } from './types/ItemTradeType'
-import { AccountInfo } from './apiClient/api'
 
 export {
   Item,
+  ResponseItem,
+  ResponseItemTypeEnum as ItemWithPhysicalItemType,
+  ItemStockStatus,
+  // v1
   ItemLog,
   ItemTradeType,
   ItemsType,
@@ -45,9 +47,6 @@ export {
   WalletInfo,
   WrongNetworkError,
   CurrencyUnit,
-  RegisterItemShippingInfoRequestBody,
-  ItemShippingInfo,
-  AccountInfo,
 }
 
 export class MintSDK {
@@ -94,7 +93,7 @@ export class MintSDK {
   /**
    * @ignore
    */
-  private apiClient: ReturnType<typeof DefaultApiFactory>
+  private apiClientV2: ReturnType<typeof DefaultApiFactoryV2>
 
   private walletStrategy: WalletStrategy
 
@@ -106,7 +105,6 @@ export class MintSDK {
    */
   public constructor(
     private accessToken: string,
-    private networkIds: NetworkId[],
     walletSetting: WalletSetting,
     // for Developing SDK
     devOption?: {
@@ -117,13 +115,9 @@ export class MintSDK {
     if (typeof globalThis.window === 'undefined') {
       this.walletStrategy = new NodeStrategy()
     } else if (MetamaskStrategy.checkExistsWeb3ProviderInWindow()) {
-      this.walletStrategy = new MetamaskStrategy(networkIds)
+      this.walletStrategy = new MetamaskStrategy()
     } else {
-      this.walletStrategy = new FortmaticStrategy(
-        networkIds,
-        walletSetting,
-        devOption
-      )
+      this.walletStrategy = new FortmaticStrategy(walletSetting, devOption)
     }
 
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
@@ -137,7 +131,11 @@ export class MintSDK {
         'annapurna-access-token': accessToken,
       },
     })
-    this.apiClient = DefaultApiFactory(undefined, backendBaseUrl, this.axios)
+    this.apiClientV2 = DefaultApiFactoryV2(
+      undefined,
+      backendBaseUrl,
+      this.axios
+    )
   }
 
   /**
@@ -239,16 +237,10 @@ export class MintSDK {
   }
 
   /**
-   * 公開中(Items.openStatus === 'open')のアイテムを取得
+   * 公開中の商品を取得
    * ステータスの変更は管理画面から行えます。
    *
    * #### 制限事項
-   *
-   * 次の制限事項に注意してください。
-   *
-   * - `tradeType === 'fixedPrice'`を指定した場合、`'endAt' | 'startAt'`によるsortは行えません
-   * - `tradeType === 'auction'`を指定した場合、`price`によるsortは行えません
-   * - `onSale`を指定した場合、`startAt`によるsortは行えません
    *
    * @param paging
    * @returns
@@ -256,189 +248,137 @@ export class MintSDK {
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    *
-   * const items = await sdk.getItems({ onSale: true })
+   * const items = await sdk.getItems(...)
    * ```
    */
 
-  public getItems = async (
-    {
-      perPage,
-      page,
-      networkId,
-      itemType,
-      tradeType,
-      onSale,
-      sort,
-    }: {
-      /**
-       * 1ページあたりのアイテム数。
-       * デフォルトは30。
-       */
-      perPage: number
-      /**
-       * ページ数。
-       */
-      page: number
-      /**
-       * `'endAt','startAt'`はオークションの場合に有効で、オークションの終了・開始時間でsortを行います。`price`は固定価格販売の場合のみ有効です。
-       */
-      sort?: {
-        sortBy: 'endAt' | 'startAt' | 'price'
-        order: 'asc' | 'desc'
-      }
-      /**
-       * 指定しなければ、コンストラクターの値が使われます
-       */
-      networkId?: NetworkId[]
-      itemType?: ItemsType
-      tradeType?: ItemTradeType
-      /**
-       *
-       */
-      onSale?: boolean
-    } = {
-      perPage: 30,
-      page: 1,
-    }
-  ) => {
-    const { data } = await this.apiClient.getItemList(
-      this.accessToken,
-      networkId
-        ? networkId.map((id) => id.toString())
-        : this.networkIds.map((id) => id.toString()),
-      itemType ? (itemType as ItemType) : undefined,
-      tradeType ? (tradeType as TradeType) : undefined,
-      typeof onSale !== 'undefined' ? (onSale ? 'true' : 'false') : undefined,
-      perPage.toString(),
-      page.toString(),
-      sort ? sort.sortBy : undefined,
-      sort ? sort.order : undefined
-    )
-    const items = data.data as Item[]
-    const formatItems = items.map(this.formatItem)
-    return formatItems
+  public getItems = async () => {
+    const { data } = await this.apiClientV2.getItems(this.accessToken)
+    return data.data
   }
 
+  // /**
+  //  * 指定したアドレスがBidしたItemの一覧を取得
+  //  *
+  //  * @param address ウォレットのアドレス
+  //  * @returns
+  //  *
+  //  * ```typescript
+  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
+  //  * const sdk = await MintSDK.initialize(...)
+  //  * const item = await sdk.getItemsByBidderAddress('0x1111......')
+  //  * ```
+  //  */
+  // public getItemsByBidderAddress = async (address: string) => {
+  //   const { data } = await this.axios.get('v3_getItemsByBidderAddress', {
+  //     params: {
+  //       address,
+  //       networkIds: this.networkIds,
+  //     },
+  //   })
+  //   const items = data.data as Item[]
+  //   return items.map(this.formatItem)
+  // }
+
   /**
-   * 指定したアドレスがBidしたItemの一覧を取得
+   * 商品をid指定でアイテムを取得
    *
-   * @param address ウォレットのアドレス
+   * @param itemId {@link ResponseItem}の`id`
    * @returns
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
-   * const item = await sdk.getItemsByBidderAddress('0x1111......')
-   * ```
-   */
-  public getItemsByBidderAddress = async (address: string) => {
-    const { data } = await this.axios.get('v3_getItemsByBidderAddress', {
-      params: {
-        address,
-        networkIds: this.networkIds,
-      },
-    })
-    const items = data.data as Item[]
-    return items.map(this.formatItem)
-  }
-
-  /**
-   * ItemのitemId指定でアイテムを取得
-   *
-   * @param itemId {@link Item}のitemId
-   * @returns
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
-   * const item = await sdk.getItemById('item.itemId')
+   * const item = await sdk.getItemById('item.id')
    * ```
    */
   public getItemById = async (itemId: string) => {
-    const { data } = await this.axios.get('v2_item', { params: { itemId } })
-    const item = data.data as Item
-    return this.formatItem(item)
-  }
-
-  /**
-   * Tokenに紐づいたItemを取得
-   * @param token
-   * @returns
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
-   * const item = await sdk.getItemByToken(token)
-   * ```
-   */
-  public getItemByToken = async (token: Token) => {
-    const { data } = await this.axios.get<AxiosBody<Item>>('v2_itemByToken', {
-      params: {
-        tokenId: token.tokenId,
-        networkId: token.item.networkId,
-        tokenAddress: token.contractAddress,
-        mintContractAddress: token.contractAddress,
-      },
-    })
-    const item = data.data
-    return this.formatItem(item)
-  }
-
-  /**
-   * アイテムの履歴(bidされた、買われた)の取得
-   * 最新の物から返される
-   *
-   * @param itemId {@link Item}のitemId
-   * @returns
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   *
-   * const sdk = await MintSDK.initialize(...)
-   * const item = await sdk.getItemLogs('Item.itemId')
-   * ```
-   */
-  public getItemLogs = async (
-    itemId: string,
-    paging = {
-      perPage: 30,
-      page: 1,
-    }
-  ) => {
-    const { data } = await this.apiClient.getItemLogs(
+    const { data } = await this.apiClientV2.getItemById(
       this.accessToken,
-      itemId,
-      paging.perPage.toString(),
-      paging.page.toString()
-    )
-    const logs = data.data
-    return logs.map((l) => ({
-      ...l,
-      createAt: new Date(l.createAt),
-    }))
-  }
-
-  /**
-   * 指定したアドレスが所持しているMINT経由で獲得したトークンを取得
-   *
-   * @param address Walletのアドレス
-   * @returns
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...
-   * const tokens = await sdk.getTokensByAddress('0x11111...')
-   * ```
-   */
-  public getTokensByAddress = async (address: string) => {
-    const { data } = await this.axios.get<AxiosBody<Token[]>>(
-      'v3_tokensByAddress',
-      {
-        params: { address, networkIds: this.networkIds },
-      }
+      itemId
     )
     return data.data
   }
+
+  // /**
+  //  * Tokenに紐づいたItemを取得
+  //  * @param token
+  //  * @returns
+  //  *
+  //  * ```typescript
+  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
+  //  * const sdk = await MintSDK.initialize(...)
+  //  * const item = await sdk.getItemByToken(token)
+  //  * ```
+  //  */
+  // public getItemByToken = async (token: Token) => {
+  //   const { data } = await this.axios.get<AxiosBody<Item>>('v2_itemByToken', {
+  //     params: {
+  //       tokenId: token.tokenId,
+  //       networkId: token.item.networkId,
+  //       tokenAddress: token.contractAddress,
+  //       mintContractAddress: token.contractAddress,
+  //     },
+  //   })
+  //   const item = data.data
+  //   return this.formatItem(item)
+  // }
+
+  // /**
+  //  * アイテムの履歴(bidされた、買われた)の取得
+  //  * 最新の物から返される
+  //  *
+  //  * @param itemId {@link Item}のitemId
+  //  * @returns
+  //  *
+  //  * ```typescript
+  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
+  //  *
+  //  * const sdk = await MintSDK.initialize(...)
+  //  * const item = await sdk.getItemLogs('Item.itemId')
+  //  * ```
+  //  */
+  // public getItemLogs = async (
+  //   itemId: string,
+  //   paging = {
+  //     perPage: 30,
+  //     page: 1,
+  //   }
+  // ) => {
+  //   const { data } = await this.apiClient.getItemLogs(
+  //     this.accessToken,
+  //     itemId,
+  //     paging.perPage.toString(),
+  //     paging.page.toString()
+  //   )
+  //   const logs = data.data
+  //   return logs.map((l) => ({
+  //     ...l,
+  //     createAt: new Date(l.createAt),
+  //   }))
+  // }
+
+  // /**
+  //  * 指定したアドレスが所持しているMINT経由で獲得したトークンを取得
+  //  *
+  //  * @param address Walletのアドレス
+  //  * @returns
+  //  *
+  //  * ```typescript
+  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
+  //  * const sdk = await MintSDK.initialize(...
+  //  * const tokens = await sdk.getTokensByAddress('0x11111...')
+  //  * ```
+  //  */
+  // public getTokensByAddress = async (address: string) => {
+  //   const { data } = await this.axios.get<AxiosBody<Token[]>>(
+  //     'v3_tokensByAddress',
+  //     {
+  //       params: { address, networkIds: this.networkIds },
+  //     }
+  //   )
+  //   return data.data
+  // }
 
   /**
    * 指定した金額でBidするトランザクションを発行
@@ -469,178 +409,187 @@ export class MintSDK {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
-
-    const item = await this.getItemById(itemId)
-    await this.validateNetworkForItem(item)
-    const wallet = this.walletStrategy.getProvider()
-    const { abi, address } = await this.getMintShopContractInfo(item.networkId)
-    const signer = wallet.getSigner()
-    const shopContract = new ethers.Contract(address, abi, signer)
-    if (item.tradeType !== 'autoExtensionAuction') {
-      throw new Error("Item's tradeType is not auction")
+    const resItem = await this.getItemById(itemId)
+    if (
+      resItem.item.paymentMethodData.paymentMethod !==
+      'ethereum-contract-erc721-shop-auction'
+    ) {
+      return
     }
-    const initialPrice = ethers.utils
-      .parseEther(String(item.initialPrice))
-      .toString()
-    const price = ethers.utils.parseEther(String(bidPrice)).toString()
-    const startAt = item.startAt!.getTime() / 1000
-    const endAt = item.endAt!.getTime() / 1000
-    const sign = await this.apiClient.getItemSignedDataBidAuction(
+    const { data } = await this.apiClientV2.getItemStockDetailERC721Shop(
       this.accessToken,
       itemId
     )
+    // TODO
+    // await this.validateNetworkForItem(item)
+    const wallet = this.walletStrategy.getProvider()
+    const signer = wallet.getSigner()
+    const shopContract = new ethers.Contract(
+      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      signer
+    )
+    const initialPrice = ethers.utils
+      .parseEther(String(resItem.item.price))
+      .toString()
+    const price = ethers.utils.parseEther(String(bidPrice)).toString()
+    const startAt = new Date(resItem.item.startAt).getTime() / 1000
+    const endAt = new Date(resItem.item.endAt).getTime() / 1000
     return (await shopContract.bidAuction(
-      item.mintContractAddress,
-      item.tokenId,
+      data.data.contractERC721.address,
+      data.data.productERC721.tokenId,
       initialPrice,
       startAt,
       endAt,
       price,
-      sign.data.data.signedData,
+      data.data.signiture,
       {
         value: price,
       }
     )) as ethers.providers.TransactionResponse
   }
 
-  /**
-   * オークションで勝利したアイテムを引き出すトランザクションを発行
-   * ユーザーの居住地を問うUIを合わせて実装必要です。居住地を設定することで消費税に関する会計処理などがスムーズに行えます
-   *
-   * **Required**
-   * - ウォレットに接続していること
-   * - **自動延長オークションは、`withdrawableAt`以降に引き出し可能です**
-   *
-   * @param itemId {@link Item}のitemId
-   * @param userResidence {@link Residence} 購入者の居住地を指定する
-   * @returns
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
-   * await sdk.connectWallet() // required
-   * try {
-   *  const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId', 'jp')
-   *  // show loading
-   *  await tx.wait()
-   *  // success transaction
-   * } catch (err) {
-   *  // display error message
-   * }
-   * ```
-   */
-  public sendTxMakeSuccessfulBid = async (
-    itemId: string,
-    userResidence: Residence = 'unknown'
-  ) => {
-    // wallet connect check
-    if (!(await this.isWalletConnect())) {
-      throw new Error('Wallet is not connected')
-    }
-    const item = await this.getItemById(itemId)
-    await this.validateNetworkForItem(item)
-    const wallet = this.walletStrategy.getProvider()
-    const { abi, address } = await this.getMintShopContractInfo(item.networkId)
-    const signer = wallet.getSigner()
-    const shopContract = new ethers.Contract(address, abi, signer)
-    if (item.tradeType !== 'autoExtensionAuction') {
-      throw new Error("Item's tradeType is not auction")
-    }
-    const sign = await this.apiClient.getItemSignedDataBuyAuction(
-      this.accessToken,
-      itemId
-    )
-    const tx = (await shopContract.buyAuction(
-      item.mintContractAddress,
-      item.tokenId,
-      item.tokenURI,
-      item.authorAddress,
-      item.endAt!.getTime() / 1000,
-      item.feeRatePermill,
-      sign.data.data.signedData
-    )) as ethers.providers.TransactionResponse
-    const hash = tx.hash
-    await this.axios.post('/v2_registerTransactionReceiptsApp', {
-      txHash: hash,
-      itemId,
-      residence: userResidence,
-    })
-    return tx
-  }
+  // /**
+  //  * オークションで勝利したアイテムを引き出すトランザクションを発行
+  //  * ユーザーの居住地を問うUIを合わせて実装必要です。居住地を設定することで消費税に関する会計処理などがスムーズに行えます
+  //  *
+  //  * **Required**
+  //  * - ウォレットに接続していること
+  //  * - **自動延長オークションは、`withdrawableAt`以降に引き出し可能です**
+  //  *
+  //  * @param itemId {@link Item}のitemId
+  //  * @param userResidence {@link Residence} 購入者の居住地を指定する
+  //  * @returns
+  //  *
+  //  * ```typescript
+  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
+  //  * const sdk = await MintSDK.initialize(...)
+  //  * await sdk.connectWallet() // required
+  //  * try {
+  //  *  const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId', 'jp')
+  //  *  // show loading
+  //  *  await tx.wait()
+  //  *  // success transaction
+  //  * } catch (err) {
+  //  *  // display error message
+  //  * }
+  //  * ```
+  //  */
+  // public sendTxMakeSuccessfulBid = async (
+  //   itemId: string,
+  //   userResidence: Residence = 'unknown'
+  // ) => {
+  //   // wallet connect check
+  //   if (!(await this.isWalletConnect())) {
+  //     throw new Error('Wallet is not connected')
+  //   }
+  //   const item = await this.getItemById(itemId)
+  //   await this.validateNetworkForItem(item)
+  //   const wallet = this.walletStrategy.getProvider()
+  //   const { abi, address } = await this.getMintShopContractInfo(item.networkId)
+  //   const signer = wallet.getSigner()
+  //   const shopContract = new ethers.Contract(address, abi, signer)
+  //   if (item.tradeType !== 'autoExtensionAuction') {
+  //     throw new Error("Item's tradeType is not auction")
+  //   }
+  //   const sign = await this.apiClient.getItemSignedDataBuyAuction(
+  //     this.accessToken,
+  //     itemId
+  //   )
+  //   const tx = (await shopContract.buyAuction(
+  //     item.mintContractAddress,
+  //     item.tokenId,
+  //     item.tokenURI,
+  //     item.authorAddress,
+  //     item.endAt!.getTime() / 1000,
+  //     item.feeRatePermill,
+  //     sign.data.data.signedData
+  //   )) as ethers.providers.TransactionResponse
+  //   const hash = tx.hash
+  //   await this.axios.post('/v2_registerTransactionReceiptsApp', {
+  //     txHash: hash,
+  //     itemId,
+  //     residence: userResidence,
+  //   })
+  //   return tx
+  // }
 
-  /**
-   * FixedPriceのアイテムを購入するトランザクションを発行
-   * ユーザーの居住地を問うUIを合わせて実装必要
-   * 消費税に関する会計処理などがスムーズに行えます
-   *
-   * **Required**
-   * - ウォレットに接続していること
-   *
-   * @param itemId {@link Item}のitemId
-   * @param userResidence {@link Residence} 購入者の居住地を指定する
-   * @returns
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
-   * await sdk.connectWallet() // required
-   * try {
-   *  const tx = await sdk.sendTxBuyItem('item.itemId', 'jp')
-   *  // show loading
-   *  await tx.wait()
-   *  // success transaction
-   * } catch (err) {
-   *  // display error message
-   * }
-   * ```
-   */
-  public sendTxBuyItem = async (
-    itemId: string,
-    userResidence: Residence = 'unknown'
-  ) => {
+  // /**
+  //  * FixedPriceのアイテムを購入するトランザクションを発行
+  //  * ユーザーの居住地を問うUIを合わせて実装必要
+  //  * 消費税に関する会計処理などがスムーズに行えます
+  //  *
+  //  * **Required**
+  //  * - ウォレットに接続していること
+  //  *
+  //  * @param itemId {@link Item}のitemId
+  //  * @param userResidence {@link Residence} 購入者の居住地を指定する
+  //  * @returns
+  //  *
+  //  * ```typescript
+  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
+  //  * const sdk = await MintSDK.initialize(...)
+  //  * await sdk.connectWallet() // required
+  //  * try {
+  //  *  const tx = await sdk.sendTxBuyItem('item.itemId', 'jp')
+  //  *  // show loading
+  //  *  await tx.wait()
+  //  *  // success transaction
+  //  * } catch (err) {
+  //  *  // display error message
+  //  * }
+  //  * ```
+  //  */
+  public sendTxBuyItem = async (itemId: string, _: Residence = 'unknown') => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
 
     const item = await this.getItemById(itemId)
-    await this.validateNetworkForItem(item)
+    // TODO
+    // await this.validateNetworkForItem(item)
     const wallet = this.walletStrategy.getProvider()
-    const { abi, address } = await this.getMintShopContractInfo(item.networkId)
-    const signer = wallet.getSigner()
-    const shopContract = new ethers.Contract(address, abi, signer)
-    if (item.tradeType !== 'fixedPrice') {
-      throw new Error("Item's tradeType is not fixedPrice")
+    const resItem = await this.getItemById(itemId)
+    if (
+      resItem.item.paymentMethodData.paymentMethod !==
+      'ethereum-contract-erc721-shop-fixed-price'
+    ) {
+      return
     }
+    console.log(itemId)
+    const signer = wallet.getSigner()
+    const shopContract = new ethers.Contract(
+      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      signer
+    )
+    // TODO
+    // if (item.tradeType !== 'fixedPrice') {
+    //   throw new Error("Item's tradeType is not fixedPrice")
+    // }
 
-    const {
-      data: {
-        data: { signedData },
-      },
-    } = await this.apiClient.getItemSignedDataFixedPrice(
+    const data = await this.apiClientV2.getItemStockDetailERC721Shop(
       this.accessToken,
       itemId
     )
-
-    const price = ethers.utils
-      .parseEther((item.price as number).toString())
-      .toString()
+    const price = ethers.utils.parseEther(item.item.price.toString()).toString()
     const tx = (await shopContract.buyFixedPrice(
-      item.mintContractAddress,
-      item.tokenId,
-      item.tokenURI,
-      item.authorAddress,
+      data.data.data.contractERC721.address,
+      data.data.data.productERC721.tokenId,
+      data.data.data.productERC721.tokenURI,
+      data.data.data.productERC721.creatorAddress,
       price,
-      item.feeRatePermill,
-      signedData,
+      item.item.feeRatePermill,
+      data.data.data.signiture,
       {
         value: price,
       }
     )) as ethers.providers.TransactionResponse
-    await this.axios.post('/v2_registerTransactionReceiptsApp', {
-      txHash: tx.hash,
-      itemId,
-      residence: userResidence,
-    })
+    // await this.axios.post('/v2_registerTransactionReceiptsApp', {
+    //   txHash: tx.hash,
+    //   itemId,
+    //   residence: userResidence,
+    // })
     return tx
   }
 
@@ -753,28 +702,28 @@ export class MintSDK {
     return typeof (window as any).ethereum !== 'undefined'
   }
 
-  /**
-   * 適切なネットワークかを判定
-   *
-   * @returns trueならば適切なネットワーク
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   *
-   * const sdk = MintSDK.initialize(...)
-   * await sdk.isCorrectNetwork() // true
-   * ```
-   */
-  public isCorrectNetwork = async () => {
-    if (this.isInjectedWallet()) {
-      return this.networkIds.includes(
-        parseInt((window as any).ethereum.networkVersion, 10) as any
-      )
-    } else {
-      const network = await this.walletStrategy.getProvider().getNetwork()
-      return this.networkIds.includes(network.chainId as any)
-    }
-  }
+  // /**
+  //  * 適切なネットワークかを判定
+  //  *
+  //  * @returns trueならば適切なネットワーク
+  //  *
+  //  * ```typescript
+  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
+  //  *
+  //  * const sdk = MintSDK.initialize(...)
+  //  * await sdk.isCorrectNetwork() // true
+  //  * ```
+  //  */
+  // public isCorrectNetwork = async () => {
+  //   if (this.isInjectedWallet()) {
+  //     return this.networkIds.includes(
+  //       parseInt((window as any).ethereum.networkVersion, 10) as any
+  //     )
+  //   } else {
+  //     const network = await this.walletStrategy.getProvider().getNetwork()
+  //     return this.networkIds.includes(network.chainId as any)
+  //   }
+  // }a
 
   /**
    * 接続中のネットワークIDを返す
@@ -791,275 +740,6 @@ export class MintSDK {
    */
   public getConnectedNetworkId = async () => {
     return await this.walletStrategy.getConnectedNetworkId()
-  }
-
-  /**
-   * 物理アイテム付きのItemの発送先情報を登録
-   * ユーザーに配送先情報を入力してもらうフォームなどを用意して使ってください
-   *
-   * **Required**
-   * - ウォレットに接続していること
-   * - ユーザーが{@link Item}の`type`が`nftWithPhysicalProduct`であること
-   * - {@link Item}が引き出されている or 買われていること（{@link Token}になっていること)
-   * - ユーザーが{@link Item}の`physicalOrderStatus`が`shippingInfoIsBlank`であること
-   * - ユーザーが{@link Token}の所有者であること
-   *
-   * @param arg itemId = {@link Item}のitemId, shippingInfo = 配送先情報
-   * @returns
-   *
-   */
-  public registerItemShippingInfo = async (arg: {
-    itemId: string
-    shippingInfo: Omit<
-      RegisterItemShippingInfoRequestBody,
-      'signedData' | 'chainType' | 'networkId' | 'contractAddress' | 'tokenId'
-    >
-  }) => {
-    if (!(await this.isWalletConnect())) {
-      throw new Error('Wallet is not connected')
-    }
-
-    const item = await this.getItemById(arg.itemId)
-    const signingData: Omit<RegisterItemShippingInfoRequestBody, 'signedData'> =
-      {
-        chainType: item.chainType as any,
-        networkId: item.networkId,
-        contractAddress: item.mintContractAddress,
-        tokenId: item.tokenId,
-        ...arg.shippingInfo,
-      }
-    const signDataType = {
-      domain: {
-        chainId: item.networkId,
-        name: 'フィジカルアイテムの発送先情報',
-        version: '1',
-      },
-      message: signingData,
-      primaryType: 'ShippingInformation',
-      types: {
-        EIP712Domain: [
-          { name: 'name', type: 'string' },
-          { name: 'version', type: 'string' },
-          { name: 'chainId', type: 'uint256' },
-        ],
-        // Not an EIP712Domain definition
-        ShippingInformation: [
-          { name: 'chainType', type: 'string' },
-          { name: 'networkId', type: 'int256' },
-          { name: 'contractAddress', type: 'string' },
-          { name: 'tokenId', type: 'int256' },
-          { name: 'name', type: 'string' },
-          { name: 'email', type: 'string' },
-          { name: 'postalCode', type: 'string' },
-          { name: 'prefecture', type: 'string' },
-          { name: 'city', type: 'string' },
-          { name: 'address1', type: 'string' },
-          { name: 'address2', type: 'string' },
-          { name: 'tel', type: 'string' },
-          { name: 'memo', type: 'string' },
-        ],
-      },
-    }
-    const signedData = await this.signData({ msgParams: signDataType })
-    // apiへのpost
-    const body = {
-      ...signingData,
-      signedData,
-    }
-    await this.apiClient.registerItemShippingInfo(
-      this.accessToken,
-      item.itemId,
-      body
-    )
-  }
-
-  /**
-   * 物理アイテム付きのItemの入力された発送先情報を取得
-   * {@link Items}セキュリティの観点から、ユーザーのSignが必要になります
-   *
-   * **Required**
-   * - ウォレットに接続していること
-   * - ユーザーが{@link Item}の`type`が`nftWithPhysicalProduct`であること
-   * - {@link Item}が引き出されている or 買われていること（{@link Token}になっていること)
-   * - ユーザーが{@link Item}の`physicalOrderStatus`が`wip`または`ship`であること
-   * - ユーザーが{@link Token}の所有者であること
-   *
-   * @param arg itemId = {@link Item}のitemI
-   * @returns
-   *
-   */
-  public getItemShippingInfo = async (arg: { itemId: string }) => {
-    if (!(await this.isWalletConnect())) {
-      throw new Error('Wallet is not connected')
-    }
-    const { address } = await this.getWalletInfo()
-
-    const item = await this.getItemById(arg.itemId)
-    const signDataType = {
-      domain: {
-        chainId: item.networkId,
-        name: 'フィジカルアイテムの発送先情報の確認',
-        version: '1',
-      },
-      message: {
-        address,
-      },
-      primaryType: 'WalletAddress',
-      types: {
-        EIP712Domain: [
-          { name: 'name', type: 'string' },
-          { name: 'version', type: 'string' },
-          { name: 'chainId', type: 'uint256' },
-        ],
-        WalletAddress: [{ name: 'address', type: 'string' }],
-      },
-    }
-    const signedData = await this.signData({ msgParams: signDataType })
-
-    const res = await this.apiClient.getItemShippingInfo(
-      this.accessToken,
-      item.itemId,
-      address,
-      signedData
-    )
-    return res.data
-  }
-
-  /**
-   * ユーザーのウォレットアドレスの画像や表示名を取得できる
-   * 設定されていない場合は、各項目空文字が入っています
-   *
-   * @param
-   * @returns
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   *
-   * const sdk = MintSDK.initialize(...)
-   * await sdk.connectWallet()
-   * const accountInfo = await sdk.getAccountInfo({ walletAddress: '0xxxxxxxx' })
-   * ```
-   */
-  public getAccountInfo = async (arg: { walletAddress: string }) => {
-    const res = await this.apiClient.getAccountInfo(
-      this.accessToken,
-      arg.walletAddress
-    )
-    return res.data.data
-  }
-
-  /**
-   * ユーザーのウォレットアドレスの画像や表示名を設定できる
-   * 全ての項目は optionalです。設定しない場合は空文字を入れてください
-   * `avatarImgId`は`sdk.uploadImg`の返り値です
-   *
-   *
-   * **Required**
-   * - ウォレットに接続していること
-   *
-   * @param
-   * @returns
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   *
-   * const sdk = MintSDK.initialize(...)
-   * await sdk.connectWallet()
-   * const imgId = await sdk.uploadAvatarImg()
-   * await sdk.updateAccountInfo({ imgId, .... })
-   * ```
-   */
-  public updateAccountInfo = async (arg: {
-    avatarImgId: string
-    displayName: string
-    bio: string
-    twitterAccountName: string
-    instagramAccountName: string
-    homepageUrl: string
-  }) => {
-    if (!(await this.isWalletConnect())) {
-      throw new Error('Wallet is not connected')
-    }
-    const networkId = await this.getConnectedNetworkId()
-    const signDataType = {
-      domain: {
-        chainId: networkId,
-        name: 'アカウント情報の更新',
-        version: '1',
-      },
-      message: {
-        avatarImgId: arg.avatarImgId,
-        displayName: arg.displayName,
-        bio: arg.bio,
-        twitterAccountName: arg.twitterAccountName,
-        instagramAccountName: arg.instagramAccountName,
-        homepageUrl: arg.homepageUrl,
-      },
-      primaryType: 'AccountInfo',
-      types: {
-        EIP712Domain: [
-          { name: 'name', type: 'string' },
-          { name: 'version', type: 'string' },
-          { name: 'chainId', type: 'uint256' },
-        ],
-        AccountInfo: [
-          { name: 'avatarImgId', type: 'string' },
-          { name: 'displayName', type: 'string' },
-          { name: 'bio', type: 'string' },
-          { name: 'twitterAccountName', type: 'string' },
-          { name: 'instagramAccountName', type: 'string' },
-          { name: 'homepageUrl', type: 'string' },
-        ],
-      },
-    }
-
-    const signedData = await this.signData({ msgParams: signDataType })
-    await this.apiClient.createAccountInfo(this.accessToken, {
-      signedData,
-      networkId,
-      avatarImgId: arg.avatarImgId,
-      displayName: arg.displayName,
-      bio: arg.bio,
-      twitterAccountName: arg.twitterAccountName,
-      instagramAccountName: arg.instagramAccountName,
-      homepageUrl: arg.homepageUrl,
-    })
-  }
-
-  /**
-   * `sdk.updateAccountInfo`の引数の`imgId`を取得できる
-   * uploadedImgUrlはアップロードされた画像のRead用のURLです。
-   *
-   * **Required**
-   * - ウォレットに接続していること
-   *
-   * @param
-   * @returns
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   *
-   * const sdk = MintSDK.initialize(...)
-   * await sdk.connectWallet()
-   * const { imgId, uploadedImgUrl } = await sdk.uploadAccountInfoAvatar({ file })
-   * ```
-   */
-  public uploadAccountInfoAvatar = async (arg: { file: File }) => {
-    if (!(await this.isWalletConnect())) {
-      throw new Error('Wallet is not connected')
-    }
-
-    const res = await this.apiClient.getAvatarSignedUrlToUpload(
-      this.accessToken
-    )
-    await this.uploadData({
-      signedUrl: res.data.data.signedUrlForUpload,
-      file: arg.file,
-    })
-    return {
-      imgId: res.data.data.imgId,
-      uploadedImgUrl: res.data.data.signedUrlForRead,
-    }
   }
 
   /**
@@ -1250,39 +930,40 @@ export class MintSDK {
   /**
    * @ignore
    */
-  private validateNetworkForItem = async (item: Item) => {
-    const currentNetwork = await this.getConnectedNetworkId()
-    if (currentNetwork !== item.networkId) {
-      throw new WrongNetworkError('Network is not correct')
-    }
-  }
+  // private validateNetworkForItem = async (item: ItemStock) => {
+  //   // TODO: ItemStock？でバリデーションやな？
+  //   const currentNetwork = await this.getConnectedNetworkId()
+  //   if (currentNetwork !== item.itemStocks) {
+  //     throw new WrongNetworkError('Network is not correct')
+  //   }
+  // }
 
-  /**
-   * @ignore
-   */
-  private getMintShopContractInfo = async (networkId: NetworkId) => {
-    const { data } = await this.axios.get('/v2_projectConfig')
-    const networkLabel = networkIdMapLabel[networkId]
-    const abi = data.data.contract.mintShopContract[networkLabel].abi
-    const address = data.data.contract.mintShopContract[networkLabel].address
-    return {
-      abi,
-      address,
-    }
-  }
+  // /**
+  //  * @ignore
+  //  */
+  // private getMintShopContractInfo = async (networkId: NetworkId) => {
+  //   const { data } = await this.axios.get('/v2_projectConfig')
+  //   const networkLabel = networkIdMapLabel[networkId]
+  //   const abi = data.data.contract.mintShopContract[networkLabel].abi
+  //   const address = data.data.contract.mintShopContract[networkLabel].address
+  //   return {
+  //     abi,
+  //     address,
+  //   }
+  // }
 
-  /**
-   * @ignore
-   */
-  private formatItem = (item: Item) => {
-    return {
-      ...item,
-      startAt: item.startAt ? new Date(item.startAt) : undefined,
-      endAt: item.endAt ? new Date(item.endAt) : undefined,
-      defaultEndAt: item.defaultEndAt ? new Date(item.defaultEndAt) : undefined,
-      withdrawableAt: item.withdrawableAt
-        ? new Date(item.withdrawableAt)
-        : undefined,
-    } as Item
-  }
+  // /**
+  //  * @ignore
+  //  */
+  // private formatItem = (item: Item) => {
+  //   return {
+  //     ...item,
+  //     startAt: item.startAt ? new Date(item.startAt) : undefined,
+  //     endAt: item.endAt ? new Date(item.endAt) : undefined,
+  //     defaultEndAt: item.defaultEndAt ? new Date(item.defaultEndAt) : undefined,
+  //     withdrawableAt: item.withdrawableAt
+  //       ? new Date(item.withdrawableAt)
+  //       : undefined,
+  //   } as Item
+  // }
 }

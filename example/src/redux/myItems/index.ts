@@ -1,6 +1,5 @@
 import { Item, Token } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getSdk } from '../../sdk'
 
 export type MyItemsState = {
   data: {
@@ -34,10 +33,11 @@ export const getBidedActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/myItems/bidedItems/get', async ({ bidderAddress }, thunkApi) => {
+>('app/myItems/bidedItems/get', async (_, thunkApi) => {
   try {
-    const items = await getSdk().getItemsByBidderAddress(bidderAddress)
-    return items ?? []
+    // TODO
+    // const items = await getSdk().getItemsByBidderAddress(bidderAddress)
+    return []
   } catch (err) {
     return thunkApi.rejectWithValue('Itemを取得できませんでした')
   }
@@ -49,10 +49,11 @@ export const getOwnItemsActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/myItems/ownItems/get', async ({ walletAddress }, thunkApi) => {
+>('app/myItems/ownItems/get', async (_, thunkApi) => {
   try {
-    const items = await getSdk().getTokensByAddress(walletAddress)
-    return items ?? []
+    // TODO
+    // const items = await getSdk().getTokensByAddress(walletAddress)
+    return []
   } catch (err) {
     return thunkApi.rejectWithValue('Itemを取得できませんでした')
   }

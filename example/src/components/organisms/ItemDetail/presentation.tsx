@@ -1,3 +1,8 @@
+import {
+  Item,
+  ItemStockStatus,
+  ItemWithPhysicalItemType,
+} from '@kyuzan/mint-sdk-js'
 import styled from '@emotion/styled'
 import React, { ChangeEventHandler } from 'react'
 import { Tag as TagBase } from '../../atoms/Tag'
@@ -8,11 +13,9 @@ import { AboutPhysicalModal } from '../../molecules/AboutPhysicalModal'
 import { AboutAutoExtensionAuctionModal } from '../../molecules/AboutAutoExtensionAuctionModal'
 import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
 import { SecondaryButton } from '../../atoms/SecondaryButton'
-import { getItemPrice } from '../../../util/getItemPrice'
 import { getItemPriceUnit, getPriceUnit } from '../../../util/getItemPriceUnit'
 import Image from 'next/image'
 import { StatusDetail } from '../../molecules/Detail'
-import { Item } from '@kyuzan/mint-sdk-js'
 import { LoadingItemDetailComponent } from './loading'
 import { BidSuccessModal } from '../../molecules/BidSuccessModal'
 import { BoughtFixedPriceSuccessModal } from '../../molecules/BoughtFixedPriceSuccessModal'
@@ -20,109 +23,93 @@ import { PrimaryButton } from '../../atoms/PrimaryButton'
 import { isOnSale } from '../../../util/isOnSale'
 import { CountdownTimeDelta } from 'react-countdown'
 
-type Props = {
-  loading: boolean
-  item: Item | undefined // loading === trueの時、undefined
-  aboutPhysicalModalIsOpen: boolean
-  handleClosePhysicalModal: () => void
-  handleOpenPhysicalModal: () => void
-  aboutAutoExtensionAuctionModalIsOpen: boolean
-  handleCloseAutoExtensionModal: () => void
-  handleOpenAutoExtensionModal: () => void
-  handleOpenSaleActionModal: () => void
-  connectWalletModalIsOpen: boolean
-  handleConnectWallet: () => void
-  handleCloseConnectWalletModal: () => void
-  connectingWallet: boolean
-  userWalletBalance: string | undefined
-  actionModalOpen: boolean
-  bidding: boolean
-  handleCloseBidModal: () => void
-  handleCloseBidSuccessModal: () => void
-  showBidSuccessModal: boolean
-  handleCloseBuyFixedPriceSuccessModal: () => void
-  showBuyFixedPriceSuccessModal: boolean
-  handleChangeInputPrice: ChangeEventHandler<HTMLInputElement>
-  bidPrice: string
-  handleDoBid: () => void
-  handleDoBuy: (inJapan: boolean) => void
-  isValidationError: boolean
-  errorText: string
-  taHash?: string
-  onTick: (calcTimeDelta: CountdownTimeDelta) => void
-}
+type Props =
+  | {
+      loading: false
+      item: Item
+      aboutPhysicalModalIsOpen: boolean
+      handleClosePhysicalModal: () => void
+      handleOpenPhysicalModal: () => void
+      aboutAutoExtensionAuctionModalIsOpen: boolean
+      handleCloseAutoExtensionModal: () => void
+      handleOpenAutoExtensionModal: () => void
+      handleOpenSaleActionModal: () => void
+      connectWalletModalIsOpen: boolean
+      handleConnectWallet: () => void
+      handleCloseConnectWalletModal: () => void
+      connectingWallet: boolean
+      userWalletBalance: string | undefined
+      actionModalOpen: boolean
+      bidding: boolean
+      handleCloseBidModal: () => void
+      handleCloseBidSuccessModal: () => void
+      showBidSuccessModal: boolean
+      handleCloseBuyFixedPriceSuccessModal: () => void
+      showBuyFixedPriceSuccessModal: boolean
+      handleChangeInputPrice: ChangeEventHandler<HTMLInputElement>
+      bidPrice: string
+      handleDoBid: () => void
+      handleDoBuy: (inJapan: boolean) => void
+      isValidationError: boolean
+      errorText: string
+      taHash?: string
+      onTick: (calcTimeDelta: CountdownTimeDelta) => void
+    }
+  | {
+      loading: true
+      item: null
+    }
 
-export const Presentation: React.VFC<Props> = ({
-  aboutPhysicalModalIsOpen,
-  handleClosePhysicalModal,
-  aboutAutoExtensionAuctionModalIsOpen,
-  handleCloseAutoExtensionModal,
-  handleCloseBidSuccessModal,
-  showBidSuccessModal,
-  handleCloseBuyFixedPriceSuccessModal,
-  showBuyFixedPriceSuccessModal,
-  item,
-  handleOpenPhysicalModal,
-  handleOpenAutoExtensionModal,
-  handleOpenSaleActionModal: handleOpenBidModal,
-  connectWalletModalIsOpen,
-  connectingWallet,
-  handleConnectWallet,
-  handleCloseConnectWalletModal,
-  userWalletBalance,
-  actionModalOpen,
-  bidding,
-  handleCloseBidModal,
-  handleChangeInputPrice,
-  bidPrice,
-  handleDoBid,
-  handleDoBuy,
-  loading,
-  isValidationError,
-  errorText,
-  taHash: bidHash,
-  onTick,
-}) => {
-  if (loading) {
+export const Presentation: React.VFC<Props> = (args) => {
+  if (args.loading) {
     return <LoadingItemDetailComponent />
   }
 
-  const startDate =
-    (typeof item?.startAt === 'string'
-      ? new Date(item?.startAt)
-      : item?.startAt) ?? new Date()
-  const endDate =
-    (typeof item?.endAt === 'string' ? new Date(item?.endAt) : item?.endAt) ??
-    new Date()
+  const startDate = new Date(args.item.item.startAt)
+  const endDate = new Date(args.item.item.endAt)
   const saleOnGoing = isOnSale(startDate, endDate)
-  const hasBought = typeof item?.buyerAddress === 'string'
+  // TODO
+  const tradeType =
+    args.item.item.paymentMethodData.paymentMethod ===
+    'ethereum-contract-erc721-shop-auction'
+      ? 'autoExtensionAuction'
+      : 'fixedPrice'
+  // TODO
+  const soldOut =
+    typeof args.item.itemStocks.find(
+      (stock) => stock.status === ItemStockStatus.Created
+    ) === 'undefined'
 
+  // TODO
+  const hasPyisicalItem =
+    args.item.item.type === ItemWithPhysicalItemType.WithPhysicalItem
   return (
     <>
       <Detail>
-        <Title>{item?.name}</Title>
+        <Title>{args.item.item.name}</Title>
         <TagWrap>
-          {item?.type === 'nftWithPhysicalProduct' && (
+          {hasPyisicalItem && (
             <Tag
               label={'フィジカルアイテムつき'}
               iconPath={'/images/cardboard.svg'}
             />
           )}
-          {item?.tradeType === 'autoExtensionAuction' && (
+          {tradeType === 'autoExtensionAuction' && (
             <Tag label={'自動延長オークション'} />
           )}
-          {item?.tradeType === 'fixedPrice' && <Tag label={'固定価格販売'} />}
+          {tradeType === 'fixedPrice' && <Tag label={'固定価格販売'} />}
         </TagWrap>
         <TradeInfoContainer>
           <StatusDetail
-            unit={getPriceUnit(item ? item.networkId : 4)}
-            price={getItemPrice(item)}
-            endAt={item?.endAt ?? new Date()}
-            tradeType={item?.tradeType ?? 'fixedPrice'}
-            onTick={onTick}
+            // TODO
+            unit={getPriceUnit(31337)}
+            price={args.item.item.price}
+            endAt={endDate}
+            tradeType={tradeType}
+            onTick={args.onTick}
           />
-          {item?.type === 'nftWithPhysicalProduct' && (
-            <QuestionButton onClick={handleOpenPhysicalModal}>
+          {hasPyisicalItem && (
+            <QuestionButton onClick={args.handleOpenPhysicalModal}>
               <QuestionIcon>
                 <Image
                   src={'/images/icons/info.svg'}
@@ -135,8 +122,8 @@ export const Presentation: React.VFC<Props> = ({
             </QuestionButton>
           )}
 
-          {item?.tradeType === 'autoExtensionAuction' && (
-            <QuestionButton onClick={handleOpenAutoExtensionModal}>
+          {tradeType === 'autoExtensionAuction' && (
+            <QuestionButton onClick={args.handleOpenAutoExtensionModal}>
               <QuestionIcon>
                 <Image
                   src={'/images/icons/info.svg'}
@@ -149,43 +136,44 @@ export const Presentation: React.VFC<Props> = ({
             </QuestionButton>
           )}
         </TradeInfoContainer>
-        {item?.tradeType === 'autoExtensionAuction' &&
+        {tradeType === 'autoExtensionAuction' &&
           (saleOnGoing ? (
             <BidButton
               label={'入札する'}
-              onClick={handleOpenBidModal}
+              onClick={args.handleOpenSaleActionModal}
               type={'button'}
             />
           ) : (
             <BidButton label={'売り切れ'} disabled={true} type={'button'} />
           ))}
 
-        {item?.tradeType !== 'autoExtensionAuction' &&
-          (!hasBought ? (
+        {tradeType !== 'autoExtensionAuction' &&
+          (!soldOut ? (
             <BidButton
               label={'購入する'}
-              onClick={handleOpenBidModal}
+              onClick={args.handleOpenSaleActionModal}
               type={'button'}
             />
           ) : (
             <BidButton label={'売り切れ'} disabled={true} type={'button'} />
           ))}
-        <Description>{item?.description}</Description>
+        <Description>{args.item.item.description}</Description>
+        {/* // TODO */}
         <SecondaryButtonUL>
           <SecondaryButtonList>
             <ExternalButton
               label={'IPFSで見る'}
-              href={item?.tokenURIHTTP ?? ''}
+              href={args.item.productERC721s![0].tokenURI!}
               iconSize={16}
               iconPathBack={'/images/external-link.svg'}
               isExternal={true}
             />
           </SecondaryButtonList>
           <SecondaryButtonList>
-            {item?.buyerAddress ? (
+            {soldOut ? (
               <ExternalButton
                 label={'OpenSeaで見る'}
-                href={getOpenSeaLink(item)}
+                href={getOpenSeaLink(args.item)}
                 isExternal={true}
               />
             ) : null}
@@ -193,59 +181,63 @@ export const Presentation: React.VFC<Props> = ({
         </SecondaryButtonUL>
       </Detail>
       <WalletModal
-        isOpen={connectWalletModalIsOpen}
-        loading={connectingWallet}
-        connectWallet={handleConnectWallet}
-        closeModal={handleCloseConnectWalletModal}
+        isOpen={args.connectWalletModalIsOpen}
+        loading={args.connectingWallet}
+        connectWallet={args.handleConnectWallet}
+        closeModal={args.handleCloseConnectWalletModal}
       />
       <SaleActionModal
-        itemTradeType={item?.tradeType ?? 'fixedPrice'}
-        itemName={item?.name ?? ''}
-        price={getItemPrice(item)}
-        endAt={item?.endAt ?? new Date()}
-        media={item?.imageURIHTTP}
-        unit={getItemPriceUnit(item)}
-        minBidPrice={item?.minBidPrice}
-        walletBalance={userWalletBalance}
-        isOpen={actionModalOpen}
-        loading={bidding}
-        closeModal={handleCloseBidModal}
-        doBid={handleDoBid}
-        doBuy={handleDoBuy}
-        bidPrice={bidPrice}
-        onChangeInput={handleChangeInputPrice}
-        isValidationError={isValidationError}
-        errorText={errorText}
+        itemTradeType={tradeType}
+        itemName={args.item.item.name}
+        price={args.item.item.price}
+        endAt={endDate}
+        media={args.item.item.previews[0]}
+        unit={getItemPriceUnit(args.item)}
+        // TODO
+        minBidPrice={110}
+        walletBalance={args.userWalletBalance}
+        isOpen={args.actionModalOpen}
+        loading={args.bidding}
+        closeModal={args.handleCloseBidModal}
+        doBid={args.handleDoBid}
+        doBuy={args.handleDoBuy}
+        bidPrice={args.bidPrice}
+        onChangeInput={args.handleChangeInputPrice}
+        isValidationError={args.isValidationError}
+        errorText={args.errorText}
       />
       <BidSuccessModal
-        closeModal={handleCloseBidSuccessModal}
-        isOpen={showBidSuccessModal}
-        media={item?.imageURIHTTP}
-        unit={getItemPriceUnit(item)}
-        bidHash={bidHash ?? ''}
-        itemName={item?.name ?? ''}
-        itemNetworkId={item?.networkId ?? 1}
-        endAt={item?.endAt ?? new Date()}
-        price={getItemPrice(item)}
+        closeModal={args.handleCloseBidSuccessModal}
+        isOpen={args.showBidSuccessModal}
+        media={args.item.item.previews[0]}
+        unit={getItemPriceUnit(args.item)}
+        // TODO
+        bidHash={args.taHash ?? ''}
+        itemName={args.item.item.name}
+        // TODO
+        itemNetworkId={31337}
+        endAt={endDate}
+        price={args.item.item.price}
       />
       <BoughtFixedPriceSuccessModal
-        itemName={item?.name ?? ''}
-        price={getItemPrice(item)}
-        media={item?.imageURIHTTP}
-        isOpen={showBuyFixedPriceSuccessModal}
-        itemNetworkId={item?.networkId ?? 1}
-        unit={getItemPriceUnit(item)}
-        closeModal={handleCloseBuyFixedPriceSuccessModal}
-        endAt={item?.endAt ?? new Date()}
-        txHash={bidHash ?? ''}
+        itemName={args.item.item.name ?? ''}
+        price={args.item.item.price}
+        media={args.item.item.previews[0]}
+        isOpen={args.showBuyFixedPriceSuccessModal}
+        // TODO
+        itemNetworkId={31337}
+        unit={getItemPriceUnit(args.item)}
+        closeModal={args.handleCloseBuyFixedPriceSuccessModal}
+        endAt={endDate}
+        txHash={args.taHash ?? ''}
       />
       <AboutPhysicalModal
-        isOpen={aboutPhysicalModalIsOpen}
-        closeModal={handleClosePhysicalModal}
+        isOpen={args.aboutPhysicalModalIsOpen}
+        closeModal={args.handleClosePhysicalModal}
       />
       <AboutAutoExtensionAuctionModal
-        isOpen={aboutAutoExtensionAuctionModalIsOpen}
-        closeModal={handleCloseAutoExtensionModal}
+        isOpen={args.aboutAutoExtensionAuctionModalIsOpen}
+        closeModal={args.handleCloseAutoExtensionModal}
       />
     </>
   )

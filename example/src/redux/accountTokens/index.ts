@@ -1,6 +1,5 @@
 import { Token } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getSdk } from '../../sdk'
 
 export type AccountTokesState = {
   data: {
@@ -31,8 +30,9 @@ export const getTokensActionCreator = createAsyncThunk<
   }
 >('app/accountTokens/get', async ({ walletAddress }, thunkApi) => {
   try {
-    const tokens = await getSdk().getTokensByAddress(walletAddress)
-    return { tokens, walletAddress }
+    // TODO
+    // const tokens = await getSdk().getTokensByAddress(walletAddress)
+    return { tokens: [], walletAddress }
   } catch (err) {
     return thunkApi.rejectWithValue('Tokenを取得できませんでした')
   }

@@ -1,12 +1,11 @@
-import { ItemShippingInfo } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { push } from 'connected-next-router'
-import { getSdk } from '../../sdk'
 import { StoreState } from '../getStore'
 
 export type ShippingInfoState = {
   data: {
-    shippingInfo: Record<string, ItemShippingInfo>
+    // TODO
+    shippingInfo: Record<string, undefined>
   }
   meta: {
     error: string | undefined
@@ -29,7 +28,8 @@ export const initialShippingInfoState: ShippingInfoState = {
 // AsyncAction
 
 export const getShippingInfoActionCreator = createAsyncThunk<
-  ItemShippingInfo,
+  // TODO
+  undefined,
   {
     itemId: string
   },
@@ -43,8 +43,9 @@ export const getShippingInfoActionCreator = createAsyncThunk<
     if (state.app.shippingInfo.data.shippingInfo[itemId]) {
       return state.app.shippingInfo.data.shippingInfo[itemId]
     }
-    const data = await getSdk().getItemShippingInfo({ itemId })
-    return data.data
+    // TOOD
+    // const data = await getSdk().getItemShippingInfo({ itemId })
+    return undefined
   } catch (err) {
     return thunkApi.rejectWithValue('失敗しました')
   }
@@ -70,15 +71,16 @@ export const submitShippingInfoActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/shippingInfo/submit', async ({ itemId, data }, thunkApi) => {
+>('app/shippingInfo/submit', async (_, thunkApi) => {
   try {
-    await getSdk().registerItemShippingInfo({
-      itemId,
-      shippingInfo: {
-        ...data,
-        name: `${data.lastName} ${data.firstName}`,
-      },
-    })
+    // TODO
+    // await getSdk().registerItemShippingInfo({
+    //   itemId,
+    //   shippingInfo: {
+    //     ...data,
+    //     name: `${data.lastName} ${data.firstName}`,
+    //   },
+    // })
     thunkApi.dispatch(push('/me/shipping_info_success'))
   } catch (err) {
     return thunkApi.rejectWithValue('失敗しました')

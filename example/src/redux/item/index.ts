@@ -2,9 +2,8 @@ import { Item } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
-export type ItemDetail = Item | undefined
 export type ItemState = {
-  data: ItemDetail
+  data: Item | null
   meta: {
     waitingItemAction: boolean
     initialized: boolean
@@ -13,7 +12,7 @@ export type ItemState = {
 }
 
 export const initialItemState: ItemState = {
-  data: undefined,
+  data: null,
   meta: {
     waitingItemAction: false,
     error: undefined,
@@ -22,20 +21,8 @@ export const initialItemState: ItemState = {
 }
 
 // AsyncAction
-export const initialItemActionCreator = createAsyncThunk(
-  'app/item/init',
-  async (itemId: string) => {
-    if (getSdk()) {
-      const item = await getSdk().getItemById(itemId)
-      return item
-    } else {
-      return undefined
-    }
-  }
-)
-
 export const getItemActionCreator = createAsyncThunk<
-  ItemDetail,
+  Item,
   string,
   {
     rejectValue: string
@@ -58,16 +45,6 @@ export const itemSlice = createSlice({
   initialState: initialItemState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(
-      initialItemActionCreator.fulfilled,
-      (state, { payload }) => {
-        if (typeof payload === 'undefined') {
-          state.data = undefined
-        } else {
-          state.data = payload
-        }
-      }
-    )
     builder.addCase(getItemActionCreator.pending, (state) => {
       state.meta.waitingItemAction = true
     })
