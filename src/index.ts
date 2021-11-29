@@ -10,6 +10,7 @@ import {
   ItemStockStatus,
   SignatureType,
   DefaultApiFactory as DefaultApiFactoryV2,
+  ResponseTokenERC721,
 } from './apiClientV2/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
@@ -33,6 +34,7 @@ import { ItemTradeType } from './types/ItemTradeType'
 
 export {
   Item,
+  ResponseTokenERC721,
   ResponseItem,
   ResponseItemTypeEnum as ItemWithPhysicalItemType,
   ItemStockStatus,
@@ -258,28 +260,48 @@ export class MintSDK {
     return data.data
   }
 
-  // /**
-  //  * 指定したアドレスがBidしたItemの一覧を取得
-  //  *
-  //  * @param address ウォレットのアドレス
-  //  * @returns
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  * const sdk = await MintSDK.initialize(...)
-  //  * const item = await sdk.getItemsByBidderAddress('0x1111......')
-  //  * ```
-  //  */
-  // public getItemsByBidderAddress = async (address: string) => {
-  //   const { data } = await this.axios.get('v3_getItemsByBidderAddress', {
-  //     params: {
-  //       address,
-  //       networkIds: this.networkIds,
-  //     },
-  //   })
-  //   const items = data.data as Item[]
-  //   return items.map(this.formatItem)
-  // }
+  /**
+   * 指定したwalletAddressで購入または落札したItemStockを取得する
+   *
+   * #### 制限事項
+   *
+   * @param walletAddress
+   * @returns
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   *
+   * const items = await sdk.getBoughtItemStocksByWalletAddress(...)
+   * ```
+   */
+  public getBoughtItemStocksByWalletAddress = async (walletAddress: string) => {
+    const { data } = await this.apiClientV2.getBoughtItemStocksByWalletAddress(
+      this.accessToken,
+      walletAddress
+    )
+    return data.data
+  }
+
+  /**
+   * 指定したアドレスがBidしたItemの一覧を取得
+   *
+   * @param address ウォレットのアドレス
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   * const item = await sdk.getItemsByBidderAddress('0x1111......')
+   * ```
+   */
+  public getItemsByBidderAddress = async (address: string) => {
+    const { data } = await this.apiClientV2.getBiddedItemsByWalletAddress(
+      this.accessToken,
+      address
+    )
+    const items = data.data
+    return items.items
+  }
 
   /**
    * 商品をid指定でアイテムを取得
@@ -359,27 +381,25 @@ export class MintSDK {
   //   }))
   // }
 
-  // /**
-  //  * 指定したアドレスが所持しているMINT経由で獲得したトークンを取得
-  //  *
-  //  * @param address Walletのアドレス
-  //  * @returns
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  * const sdk = await MintSDK.initialize(...
-  //  * const tokens = await sdk.getTokensByAddress('0x11111...')
-  //  * ```
-  //  */
-  // public getTokensByAddress = async (address: string) => {
-  //   const { data } = await this.axios.get<AxiosBody<Token[]>>(
-  //     'v3_tokensByAddress',
-  //     {
-  //       params: { address, networkIds: this.networkIds },
-  //     }
-  //   )
-  //   return data.data
-  // }
+  /**
+   * 指定したアドレスが所持しているMINT経由で獲得したトークンを取得
+   *
+   * @param address Walletのアドレス
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...
+   * const tokens = await sdk.getTokensByAddress('0x11111...')
+   * ```
+   */
+  public getTokensByAddress = async (address: string) => {
+    const { data } = await this.apiClientV2.getTokenERC721sByWalletAddress(
+      this.accessToken,
+      address
+    )
+    return data.data
+  }
 
   /**
    * 指定した金額でBidするトランザクションを発行
@@ -483,7 +503,7 @@ export class MintSDK {
    * ```
    */
   public sendTxMakeSuccessfulBid = async (
-    itemStockId: string,
+    itemId: string,
     _: Residence = 'unknown'
   ) => {
     // wallet connect check
@@ -491,12 +511,6 @@ export class MintSDK {
       throw new Error('Wallet is not connected')
     }
 
-    const { data } = await this.apiClientV2.getItemStockDetailERC721Shop(
-      this.accessToken,
-      itemStockId
-    )
-
-    const itemId = data.data.itemStock.itemDocumentId
     const resItem = await this.getItemById(itemId)
     if (
       resItem.item.paymentMethodData.paymentMethod !==
@@ -504,13 +518,19 @@ export class MintSDK {
     ) {
       return
     }
+
+    const { data } = await this.apiClientV2.getItemStockDetailERC721Shop(
+      this.accessToken,
+      resItem.itemStocks[0].id
+    )
+
     const {
       data: {
         data: { contractMethodArg },
       },
     } = await this.apiClientV2.getSignByItemStockId(
       this.accessToken,
-      itemStockId,
+      data.data.itemStock.id,
       SignatureType.AuctionWithdraw
     )
 

@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import styled from '@emotion/styled'
-import { Item, Token } from '@kyuzan/mint-sdk-js'
-import { isBefore } from 'date-fns'
+import { ResponseItem, Token } from '@kyuzan/mint-sdk-js'
+import { addMinutes, isBefore } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { color, font, media } from '../../../style'
@@ -14,12 +13,11 @@ import { MediaContent } from '../../atoms/MediaContent'
 import { Tag } from '../../atoms/Tag'
 import { ToolTip } from '../../atoms/ToolTip'
 import { SaleInfo } from '../SaleInfo'
-import { TokenRight } from './TokenRight'
 
 type Props = {
   loading: boolean
   userWalletAddress?: string
-  item?: Item | Token
+  item?: ResponseItem | Token
   onShowShippingInfo?: () => void
   onWithdraw?: (inJapan: boolean) => void
   withdrawing?: boolean
@@ -29,14 +27,10 @@ type Props = {
 export const CardMyPage: React.VFC<Props> = ({
   loading,
   item,
-  userWalletAddress,
   onWithdraw,
-  onShowShippingInfo,
   withdrawing,
   onComplete,
 }) => {
-  const router = useRouter()
-
   const [inJapan, setInJapan] = useState(false)
   const moduleHeight = 240
 
@@ -44,60 +38,63 @@ export const CardMyPage: React.VFC<Props> = ({
   if (loading || typeof item === 'undefined') {
     return <Loading />
   }
+
   if (isToken(item)) {
-    return (
-      <Container>
-        <Left>
-          <MediaContainer height={moduleHeight}>
-            <MediaContent media={item?.previews[0]} height={moduleHeight} />
-          </MediaContainer>
-          <Center>
-            <CenterTitleContainer>
-              <CenterTitle>{item?.name}</CenterTitle>
-            </CenterTitleContainer>
-            <CenterTagsContainer>
-              {item?.item.type === 'nftWithPhysicalProduct' && (
-                <CenterTags
-                  label={'フィジカルアイテムつき'}
-                  iconPath={'/images/cardboard.svg'}
-                />
-              )}
-            </CenterTagsContainer>
-            <AuctionInfoContainer>
-              <SaleInfo
-                startAt={item.item.startAt}
-                endAt={item.item.endAt}
-                tradeType={item.item.tradeType}
-                networkId={item.item.networkId}
-                initialPrice={item.item.initialPrice}
-                currentPrice={item.item.currentPrice}
-                onComplete={onComplete}
-              />
-            </AuctionInfoContainer>
-          </Center>
-        </Left>
-        <Right>
-          <TokenRight
-            token={item}
-            onViewShipAddress={onShowShippingInfo!}
-            onWriteShipAddress={() => {
-              router.push(`/me/tokens/${item.item.itemId}/shipping_info`)
-            }}
-          />
-        </Right>
-      </Container>
-    )
+    return null
+    // <Container>
+    //   <Left>
+    //     <MediaContainer height={moduleHeight}>
+    //       <MediaContent media={item?.previews[0]} height={moduleHeight} />
+    //     </MediaContainer>
+    //     <Center>
+    //       <CenterTitleContainer>
+    //         <CenterTitle>{item?.name}</CenterTitle>
+    //       </CenterTitleContainer>
+    //       <CenterTagsContainer>
+    //         {item?.item.type === 'nftWithPhysicalProduct' && (
+    //           <CenterTags
+    //             label={'フィジカルアイテムつき'}
+    //             iconPath={'/images/cardboard.svg'}
+    //           />
+    //         )}
+    //       </CenterTagsContainer>
+    //       <AuctionInfoContainer>
+    //         <SaleInfo
+    //           startAt={item.item.startAt}
+    //           endAt={item.item.endAt}
+    //           tradeType={item.item.tradeType}
+    //           networkId={item.item.networkId}
+    //           initialPrice={item.item.initialPrice}
+    //           currentPrice={item.item.currentPrice}
+    //           onComplete={onComplete}
+    //         />
+    //       </AuctionInfoContainer>
+    //     </Center>
+    //   </Left>
+    //   <Right>
+    //     <TokenRight
+    //       token={item}
+    //       onViewShipAddress={onShowShippingInfo!}
+    //       onWriteShipAddress={() => {
+    //         router.push(`/me/tokens/${item.item.itemId}/shipping_info`)
+    //       }}
+    //     />
+    //   </Right>
+    // </Container>
   } else {
-    const auctionIsEnd = item.endAt! < new Date()
-    const userIsHighestBidder =
-      item.currentBidderAddress! === userWalletAddress!
+    if (
+      item.paymentMethodData.paymentMethod !==
+      'ethereum-contract-erc721-shop-auction'
+    )
+      return null
+    const now = new Date()
+    const auctionIsEnd = new Date(item.endAt) < now
+    // TODO
+    const userIsHighestBidder = true
     const winning = !auctionIsEnd && userIsHighestBidder
     const losing = !auctionIsEnd && !userIsHighestBidder
     const won = auctionIsEnd && userIsHighestBidder
-    const not5minFromEndAt = isBefore(
-      new Date(),
-      new Date(item.withdrawableAt!)
-    )
+    const not5minFromEndAt = isBefore(now, addMinutes(new Date(item.endAt), 5))
     const waitWithDraw = won && not5minFromEndAt
 
     return (
@@ -111,7 +108,8 @@ export const CardMyPage: React.VFC<Props> = ({
               <CenterTitle>{item?.name}</CenterTitle>
             </CenterTitleContainer>
             <CenterTagsContainer>
-              {item?.type === 'nftWithPhysicalProduct' && (
+              {/* TODO */}
+              {item.type === 'with-physical-item' && (
                 <CenterTags
                   label={'フィジカルアイテムつき'}
                   iconPath={'/images/cardboard.svg'}
@@ -120,12 +118,21 @@ export const CardMyPage: React.VFC<Props> = ({
             </CenterTagsContainer>
             <AuctionInfoContainer>
               <SaleInfo
-                startAt={item.startAt}
-                endAt={item.endAt}
-                tradeType={item.tradeType}
-                networkId={item.networkId}
-                initialPrice={item.initialPrice}
-                currentPrice={item.currentPrice}
+                startAt={new Date(item.startAt)}
+                endAt={new Date(item.endAt)}
+                // TODO
+                tradeType={
+                  item.paymentMethodData.paymentMethod ===
+                  'ethereum-contract-erc721-shop-auction'
+                    ? 'autoExtensionAuction'
+                    : 'fixedPrice'
+                }
+                networkId={
+                  item.paymentMethodData.contractDataERC721Shop.networkId
+                }
+                price={item.price}
+                // TODO
+                hasBought={false}
                 onComplete={onComplete}
               />
             </AuctionInfoContainer>
@@ -149,12 +156,14 @@ export const CardMyPage: React.VFC<Props> = ({
               </RightTitleContainer>
               <CurrentPriceContainer>
                 <CurrentPriceTitle>最新の入札額</CurrentPriceTitle>
-                <CurrentPriceValue>{item.currentPrice}</CurrentPriceValue>
+                <CurrentPriceValue>{item.price}</CurrentPriceValue>
                 <CurrentPriceUnit>
-                  {getPriceUnit(item.networkId)}
+                  {getPriceUnit(
+                    item.paymentMethodData.contractDataERC721Shop.networkId
+                  )}
                 </CurrentPriceUnit>
               </CurrentPriceContainer>
-              <Link href={`/items/${item.itemId}`}>
+              <Link href={`/items/${item.id}`}>
                 <ReverseButton
                   isLoading={false}
                   label={'商品を見る'}
@@ -180,12 +189,14 @@ export const CardMyPage: React.VFC<Props> = ({
               </RightTitleContainer>
               <CurrentPriceContainer>
                 <CurrentPriceTitle>最新の入札額</CurrentPriceTitle>
-                <CurrentPriceValue>{item.currentPrice}</CurrentPriceValue>
+                <CurrentPriceValue>{item.price}</CurrentPriceValue>
                 <CurrentPriceUnit>
-                  {getPriceUnit(item.networkId)}
+                  {getPriceUnit(
+                    item.paymentMethodData.contractDataERC721Shop.networkId
+                  )}
                 </CurrentPriceUnit>
               </CurrentPriceContainer>
-              <Link href={`/items/${item.itemId}`}>
+              <Link href={`/items/${item.id}`}>
                 <ReverseButton
                   isLoading={false}
                   label={'商品を見る'}
