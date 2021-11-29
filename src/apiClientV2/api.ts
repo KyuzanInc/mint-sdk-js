@@ -174,6 +174,12 @@ export interface InlineResponse2003Data {
      * @memberof InlineResponse2003Data
      */
     signature: string;
+    /**
+     * 対応したコントラクトのメソッドに渡す
+     * @type {Array<string | number | boolean | Array<any> | object>}
+     * @memberof InlineResponse2003Data
+     */
+    contractMethodArg: Array<string | number | boolean | Array<any> | object>;
 }
 /**
  * 
