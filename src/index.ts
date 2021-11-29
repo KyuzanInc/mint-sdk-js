@@ -8,6 +8,7 @@ import {
   Item,
   ResponseItem,
   ItemStockStatus,
+  SignatureType,
   DefaultApiFactory as DefaultApiFactoryV2,
 } from './apiClientV2/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
@@ -451,117 +452,139 @@ export class MintSDK {
       JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
       signer
     )
-    const initialPrice = ethers.utils
-      .parseEther(String(resItem.item.price))
-      .toString()
+
+    // sign
+    const {
+      data: {
+        data: { signature, contractMethodArg },
+      },
+    } = await this.apiClientV2.getSignByItemStockId(
+      this.accessToken,
+      data.data.itemStock.id,
+      SignatureType.AuctionBid
+    )
     const price = ethers.utils.parseEther(String(bidPrice)).toString()
-    const startAt = new Date(resItem.item.startAt).getTime() / 1000
-    const endAt = new Date(resItem.item.endAt).getTime() / 1000
     return (await shopContract.bidAuction(
-      data.data.contractERC721.address,
-      data.data.productERC721.tokenId,
-      initialPrice,
-      startAt,
-      endAt,
+      contractMethodArg[0],
+      contractMethodArg[1],
+      contractMethodArg[2],
+      contractMethodArg[3],
+      contractMethodArg[4],
       price,
-      data.data.signiture,
+      signature,
       {
         value: price,
       }
     )) as ethers.providers.TransactionResponse
   }
 
-  // /**
-  //  * オークションで勝利したアイテムを引き出すトランザクションを発行
-  //  * ユーザーの居住地を問うUIを合わせて実装必要です。居住地を設定することで消費税に関する会計処理などがスムーズに行えます
-  //  *
-  //  * **Required**
-  //  * - ウォレットに接続していること
-  //  * - **自動延長オークションは、`withdrawableAt`以降に引き出し可能です**
-  //  *
-  //  * @param itemId {@link Item}のitemId
-  //  * @param userResidence {@link Residence} 購入者の居住地を指定する
-  //  * @returns
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  * const sdk = await MintSDK.initialize(...)
-  //  * await sdk.connectWallet() // required
-  //  * try {
-  //  *  const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId', 'jp')
-  //  *  // show loading
-  //  *  await tx.wait()
-  //  *  // success transaction
-  //  * } catch (err) {
-  //  *  // display error message
-  //  * }
-  //  * ```
-  //  */
-  // public sendTxMakeSuccessfulBid = async (
-  //   itemId: string,
-  //   userResidence: Residence = 'unknown'
-  // ) => {
-  //   // wallet connect check
-  //   if (!(await this.isWalletConnect())) {
-  //     throw new Error('Wallet is not connected')
-  //   }
-  //   const item = await this.getItemById(itemId)
-  //   await this.validateNetworkForItem(item)
-  //   const wallet = this.walletStrategy.getProvider()
-  //   const { abi, address } = await this.getMintShopContractInfo(item.networkId)
-  //   const signer = wallet.getSigner()
-  //   const shopContract = new ethers.Contract(address, abi, signer)
-  //   if (item.tradeType !== 'autoExtensionAuction') {
-  //     throw new Error("Item's tradeType is not auction")
-  //   }
-  //   const sign = await this.apiClient.getItemSignedDataBuyAuction(
-  //     this.accessToken,
-  //     itemId
-  //   )
-  //   const tx = (await shopContract.buyAuction(
-  //     item.mintContractAddress,
-  //     item.tokenId,
-  //     item.tokenURI,
-  //     item.authorAddress,
-  //     item.endAt!.getTime() / 1000,
-  //     item.feeRatePermill,
-  //     sign.data.data.signedData
-  //   )) as ethers.providers.TransactionResponse
-  //   const hash = tx.hash
-  //   await this.axios.post('/v2_registerTransactionReceiptsApp', {
-  //     txHash: hash,
-  //     itemId,
-  //     residence: userResidence,
-  //   })
-  //   return tx
-  // }
+  /**
+   * オークションで勝利したアイテムを引き出すトランザクションを発行
+   * ユーザーの居住地を問うUIを合わせて実装必要です。居住地を設定することで消費税に関する会計処理などがスムーズに行えます
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   * - **自動延長オークションは、`withdrawableAt`以降に引き出し可能です**
+   *
+   * @param itemId {@link Item}のitemId
+   * @param userResidence {@link Residence} 購入者の居住地を指定する
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   * await sdk.connectWallet() // required
+   * try {
+   *  const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId', 'jp')
+   *  // show loading
+   *  await tx.wait()
+   *  // success transaction
+   * } catch (err) {
+   *  // display error message
+   * }
+   * ```
+   */
+  public sendTxMakeSuccessfulBid = async (
+    itemStockId: string,
+    _: Residence = 'unknown'
+  ) => {
+    // wallet connect check
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
 
-  // /**
-  //  * FixedPriceのアイテムを購入するトランザクションを発行
-  //  * ユーザーの居住地を問うUIを合わせて実装必要
-  //  * 消費税に関する会計処理などがスムーズに行えます
-  //  *
-  //  * **Required**
-  //  * - ウォレットに接続していること
-  //  *
-  //  * @param itemId {@link Item}のitemId
-  //  * @param userResidence {@link Residence} 購入者の居住地を指定する
-  //  * @returns
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  * const sdk = await MintSDK.initialize(...)
-  //  * await sdk.connectWallet() // required
-  //  * try {
-  //  *  const tx = await sdk.sendTxBuyItem('item.itemId', 'jp')
-  //  *  // show loading
-  //  *  await tx.wait()
-  //  *  // success transaction
-  //  * } catch (err) {
-  //  *  // display error message
-  //  * }
-  //  * ```
-  //  */
+    const { data } = await this.apiClientV2.getItemStockDetailERC721Shop(
+      this.accessToken,
+      itemStockId
+    )
+
+    const itemId = data.data.itemStock.itemDocumentId
+    const resItem = await this.getItemById(itemId)
+    if (
+      resItem.item.paymentMethodData.paymentMethod !==
+      'ethereum-contract-erc721-shop-auction'
+    ) {
+      return
+    }
+    const {
+      data: {
+        data: { contractMethodArg },
+      },
+    } = await this.apiClientV2.getSignByItemStockId(
+      this.accessToken,
+      itemStockId,
+      SignatureType.AuctionWithdraw
+    )
+
+    // TOOD
+    // await this.validateNetworkForItem(item)
+    const wallet = this.walletStrategy.getProvider()
+    const signer = wallet.getSigner()
+    const shopContract = new ethers.Contract(
+      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      signer
+    )
+    const tx = (await shopContract.buyAuction(
+      ...contractMethodArg
+    )) as ethers.providers.TransactionResponse
+
+    // const hash = tx.hash
+    // TODO
+    // await this.axios.post('/v2_registerTransactionReceiptsApp', {
+    //   txHash: hash,
+    //   itemId,
+    //   residence: userResidence,
+    // })
+    return tx
+  }
+
+  /**
+   * FixedPriceのアイテムを購入するトランザクションを発行
+   * ユーザーの居住地を問うUIを合わせて実装必要
+   * 消費税に関する会計処理などがスムーズに行えます
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @param itemId {@link Item}のitemId
+   * @param userResidence {@link Residence} 購入者の居住地を指定する
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   * await sdk.connectWallet() // required
+   * try {
+   *  const tx = await sdk.sendTxBuyItem('item.itemId', 'jp')
+   *  // show loading
+   *  await tx.wait()
+   *  // success transaction
+   * } catch (err) {
+   *  // display error message
+   * }
+   * ```
+   */
   public sendTxBuyItem = async (itemId: string, _: Residence = 'unknown') => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
@@ -578,7 +601,6 @@ export class MintSDK {
     ) {
       return
     }
-    console.log(itemId)
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
@@ -594,19 +616,22 @@ export class MintSDK {
       this.accessToken,
       itemId
     )
+
+    // sign
+    const {
+      data: {
+        data: { contractMethodArg },
+      },
+    } = await this.apiClientV2.getSignByItemStockId(
+      this.accessToken,
+      data.data.data.itemStock.id,
+      SignatureType.FixedPrice
+    )
     const price = ethers.utils.parseEther(item.item.price.toString()).toString()
-    const tx = (await shopContract.buyFixedPrice(
-      data.data.data.contractERC721.address,
-      data.data.data.productERC721.tokenId,
-      data.data.data.productERC721.tokenURI,
-      data.data.data.productERC721.creatorAddress,
-      price,
-      item.item.feeRatePermill,
-      data.data.data.signiture,
-      {
-        value: price,
-      }
-    )) as ethers.providers.TransactionResponse
+    const tx = (await shopContract.buyFixedPrice(...contractMethodArg, {
+      value: price,
+    })) as ethers.providers.TransactionResponse
+    // TODO
     // await this.axios.post('/v2_registerTransactionReceiptsApp', {
     //   txHash: tx.hash,
     //   itemId,

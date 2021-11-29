@@ -14,7 +14,6 @@ import {
 } from '../../../redux/wallet'
 import { getNetworkIdLabel } from '../../../util/getNetworkIdLabel'
 import { Presentation } from './presentation'
-import { useMedia } from '../../../util/useMedia'
 import router from 'next/router'
 import { CountdownTimeDelta } from 'react-countdown'
 
@@ -69,8 +68,6 @@ export const Container: React.VFC = () => {
   const [isError, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
 
-  const isMobile = useMedia()
-
   const onTick = useCallback((calcTimeDelta: CountdownTimeDelta) => {
     // within 5 minutes
     if (calcTimeDelta.total < WITHIN_TIME) {
@@ -82,12 +79,10 @@ export const Container: React.VFC = () => {
 
   useEffect(() => {
     // TODO
-    if (parseFloat(bidPrice) < 0) {
-      setError(true)
-      isMobile
-        ? setErrorText(`0 ETH以上で入札`)
-        : setErrorText(`0 ETH以上で入札してください`)
-    } else if ((walletInfo?.balance ?? bidPrice) < bidPrice) {
+    const balance = walletInfo?.balance
+      ? parseFloat(walletInfo.balance)
+      : parseFloat(bidPrice)
+    if (balance < parseFloat(bidPrice)) {
       setError(true)
       setErrorText(`お手持ちの金額を超えています`)
     } else {

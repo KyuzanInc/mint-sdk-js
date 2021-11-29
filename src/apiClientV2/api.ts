@@ -142,12 +142,6 @@ export interface InlineResponse2002Data {
      * @memberof InlineResponse2002Data
      */
     contractERC721: ResponseContractERC721;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse2002Data
-     */
-    signiture: string;
 }
 /**
  * 
@@ -157,16 +151,35 @@ export interface InlineResponse2002Data {
 export interface InlineResponse2003 {
     /**
      * 
-     * @type {Array<ResponseTokenERC721>}
+     * @type {InlineResponse2003Data}
      * @memberof InlineResponse2003
      */
-    data: Array<ResponseTokenERC721>;
+    data: InlineResponse2003Data;
     /**
      * 
      * @type {object}
      * @memberof InlineResponse2003
      */
     meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2003Data
+ */
+export interface InlineResponse2003Data {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2003Data
+     */
+    signature: string;
+    /**
+     * 対応したコントラクトのメソッドに渡す
+     * @type {Array<string | number | boolean | Array<any> | object>}
+     * @memberof InlineResponse2003Data
+     */
+    contractMethodArg: Array<string | number | boolean | Array<any> | object>;
 }
 /**
  * 
@@ -176,47 +189,16 @@ export interface InlineResponse2003 {
 export interface InlineResponse2004 {
     /**
      * 
-     * @type {InlineResponse2004Data}
+     * @type {Array<ResponseTokenERC721>}
      * @memberof InlineResponse2004
      */
-    data: InlineResponse2004Data;
+    data: Array<ResponseTokenERC721>;
     /**
      * 
      * @type {object}
      * @memberof InlineResponse2004
      */
     meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2004Data
- */
-export interface InlineResponse2004Data {
-    /**
-     * 
-     * @type {Array<ResponseItem>}
-     * @memberof InlineResponse2004Data
-     */
-    items: Array<ResponseItem>;
-    /**
-     * 
-     * @type {Array<ResponseItemStock>}
-     * @memberof InlineResponse2004Data
-     */
-    itemStocks: Array<ResponseItemStock>;
-    /**
-     * 
-     * @type {Array<ResponseProductERC721>}
-     * @memberof InlineResponse2004Data
-     */
-    productERC721s: Array<ResponseProductERC721>;
-    /**
-     * 
-     * @type {Array<ResponseBid>}
-     * @memberof InlineResponse2004Data
-     */
-    bids: Array<ResponseBid>;
 }
 /**
  * 
@@ -245,16 +227,16 @@ export interface InlineResponse2005 {
 export interface InlineResponse2005Data {
     /**
      * 
-     * @type {Array<ResponseItemStock>}
-     * @memberof InlineResponse2005Data
-     */
-    itemStocks: Array<ResponseItemStock>;
-    /**
-     * 
      * @type {Array<ResponseItem>}
      * @memberof InlineResponse2005Data
      */
     items: Array<ResponseItem>;
+    /**
+     * 
+     * @type {Array<ResponseItemStock>}
+     * @memberof InlineResponse2005Data
+     */
+    itemStocks: Array<ResponseItemStock>;
     /**
      * 
      * @type {Array<ResponseProductERC721>}
@@ -263,8 +245,58 @@ export interface InlineResponse2005Data {
     productERC721s: Array<ResponseProductERC721>;
     /**
      * 
-     * @type {Array<ResponseTokenERC721>}
+     * @type {Array<ResponseBid>}
      * @memberof InlineResponse2005Data
+     */
+    bids: Array<ResponseBid>;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2006
+ */
+export interface InlineResponse2006 {
+    /**
+     * 
+     * @type {InlineResponse2006Data}
+     * @memberof InlineResponse2006
+     */
+    data: InlineResponse2006Data;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse2006
+     */
+    meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2006Data
+ */
+export interface InlineResponse2006Data {
+    /**
+     * 
+     * @type {Array<ResponseItemStock>}
+     * @memberof InlineResponse2006Data
+     */
+    itemStocks: Array<ResponseItemStock>;
+    /**
+     * 
+     * @type {Array<ResponseItem>}
+     * @memberof InlineResponse2006Data
+     */
+    items: Array<ResponseItem>;
+    /**
+     * 
+     * @type {Array<ResponseProductERC721>}
+     * @memberof InlineResponse2006Data
+     */
+    productERC721s: Array<ResponseProductERC721>;
+    /**
+     * 
+     * @type {Array<ResponseTokenERC721>}
+     * @memberof InlineResponse2006Data
      */
     tokenERC721s: Array<ResponseTokenERC721>;
 }
@@ -887,6 +919,17 @@ export interface ResponseTokenERC721 {
  * @export
  * @enum {string}
  */
+export enum SignatureType {
+    FixedPrice = 'ethereum-contract-erc721-shop-fixed-price',
+    AuctionBid = 'ethereum-contract-erc721-shop-auction-bid',
+    AuctionWithdraw = 'ethereum-contract-erc721-shop-auction-withdraw'
+}
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
 export enum TokenStandardType {
     Erc721 = 'ERC721'
 }
@@ -1054,7 +1097,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary スマコンで販売しているItemの詳細情報を取得する
+         * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStock`詳細情報を取得する
          * @param {string} mintAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -1135,6 +1178,57 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary スマコンの操作に必要なSignを返す
+         * @param {string} mintAccessToken 
+         * @param {string} itemStockId 
+         * @param {SignatureType} signatureType 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSignByItemStockId: async (mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getSignByItemStockId', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'itemStockId' is not null or undefined
+            assertParamExists('getSignByItemStockId', 'itemStockId', itemStockId)
+            // verify required parameter 'signatureType' is not null or undefined
+            assertParamExists('getSignByItemStockId', 'signatureType', signatureType)
+            const localVarPath = `/sdk_v4/itemStocks/sign`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (itemStockId !== undefined) {
+                localVarQueryParameter['itemStockId'] = itemStockId;
+            }
+
+            if (signatureType !== undefined) {
+                localVarQueryParameter['signatureType'] = signatureType;
+            }
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary walletAddressに紐づくTokenERC721を全て取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
@@ -1195,7 +1289,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getBiddedItemsByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
+        async getBiddedItemsByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getBiddedItemsByWalletAddress(mintAccessToken, walletAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1207,7 +1301,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
+        async getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1225,7 +1319,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary スマコンで販売しているItemの詳細情報を取得する
+         * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStock`詳細情報を取得する
          * @param {string} mintAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -1248,13 +1342,26 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary スマコンの操作に必要なSignを返す
+         * @param {string} mintAccessToken 
+         * @param {string} itemStockId 
+         * @param {SignatureType} signatureType 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary walletAddressに紐づくTokenERC721を全て取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
+        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1276,7 +1383,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBiddedItemsByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2004> {
+        getBiddedItemsByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2005> {
             return localVarFp.getBiddedItemsByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1287,7 +1394,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2005> {
+        getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2006> {
             return localVarFp.getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1303,7 +1410,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary スマコンで販売しているItemの詳細情報を取得する
+         * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStock`詳細情報を取得する
          * @param {string} mintAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -1324,13 +1431,25 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary スマコンの操作に必要なSignを返す
+         * @param {string} mintAccessToken 
+         * @param {string} itemStockId 
+         * @param {SignatureType} signatureType 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options?: any): AxiosPromise<InlineResponse2003> {
+            return localVarFp.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary walletAddressに紐づくTokenERC721を全て取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2003> {
+        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2004> {
             return localVarFp.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
         },
     };
@@ -1384,7 +1503,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary スマコンで販売しているItemの詳細情報を取得する
+     * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStock`詳細情報を取得する
      * @param {string} mintAccessToken 
      * @param {string} itemId 
      * @param {*} [options] Override http request option.
@@ -1405,6 +1524,20 @@ export class DefaultApi extends BaseAPI {
      */
     public getItems(mintAccessToken: string, options?: any) {
         return DefaultApiFp(this.configuration).getItems(mintAccessToken, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary スマコンの操作に必要なSignを返す
+     * @param {string} mintAccessToken 
+     * @param {string} itemStockId 
+     * @param {SignatureType} signatureType 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options?: any) {
+        return DefaultApiFp(this.configuration).getSignByItemStockId(mintAccessToken, itemStockId, signatureType, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
