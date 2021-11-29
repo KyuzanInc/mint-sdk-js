@@ -5,7 +5,7 @@ import { getAccountInfoActionCreator } from '../../../redux/myAccountInfo'
 import { useAppDispatch, useAppSelector } from '../../../redux/getStore'
 import {
   getBidedActionCreator,
-  getOwnItemsActionCreator,
+  getOwnTokensActionCreator,
 } from '../../../redux/myItems'
 import { getShippingInfoActionCreator } from '../../../redux/shippingInfo'
 import { withDrawItemActionCreator } from '../../../redux/transaction'
@@ -26,13 +26,7 @@ export const Container: React.VFC = () => {
   const walletInfo = useAppSelector((state) => state.app.wallet.data.walletInfo)
 
   const bidedItems = useAppSelector((state) => {
-    // Auction中のものと、引き出していないものだけ表示
-    return state.app.myItems.data.bidedItems.filter(
-      (item) =>
-        item.endAt! > new Date() ||
-        (item.currentBidderAddress === walletInfo?.address &&
-          !item.buyerAddress)
-    )
+    return state.app.myItems.data.bidedItems
   })
 
   const waitingBidedItems = useAppSelector((state) => {
@@ -60,13 +54,22 @@ export const Container: React.VFC = () => {
       state.app.transaction.meta.bidHash
   )
   const withdrawItem = async (itemId: string, inJapan: boolean) => {
-    const item = bidedItems.find((i) => i.itemId === itemId)
-    if (connectedNetworkId !== item!.networkId) {
+    const item = bidedItems.find((i) => i.id === itemId)
+    if (
+      item?.paymentMethodData.paymentMethod !==
+      'ethereum-contract-erc721-shop-auction'
+    )
+      return
+
+    if (
+      connectedNetworkId !==
+      item.paymentMethodData.contractDataERC721Shop.networkId
+    ) {
       dispatch(
         dialogSlice.actions.showDialog({
           title: 'ネットワークを変更してください',
           content: `${getNetworkIdLabel(
-            item?.networkId ?? 4
+            item.paymentMethodData.contractDataERC721Shop.networkId
           )}に接続してください。`,
         })
       )
@@ -113,7 +116,7 @@ export const Container: React.VFC = () => {
       getBidedActionCreator({ bidderAddress: walletInfo.address }) as any
     )
     dispatch(
-      getOwnItemsActionCreator({ walletAddress: walletInfo.address }) as any
+      getOwnTokensActionCreator({ walletAddress: walletInfo.address }) as any
     )
     dispatch(
       getAccountInfoActionCreator({ walletAddress: walletInfo.address }) as any
