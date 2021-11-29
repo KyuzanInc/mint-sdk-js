@@ -8,6 +8,7 @@ import {
   Item,
   ResponseItem,
   ItemStockStatus,
+  SignatureType,
   DefaultApiFactory as DefaultApiFactoryV2,
 } from './apiClientV2/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
@@ -429,6 +430,17 @@ export class MintSDK {
       JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
       signer
     )
+
+    // sign
+    const {
+      data: {
+        data: { signature },
+      },
+    } = await this.apiClientV2.getSignByItemStockId(
+      this.accessToken,
+      data.data.itemStock.id,
+      SignatureType.AuctionBid
+    )
     const initialPrice = ethers.utils
       .parseEther(String(resItem.item.price))
       .toString()
@@ -442,7 +454,7 @@ export class MintSDK {
       startAt,
       endAt,
       price,
-      data.data.signiture,
+      signature,
       {
         value: price,
       }
@@ -556,7 +568,6 @@ export class MintSDK {
     ) {
       return
     }
-    console.log(itemId)
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
@@ -572,6 +583,17 @@ export class MintSDK {
       this.accessToken,
       itemId
     )
+
+    // sign
+    const {
+      data: {
+        data: { signature },
+      },
+    } = await this.apiClientV2.getSignByItemStockId(
+      this.accessToken,
+      data.data.data.itemStock.id,
+      SignatureType.FixedPrice
+    )
     const price = ethers.utils.parseEther(item.item.price.toString()).toString()
     const tx = (await shopContract.buyFixedPrice(
       data.data.data.contractERC721.address,
@@ -580,7 +602,7 @@ export class MintSDK {
       data.data.data.productERC721.creatorAddress,
       price,
       item.item.feeRatePermill,
-      data.data.data.signiture,
+      signature,
       {
         value: price,
       }
