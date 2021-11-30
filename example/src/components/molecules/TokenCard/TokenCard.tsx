@@ -1,59 +1,35 @@
 import styled from '@emotion/styled'
-import Link from 'next/link'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { color, font, media, curve } from '../../../style'
 import { MediaContent } from '../../atoms/MediaContent'
-import { Tag } from '../../atoms/Tag'
-
-export type Media = {
-  url: string
-  mimeType: string
-}
 
 type Props = {
-  title?: string
-  href: string
-  media?: Media
-  withPhysicalProduct?: boolean
-  children?: ReactNode
+  title: string
+  media: {
+    url: string
+    mimeType: string
+  }
 }
 
-export const CardBase: React.FC<Props> = ({
-  href,
-  title,
-  media,
-  children,
-  withPhysicalProduct,
-}) => {
+export const TokenCard: React.VFC<Props> = ({ title, media }) => {
   return (
-    <Link href={href}>
-      <Container>
-        <CardMedia>
-          <MediaContent height={220} media={media} />
-        </CardMedia>
-        <CardContent>
-          <Typography>
-            {title ? (
-              title
-            ) : (
-              <LoadingTypography>
-                <Skeleton width={237} count={2} />
-              </LoadingTypography>
-            )}
-          </Typography>
-          <TagWrap>
-            {withPhysicalProduct && (
-              <Tag
-                label={'フィジカルアイテムつき'}
-                iconPath={'/images/cardboard.svg'}
-              ></Tag>
-            )}
-          </TagWrap>
-          <CardAction>{children}</CardAction>
-        </CardContent>
-      </Container>
-    </Link>
+    <Container>
+      <CardMedia>
+        <MediaContent height={220} media={media} />
+      </CardMedia>
+      <CardContent>
+        <Typography>
+          {title ? (
+            title
+          ) : (
+            <LoadingTypography>
+              <Skeleton width={237} count={2} />
+            </LoadingTypography>
+          )}
+        </Typography>
+      </CardContent>
+    </Container>
   )
 }
 
@@ -132,18 +108,4 @@ const Typography = styled.div`
 
 const LoadingTypography = styled.div`
   display: flex;
-`
-const TagWrap = styled.div`
-  margin: 8px 0 16px 0;
-`
-
-const CardAction = styled.div`
-  /* background: ${color.white}; */
-  height: 52px;
-  width: 100%;
-  ${font.mont.subtitle1}
-  display: flex;
-  align-items: center;
-  color: ${color.content.dark};
-  /* align-items: center; */
 `

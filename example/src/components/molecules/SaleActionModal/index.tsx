@@ -8,13 +8,13 @@ import { MediaContent } from '../../atoms/MediaContent'
 import { StatusDetail } from '../Detail'
 import { ToolTip } from '../../atoms/ToolTip'
 import { useMedia } from '../../../util/useMedia'
-import { ItemTradeType } from '@kyuzan/mint-sdk-js'
+import { PaymentMethod } from '@kyuzan/mint-sdk-js'
 import { CloseButton } from '../../atoms/CloseButton'
 import { ModalWrap } from '../../atoms/ModalWrap'
 
 type Props = {
   itemName: string
-  itemTradeType: ItemTradeType
+  itemTradeType: PaymentMethod
   endAt: Date
   price: number
   media: { url: string; mimeType: string } | undefined
@@ -71,7 +71,7 @@ export const SaleActionModal: React.VFC<Props> = ({
             </InfoContainer>
           </Left>
           <Right>
-            {itemTradeType === 'autoExtensionAuction' && (
+            {itemTradeType === 'ethereum-contract-erc721-shop-auction' && (
               <AuctionSaleAction
                 loading={loading}
                 minBidPrice={minBidPrice}
@@ -84,7 +84,7 @@ export const SaleActionModal: React.VFC<Props> = ({
                 errorText={errorText}
               />
             )}
-            {itemTradeType === 'fixedPrice' && (
+            {itemTradeType === 'credit-card-stripe-fixed-price' && (
               <FixedSaleAction
                 loading={loading}
                 unit={unit}

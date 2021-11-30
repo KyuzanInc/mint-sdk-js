@@ -43,12 +43,12 @@ const ItemDetailPage = ({
     <Container>
       <CommonMeta
         url={`${currentPath}/${baseUrl}`}
-        title={`${item?.item.name}`}
-        ogpImagePath={item?.item.previews[0].url ?? ''}
+        title={`${item!.itemDetail.name}`}
+        ogpImagePath={item!.itemDetail.previews[0].url}
       />
       <MediaContainer>
         <MediaInner>
-          <MediaContent media={item?.item.previews[0]} height={480} />
+          <MediaContent media={item!.itemDetail.previews[0]} height={480} />
         </MediaInner>
       </MediaContainer>
       <DetailContainer>

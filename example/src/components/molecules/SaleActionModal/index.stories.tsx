@@ -14,7 +14,7 @@ const eventsFromObject = actions({
 export const AutoExtensionAuction: React.VFC = () => (
   <SaleActionModal
     itemName={'BASIC'}
-    itemTradeType={'autoExtensionAuction'}
+    itemTradeType={'ethereum-contract-erc721-shop-auction'}
     endAt={addDays(new Date(), 10)}
     price={21.1}
     media={{
@@ -34,7 +34,7 @@ export const AutoExtensionAuction: React.VFC = () => (
 export const FixedPrice: React.VFC = () => (
   <SaleActionModal
     itemName={'BASIC'}
-    itemTradeType={'fixedPrice'}
+    itemTradeType={'credit-card-stripe-fixed-price'}
     endAt={addDays(new Date(), 10)}
     price={21.1}
     media={{
@@ -54,7 +54,7 @@ export const FixedPrice: React.VFC = () => (
 export const ValidationError: React.VFC = () => (
   <SaleActionModal
     itemName={'BASIC'}
-    itemTradeType={'autoExtensionAuction'}
+    itemTradeType={'ethereum-contract-erc721-shop-auction'}
     endAt={addDays(new Date(), 10)}
     price={21.1}
     media={{

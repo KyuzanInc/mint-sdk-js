@@ -36,7 +36,6 @@ export const bidActionCreator = createAsyncThunk<
   }
 >('app/transaction/bid', async ({ itemId, bidPrice }, thunkApi) => {
   try {
-    // TODO
     const tx = await getSdk().sendTxBid(itemId, bidPrice)
     await tx!.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
@@ -54,14 +53,14 @@ export const withDrawItemActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/myItems/withdraw', async (_, thunkApi) => {
+>('app/myItems/withdraw', async ({ itemId, inJapan }, thunkApi) => {
   try {
-    // TODO
-    // const tx = await getSdk().sendTxMakeSuccessfulBid(
-    //   itemId,
-    //   inJapan ? 'jp' : 'unknown'
-    // )
-    // await tx.wait()
+    const tx = await getSdk().sendTxMakeSuccessfulBid(
+      itemId,
+      // TODO
+      inJapan ? 'jp' : 'unknown'
+    )
+    await tx!.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
     return ''
@@ -79,7 +78,7 @@ export const buyFixedPriceItemActionCreator = createAsyncThunk<
 >('app/myItems/buyFixedPrice', async ({ itemId }, thunkApi) => {
   try {
     const tx = await getSdk().sendTxBuyItem(itemId, 'jp')
-    await tx.wait()
+    await tx!.wait()
     // すぐ遷移するとキャッシュの関係で反映されない
     await sleep(6000)
     return ''

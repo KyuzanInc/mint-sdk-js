@@ -1,18 +1,19 @@
 import styled from '@emotion/styled'
-import { Token } from '@kyuzan/mint-sdk-js'
+import { TokenERC721 } from '@kyuzan/mint-sdk-js'
+import * as mime from 'mime'
 import React from 'react'
 import { color, media } from '../../../style'
 import { EmptyTitle, CardList } from '../../atoms/CardList'
 import { CardUL } from '../../atoms/CardList'
 import { Tabs } from '../../atoms/Tabs'
 import { AccountInfo } from '../../molecules/AccountInfo'
-import { Card } from '../../molecules/Card'
 import { LoadingCard } from '../../molecules/Card/loading'
+import { TokenCard } from '../../molecules/TokenCard/TokenCard'
 
 type Props = {
   waitingOwnTokens: boolean
   userWalletAddress: string | undefined
-  ownTokens: Token[]
+  ownTokens: TokenERC721[]
   accountDisplayName: string | undefined
   accountBio: string | undefined
   accountProfileUrl: string | undefined
@@ -67,8 +68,16 @@ export const Presentation: React.VFC<Props> = ({
             ownTokens.length !== 0 &&
             ownTokens.map((item) => {
               return (
-                <CardList key={item.item.itemId}>
-                  <Card item={item.item} loading={false} />
+                <CardList key={item.tokenURI}>
+                  <TokenCard
+                    title={(item.metadata as any).name as string}
+                    media={{
+                      url: (item.metadata as any).image as string,
+                      mimeType: (mime as any).getExtension(
+                        (item.metadata as any).image
+                      ),
+                    }}
+                  />
                 </CardList>
               )
             })}

@@ -4,13 +4,9 @@ import * as ethers from 'ethers'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 import {
-  ResponseItemTypeEnum,
-  Item,
-  ResponseItem,
-  ItemStockStatus,
   SignatureType,
   DefaultApiFactory as DefaultApiFactoryV2,
-  ResponseTokenERC721,
+  TokenERC721,
 } from './apiClientV2/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
@@ -29,15 +25,22 @@ import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
 import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
+import { PaymentMethod } from './types/v2/PaymentMethods'
 import { ItemsType } from './types/ItemsType'
 import { ItemTradeType } from './types/ItemTradeType'
+import { ItemType } from './types/v2/ItemType'
+import { Item } from './types/v2/Item'
+import { PaymentMethodData } from './types/v2/PaymentMethodData'
+import { ItemDetail } from './types/v2/ItemDetail'
 
 export {
+  // v2
   Item,
-  ResponseTokenERC721,
-  ResponseItem,
-  ResponseItemTypeEnum as ItemWithPhysicalItemType,
-  ItemStockStatus,
+  PaymentMethodData,
+  PaymentMethod,
+  ItemType,
+  TokenERC721,
+  ItemDetail,
   // v1
   ItemLog,
   ItemTradeType,
@@ -257,7 +260,7 @@ export class MintSDK {
 
   public getItems = async () => {
     const { data } = await this.apiClientV2.getItems(this.accessToken)
-    return data.data
+    return data.data as Item[]
   }
 
   /**
@@ -300,7 +303,7 @@ export class MintSDK {
       address
     )
     const items = data.data
-    return items.items
+    return items as Item[]
   }
 
   /**
@@ -320,32 +323,8 @@ export class MintSDK {
       this.accessToken,
       itemId
     )
-    return data.data
+    return data.data as Item
   }
-
-  // /**
-  //  * Tokenに紐づいたItemを取得
-  //  * @param token
-  //  * @returns
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  * const sdk = await MintSDK.initialize(...)
-  //  * const item = await sdk.getItemByToken(token)
-  //  * ```
-  //  */
-  // public getItemByToken = async (token: Token) => {
-  //   const { data } = await this.axios.get<AxiosBody<Item>>('v2_itemByToken', {
-  //     params: {
-  //       tokenId: token.tokenId,
-  //       networkId: token.item.networkId,
-  //       tokenAddress: token.contractAddress,
-  //       mintContractAddress: token.contractAddress,
-  //     },
-  //   })
-  //   const item = data.data
-  //   return this.formatItem(item)
-  // }
 
   // /**
   //  * アイテムの履歴(bidされた、買われた)の取得
@@ -432,33 +411,39 @@ export class MintSDK {
     }
     const resItem = await this.getItemById(itemId)
     if (
-      resItem.item.paymentMethodData.paymentMethod !==
+      resItem.itemDetail.paymentMethodData.paymentMethod !==
       'ethereum-contract-erc721-shop-auction'
     ) {
       return
     }
-    const { data } = await this.apiClientV2.getItemStockDetailERC721Shop(
-      this.accessToken,
-      itemId
-    )
-    // TODO
-    // await this.validateNetworkForItem(item)
+
+    await this.validateNetworkForItem(resItem)
     const wallet = this.walletStrategy.getProvider()
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
-      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
-      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      resItem.itemDetail.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(
+        resItem.itemDetail.paymentMethodData.contractDataERC721Shop.abi
+      ),
       signer
     )
 
     // sign
     const {
       data: {
+        data: { itemStockId },
+      },
+    } = await this.apiClientV2.getSellableItemStockERC721Id(
+      this.accessToken,
+      itemId
+    )
+    const {
+      data: {
         data: { signature, contractMethodArg },
       },
     } = await this.apiClientV2.getSignByItemStockId(
       this.accessToken,
-      data.data.itemStock.id,
+      itemStockId,
       SignatureType.AuctionBid
     )
     const price = ethers.utils.parseEther(String(bidPrice)).toString()
@@ -506,23 +491,17 @@ export class MintSDK {
     itemId: string,
     _: Residence = 'unknown'
   ) => {
-    // wallet connect check
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
 
     const resItem = await this.getItemById(itemId)
     if (
-      resItem.item.paymentMethodData.paymentMethod !==
+      resItem.itemDetail.paymentMethodData.paymentMethod !==
       'ethereum-contract-erc721-shop-auction'
     ) {
       return
     }
-
-    const { data } = await this.apiClientV2.getItemStockDetailERC721Shop(
-      this.accessToken,
-      resItem.itemStocks[0].id
-    )
 
     const {
       data: {
@@ -530,25 +509,26 @@ export class MintSDK {
       },
     } = await this.apiClientV2.getSignByItemStockId(
       this.accessToken,
-      data.data.itemStock.id,
+      resItem.itemStocks[0].id,
       SignatureType.AuctionWithdraw
     )
 
-    // TOOD
-    // await this.validateNetworkForItem(item)
+    await this.validateNetworkForItem(resItem)
     const wallet = this.walletStrategy.getProvider()
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
-      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
-      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      resItem.itemDetail.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(
+        resItem.itemDetail.paymentMethodData.contractDataERC721Shop.abi
+      ),
       signer
     )
     const tx = (await shopContract.buyAuction(
       ...contractMethodArg
     )) as ethers.providers.TransactionResponse
 
-    // const hash = tx.hash
     // TODO
+    // const hash = tx.hash
     // await this.axios.post('/v2_registerTransactionReceiptsApp', {
     //   txHash: hash,
     //   itemId,
@@ -589,43 +569,52 @@ export class MintSDK {
     }
 
     const item = await this.getItemById(itemId)
-    // TODO
-    // await this.validateNetworkForItem(item)
+    await this.validateNetworkForItem(item)
     const wallet = this.walletStrategy.getProvider()
     const resItem = await this.getItemById(itemId)
     if (
-      resItem.item.paymentMethodData.paymentMethod !==
+      resItem.itemDetail.paymentMethodData.paymentMethod !==
       'ethereum-contract-erc721-shop-fixed-price'
     ) {
       return
     }
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
-      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
-      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      resItem.itemDetail.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(
+        resItem.itemDetail.paymentMethodData.contractDataERC721Shop.abi
+      ),
       signer
     )
-    // TODO
-    // if (item.tradeType !== 'fixedPrice') {
-    //   throw new Error("Item's tradeType is not fixedPrice")
-    // }
 
-    const data = await this.apiClientV2.getItemStockDetailERC721Shop(
+    if (
+      item.itemDetail.paymentMethodData.paymentMethod !==
+      'credit-card-stripe-fixed-price'
+    ) {
+      throw new Error('not fixedPrice')
+    }
+
+    // sign
+    const {
+      data: {
+        data: { itemStockId },
+      },
+    } = await this.apiClientV2.getSellableItemStockERC721Id(
       this.accessToken,
       itemId
     )
-
-    // sign
     const {
       data: {
         data: { contractMethodArg },
       },
     } = await this.apiClientV2.getSignByItemStockId(
       this.accessToken,
-      data.data.data.itemStock.id,
+      itemStockId,
       SignatureType.FixedPrice
     )
-    const price = ethers.utils.parseEther(item.item.price.toString()).toString()
+    const price = ethers.utils
+      .parseEther(item.itemDetail.price.toString())
+      .toString()
     const tx = (await shopContract.buyFixedPrice(...contractMethodArg, {
       value: price,
     })) as ethers.providers.TransactionResponse
@@ -975,13 +964,21 @@ export class MintSDK {
   /**
    * @ignore
    */
-  // private validateNetworkForItem = async (item: ItemStock) => {
-  //   // TODO: ItemStock？でバリデーションやな？
-  //   const currentNetwork = await this.getConnectedNetworkId()
-  //   if (currentNetwork !== item.itemStocks) {
-  //     throw new WrongNetworkError('Network is not correct')
-  //   }
-  // }
+  private validateNetworkForItem = async (item: Item) => {
+    const currentNetwork = await this.getConnectedNetworkId()
+    if (
+      item.itemDetail.paymentMethodData.paymentMethod ===
+      'credit-card-stripe-fixed-price'
+    ) {
+      return
+    }
+    if (
+      currentNetwork !==
+      item.itemDetail.paymentMethodData.contractDataERC721Shop.networkId
+    ) {
+      throw new WrongNetworkError('Network is not correct')
+    }
+  }
 
   // /**
   //  * @ignore

@@ -7,13 +7,13 @@ import { format } from 'date-fns'
 import Image from 'next/image'
 import { getPriceUnit } from '../../../util/getItemPriceUnit'
 import { getNetworkIconPath } from '../../../util/getNetworkIconPath'
-import { NetworkId, ItemTradeType } from '@kyuzan/mint-sdk-js'
+import { NetworkId, PaymentMethod } from '@kyuzan/mint-sdk-js'
 import { isOnSale } from '../../../util/isOnSale'
 import { isSaleBeforeStart } from '../../../util/isSaleBeforeStart'
 import { isSaleEnd } from '../../../util/isSaleEnd'
 
 type Props = {
-  tradeType: ItemTradeType
+  tradeType: PaymentMethod
   networkId: NetworkId
   startAt: Date
   endAt: Date
@@ -31,7 +31,7 @@ export const SaleInfo: React.VFC<Props> = ({
   tradeType,
   hasBought,
 }) => {
-  const isAuction = tradeType === 'autoExtensionAuction'
+  const isAuction = tradeType === 'ethereum-contract-erc721-shop-auction'
   const startDate =
     (typeof startAt === 'string' ? new Date(startAt) : startAt) ?? new Date()
   const endDate =
