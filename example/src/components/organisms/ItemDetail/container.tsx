@@ -27,7 +27,7 @@ export const Container: React.VFC = () => {
     return state.app.item.data
   })
 
-  const item = itemDetail?.item
+  const item = itemDetail?.itemDetail
 
   const endDate = item ? new Date(item.endAt) : new Date()
   const auctionIsEnded = endDate < new Date()

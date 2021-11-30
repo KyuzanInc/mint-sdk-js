@@ -28,13 +28,13 @@ export const CardMyPage: React.VFC<Props> = ({
   loading,
   item,
   onWithdraw,
+  userWalletAddress,
   withdrawing,
   onComplete,
 }) => {
   const [inJapan, setInJapan] = useState(false)
   const moduleHeight = 240
 
-  // TODO: 固定価格販売
   if (loading || typeof item === 'undefined') {
     return <Loading />
   }
@@ -46,8 +46,10 @@ export const CardMyPage: React.VFC<Props> = ({
     return null
   const now = new Date()
   const auctionIsEnd = new Date(item.itemDetail.endAt) < now
-  // TODO
-  const userIsHighestBidder = true
+  const userIsHighestBidder =
+    item.bids[0].bidder === userWalletAddress?.toLocaleLowerCase()
+  console.log(item.bids[0].bidder)
+
   const winning = !auctionIsEnd && userIsHighestBidder
   const losing = !auctionIsEnd && !userIsHighestBidder
   const won = auctionIsEnd && userIsHighestBidder
