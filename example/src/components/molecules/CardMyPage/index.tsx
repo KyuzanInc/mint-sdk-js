@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import styled from '@emotion/styled'
-import { ResponseItem, Token } from '@kyuzan/mint-sdk-js'
+import { Item } from '@kyuzan/mint-sdk-js'
 import { addMinutes, isBefore } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,7 +17,7 @@ import { SaleInfo } from '../SaleInfo'
 type Props = {
   loading: boolean
   userWalletAddress?: string
-  item?: ResponseItem | Token
+  item?: Item
   onShowShippingInfo?: () => void
   onWithdraw?: (inJapan: boolean) => void
   withdrawing?: boolean
@@ -39,232 +39,189 @@ export const CardMyPage: React.VFC<Props> = ({
     return <Loading />
   }
 
-  if (isToken(item)) {
+  if (
+    item.itemDetail.paymentMethodData.paymentMethod !==
+    'ethereum-contract-erc721-shop-auction'
+  )
     return null
-    // <Container>
-    //   <Left>
-    //     <MediaContainer height={moduleHeight}>
-    //       <MediaContent media={item?.previews[0]} height={moduleHeight} />
-    //     </MediaContainer>
-    //     <Center>
-    //       <CenterTitleContainer>
-    //         <CenterTitle>{item?.name}</CenterTitle>
-    //       </CenterTitleContainer>
-    //       <CenterTagsContainer>
-    //         {item?.item.type === 'nftWithPhysicalProduct' && (
-    //           <CenterTags
-    //             label={'フィジカルアイテムつき'}
-    //             iconPath={'/images/cardboard.svg'}
-    //           />
-    //         )}
-    //       </CenterTagsContainer>
-    //       <AuctionInfoContainer>
-    //         <SaleInfo
-    //           startAt={item.item.startAt}
-    //           endAt={item.item.endAt}
-    //           tradeType={item.item.tradeType}
-    //           networkId={item.item.networkId}
-    //           initialPrice={item.item.initialPrice}
-    //           currentPrice={item.item.currentPrice}
-    //           onComplete={onComplete}
-    //         />
-    //       </AuctionInfoContainer>
-    //     </Center>
-    //   </Left>
-    //   <Right>
-    //     <TokenRight
-    //       token={item}
-    //       onViewShipAddress={onShowShippingInfo!}
-    //       onWriteShipAddress={() => {
-    //         router.push(`/me/tokens/${item.item.itemId}/shipping_info`)
-    //       }}
-    //     />
-    //   </Right>
-    // </Container>
-  } else {
-    if (
-      item.paymentMethodData.paymentMethod !==
-      'ethereum-contract-erc721-shop-auction'
-    )
-      return null
-    const now = new Date()
-    const auctionIsEnd = new Date(item.endAt) < now
-    // TODO
-    const userIsHighestBidder = true
-    const winning = !auctionIsEnd && userIsHighestBidder
-    const losing = !auctionIsEnd && !userIsHighestBidder
-    const won = auctionIsEnd && userIsHighestBidder
-    const not5minFromEndAt = isBefore(now, addMinutes(new Date(item.endAt), 5))
-    const waitWithDraw = won && not5minFromEndAt
+  const now = new Date()
+  const auctionIsEnd = new Date(item.itemDetail.endAt) < now
+  // TODO
+  const userIsHighestBidder = true
+  const winning = !auctionIsEnd && userIsHighestBidder
+  const losing = !auctionIsEnd && !userIsHighestBidder
+  const won = auctionIsEnd && userIsHighestBidder
+  const not5minFromEndAt = isBefore(
+    now,
+    addMinutes(new Date(item.itemDetail.endAt), 5)
+  )
+  const waitWithDraw = won && not5minFromEndAt
 
-    return (
-      <Container>
-        <Left>
-          <MediaContainer height={moduleHeight}>
-            <MediaContent media={item?.previews[0]} height={moduleHeight} />
-          </MediaContainer>
-          <Center>
-            <CenterTitleContainer>
-              <CenterTitle>{item?.name}</CenterTitle>
-            </CenterTitleContainer>
-            <CenterTagsContainer>
-              {/* TODO */}
-              {item.type === 'with-physical-item' && (
-                <CenterTags
-                  label={'フィジカルアイテムつき'}
-                  iconPath={'/images/cardboard.svg'}
-                />
-              )}
-            </CenterTagsContainer>
-            <AuctionInfoContainer>
-              <SaleInfo
-                startAt={new Date(item.startAt)}
-                endAt={new Date(item.endAt)}
-                // TODO
-                tradeType={
-                  item.paymentMethodData.paymentMethod ===
-                  'ethereum-contract-erc721-shop-auction'
-                    ? 'autoExtensionAuction'
-                    : 'fixedPrice'
-                }
-                networkId={
-                  item.paymentMethodData.contractDataERC721Shop.networkId
-                }
-                price={item.price}
-                // TODO
-                hasBought={false}
-                onComplete={onComplete}
+  return (
+    <Container>
+      <Left>
+        <MediaContainer height={moduleHeight}>
+          <MediaContent
+            media={item.itemDetail.previews[0]}
+            height={moduleHeight}
+          />
+        </MediaContainer>
+        <Center>
+          <CenterTitleContainer>
+            <CenterTitle>{item.itemDetail.name}</CenterTitle>
+          </CenterTitleContainer>
+          <CenterTagsContainer>
+            {item.itemDetail.type === 'with-physical-item' && (
+              <CenterTags
+                label={'フィジカルアイテムつき'}
+                iconPath={'/images/cardboard.svg'}
               />
-            </AuctionInfoContainer>
-          </Center>
-        </Left>
-        <Right>
-          {winning && (
-            <>
-              <RightTitleContainer>
-                <WinningTitle>
-                  <RightTitleIcon>
-                    <Image
-                      layout={'fixed'}
-                      src={'/images/check-circle.svg'}
-                      width={24}
-                      height={24}
-                    />
-                  </RightTitleIcon>
-                  競り勝っています
-                </WinningTitle>
-              </RightTitleContainer>
-              <CurrentPriceContainer>
-                <CurrentPriceTitle>最新の入札額</CurrentPriceTitle>
-                <CurrentPriceValue>{item.price}</CurrentPriceValue>
-                <CurrentPriceUnit>
-                  {getPriceUnit(
-                    item.paymentMethodData.contractDataERC721Shop.networkId
-                  )}
-                </CurrentPriceUnit>
-              </CurrentPriceContainer>
-              <Link href={`/items/${item.id}`}>
-                <ReverseButton
-                  isLoading={false}
-                  label={'商品を見る'}
-                  type={'button'}
-                />
-              </Link>
-            </>
-          )}
-          {losing && (
-            <>
-              <RightTitleContainer>
-                <LosingTitle>
-                  <RightTitleIcon>
-                    <Image
-                      layout={'fixed'}
-                      src={'/images/alert-triangle.svg'}
-                      width={24}
-                      height={24}
-                    />
-                  </RightTitleIcon>
-                  競り負けています
-                </LosingTitle>
-              </RightTitleContainer>
-              <CurrentPriceContainer>
-                <CurrentPriceTitle>最新の入札額</CurrentPriceTitle>
-                <CurrentPriceValue>{item.price}</CurrentPriceValue>
-                <CurrentPriceUnit>
-                  {getPriceUnit(
-                    item.paymentMethodData.contractDataERC721Shop.networkId
-                  )}
-                </CurrentPriceUnit>
-              </CurrentPriceContainer>
-              <Link href={`/items/${item.id}`}>
-                <ReverseButton
-                  isLoading={false}
-                  label={'商品を見る'}
-                  type={'button'}
-                />
-              </Link>
-            </>
-          )}
-          {waitWithDraw && (
-            <>
-              <RightTitleContainer>
-                <WonTitle>受け取り待ち</WonTitle>
-              </RightTitleContainer>
-              <WonDescription>
-                おめとうございます。オークションに競り勝ち、NFTを勝ち取りました。オークション終了5分以降に下のボタンからNFTを受け取れます。
-              </WonDescription>
-              <PrimaryButtonDisabled
-                isLoading={withdrawing!}
-                label={'NFTを受け取る'}
-                disabled={true}
+            )}
+          </CenterTagsContainer>
+          <AuctionInfoContainer>
+            <SaleInfo
+              startAt={new Date(item.itemDetail.startAt)}
+              endAt={new Date(item.itemDetail.endAt)}
+              tradeType={item.itemDetail.paymentMethodData.paymentMethod}
+              networkId={
+                item.itemDetail.paymentMethodData.contractDataERC721Shop
+                  .networkId
+              }
+              price={item.itemDetail.price}
+              hasBought={false}
+              onComplete={onComplete}
+            />
+          </AuctionInfoContainer>
+        </Center>
+      </Left>
+      <Right>
+        {winning && (
+          <>
+            <RightTitleContainer>
+              <WinningTitle>
+                <RightTitleIcon>
+                  <Image
+                    layout={'fixed'}
+                    src={'/images/check-circle.svg'}
+                    width={24}
+                    height={24}
+                  />
+                </RightTitleIcon>
+                競り勝っています
+              </WinningTitle>
+            </RightTitleContainer>
+            <CurrentPriceContainer>
+              <CurrentPriceTitle>最新の入札額</CurrentPriceTitle>
+              <CurrentPriceValue>{item.itemDetail.price}</CurrentPriceValue>
+              <CurrentPriceUnit>
+                {getPriceUnit(
+                  item.itemDetail.paymentMethodData.contractDataERC721Shop
+                    .networkId
+                )}
+              </CurrentPriceUnit>
+            </CurrentPriceContainer>
+            <Link href={`/items/${item.itemDetail.id}`}>
+              <ReverseButton
+                isLoading={false}
+                label={'商品を見る'}
                 type={'button'}
               />
-            </>
-          )}
-          {won && !waitWithDraw && (
-            <>
-              <RightTitleContainer>
-                <WonTitle>受け取り待ち</WonTitle>
-              </RightTitleContainer>
-              <WonDescription>
-                おめとうございます。オークションに競り勝ち、NFTを勝ち取りました。下のボタンからNFTを受け取り、ウォレットに入れてください
-              </WonDescription>
-              <CheckInJapanContainer>
-                <CheckInJapanLabel>
-                  <input
-                    type={'checkbox'}
-                    checked={inJapan}
-                    onChange={(e) => setInJapan(e.target.checked)}
-                  />{' '}
-                  私は日本に在住しています
-                  <ToolTip
-                    description={
-                      '入札される方が日本在住の場合、管理者が消費税をお支払いします'
-                    }
-                  >
-                    <NotFoundIcon>
-                      <Image
-                        src={'/images/icons/help.svg'}
-                        layout={'fixed'}
-                        width={12}
-                        height={12}
-                      />
-                    </NotFoundIcon>
-                  </ToolTip>
-                </CheckInJapanLabel>
-              </CheckInJapanContainer>
-              <PrimaryButtonDefault
-                isLoading={withdrawing!}
-                label={'NFTを受け取る'}
-                onClick={() => onWithdraw && onWithdraw(inJapan)}
+            </Link>
+          </>
+        )}
+        {losing && (
+          <>
+            <RightTitleContainer>
+              <LosingTitle>
+                <RightTitleIcon>
+                  <Image
+                    layout={'fixed'}
+                    src={'/images/alert-triangle.svg'}
+                    width={24}
+                    height={24}
+                  />
+                </RightTitleIcon>
+                競り負けています
+              </LosingTitle>
+            </RightTitleContainer>
+            <CurrentPriceContainer>
+              <CurrentPriceTitle>最新の入札額</CurrentPriceTitle>
+              <CurrentPriceValue>{item.itemDetail.price}</CurrentPriceValue>
+              <CurrentPriceUnit>
+                {getPriceUnit(
+                  item.itemDetail.paymentMethodData.contractDataERC721Shop
+                    .networkId
+                )}
+              </CurrentPriceUnit>
+            </CurrentPriceContainer>
+            <Link href={`/items/${item.itemDetail.id}`}>
+              <ReverseButton
+                isLoading={false}
+                label={'商品を見る'}
                 type={'button'}
               />
-            </>
-          )}
-        </Right>
-      </Container>
-    )
-  }
+            </Link>
+          </>
+        )}
+        {waitWithDraw && (
+          <>
+            <RightTitleContainer>
+              <WonTitle>受け取り待ち</WonTitle>
+            </RightTitleContainer>
+            <WonDescription>
+              おめとうございます。オークションに競り勝ち、NFTを勝ち取りました。オークション終了5分以降に下のボタンからNFTを受け取れます。
+            </WonDescription>
+            <PrimaryButtonDisabled
+              isLoading={withdrawing!}
+              label={'NFTを受け取る'}
+              disabled={true}
+              type={'button'}
+            />
+          </>
+        )}
+        {won && !waitWithDraw && (
+          <>
+            <RightTitleContainer>
+              <WonTitle>受け取り待ち</WonTitle>
+            </RightTitleContainer>
+            <WonDescription>
+              おめとうございます。オークションに競り勝ち、NFTを勝ち取りました。下のボタンからNFTを受け取り、ウォレットに入れてください
+            </WonDescription>
+            <CheckInJapanContainer>
+              <CheckInJapanLabel>
+                <input
+                  type={'checkbox'}
+                  checked={inJapan}
+                  onChange={(e) => setInJapan(e.target.checked)}
+                />{' '}
+                私は日本に在住しています
+                <ToolTip
+                  description={
+                    '入札される方が日本在住の場合、管理者が消費税をお支払いします'
+                  }
+                >
+                  <NotFoundIcon>
+                    <Image
+                      src={'/images/icons/help.svg'}
+                      layout={'fixed'}
+                      width={12}
+                      height={12}
+                    />
+                  </NotFoundIcon>
+                </ToolTip>
+              </CheckInJapanLabel>
+            </CheckInJapanContainer>
+            <PrimaryButtonDefault
+              isLoading={withdrawing!}
+              label={'NFTを受け取る'}
+              onClick={() => onWithdraw && onWithdraw(inJapan)}
+              type={'button'}
+            />
+          </>
+        )}
+      </Right>
+    </Container>
+  )
 }
 
 const Loading: React.VFC = () => {
@@ -289,10 +246,6 @@ const Loading: React.VFC = () => {
       </Right>
     </Container>
   )
-}
-
-const isToken = (target: any): target is Token => {
-  return typeof target?.item !== 'undefined'
 }
 
 const Container = styled.article`

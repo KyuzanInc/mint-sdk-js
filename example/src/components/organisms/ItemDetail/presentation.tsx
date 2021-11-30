@@ -1,8 +1,4 @@
-import {
-  Item,
-  ItemStockStatus,
-  ItemWithPhysicalItemType,
-} from '@kyuzan/mint-sdk-js'
+import { Item } from '@kyuzan/mint-sdk-js'
 import styled from '@emotion/styled'
 import React, { ChangeEventHandler } from 'react'
 import { Tag as TagBase } from '../../atoms/Tag'
@@ -65,28 +61,26 @@ export const Presentation: React.VFC<Props> = (args) => {
     return <LoadingItemDetailComponent />
   }
 
-  const startDate = new Date(args.item.item.startAt)
-  const endDate = new Date(args.item.item.endAt)
+  if (
+    args.item.itemDetail.paymentMethodData.paymentMethod ===
+    'credit-card-stripe-fixed-price'
+  )
+    throw new Error('not implemented')
+
+  const startDate = new Date(args.item.itemDetail.startAt)
+  const endDate = new Date(args.item.itemDetail.endAt)
   const saleOnGoing = isOnSale(startDate, endDate)
-  // TODO
-  const tradeType =
-    args.item.item.paymentMethodData.paymentMethod ===
-    'ethereum-contract-erc721-shop-auction'
-      ? 'autoExtensionAuction'
-      : 'fixedPrice'
+  const tradeType = args.item.itemDetail.paymentMethodData.paymentMethod
   // TODO
   const soldOut =
-    typeof args.item.itemStocks.find(
-      (stock) => stock.status === ItemStockStatus.Created
-    ) === 'undefined'
+    typeof args.item.itemStocks.find((stock) => stock.status === 'created') ===
+    'undefined'
 
-  // TODO
-  const hasPyisicalItem =
-    args.item.item.type === ItemWithPhysicalItemType.WithPhysicalItem
+  const hasPyisicalItem = args.item.itemDetail.type === 'with-physical-item'
   return (
     <>
       <Detail>
-        <Title>{args.item.item.name}</Title>
+        <Title>{args.item.itemDetail.name}</Title>
         <TagWrap>
           {hasPyisicalItem && (
             <Tag
@@ -94,16 +88,20 @@ export const Presentation: React.VFC<Props> = (args) => {
               iconPath={'/images/cardboard.svg'}
             />
           )}
-          {tradeType === 'autoExtensionAuction' && (
+          {tradeType === 'ethereum-contract-erc721-shop-auction' && (
             <Tag label={'自動延長オークション'} />
           )}
-          {tradeType === 'fixedPrice' && <Tag label={'固定価格販売'} />}
+          {tradeType === 'ethereum-contract-erc721-shop-fixed-price' && (
+            <Tag label={'固定価格販売'} />
+          )}
         </TagWrap>
         <TradeInfoContainer>
           <StatusDetail
-            // TODO
-            unit={getPriceUnit(31337)}
-            price={args.item.item.price}
+            unit={getPriceUnit(
+              args.item.itemDetail.paymentMethodData.contractDataERC721Shop
+                .networkId
+            )}
+            price={args.item.itemDetail.price}
             endAt={endDate}
             tradeType={tradeType}
             onTick={args.onTick}
@@ -122,7 +120,7 @@ export const Presentation: React.VFC<Props> = (args) => {
             </QuestionButton>
           )}
 
-          {tradeType === 'autoExtensionAuction' && (
+          {tradeType === 'ethereum-contract-erc721-shop-auction' && (
             <QuestionButton onClick={args.handleOpenAutoExtensionModal}>
               <QuestionIcon>
                 <Image
@@ -136,7 +134,7 @@ export const Presentation: React.VFC<Props> = (args) => {
             </QuestionButton>
           )}
         </TradeInfoContainer>
-        {tradeType === 'autoExtensionAuction' &&
+        {tradeType === 'ethereum-contract-erc721-shop-auction' &&
           (saleOnGoing ? (
             <BidButton
               label={'入札する'}
@@ -147,7 +145,7 @@ export const Presentation: React.VFC<Props> = (args) => {
             <BidButton label={'売り切れ'} disabled={true} type={'button'} />
           ))}
 
-        {tradeType !== 'autoExtensionAuction' &&
+        {tradeType !== 'ethereum-contract-erc721-shop-auction' &&
           (!soldOut ? (
             <BidButton
               label={'購入する'}
@@ -157,12 +155,12 @@ export const Presentation: React.VFC<Props> = (args) => {
           ) : (
             <BidButton label={'売り切れ'} disabled={true} type={'button'} />
           ))}
-        <Description>{args.item.item.description}</Description>
-        {/* // TODO */}
+        <Description>{args.item.itemDetail.description}</Description>
         <SecondaryButtonUL>
           <SecondaryButtonList>
             <ExternalButton
               label={'IPFSで見る'}
+              {/* // TODO */}
               href={args.item.productERC721s![0].tokenURI!}
               iconSize={16}
               iconPathBack={'/images/external-link.svg'}
@@ -188,10 +186,10 @@ export const Presentation: React.VFC<Props> = (args) => {
       />
       <SaleActionModal
         itemTradeType={tradeType}
-        itemName={args.item.item.name}
-        price={args.item.item.price}
+        itemName={args.item.itemDetail.name}
+        price={args.item.itemDetail.price}
         endAt={endDate}
-        media={args.item.item.previews[0]}
+        media={args.item.itemDetail.previews[0]}
         unit={getItemPriceUnit(args.item)}
         // TODO
         minBidPrice={110}
@@ -206,26 +204,30 @@ export const Presentation: React.VFC<Props> = (args) => {
         isValidationError={args.isValidationError}
         errorText={args.errorText}
       />
+
+      {/* 仮想通貨決済only */}
       <BidSuccessModal
         closeModal={args.handleCloseBidSuccessModal}
         isOpen={args.showBidSuccessModal}
-        media={args.item.item.previews[0]}
+        media={args.item.itemDetail.previews[0]}
         unit={getItemPriceUnit(args.item)}
         // TODO
         bidHash={args.taHash ?? ''}
-        itemName={args.item.item.name}
-        // TODO
-        itemNetworkId={31337}
+        itemName={args.item.itemDetail.name}
+        itemNetworkId={
+          args.item.itemDetail.paymentMethodData.contractDataERC721Shop
+            .networkId
+        }
         endAt={endDate}
-        price={args.item.item.price}
+        price={args.item.itemDetail.price}
       />
+
       <BoughtFixedPriceSuccessModal
-        itemName={args.item.item.name ?? ''}
-        price={args.item.item.price}
-        media={args.item.item.previews[0]}
+        itemName={args.item.itemDetail.name ?? ''}
+        price={args.item.itemDetail.price}
+        media={args.item.itemDetail.previews[0]}
         isOpen={args.showBuyFixedPriceSuccessModal}
-        // TODO
-        itemNetworkId={31337}
+        itemNetworkId={args.item.itemDetail.paymentMethodData.contractDataERC721Shop.networkId}
         unit={getItemPriceUnit(args.item)}
         closeModal={args.handleCloseBuyFixedPriceSuccessModal}
         endAt={endDate}

@@ -4,13 +4,9 @@ import * as ethers from 'ethers'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 import {
-  ResponseItemTypeEnum,
-  Item,
-  ResponseItem,
-  ItemStockStatus,
   SignatureType,
   DefaultApiFactory as DefaultApiFactoryV2,
-  ResponseTokenERC721,
+  TokenERC721,
 } from './apiClientV2/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
@@ -29,15 +25,22 @@ import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
 import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
+import { PaymentMethod } from './types/v2/PaymentMethods'
 import { ItemsType } from './types/ItemsType'
 import { ItemTradeType } from './types/ItemTradeType'
+import { ItemType } from './types/v2/ItemType'
+import { Item } from './types/v2/Item'
+import { PaymentMethodData } from './types/v2/PaymentMethodData'
+import { ItemDetail } from './types/v2/ItemDetail'
 
 export {
+  // v2
   Item,
-  ResponseTokenERC721,
-  ResponseItem,
-  ResponseItemTypeEnum as ItemWithPhysicalItemType,
-  ItemStockStatus,
+  PaymentMethodData,
+  PaymentMethod,
+  ItemType,
+  TokenERC721,
+  ItemDetail,
   // v1
   ItemLog,
   ItemTradeType,
@@ -257,7 +260,7 @@ export class MintSDK {
 
   public getItems = async () => {
     const { data } = await this.apiClientV2.getItems(this.accessToken)
-    return data.data
+    return data.data as Item[]
   }
 
   /**
@@ -300,7 +303,7 @@ export class MintSDK {
       address
     )
     const items = data.data
-    return items.items
+    return items as Item[]
   }
 
   /**
@@ -320,7 +323,7 @@ export class MintSDK {
       this.accessToken,
       itemId
     )
-    return data.data
+    return data.data as Item
   }
 
   // /**
@@ -432,7 +435,7 @@ export class MintSDK {
     }
     const resItem = await this.getItemById(itemId)
     if (
-      resItem.item.paymentMethodData.paymentMethod !==
+      resItem.itemDetail.paymentMethodData.paymentMethod !==
       'ethereum-contract-erc721-shop-auction'
     ) {
       return
@@ -446,8 +449,10 @@ export class MintSDK {
     const wallet = this.walletStrategy.getProvider()
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
-      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
-      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      resItem.itemDetail.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(
+        resItem.itemDetail.paymentMethodData.contractDataERC721Shop.abi
+      ),
       signer
     )
 
@@ -513,7 +518,7 @@ export class MintSDK {
 
     const resItem = await this.getItemById(itemId)
     if (
-      resItem.item.paymentMethodData.paymentMethod !==
+      resItem.itemDetail.paymentMethodData.paymentMethod !==
       'ethereum-contract-erc721-shop-auction'
     ) {
       return
@@ -539,8 +544,10 @@ export class MintSDK {
     const wallet = this.walletStrategy.getProvider()
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
-      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
-      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      resItem.itemDetail.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(
+        resItem.itemDetail.paymentMethodData.contractDataERC721Shop.abi
+      ),
       signer
     )
     const tx = (await shopContract.buyAuction(
@@ -594,15 +601,17 @@ export class MintSDK {
     const wallet = this.walletStrategy.getProvider()
     const resItem = await this.getItemById(itemId)
     if (
-      resItem.item.paymentMethodData.paymentMethod !==
+      resItem.itemDetail.paymentMethodData.paymentMethod !==
       'ethereum-contract-erc721-shop-fixed-price'
     ) {
       return
     }
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
-      resItem.item.paymentMethodData.contractDataERC721Shop.contractAddress,
-      JSON.parse(resItem.item.paymentMethodData.contractDataERC721Shop.abi),
+      resItem.itemDetail.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(
+        resItem.itemDetail.paymentMethodData.contractDataERC721Shop.abi
+      ),
       signer
     )
     // TODO
@@ -625,7 +634,9 @@ export class MintSDK {
       data.data.data.itemStock.id,
       SignatureType.FixedPrice
     )
-    const price = ethers.utils.parseEther(item.item.price.toString()).toString()
+    const price = ethers.utils
+      .parseEther(item.itemDetail.price.toString())
+      .toString()
     const tx = (await shopContract.buyFixedPrice(...contractMethodArg, {
       value: price,
     })) as ethers.providers.TransactionResponse

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
-import { ResponseItem, ResponseTokenERC721 } from '@kyuzan/mint-sdk-js'
+import * as mime from 'mime'
+import { Item, TokenERC721 } from '@kyuzan/mint-sdk-js'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { color, font, media } from '../../../style'
@@ -10,12 +11,12 @@ import { AccountInfo } from '../../molecules/AccountInfo'
 import { LoadingCard } from '../../molecules/Card/loading'
 import { CardMyPage } from '../../molecules/CardMyPage'
 import { ShippingInfoModal } from '../../molecules/ShippingInfoModal'
-import { TokenCard } from '../../molecules/TokenCard'
+import { TokenCard } from '../../molecules/TokenCard/TokenCard'
 import { WalletModal } from '../../molecules/WalletModal'
 
 type Props = {
-  bidedItems: ResponseItem[]
-  ownTokens: ResponseTokenERC721[]
+  bidedItems: Item[]
+  ownTokens: TokenERC721[]
   waitingBidedItems: boolean
   waitingOwnTokens: boolean
   showShippingInfoModal: boolean
@@ -118,15 +119,15 @@ export const Presentation: React.VFC<Props> = ({
               bidedItems.length !== 0 &&
               bidedItems.map((item) => {
                 return (
-                  <ItemContainer key={item.id}>
+                  <ItemContainer key={item.itemDetail.id}>
                     <CardMyPage
                       item={item}
                       loading={false}
                       userWalletAddress={userWalletAddress}
                       onWithdraw={(inJapan: boolean) =>
-                        handleWithdrawItem(item.id, inJapan)
+                        handleWithdrawItem(item.itemDetail.id, inJapan)
                       }
-                      withdrawing={withdrawingItemId === item.id}
+                      withdrawing={withdrawingItemId === item.itemDetail.id}
                       onComplete={onComplete}
                     />
                   </ItemContainer>
@@ -169,7 +170,15 @@ export const Presentation: React.VFC<Props> = ({
               ownTokens.map((item) => {
                 return (
                   <OwnedItemContainer key={item.id}>
-                    <TokenCard item={item} loading={false} />
+                    <TokenCard
+                      title={(item.metadata as any).name as string}
+                      media={{
+                        url: (item.metadata as any).image as string,
+                        mimeType: (mime as any).getExtension(
+                          (item.metadata as any).image
+                        ),
+                      }}
+                    />
                   </OwnedItemContainer>
                 )
               })}

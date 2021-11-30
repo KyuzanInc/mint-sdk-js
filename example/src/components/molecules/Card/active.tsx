@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-  ItemWithPhysicalItemType,
-  Item,
-  ItemStockStatus,
-} from '@kyuzan/mint-sdk-js'
+import { Item } from '@kyuzan/mint-sdk-js'
 import { CardBase } from './base'
 import { SaleInfo } from '../SaleInfo'
 
@@ -13,32 +9,29 @@ type Props = {
 }
 
 export const ActiveCard: React.FC<Props> = ({ item, onAuctionFinish }) => {
+  if (
+    item.itemDetail.paymentMethodData.paymentMethod ===
+    'credit-card-stripe-fixed-price'
+  )
+    throw new Error('not implemented')
   const soldOut =
-    typeof item.itemStocks.find(
-      (stock) => stock.status === ItemStockStatus.Created
-    ) === 'undefined'
+    typeof item.itemStocks.find((stock) => stock.status === 'created') ===
+    'undefined'
   return (
     <CardBase
-      href={`/items/${item.item.id}`}
-      title={item.item.name}
-      media={item.item.previews[0]}
-      withPhysicalProduct={
-        item.item.type === ItemWithPhysicalItemType.WithPhysicalItem
-      }
+      href={`/items/${item.itemDetail.id}`}
+      title={item.itemDetail.name}
+      media={item.itemDetail.previews[0]}
+      withPhysicalProduct={item.itemDetail.type === 'with-physical-item'}
     >
       <SaleInfo
-        startAt={new Date(item.item.startAt)}
-        endAt={new Date(item.item.endAt)}
-        // TODO
-        tradeType={
-          item.item.paymentMethodData.paymentMethod ===
-          'ethereum-contract-erc721-shop-auction'
-            ? 'autoExtensionAuction'
-            : 'fixedPrice'
+        startAt={new Date(item.itemDetail.startAt)}
+        endAt={new Date(item.itemDetail.endAt)}
+        tradeType={item.itemDetail.paymentMethodData.paymentMethod}
+        networkId={
+          item.itemDetail.paymentMethodData.contractDataERC721Shop.networkId
         }
-        // TODO
-        networkId={31337}
-        price={item.item.price}
+        price={item.itemDetail.price}
         onComplete={onAuctionFinish}
         // TODO: もうちょい便利に生やすか、util用意
         hasBought={soldOut}

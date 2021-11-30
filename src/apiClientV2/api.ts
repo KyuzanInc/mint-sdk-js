@@ -24,6 +24,61 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface Bid
+ */
+export interface Bid {
+    /**
+     * 
+     * @type {string}
+     * @memberof Bid
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Bid
+     */
+    createAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Bid
+     */
+    updateAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Bid
+     */
+    itemDocumentId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Bid
+     */
+    bidder: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Bid
+     */
+    bidPrice: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Bid
+     */
+    transactionAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Bid
+     */
+    transactionHash: string;
+}
+/**
+ * 
+ * @export
  * @enum {string}
  */
 export enum ChainType {
@@ -60,6 +115,67 @@ export interface ContractDataERC721Shop {
      * @memberof ContractDataERC721Shop
      */
     abi: string;
+}
+/**
+ * ContractERC721のデータ
+ * @export
+ * @interface ContractERC721
+ */
+export interface ContractERC721 {
+    /**
+     * 
+     * @type {string}
+     * @memberof ContractERC721
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContractERC721
+     */
+    createAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContractERC721
+     */
+    updateAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContractERC721
+     */
+    name: string;
+    /**
+     * 
+     * @type {ChainType}
+     * @memberof ContractERC721
+     */
+    chainType: ChainType;
+    /**
+     * 
+     * @type {NetworkId}
+     * @memberof ContractERC721
+     */
+    networkId: NetworkId;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContractERC721
+     */
+    address: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ContractERC721
+     */
+    initialDeployBlockNumber: number;
+    /**
+     * 
+     * @type {TokenStandardType}
+     * @memberof ContractERC721
+     */
+    tokenStandardType: TokenStandardType;
 }
 /**
  * 
@@ -126,22 +242,16 @@ export interface InlineResponse2002 {
 export interface InlineResponse2002Data {
     /**
      * 
-     * @type {ResponseItemStock}
+     * @type {ItemStock}
      * @memberof InlineResponse2002Data
      */
-    itemStock: ResponseItemStock;
+    itemStock: ItemStock;
     /**
      * 
-     * @type {ResponseProductERC721}
+     * @type {ContractERC721}
      * @memberof InlineResponse2002Data
      */
-    productERC721: ResponseProductERC721;
-    /**
-     * 
-     * @type {ResponseContractERC721}
-     * @memberof InlineResponse2002Data
-     */
-    contractERC721: ResponseContractERC721;
+    contractERC721: ContractERC721;
 }
 /**
  * 
@@ -189,10 +299,10 @@ export interface InlineResponse2003Data {
 export interface InlineResponse2004 {
     /**
      * 
-     * @type {Array<ResponseTokenERC721>}
+     * @type {Array<TokenERC721>}
      * @memberof InlineResponse2004
      */
-    data: Array<ResponseTokenERC721>;
+    data: Array<TokenERC721>;
     /**
      * 
      * @type {object}
@@ -227,78 +337,10 @@ export interface InlineResponse2005 {
 export interface InlineResponse2005Data {
     /**
      * 
-     * @type {Array<ResponseItem>}
+     * @type {Array<ItemStock>}
      * @memberof InlineResponse2005Data
      */
-    items: Array<ResponseItem>;
-    /**
-     * 
-     * @type {Array<ResponseItemStock>}
-     * @memberof InlineResponse2005Data
-     */
-    itemStocks: Array<ResponseItemStock>;
-    /**
-     * 
-     * @type {Array<ResponseProductERC721>}
-     * @memberof InlineResponse2005Data
-     */
-    productERC721s: Array<ResponseProductERC721>;
-    /**
-     * 
-     * @type {Array<ResponseBid>}
-     * @memberof InlineResponse2005Data
-     */
-    bids: Array<ResponseBid>;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2006
- */
-export interface InlineResponse2006 {
-    /**
-     * 
-     * @type {InlineResponse2006Data}
-     * @memberof InlineResponse2006
-     */
-    data: InlineResponse2006Data;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse2006
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2006Data
- */
-export interface InlineResponse2006Data {
-    /**
-     * 
-     * @type {Array<ResponseItemStock>}
-     * @memberof InlineResponse2006Data
-     */
-    itemStocks: Array<ResponseItemStock>;
-    /**
-     * 
-     * @type {Array<ResponseItem>}
-     * @memberof InlineResponse2006Data
-     */
-    items: Array<ResponseItem>;
-    /**
-     * 
-     * @type {Array<ResponseProductERC721>}
-     * @memberof InlineResponse2006Data
-     */
-    productERC721s: Array<ResponseProductERC721>;
-    /**
-     * 
-     * @type {Array<ResponseTokenERC721>}
-     * @memberof InlineResponse2006Data
-     */
-    tokenERC721s: Array<ResponseTokenERC721>;
+    itemStocks: Array<ItemStock>;
 }
 /**
  * 
@@ -321,23 +363,118 @@ export interface InlineResponse400 {
 export interface Item {
     /**
      * 
-     * @type {ResponseItem}
+     * @type {ItemDetail}
      * @memberof Item
      */
-    item: ResponseItem;
+    itemDetail: ItemDetail;
     /**
      * 
-     * @type {Array<ResponseItemStock>}
+     * @type {Array<ItemStock>}
      * @memberof Item
      */
-    itemStocks: Array<ResponseItemStock>;
+    itemStocks: Array<ItemStock>;
     /**
      * 
      * @type {Array<ResponseProductERC721>}
      * @memberof Item
      */
-    productERC721s?: Array<ResponseProductERC721>;
+    productERC721s: Array<ResponseProductERC721>;
 }
+/**
+ * 
+ * @export
+ * @interface ItemDetail
+ */
+export interface ItemDetail {
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemDetail
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemDetail
+     */
+    createAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemDetail
+     */
+    updateAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemDetail
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemDetail
+     */
+    description: string;
+    /**
+     * Itemのプレビュー用URL
+     * @type {Array<PreviewMedia>}
+     * @memberof ItemDetail
+     */
+    previews: Array<PreviewMedia>;
+    /**
+     * アイテムの種類
+     * @type {string}
+     * @memberof ItemDetail
+     */
+    type: ItemDetailTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemDetail
+     */
+    startAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemDetail
+     */
+    endAt: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ItemDetail
+     */
+    price: number;
+    /**
+     * Mintに支払われる取引手数料
+     * @type {number}
+     * @memberof ItemDetail
+     */
+    feeRatePermill: number;
+    /**
+     * 任意のTag
+     * @type {Array<string>}
+     * @memberof ItemDetail
+     */
+    tags: Array<string>;
+    /**
+     * paymentMethodによって異なるデータ
+     * @type {ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice | ItemPaymentMethodDataEthereumContractERC721ShopAuction | ItemPaymentMethodDataCreditCardStripeFixedPrice}
+     * @memberof ItemDetail
+     */
+    paymentMethodData: ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice | ItemPaymentMethodDataEthereumContractERC721ShopAuction | ItemPaymentMethodDataCreditCardStripeFixedPrice;
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum ItemDetailTypeEnum {
+    Normal = 'normal',
+    WithPhysicalItem = 'with-physical-item'
+}
+
 /**
  * 
  * @export
@@ -390,6 +527,12 @@ export interface ItemPaymentMethodDataEthereumContractERC721ShopAuction {
      * @memberof ItemPaymentMethodDataEthereumContractERC721ShopAuction
      */
     defaultEndAt: string;
+    /**
+     * 
+     * @type {Array<Bid>}
+     * @memberof ItemPaymentMethodDataEthereumContractERC721ShopAuction
+     */
+    bids: Array<Bid>;
 }
 
 /**
@@ -431,6 +574,49 @@ export enum ItemPaymentMethodDataEthereumContractERC721ShopFixedPricePaymentMeth
 /**
  * 
  * @export
+ * @interface ItemStock
+ */
+export interface ItemStock {
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemStock
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemStock
+     */
+    createAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemStock
+     */
+    updateAt: string;
+    /**
+     * 
+     * @type {ItemStockStatus}
+     * @memberof ItemStock
+     */
+    status: ItemStockStatus;
+    /**
+     * 
+     * @type {Array<ResponseProductERC721>}
+     * @memberof ItemStock
+     */
+    productDatas: Array<ResponseProductERC721>;
+    /**
+     * 
+     * @type {Item}
+     * @memberof ItemStock
+     */
+    item: Item;
+}
+/**
+ * 
+ * @export
  * @enum {string}
  */
 export enum ItemStockStatus {
@@ -469,279 +655,6 @@ export interface PreviewMedia {
      * @memberof PreviewMedia
      */
     mimeType: string;
-}
-/**
- * 
- * @export
- * @interface ResponseBid
- */
-export interface ResponseBid {
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseBid
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseBid
-     */
-    createAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseBid
-     */
-    updateAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseBid
-     */
-    itemDocumentId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseBid
-     */
-    bidder: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ResponseBid
-     */
-    bidPrice: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseBid
-     */
-    transactionAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseBid
-     */
-    transactionHash: string;
-}
-/**
- * ContractERC721のデータ
- * @export
- * @interface ResponseContractERC721
- */
-export interface ResponseContractERC721 {
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseContractERC721
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseContractERC721
-     */
-    createAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseContractERC721
-     */
-    updateAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseContractERC721
-     */
-    name: string;
-    /**
-     * 
-     * @type {ChainType}
-     * @memberof ResponseContractERC721
-     */
-    chainType: ChainType;
-    /**
-     * 
-     * @type {NetworkId}
-     * @memberof ResponseContractERC721
-     */
-    networkId: NetworkId;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseContractERC721
-     */
-    address: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ResponseContractERC721
-     */
-    initialDeployBlockNumber: number;
-    /**
-     * 
-     * @type {TokenStandardType}
-     * @memberof ResponseContractERC721
-     */
-    tokenStandardType: TokenStandardType;
-}
-/**
- * 
- * @export
- * @interface ResponseItem
- */
-export interface ResponseItem {
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItem
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItem
-     */
-    createAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItem
-     */
-    updateAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItem
-     */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItem
-     */
-    description: string;
-    /**
-     * Itemのプレビュー用URL
-     * @type {Array<PreviewMedia>}
-     * @memberof ResponseItem
-     */
-    previews: Array<PreviewMedia>;
-    /**
-     * アイテムの種類
-     * @type {string}
-     * @memberof ResponseItem
-     */
-    type: ResponseItemTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItem
-     */
-    startAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItem
-     */
-    endAt: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ResponseItem
-     */
-    price: number;
-    /**
-     * Mintに支払われる取引手数料
-     * @type {number}
-     * @memberof ResponseItem
-     */
-    feeRatePermill: number;
-    /**
-     * 任意のTag
-     * @type {Array<string>}
-     * @memberof ResponseItem
-     */
-    tags: Array<string>;
-    /**
-     * paymentMethodによって異なるデータ
-     * @type {ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice | ItemPaymentMethodDataEthereumContractERC721ShopAuction | ItemPaymentMethodDataCreditCardStripeFixedPrice}
-     * @memberof ResponseItem
-     */
-    paymentMethodData: ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice | ItemPaymentMethodDataEthereumContractERC721ShopAuction | ItemPaymentMethodDataCreditCardStripeFixedPrice;
-}
-
-/**
-    * @export
-    * @enum {string}
-    */
-export enum ResponseItemTypeEnum {
-    Normal = 'normal',
-    WithPhysicalItem = 'with-physical-item'
-}
-
-/**
- * 
- * @export
- * @interface ResponseItemStock
- */
-export interface ResponseItemStock {
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItemStock
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItemStock
-     */
-    createAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItemStock
-     */
-    updateAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItemStock
-     */
-    itemDocumentId: string;
-    /**
-     * 
-     * @type {Array<ResponseItemStockProductsData>}
-     * @memberof ResponseItemStock
-     */
-    productsData: Array<ResponseItemStockProductsData>;
-    /**
-     * 
-     * @type {ItemStockStatus}
-     * @memberof ResponseItemStock
-     */
-    status?: ItemStockStatus;
-}
-/**
- * 
- * @export
- * @interface ResponseItemStockProductsData
- */
-export interface ResponseItemStockProductsData {
-    /**
-     * 
-     * @type {TokenStandardType}
-     * @memberof ResponseItemStockProductsData
-     */
-    tokenStandardType?: TokenStandardType;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseItemStockProductsData
-     */
-    productId?: string;
 }
 /**
  * 
@@ -844,79 +757,6 @@ export enum ResponseProductERC721StatusEnum {
 /**
  * 
  * @export
- * @interface ResponseTokenERC721
- */
-export interface ResponseTokenERC721 {
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseTokenERC721
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseTokenERC721
-     */
-    createAt: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseTokenERC721
-     */
-    updateAt: string;
-    /**
-     * 
-     * @type {TokenStandardType}
-     * @memberof ResponseTokenERC721
-     */
-    tokenStandardType: TokenStandardType;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseTokenERC721
-     */
-    contractERC721Id: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ResponseTokenERC721
-     */
-    tokenId: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseTokenERC721
-     */
-    tokenURI: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseTokenERC721
-     */
-    mintTransactionHash: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseTokenERC721
-     */
-    initialOwnerAddress: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ResponseTokenERC721
-     */
-    currentOwnerAddress: string;
-    /**
-     * 
-     * @type {Array<TransferData>}
-     * @memberof ResponseTokenERC721
-     */
-    transferHistory: Array<TransferData>;
-}
-/**
- * 
- * @export
  * @enum {string}
  */
 export enum SignatureType {
@@ -925,6 +765,85 @@ export enum SignatureType {
     AuctionWithdraw = 'ethereum-contract-erc721-shop-auction-withdraw'
 }
 
+/**
+ * 
+ * @export
+ * @interface TokenERC721
+ */
+export interface TokenERC721 {
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenERC721
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenERC721
+     */
+    createAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenERC721
+     */
+    updateAt: string;
+    /**
+     * 
+     * @type {TokenStandardType}
+     * @memberof TokenERC721
+     */
+    tokenStandardType: TokenStandardType;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenERC721
+     */
+    contractERC721Id: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof TokenERC721
+     */
+    tokenId: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenERC721
+     */
+    tokenURI: string;
+    /**
+     * 
+     * @type {object}
+     * @memberof TokenERC721
+     */
+    metadata: object;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenERC721
+     */
+    mintTransactionHash: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenERC721
+     */
+    initialOwnerAddress: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TokenERC721
+     */
+    currentOwnerAddress: string;
+    /**
+     * 
+     * @type {Array<TransferData>}
+     * @memberof TokenERC721
+     */
+    transferHistory: Array<TransferData>;
+}
 /**
  * 
  * @export
@@ -1289,7 +1208,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getBiddedItemsByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
+        async getBiddedItemsByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getBiddedItemsByWalletAddress(mintAccessToken, walletAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1301,7 +1220,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>> {
+        async getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1383,7 +1302,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBiddedItemsByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2005> {
+        getBiddedItemsByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse200> {
             return localVarFp.getBiddedItemsByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1394,7 +1313,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2006> {
+        getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2005> {
             return localVarFp.getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
         },
         /**

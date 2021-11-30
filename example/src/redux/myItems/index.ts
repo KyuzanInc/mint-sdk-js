@@ -1,10 +1,10 @@
-import { ResponseItem, ResponseTokenERC721 } from '@kyuzan/mint-sdk-js'
+import { Item, ResponseTokenERC721 } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
 export type MyItemsState = {
   data: {
-    bidedItems: ResponseItem[]
+    bidedItems: Item[]
     ownItems: ResponseTokenERC721[]
   }
   meta: {
@@ -28,7 +28,7 @@ export const initialMyItemsState: MyItemsState = {
 
 // AsyncAction
 export const getBidedActionCreator = createAsyncThunk<
-  ResponseItem[],
+  Item[],
   { bidderAddress: string },
   {
     rejectValue: string
