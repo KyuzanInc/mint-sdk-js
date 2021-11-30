@@ -160,8 +160,7 @@ export const Presentation: React.VFC<Props> = (args) => {
           <SecondaryButtonList>
             <ExternalButton
               label={'IPFSで見る'}
-              {/* // TODO */}
-              href={args.item.productERC721s![0].tokenURI!}
+              href={args.item.productERC721s[0].tokenURI ?? ''}
               iconSize={16}
               iconPathBack={'/images/external-link.svg'}
               isExternal={true}
@@ -227,7 +226,10 @@ export const Presentation: React.VFC<Props> = (args) => {
         price={args.item.itemDetail.price}
         media={args.item.itemDetail.previews[0]}
         isOpen={args.showBuyFixedPriceSuccessModal}
-        itemNetworkId={args.item.itemDetail.paymentMethodData.contractDataERC721Shop.networkId}
+        itemNetworkId={
+          args.item.itemDetail.paymentMethodData.contractDataERC721Shop
+            .networkId
+        }
         unit={getItemPriceUnit(args.item)}
         closeModal={args.handleCloseBuyFixedPriceSuccessModal}
         endAt={endDate}

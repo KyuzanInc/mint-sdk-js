@@ -379,6 +379,12 @@ export interface Item {
      * @memberof Item
      */
     productERC721s: Array<ResponseProductERC721>;
+    /**
+     * オークションItem以外はから配列が入る
+     * @type {Array<Bid>}
+     * @memberof Item
+     */
+    bids: Array<Bid>;
 }
 /**
  * 
@@ -527,12 +533,6 @@ export interface ItemPaymentMethodDataEthereumContractERC721ShopAuction {
      * @memberof ItemPaymentMethodDataEthereumContractERC721ShopAuction
      */
     defaultEndAt: string;
-    /**
-     * 
-     * @type {Array<Bid>}
-     * @memberof ItemPaymentMethodDataEthereumContractERC721ShopAuction
-     */
-    bids: Array<Bid>;
 }
 
 /**
@@ -606,7 +606,7 @@ export interface ItemStock {
      * @type {Array<ResponseProductERC721>}
      * @memberof ItemStock
      */
-    productDatas: Array<ResponseProductERC721>;
+    productData?: Array<ResponseProductERC721>;
     /**
      * 
      * @type {Item}
