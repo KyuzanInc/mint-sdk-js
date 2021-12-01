@@ -53,29 +53,33 @@ export const Container: React.VFC = () => {
     (state: { app: { transaction: { meta: { bidHash: string } } } }) =>
       state.app.transaction.meta.bidHash
   )
-  const withdrawItem = async (itemId: string, inJapan: boolean) => {
-    const item = bidedItems.find((i) => i.itemDetail.id === itemId)
+  const withdrawItem = async (itemStockId: string, inJapan: boolean) => {
+    const item = bidedItems.find((i) => i.id === itemStockId)
+    if (!item) throw new Error('Something Wrong')
+
     if (
-      item?.itemDetail.paymentMethodData.paymentMethod !==
+      item.item.paymentMethodData.paymentMethod !==
       'ethereum-contract-erc721-shop-auction'
     )
       return
 
     if (
       connectedNetworkId !==
-      item.itemDetail.paymentMethodData.contractDataERC721Shop.networkId
+      item.item.paymentMethodData.contractDataERC721Shop.networkId
     ) {
       dispatch(
         dialogSlice.actions.showDialog({
           title: 'ネットワークを変更してください',
           content: `${getNetworkIdLabel(
-            item.itemDetail.paymentMethodData.contractDataERC721Shop.networkId
+            item.item.paymentMethodData.contractDataERC721Shop.networkId
           )}に接続してください。`,
         })
       )
       return
     }
-    await dispatch(withDrawItemActionCreator({ itemId, inJapan }) as any)
+    await dispatch(
+      withDrawItemActionCreator({ itemId: item.item.id, inJapan }) as any
+    )
     if (bidHash) {
       router.push(`/items/success`)
     }

@@ -44,7 +44,7 @@ export const getAccountInfoActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/myAccountInfo/get', async (arg, thunkApi) => {
+>('app/myAccountInfo/get', async (_, thunkApi) => {
   try {
     // TODO
     // const data = await getSdk().getAccountInfo({

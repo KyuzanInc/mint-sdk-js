@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import * as mime from 'mime'
-import { Item, TokenERC721 } from '@kyuzan/mint-sdk-js'
+import { ItemStock, TokenERC721 } from '@kyuzan/mint-sdk-js'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { color, font, media } from '../../../style'
@@ -15,7 +15,7 @@ import { TokenCard } from '../../molecules/TokenCard/TokenCard'
 import { WalletModal } from '../../molecules/WalletModal'
 
 type Props = {
-  bidedItems: Item[]
+  bidedItems: ItemStock[]
   ownTokens: TokenERC721[]
   waitingBidedItems: boolean
   waitingOwnTokens: boolean
@@ -119,15 +119,15 @@ export const Presentation: React.VFC<Props> = ({
               bidedItems.length !== 0 &&
               bidedItems.map((item) => {
                 return (
-                  <ItemContainer key={item.itemDetail.id}>
+                  <ItemContainer key={item.id}>
                     <CardMyPage
                       item={item}
                       loading={false}
                       userWalletAddress={userWalletAddress}
                       onWithdraw={(inJapan: boolean) =>
-                        handleWithdrawItem(item.itemDetail.id, inJapan)
+                        handleWithdrawItem(item.item.id, inJapan)
                       }
-                      withdrawing={withdrawingItemId === item.itemDetail.id}
+                      withdrawing={withdrawingItemId === item.item.id}
                       onComplete={onComplete}
                     />
                   </ItemContainer>

@@ -8,13 +8,14 @@ import { StatusDetail } from '../Detail'
 import { TransactionStatus } from '../../atoms/TransactionStatus'
 import { SecondaryButton } from '../../atoms/SecondaryButton'
 import { format, subMinutes } from 'date-fns'
-import { NetworkId } from '@kyuzan/mint-sdk-js'
+import { NetworkId, PaymentMethod } from '@kyuzan/mint-sdk-js'
 import { useMedia } from '../../../util/useMedia'
 import { CloseButton } from '../../atoms/CloseButton'
 
 type Props = {
   itemName: string
   itemNetworkId: NetworkId
+  tradeType: PaymentMethod
   endAt: Date
   price: number
   media: { url: string; mimeType: string } | undefined
@@ -34,6 +35,7 @@ export const BidSuccessModal: React.VFC<Props> = ({
   bidHash,
   itemName,
   itemNetworkId,
+  tradeType,
 }) => {
   const isMobile = useMedia().isMobile
   return (
@@ -50,7 +52,7 @@ export const BidSuccessModal: React.VFC<Props> = ({
                 endAt={endAt}
                 price={price}
                 unit={unit}
-                tradeType={'autoExtensionAuction'}
+                tradeType={tradeType}
               />
             </InfoContainer>
           </Left>

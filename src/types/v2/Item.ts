@@ -1,8 +1,6 @@
-import { ItemDetail } from './ItemDetail'
 import { Item as APIItem } from '../../apiClientV2/api'
-import { ItemStock } from './ItemStock'
+import { ItemType } from './ItemType'
 
-export type Item = Omit<APIItem, 'itemDetail' | 'itemStocks'> & {
-  itemDetail: ItemDetail
-  itemStocks: ItemStock[]
+export type Item = Omit<APIItem, 'itemDetail' | 'itemStocks' | 'type'> & {
+  type: ItemType
 }

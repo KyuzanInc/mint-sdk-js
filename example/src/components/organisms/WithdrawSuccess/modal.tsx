@@ -29,7 +29,7 @@ export const WithdrawModal: React.VFC<Props> = ({
   return (
     <Container>
       <MediaContainer>
-        <MediaContent media={item.itemDetail.previews[0]} height={520} />
+        <MediaContent media={item.previews[0]} height={520} />
       </MediaContainer>
       <Right>
         <ModalContent item={item} bidHash={bidHash} shareUrl={shareUrl ?? ''} />
@@ -53,8 +53,7 @@ const ModalContent: React.VFC<ModalContentProps> = ({
   }, [])
 
   if (
-    item.itemDetail.paymentMethodData.paymentMethod ===
-    'credit-card-stripe-fixed-price'
+    item.paymentMethodData.paymentMethod === 'credit-card-stripe-fixed-price'
   ) {
     throw new Error('not implemented')
   }
@@ -69,9 +68,7 @@ const ModalContent: React.VFC<ModalContentProps> = ({
       </Description>
       <TransactionContainer>
         <TransactionStatus
-          networkId={
-            item.itemDetail.paymentMethodData.contractDataERC721Shop.networkId
-          }
+          networkId={item.paymentMethodData.contractDataERC721Shop.networkId}
           hash={bidHash ?? ''}
         />
       </TransactionContainer>

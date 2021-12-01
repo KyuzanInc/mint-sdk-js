@@ -1,42 +1,47 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { ItemLog, NetworkId } from '@kyuzan/mint-sdk-js'
+import { Bid } from '@kyuzan/mint-sdk-js'
 import { format } from 'date-fns'
 import { color, curve, font, media } from '../../../style'
 import { DefaultAvatarIcon } from '../../atoms/DefaultAvatarIcon'
 import { LoadingHistoryCard } from './loading'
 import Link from 'next/link'
 import { Anchor } from '../../atoms/Anchor'
+import { getTransactionLink } from '../../../util/getTransactionLink'
 
-type Props = {
-  log?: ItemLog & { avatarImgUrl?: string }
-  networkId?: NetworkId
-  loading: boolean
-}
+type Props =
+  | {
+      log: Bid & { avatarImgUrl?: string }
+      loading: false
+    }
+  | {
+      loading: true
+    }
 
-export const HistoryCard: React.FC<Props> = ({ log, networkId, loading }) => {
-  if (loading) return <LoadingHistoryCard />
-  if (!log) return <LoadingHistoryCard />
-  const price = log?.price
-  const date = format(new Date(log.createAt), 'yyyy/MM/dd HH:mm')
-  const link = getLink(log.transactionHash, networkId)
+export const HistoryCard: React.FC<Props> = (args) => {
+  if (args.loading) return <LoadingHistoryCard />
+
+  const price = args.log.bidPrice
+  const date = format(new Date(args.log.createAt), 'yyyy/MM/dd HH:mm')
+  // TODO: Bidにネットワーク情報入れる
+  const link = getTransactionLink(args.log.transactionHash, 31337)
 
   return (
     <HistoryContainer>
-      <Link href={`/accounts/${log.accountAddress}`} passHref>
+      <Link href={`/accounts/${args.log.bidder}`} passHref>
         <Anchor>
           <Avatar>
-            {log.avatarImgUrl ? (
-              <AvatarImage src={log.avatarImgUrl} />
+            {args.log.avatarImgUrl ? (
+              <AvatarImage src={args.log.avatarImgUrl} />
             ) : (
-              <DefaultAvatarIcon size={44} name={log.accountAddress} />
+              <DefaultAvatarIcon size={44} name={args.log.bidder} />
             )}
           </Avatar>
         </Anchor>
       </Link>
 
       <BidderDetail>
-        <BidderId>{log.accountAddress}</BidderId>
+        <BidderId>{args.log.bidder}</BidderId>
         <BidTime>{date}</BidTime>
       </BidderDetail>
       <Link href={link} passHref>
@@ -52,8 +57,6 @@ export const HistoryCard: React.FC<Props> = ({ log, networkId, loading }) => {
 }
 
 export const HistoryContainer = styled.div`
-  /* width: 426px; */
-  /* height: 70px; */
   padding: 8px 16px 8px 16px;
   justify-content: space-between;
   align-items: center;
@@ -137,23 +140,3 @@ const AvatarImage = styled.img`
   width: 100%;
   object-fit: cover;
 `
-
-const getLink = (hash: string, networkId?: NetworkId) => {
-  if (networkId === 1) {
-    return `https://etherscan.io/tx/${hash}`
-  }
-
-  if (networkId === 4) {
-    return `https://rinkeby.etherscan.io/tx/${hash}`
-  }
-
-  if (networkId === 137) {
-    return `https://explorer-mainnet.maticvigil.com/tx/${hash}`
-  }
-
-  if (networkId === 80001) {
-    return `https://explorer-mumbai.maticvigil.com/tx/${hash}`
-  }
-
-  return ''
-}

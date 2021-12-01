@@ -54,7 +54,7 @@ export const getAccountInfoActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/myAccountInfo/get', async (arg, thunkApi) => {
+>('app/myAccountInfo/get', async (_, thunkApi) => {
   try {
     // TODO
     // const data = await getSdk().getAccountInfo({
@@ -77,7 +77,7 @@ export const uploadAvatarActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/myAccountInfo/uploadAvatar', async (arg, thunkApi) => {
+>('app/myAccountInfo/uploadAvatar', async (_, thunkApi) => {
   try {
     // TODO
     // return await getSdk().uploadAccountInfoAvatar({

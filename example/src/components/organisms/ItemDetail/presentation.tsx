@@ -7,8 +7,8 @@ import { WalletModal } from '../../molecules/WalletModal'
 import { SaleActionModal } from '../../molecules/SaleActionModal'
 import { AboutPhysicalModal } from '../../molecules/AboutPhysicalModal'
 import { AboutAutoExtensionAuctionModal } from '../../molecules/AboutAutoExtensionAuctionModal'
-import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
-import { SecondaryButton } from '../../atoms/SecondaryButton'
+// import { getOpenSeaLink } from '../../../util/getOpenSeaLink'
+// import { SecondaryButton } from '../../atoms/SecondaryButton'
 import { getItemPriceUnit, getPriceUnit } from '../../../util/getItemPriceUnit'
 import Image from 'next/image'
 import { StatusDetail } from '../../molecules/Detail'
@@ -62,25 +62,23 @@ export const Presentation: React.VFC<Props> = (args) => {
   }
 
   if (
-    args.item.itemDetail.paymentMethodData.paymentMethod ===
+    args.item.paymentMethodData.paymentMethod ===
     'credit-card-stripe-fixed-price'
   )
     throw new Error('not implemented')
 
-  const startDate = new Date(args.item.itemDetail.startAt)
-  const endDate = new Date(args.item.itemDetail.endAt)
+  const startDate = new Date(args.item.startAt)
+  const endDate = new Date(args.item.endAt)
   const saleOnGoing = isOnSale(startDate, endDate)
-  const tradeType = args.item.itemDetail.paymentMethodData.paymentMethod
-  // TODO
-  const soldOut =
-    typeof args.item.itemStocks.find((stock) => stock.status === 'created') ===
-    'undefined'
+  const tradeType = args.item.paymentMethodData.paymentMethod
+  // TODO: Itemに在庫数入れる
+  const soldOut = true
 
-  const hasPyisicalItem = args.item.itemDetail.type === 'with-physical-item'
+  const hasPyisicalItem = args.item.type === 'with-physical-item'
   return (
     <>
       <Detail>
-        <Title>{args.item.itemDetail.name}</Title>
+        <Title>{args.item.name}</Title>
         <TagWrap>
           {hasPyisicalItem && (
             <Tag
@@ -98,10 +96,9 @@ export const Presentation: React.VFC<Props> = (args) => {
         <TradeInfoContainer>
           <StatusDetail
             unit={getPriceUnit(
-              args.item.itemDetail.paymentMethodData.contractDataERC721Shop
-                .networkId
+              args.item.paymentMethodData.contractDataERC721Shop.networkId
             )}
-            price={args.item.itemDetail.price}
+            price={args.item.price}
             endAt={endDate}
             tradeType={tradeType}
             onTick={args.onTick}
@@ -155,18 +152,19 @@ export const Presentation: React.VFC<Props> = (args) => {
           ) : (
             <BidButton label={'売り切れ'} disabled={true} type={'button'} />
           ))}
-        <Description>{args.item.itemDetail.description}</Description>
+        <Description>{args.item.description}</Description>
         <SecondaryButtonUL>
-          <SecondaryButtonList>
-            <ExternalButton
+          {/* <SecondaryButtonList> */}
+          {/* TODO:  */}
+          {/* <ExternalButton
               label={'IPFSで見る'}
               href={args.item.productERC721s[0].tokenURI ?? ''}
               iconSize={16}
               iconPathBack={'/images/external-link.svg'}
               isExternal={true}
-            />
-          </SecondaryButtonList>
-          <SecondaryButtonList>
+            /> */}
+          {/* </SecondaryButtonList> */}
+          {/* <SecondaryButtonList>
             {soldOut ? (
               <ExternalButton
                 label={'OpenSeaで見る'}
@@ -174,7 +172,7 @@ export const Presentation: React.VFC<Props> = (args) => {
                 isExternal={true}
               />
             ) : null}
-          </SecondaryButtonList>
+          </SecondaryButtonList> */}
         </SecondaryButtonUL>
       </Detail>
       <WalletModal
@@ -185,10 +183,10 @@ export const Presentation: React.VFC<Props> = (args) => {
       />
       <SaleActionModal
         itemTradeType={tradeType}
-        itemName={args.item.itemDetail.name}
-        price={args.item.itemDetail.price}
+        itemName={args.item.name}
+        price={args.item.price}
         endAt={endDate}
-        media={args.item.itemDetail.previews[0]}
+        media={args.item.previews[0]}
         unit={getItemPriceUnit(args.item)}
         // TODO
         minBidPrice={110}
@@ -208,27 +206,26 @@ export const Presentation: React.VFC<Props> = (args) => {
       <BidSuccessModal
         closeModal={args.handleCloseBidSuccessModal}
         isOpen={args.showBidSuccessModal}
-        media={args.item.itemDetail.previews[0]}
+        media={args.item.previews[0]}
         unit={getItemPriceUnit(args.item)}
+        tradeType={args.item.paymentMethodData.paymentMethod}
         // TODO
         bidHash={args.taHash ?? ''}
-        itemName={args.item.itemDetail.name}
+        itemName={args.item.name}
         itemNetworkId={
-          args.item.itemDetail.paymentMethodData.contractDataERC721Shop
-            .networkId
+          args.item.paymentMethodData.contractDataERC721Shop.networkId
         }
         endAt={endDate}
-        price={args.item.itemDetail.price}
+        price={args.item.price}
       />
 
       <BoughtFixedPriceSuccessModal
-        itemName={args.item.itemDetail.name ?? ''}
-        price={args.item.itemDetail.price}
-        media={args.item.itemDetail.previews[0]}
+        itemName={args.item.name ?? ''}
+        price={args.item.price}
+        media={args.item.previews[0]}
         isOpen={args.showBuyFixedPriceSuccessModal}
         itemNetworkId={
-          args.item.itemDetail.paymentMethodData.contractDataERC721Shop
-            .networkId
+          args.item.paymentMethodData.contractDataERC721Shop.networkId
         }
         unit={getItemPriceUnit(args.item)}
         closeModal={args.handleCloseBuyFixedPriceSuccessModal}
@@ -299,15 +296,15 @@ const SecondaryButtonUL = styled.ul`
   flex-direction: column;
 `
 
-const SecondaryButtonList = styled.li`
-  margin: 16px 0px 0 0;
-  width: 100%;
-`
+// const SecondaryButtonList = styled.li`
+//   margin: 16px 0px 0 0;
+//   width: 100%;
+// `
 
-const ExternalButton = styled(SecondaryButton)`
-  height: 32px;
-  width: 100%;
-`
+// const ExternalButton = styled(SecondaryButton)`
+//   height: 32px;
+//   width: 100%;
+// `
 
 const QuestionButton = styled.div`
   display: flex;

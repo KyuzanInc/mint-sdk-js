@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import styled from '@emotion/styled'
-import { Item } from '@kyuzan/mint-sdk-js'
+import { ItemStock } from '@kyuzan/mint-sdk-js'
 import { addMinutes, isBefore } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,7 +17,7 @@ import { SaleInfo } from '../SaleInfo'
 type Props = {
   loading: boolean
   userWalletAddress?: string
-  item?: Item
+  item?: ItemStock
   onShowShippingInfo?: () => void
   onWithdraw?: (inJapan: boolean) => void
   withdrawing?: boolean
@@ -40,22 +40,22 @@ export const CardMyPage: React.VFC<Props> = ({
   }
 
   if (
-    item.itemDetail.paymentMethodData.paymentMethod !==
+    item.item.paymentMethodData.paymentMethod !==
     'ethereum-contract-erc721-shop-auction'
   )
     return null
   const now = new Date()
-  const auctionIsEnd = new Date(item.itemDetail.endAt) < now
+  const auctionIsEnd = new Date(item.item.endAt) < now
   const userIsHighestBidder =
-    item.bids[0].bidder === userWalletAddress?.toLocaleLowerCase()
-  console.log(item.bids[0].bidder)
+    item.item.bids[0].bidder === userWalletAddress?.toLocaleLowerCase()
+  console.log(item.item.bids[0].bidder)
 
   const winning = !auctionIsEnd && userIsHighestBidder
   const losing = !auctionIsEnd && !userIsHighestBidder
   const won = auctionIsEnd && userIsHighestBidder
   const not5minFromEndAt = isBefore(
     now,
-    addMinutes(new Date(item.itemDetail.endAt), 5)
+    addMinutes(new Date(item.item.endAt), 5)
   )
   const waitWithDraw = won && not5minFromEndAt
 
@@ -63,17 +63,14 @@ export const CardMyPage: React.VFC<Props> = ({
     <Container>
       <Left>
         <MediaContainer height={moduleHeight}>
-          <MediaContent
-            media={item.itemDetail.previews[0]}
-            height={moduleHeight}
-          />
+          <MediaContent media={item.item.previews[0]} height={moduleHeight} />
         </MediaContainer>
         <Center>
           <CenterTitleContainer>
-            <CenterTitle>{item.itemDetail.name}</CenterTitle>
+            <CenterTitle>{item.item.name}</CenterTitle>
           </CenterTitleContainer>
           <CenterTagsContainer>
-            {item.itemDetail.type === 'with-physical-item' && (
+            {item.item.type === 'with-physical-item' && (
               <CenterTags
                 label={'フィジカルアイテムつき'}
                 iconPath={'/images/cardboard.svg'}
@@ -82,14 +79,13 @@ export const CardMyPage: React.VFC<Props> = ({
           </CenterTagsContainer>
           <AuctionInfoContainer>
             <SaleInfo
-              startAt={new Date(item.itemDetail.startAt)}
-              endAt={new Date(item.itemDetail.endAt)}
-              tradeType={item.itemDetail.paymentMethodData.paymentMethod}
+              startAt={new Date(item.item.startAt)}
+              endAt={new Date(item.item.endAt)}
+              tradeType={item.item.paymentMethodData.paymentMethod}
               networkId={
-                item.itemDetail.paymentMethodData.contractDataERC721Shop
-                  .networkId
+                item.item.paymentMethodData.contractDataERC721Shop.networkId
               }
-              price={item.itemDetail.price}
+              price={item.item.price}
               hasBought={false}
               onComplete={onComplete}
             />
@@ -114,15 +110,14 @@ export const CardMyPage: React.VFC<Props> = ({
             </RightTitleContainer>
             <CurrentPriceContainer>
               <CurrentPriceTitle>最新の入札額</CurrentPriceTitle>
-              <CurrentPriceValue>{item.itemDetail.price}</CurrentPriceValue>
+              <CurrentPriceValue>{item.item.price}</CurrentPriceValue>
               <CurrentPriceUnit>
                 {getPriceUnit(
-                  item.itemDetail.paymentMethodData.contractDataERC721Shop
-                    .networkId
+                  item.item.paymentMethodData.contractDataERC721Shop.networkId
                 )}
               </CurrentPriceUnit>
             </CurrentPriceContainer>
-            <Link href={`/items/${item.itemDetail.id}`}>
+            <Link href={`/items/${item.id}`}>
               <ReverseButton
                 isLoading={false}
                 label={'商品を見る'}
@@ -148,15 +143,14 @@ export const CardMyPage: React.VFC<Props> = ({
             </RightTitleContainer>
             <CurrentPriceContainer>
               <CurrentPriceTitle>最新の入札額</CurrentPriceTitle>
-              <CurrentPriceValue>{item.itemDetail.price}</CurrentPriceValue>
+              <CurrentPriceValue>{item.item.price}</CurrentPriceValue>
               <CurrentPriceUnit>
                 {getPriceUnit(
-                  item.itemDetail.paymentMethodData.contractDataERC721Shop
-                    .networkId
+                  item.item.paymentMethodData.contractDataERC721Shop.networkId
                 )}
               </CurrentPriceUnit>
             </CurrentPriceContainer>
-            <Link href={`/items/${item.itemDetail.id}`}>
+            <Link href={`/items/${item.id}`}>
               <ReverseButton
                 isLoading={false}
                 label={'商品を見る'}
