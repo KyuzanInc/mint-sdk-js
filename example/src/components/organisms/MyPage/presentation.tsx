@@ -13,6 +13,7 @@ import { CardMyPage } from '../../molecules/CardMyPage'
 import { ShippingInfoModal } from '../../molecules/ShippingInfoModal'
 import { TokenCard } from '../../molecules/TokenCard/TokenCard'
 import { WalletModal } from '../../molecules/WalletModal'
+import { ipfsToHttp } from '../../../util/ipfsToHTTP'
 
 type Props = {
   bidedItems: ItemStock[]
@@ -173,8 +174,8 @@ export const Presentation: React.VFC<Props> = ({
                     <TokenCard
                       title={(item.metadata as any).name as string}
                       media={{
-                        url: (item.metadata as any).image as string,
-                        mimeType: (mime as any).getExtension(
+                        url: ipfsToHttp((item.metadata as any).image as string),
+                        mimeType: (mime as any).getType(
                           (item.metadata as any).image
                         ),
                       }}

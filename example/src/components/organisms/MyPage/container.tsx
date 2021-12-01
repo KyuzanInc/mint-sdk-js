@@ -26,7 +26,9 @@ export const Container: React.VFC = () => {
   const walletInfo = useAppSelector((state) => state.app.wallet.data.walletInfo)
 
   const bidedItems = useAppSelector((state) => {
-    return state.app.myItems.data.bidedItems
+    return state.app.myItems.data.bidedItems.filter(
+      (i) => i.status !== 'minted'
+    )
   })
 
   const waitingBidedItems = useAppSelector((state) => {
