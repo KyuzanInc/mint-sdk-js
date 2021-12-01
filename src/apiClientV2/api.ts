@@ -35,6 +35,18 @@ export interface Bid {
     id: string;
     /**
      * 
+     * @type {ChainType}
+     * @memberof Bid
+     */
+    chainType: ChainType;
+    /**
+     * 
+     * @type {NetworkId}
+     * @memberof Bid
+     */
+    networkId: NetworkId;
+    /**
+     * 
      * @type {string}
      * @memberof Bid
      */

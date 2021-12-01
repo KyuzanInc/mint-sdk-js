@@ -23,8 +23,7 @@ export const HistoryCard: React.FC<Props> = (args) => {
 
   const price = args.log.bidPrice
   const date = format(new Date(args.log.createAt), 'yyyy/MM/dd HH:mm')
-  // TODO: Bidにネットワーク情報入れる
-  const link = getTransactionLink(args.log.transactionHash, 31337)
+  const link = getTransactionLink(args.log.transactionHash, args.log.networkId)
 
   return (
     <HistoryContainer>

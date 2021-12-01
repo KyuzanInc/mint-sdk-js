@@ -181,26 +181,30 @@ export const Presentation: React.VFC<Props> = (args) => {
         connectWallet={args.handleConnectWallet}
         closeModal={args.handleCloseConnectWalletModal}
       />
-      <SaleActionModal
-        itemTradeType={tradeType}
-        itemName={args.item.name}
-        price={args.item.price}
-        endAt={endDate}
-        media={args.item.previews[0]}
-        unit={getItemPriceUnit(args.item)}
-        // TODO
-        minBidPrice={110}
-        walletBalance={args.userWalletBalance}
-        isOpen={args.actionModalOpen}
-        loading={args.bidding}
-        closeModal={args.handleCloseBidModal}
-        doBid={args.handleDoBid}
-        doBuy={args.handleDoBuy}
-        bidPrice={args.bidPrice}
-        onChangeInput={args.handleChangeInputPrice}
-        isValidationError={args.isValidationError}
-        errorText={args.errorText}
-      />
+      {args.item.paymentMethodData.paymentMethod ===
+        'ethereum-contract-erc721-shop-auction' && (
+        <SaleActionModal
+          itemTradeType={tradeType}
+          itemName={args.item.name}
+          price={args.item.price}
+          endAt={endDate}
+          media={args.item.previews[0]}
+          unit={getItemPriceUnit(args.item)}
+          minBidPrice={
+            args.item.paymentMethodData.minBidPercentage * args.item.price
+          }
+          walletBalance={args.userWalletBalance}
+          isOpen={args.actionModalOpen}
+          loading={args.bidding}
+          closeModal={args.handleCloseBidModal}
+          doBid={args.handleDoBid}
+          doBuy={args.handleDoBuy}
+          bidPrice={args.bidPrice}
+          onChangeInput={args.handleChangeInputPrice}
+          isValidationError={args.isValidationError}
+          errorText={args.errorText}
+        />
+      )}
 
       {/* 仮想通貨決済only */}
       <BidSuccessModal
