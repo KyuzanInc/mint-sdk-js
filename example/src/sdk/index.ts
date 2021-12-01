@@ -1,20 +1,17 @@
-import { DEMO_FORTMATIC_KEY } from './../constants'
 import { MintSDK } from '@kyuzan/mint-sdk-js'
 
-let sdk: MintSDK
+let sdk: MintSDK | undefined = undefined
 export const getSdk = () => {
   if (typeof sdk === 'undefined') {
     sdk = new MintSDK(
-      'acf126b7-adbe-4a76-884d-3c95105c2e43',
+      process.env.NEXT_PUBLIC_MINT_SDK_KEY as string,
       {
         fortmatic: {
-          key: DEMO_FORTMATIC_KEY,
+          key: process.env.NEXT_PUBLIC_MINT_FORTMATIC_KEY as string,
         },
       },
       {
-        // backendUrl: 'http://localhost:5500/annapurna-development/asia-northeast1',
-        backendUrl:
-          'https://asia-northeast1-annapurna-development.cloudfunctions.net/',
+        backendUrl: process.env.NEXT_PUBLIC_MINT_BACKEND_URL as string,
       }
     )
   }
