@@ -472,6 +472,12 @@ export interface Item {
     itemStockIds: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof Item
+     */
+    availableStockNum: number;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof Item
      */

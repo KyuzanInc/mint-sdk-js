@@ -11,8 +11,7 @@ type Props = {
 export const ActiveCard: React.FC<Props> = ({ item, onAuctionFinish }) => {
   if (item.paymentMethodData.paymentMethod === 'credit-card-stripe-fixed-price')
     throw new Error('not implemented')
-  // TODO: Itemに在庫数入れる
-  const soldOut = false
+  const soldOut = item.availableStockNum === 0
   return (
     <CardBase
       href={`/items/${item.id}`}
@@ -27,7 +26,6 @@ export const ActiveCard: React.FC<Props> = ({ item, onAuctionFinish }) => {
         networkId={item.paymentMethodData.contractDataERC721Shop.networkId}
         price={item.price}
         onComplete={onAuctionFinish}
-        // TODO: もうちょい便利に生やすか、util用意
         hasBought={soldOut}
       />
     </CardBase>

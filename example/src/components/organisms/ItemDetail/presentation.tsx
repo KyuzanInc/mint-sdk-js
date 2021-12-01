@@ -71,8 +71,7 @@ export const Presentation: React.VFC<Props> = (args) => {
   const endDate = new Date(args.item.endAt)
   const saleOnGoing = isOnSale(startDate, endDate)
   const tradeType = args.item.paymentMethodData.paymentMethod
-  // TODO: Itemに在庫数入れる
-  const soldOut = true
+  const soldOut = args.item.availableStockNum === 0
 
   const hasPyisicalItem = args.item.type === 'with-physical-item'
   return (

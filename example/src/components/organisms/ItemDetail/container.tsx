@@ -172,18 +172,25 @@ export const Container: React.VFC = () => {
       return
     }
 
-    // TODO
-    if (connectedNetworkId !== 31337) {
-      dispatch(
-        dialogSlice.actions.showDialog({
-          title: 'ネットワークを変更してください',
-          content: `${getNetworkIdLabel(31337 ?? 4)}に接続してください。`,
-        })
-      )
-      return
-    }
+    if (
+      item?.paymentMethodData.paymentMethod ===
+      'ethereum-contract-erc721-shop-auction'
+    ) {
+      if (
+        connectedNetworkId !==
+        item?.paymentMethodData.contractDataERC721Shop.networkId
+      ) {
+        dispatch(
+          dialogSlice.actions.showDialog({
+            title: 'ネットワークを変更してください',
+            content: `${getNetworkIdLabel(31337 ?? 4)}に接続してください。`,
+          })
+        )
+        return
+      }
 
-    openBidModal()
+      openBidModal()
+    }
   }, [item, walletIsConnect, auctionIsOutOfDate, connectedNetworkId])
 
   const [bidSuccessModalIsOpen, setBidSuccessModalIsOpen] = useState(false)
