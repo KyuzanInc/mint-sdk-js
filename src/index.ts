@@ -259,7 +259,6 @@ export class MintSDK {
    * const items = await sdk.getItems(...)
    * ```
    */
-
   public getItems = async () => {
     const { data } = await this.apiClientV2.getItems(this.accessToken)
     return data.data as Item[]
@@ -326,6 +325,26 @@ export class MintSDK {
       itemId
     )
     return data.data as Item
+  }
+
+  /**
+   * id指定で製品を取得
+   *
+   * @param id
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   * const item = await sdk.getProductERC721ById('id')
+   * ```
+   */
+  public getProductERC721ById = async (id: string) => {
+    const { data } = await this.apiClientV2.getProductERC721ById(
+      this.accessToken,
+      id
+    )
+    return data.data
   }
 
   // /**

@@ -356,14 +356,33 @@ export interface InlineResponse2005Data {
 export interface InlineResponse2006 {
     /**
      * 
-     * @type {Array<TokenERC721>}
+     * @type {ProductERC721}
      * @memberof InlineResponse2006
+     */
+    data: ProductERC721;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse2006
+     */
+    meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2007
+ */
+export interface InlineResponse2007 {
+    /**
+     * 
+     * @type {Array<TokenERC721>}
+     * @memberof InlineResponse2007
      */
     data: Array<TokenERC721>;
     /**
      * 
      * @type {object}
-     * @memberof InlineResponse2006
+     * @memberof InlineResponse2007
      */
     meta: object;
 }
@@ -1071,6 +1090,50 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Itemにパックされていて、ItemのstatusがpublishなProductERC721を取得
+         * @param {string} mintAccessToken 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProductERC721ById: async (mintAccessToken: string, id: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getProductERC721ById', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getProductERC721ById', 'id', id)
+            const localVarPath = `/sdk_v4/products/getProductERC721ById`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (id !== undefined) {
+                localVarQueryParameter['id'] = id;
+            }
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStockId`を取得する
          * @param {string} mintAccessToken 
          * @param {string} itemId 
@@ -1267,6 +1330,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Itemにパックされていて、ItemのstatusがpublishなProductERC721を取得
+         * @param {string} mintAccessToken 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getProductERC721ById(mintAccessToken: string, id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductERC721ById(mintAccessToken, id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStockId`を取得する
          * @param {string} mintAccessToken 
          * @param {string} itemId 
@@ -1298,7 +1373,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>> {
+        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2007>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1357,6 +1432,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Itemにパックされていて、ItemのstatusがpublishなProductERC721を取得
+         * @param {string} mintAccessToken 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProductERC721ById(mintAccessToken: string, id: string, options?: any): AxiosPromise<InlineResponse2006> {
+            return localVarFp.getProductERC721ById(mintAccessToken, id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStockId`を取得する
          * @param {string} mintAccessToken 
          * @param {string} itemId 
@@ -1386,7 +1472,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2006> {
+        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2007> {
             return localVarFp.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
         },
     };
@@ -1448,6 +1534,19 @@ export class DefaultApi extends BaseAPI {
      */
     public getItems(mintAccessToken: string, options?: any) {
         return DefaultApiFp(this.configuration).getItems(mintAccessToken, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Itemにパックされていて、ItemのstatusがpublishなProductERC721を取得
+     * @param {string} mintAccessToken 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getProductERC721ById(mintAccessToken: string, id: string, options?: any) {
+        return DefaultApiFp(this.configuration).getProductERC721ById(mintAccessToken, id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
