@@ -2,15 +2,18 @@ import React from 'react'
 import { Item } from '@kyuzan/mint-sdk-js'
 import { LoadingCard } from './loading'
 import { ActiveCard } from './active'
-type Props = {
-  loading: boolean
-  item: Item
-  onAuctionFinish?: () => void
-}
+type Props =
+  | {
+      loading: false
+      item: Item
+      onAuctionFinish?: () => void
+    }
+  | {
+      loading: true
+    }
 
-export const Card: React.VFC<Props> = ({ loading, item, onAuctionFinish }) => {
-  if (loading) return <LoadingCard />
-  if (!item) return <LoadingCard />
+export const Card: React.VFC<Props> = (args) => {
+  if (args.loading) return <LoadingCard />
 
-  return <ActiveCard item={item} onAuctionFinish={onAuctionFinish} />
+  return <ActiveCard item={args.item} onAuctionFinish={args.onAuctionFinish} />
 }

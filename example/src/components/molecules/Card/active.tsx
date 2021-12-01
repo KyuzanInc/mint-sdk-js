@@ -9,29 +9,23 @@ type Props = {
 }
 
 export const ActiveCard: React.FC<Props> = ({ item, onAuctionFinish }) => {
-  if (
-    item.itemDetail.paymentMethodData.paymentMethod ===
-    'credit-card-stripe-fixed-price'
-  )
+  if (item.paymentMethodData.paymentMethod === 'credit-card-stripe-fixed-price')
     throw new Error('not implemented')
-  const soldOut =
-    typeof item.itemStocks.find((stock) => stock.status === 'created') ===
-    'undefined'
+  // TODO: Itemに在庫数入れる
+  const soldOut = false
   return (
     <CardBase
-      href={`/items/${item.itemDetail.id}`}
-      title={item.itemDetail.name}
-      media={item.itemDetail.previews[0]}
-      withPhysicalProduct={item.itemDetail.type === 'with-physical-item'}
+      href={`/items/${item.id}`}
+      title={item.name}
+      media={item.previews[0]}
+      withPhysicalProduct={item.type === 'with-physical-item'}
     >
       <SaleInfo
-        startAt={new Date(item.itemDetail.startAt)}
-        endAt={new Date(item.itemDetail.endAt)}
-        tradeType={item.itemDetail.paymentMethodData.paymentMethod}
-        networkId={
-          item.itemDetail.paymentMethodData.contractDataERC721Shop.networkId
-        }
-        price={item.itemDetail.price}
+        startAt={new Date(item.startAt)}
+        endAt={new Date(item.endAt)}
+        tradeType={item.paymentMethodData.paymentMethod}
+        networkId={item.paymentMethodData.contractDataERC721Shop.networkId}
+        price={item.price}
         onComplete={onAuctionFinish}
         // TODO: もうちょい便利に生やすか、util用意
         hasBought={soldOut}

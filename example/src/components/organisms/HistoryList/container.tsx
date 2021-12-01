@@ -12,9 +12,6 @@ export const Container: React.VFC<Props> = () => {
   const accounts = useAppSelector(
     (state) => state.app.accountInfo.data.accountInfoMap
   )
-  const histories = useAppSelector((state) => {
-    return state.app.history.data
-  })
 
   const item = useAppSelector((state) => {
     return state.app.item.data
@@ -25,31 +22,34 @@ export const Container: React.VFC<Props> = () => {
   })
 
   useEffect(() => {
-    histories.forEach((h) => {
-      if (typeof accounts[h.accountAddress] === 'undefined') {
+    item?.bids.forEach((h) => {
+      if (typeof accounts[h.bidder] === 'undefined') {
         dispatch(
           getAccountInfoActionCreator({
-            walletAddress: h.accountAddress,
+            walletAddress: h.bidder,
           }) as any
         )
       }
     })
-  }, [histories, accounts])
+  }, [item?.bids, accounts])
   return (
     <Presentation
       loading={waitingHistory}
-      history={histories.map((h) => {
-        const accountInfo = accounts[h.accountAddress]
-        if (typeof accountInfo === 'undefined') {
-          return h
-        } else {
-          return {
-            ...h,
-            avatarImgUrl: accountInfo['avatarImgUrl'],
-          }
-        }
-      })}
-      networkId={item?.networkId ?? 1}
+      history={
+        item
+          ? item?.bids.map((h) => {
+              const accountInfo = accounts[h.bidder]
+              if (typeof accountInfo === 'undefined') {
+                return h
+              } else {
+                return {
+                  ...h,
+                  avatarImgUrl: accountInfo['avatarImgUrl'],
+                }
+              }
+            })
+          : []
+      }
     />
   )
 }

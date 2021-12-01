@@ -1,10 +1,10 @@
-import { Item, TokenERC721 } from '@kyuzan/mint-sdk-js'
+import { TokenERC721, ItemStock } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
 export type MyItemsState = {
   data: {
-    bidedItems: Item[]
+    bidedItems: ItemStock[]
     ownItems: TokenERC721[]
   }
   meta: {
@@ -28,14 +28,14 @@ export const initialMyItemsState: MyItemsState = {
 
 // AsyncAction
 export const getBidedActionCreator = createAsyncThunk<
-  Item[],
+  ItemStock[],
   { bidderAddress: string },
   {
     rejectValue: string
   }
 >('app/myItems/bidedItems/get', async ({ bidderAddress }, thunkApi) => {
   try {
-    return await getSdk().getItemsByBidderAddress(bidderAddress)
+    return await getSdk().getItemStocksByBidderAddress(bidderAddress)
   } catch (err) {
     return thunkApi.rejectWithValue('Itemを取得できませんでした')
   }
