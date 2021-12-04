@@ -360,40 +360,6 @@ export class MintSDK {
     return data.data
   }
 
-  // /**
-  //  * アイテムの履歴(bidされた、買われた)の取得
-  //  * 最新の物から返される
-  //  *
-  //  * @param itemId {@link Item}のitemId
-  //  * @returns
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  *
-  //  * const sdk = await MintSDK.initialize(...)
-  //  * const item = await sdk.getItemLogs('Item.itemId')
-  //  * ```
-  //  */
-  // public getItemLogs = async (
-  //   itemId: string,
-  //   paging = {
-  //     perPage: 30,
-  //     page: 1,
-  //   }
-  // ) => {
-  //   const { data } = await this.apiClient.getItemLogs(
-  //     this.accessToken,
-  //     itemId,
-  //     paging.perPage.toString(),
-  //     paging.page.toString()
-  //   )
-  //   const logs = data.data
-  //   return logs.map((l) => ({
-  //     ...l,
-  //     createAt: new Date(l.createAt),
-  //   }))
-  // }
-
   /**
    * 指定したアドレスが所持しているMINT経由で獲得したトークンを取得
    *
@@ -757,29 +723,6 @@ export class MintSDK {
     return typeof (window as any).ethereum !== 'undefined'
   }
 
-  // /**
-  //  * 適切なネットワークかを判定
-  //  *
-  //  * @returns trueならば適切なネットワーク
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  *
-  //  * const sdk = MintSDK.initialize(...)
-  //  * await sdk.isCorrectNetwork() // true
-  //  * ```
-  //  */
-  // public isCorrectNetwork = async () => {
-  //   if (this.isInjectedWallet()) {
-  //     return this.networkIds.includes(
-  //       parseInt((window as any).ethereum.networkVersion, 10) as any
-  //     )
-  //   } else {
-  //     const network = await this.walletStrategy.getProvider().getNetwork()
-  //     return this.networkIds.includes(network.chainId as any)
-  //   }
-  // }a
-
   /**
    * 接続中のネットワークIDを返す
    *
@@ -998,33 +941,4 @@ export class MintSDK {
       throw new WrongNetworkError('Network is not correct')
     }
   }
-
-  // /**
-  //  * @ignore
-  //  */
-  // private getMintShopContractInfo = async (networkId: NetworkId) => {
-  //   const { data } = await this.axios.get('/v2_projectConfig')
-  //   const networkLabel = networkIdMapLabel[networkId]
-  //   const abi = data.data.contract.mintShopContract[networkLabel].abi
-  //   const address = data.data.contract.mintShopContract[networkLabel].address
-  //   return {
-  //     abi,
-  //     address,
-  //   }
-  // }
-
-  // /**
-  //  * @ignore
-  //  */
-  // private formatItem = (item: Item) => {
-  //   return {
-  //     ...item,
-  //     startAt: item.startAt ? new Date(item.startAt) : undefined,
-  //     endAt: item.endAt ? new Date(item.endAt) : undefined,
-  //     defaultEndAt: item.defaultEndAt ? new Date(item.defaultEndAt) : undefined,
-  //     withdrawableAt: item.withdrawableAt
-  //       ? new Date(item.withdrawableAt)
-  //       : undefined,
-  //   } as Item
-  // }
 }
