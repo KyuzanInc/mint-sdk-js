@@ -192,6 +192,104 @@ export interface ContractERC721 {
 /**
  * 
  * @export
+ * @interface InlineObject
+ */
+export interface InlineObject {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject
+     */
+    walletAddress: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject
+     */
+    avatarImageId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject
+     */
+    displayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject
+     */
+    bio?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject
+     */
+    twitterAccountName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject
+     */
+    instagramAccountName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject
+     */
+    homepageUrl?: string;
+}
+/**
+ * 
+ * @export
+ * @interface InlineObject1
+ */
+export interface InlineObject1 {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    walletAddress: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    avatarImageId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    displayName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    bio: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    twitterAccountName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    instagramAccountName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    homepageUrl: string;
+}
+/**
+ * 
+ * @export
  * @interface InlineResponse200
  */
 export interface InlineResponse200 {
@@ -385,6 +483,38 @@ export interface InlineResponse2007 {
      * @memberof InlineResponse2007
      */
     meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2008
+ */
+export interface InlineResponse2008 {
+    /**
+     * 
+     * @type {InlineResponse2008Data}
+     * @memberof InlineResponse2008
+     */
+    data?: InlineResponse2008Data;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse2008
+     */
+    meta?: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2008Data
+ */
+export interface InlineResponse2008Data {
+    /**
+     * 
+     * @type {WalletAddressProfile}
+     * @memberof InlineResponse2008Data
+     */
+    profile?: WalletAddressProfile;
 }
 /**
  * 
@@ -915,6 +1045,55 @@ export interface TransferData {
      */
     transactionHash: string;
 }
+/**
+ * 
+ * @export
+ * @interface WalletAddressProfile
+ */
+export interface WalletAddressProfile {
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletAddressProfile
+     */
+    walletAddress?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletAddressProfile
+     */
+    avatarImageId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletAddressProfile
+     */
+    displayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletAddressProfile
+     */
+    bio?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletAddressProfile
+     */
+    twitterAccountName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletAddressProfile
+     */
+    instagramAccountName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletAddressProfile
+     */
+    homepageUrl?: string;
+}
 
 /**
  * DefaultApi - axios parameter creator
@@ -924,17 +1103,67 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
-         * @summary 指定したwalletAddressでBidしたItemStockを取得する
+         * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
-         * @param {string} walletAddress 
+         * @param {InlineObject1} [inlineObject1] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBiddedItemStocksByWalletAddress: async (mintAccessToken: string, walletAddress: string, options: any = {}): Promise<RequestArgs> => {
+        createProfile: async (mintAccessToken: string, inlineObject1?: InlineObject1, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('createProfile', 'mintAccessToken', mintAccessToken)
+            const localVarPath = `/sdk_v4/profile`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(inlineObject1, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 指定したwalletAddressでBidしたItemStockを取得する
+         * @param {string} mintAccessToken 
+         * @param {string} walletAddress 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {string} [onlyBeforeEnd] 
+         * @param {'price' | 'endAt'} [sortBy] 
+         * @param {'asc' | 'desc'} [sortDirection] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getBiddedItemStocksByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getBiddedItemStocksByWalletAddress', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
             assertParamExists('getBiddedItemStocksByWalletAddress', 'walletAddress', walletAddress)
+            // verify required parameter 'page' is not null or undefined
+            assertParamExists('getBiddedItemStocksByWalletAddress', 'page', page)
+            // verify required parameter 'perPage' is not null or undefined
+            assertParamExists('getBiddedItemStocksByWalletAddress', 'perPage', perPage)
             const localVarPath = `/sdk_v4/itemStocks/getBiddedItemStocksByWalletAddress`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -949,6 +1178,26 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (walletAddress !== undefined) {
                 localVarQueryParameter['walletAddress'] = walletAddress;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (onlyBeforeEnd !== undefined) {
+                localVarQueryParameter['onlyBeforeEnd'] = onlyBeforeEnd;
+            }
+
+            if (sortBy !== undefined) {
+                localVarQueryParameter['sortBy'] = sortBy;
+            }
+
+            if (sortDirection !== undefined) {
+                localVarQueryParameter['sortDirection'] = sortDirection;
             }
 
             if (mintAccessToken !== undefined && mintAccessToken !== null) {
@@ -971,14 +1220,22 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @summary 指定したwalletAddressで購入または落札したItemStockを取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {'price' | 'createAt'} [sortBy] 
+         * @param {'asc' | 'desc'} [sortDirection] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBoughtItemStocksByWalletAddress: async (mintAccessToken: string, walletAddress: string, options: any = {}): Promise<RequestArgs> => {
+        getBoughtItemStocksByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getBoughtItemStocksByWalletAddress', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
             assertParamExists('getBoughtItemStocksByWalletAddress', 'walletAddress', walletAddress)
+            // verify required parameter 'page' is not null or undefined
+            assertParamExists('getBoughtItemStocksByWalletAddress', 'page', page)
+            // verify required parameter 'perPage' is not null or undefined
+            assertParamExists('getBoughtItemStocksByWalletAddress', 'perPage', perPage)
             const localVarPath = `/sdk_v4/itemStocks/getBoughtItemStocksByWalletAddress`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -993,6 +1250,22 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (walletAddress !== undefined) {
                 localVarQueryParameter['walletAddress'] = walletAddress;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (sortBy !== undefined) {
+                localVarQueryParameter['sortBy'] = sortBy;
+            }
+
+            if (sortDirection !== undefined) {
+                localVarQueryParameter['sortDirection'] = sortDirection;
             }
 
             if (mintAccessToken !== undefined && mintAccessToken !== null) {
@@ -1055,12 +1328,24 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary プロジェクトのItemを全て取得する
          * @param {string} mintAccessToken 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
+         * @param {'true' | 'false'} [onlyAvailableStock] 
+         * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
+         * @param {string} [tags] , 区切りで指定
+         * @param {'price'} [sortBy] 
+         * @param {'asc' | 'desc'} [sortDirection] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItems: async (mintAccessToken: string, options: any = {}): Promise<RequestArgs> => {
+        getItems: async (mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getItems', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'page' is not null or undefined
+            assertParamExists('getItems', 'page', page)
+            // verify required parameter 'perPage' is not null or undefined
+            assertParamExists('getItems', 'perPage', perPage)
             const localVarPath = `/sdk_v4/items`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1072,6 +1357,38 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (saleStatus !== undefined) {
+                localVarQueryParameter['saleStatus'] = saleStatus;
+            }
+
+            if (onlyAvailableStock !== undefined) {
+                localVarQueryParameter['onlyAvailableStock'] = onlyAvailableStock;
+            }
+
+            if (paymentMethod !== undefined) {
+                localVarQueryParameter['paymentMethod'] = paymentMethod;
+            }
+
+            if (tags !== undefined) {
+                localVarQueryParameter['tags'] = tags;
+            }
+
+            if (sortBy !== undefined) {
+                localVarQueryParameter['sortBy'] = sortBy;
+            }
+
+            if (sortDirection !== undefined) {
+                localVarQueryParameter['sortDirection'] = sortDirection;
+            }
 
             if (mintAccessToken !== undefined && mintAccessToken !== null) {
                 localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
@@ -1115,6 +1432,50 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (id !== undefined) {
                 localVarQueryParameter['id'] = id;
+            }
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary ウォレットに紐づくプロフィールの取得
+         * @param {string} mintAccessToken 
+         * @param {string} walletAddress 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProfile: async (mintAccessToken: string, walletAddress: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getProfile', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'walletAddress' is not null or undefined
+            assertParamExists('getProfile', 'walletAddress', walletAddress)
+            const localVarPath = `/sdk_v4/profile`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (walletAddress !== undefined) {
+                localVarQueryParameter['walletAddress'] = walletAddress;
             }
 
             if (mintAccessToken !== undefined && mintAccessToken !== null) {
@@ -1232,14 +1593,20 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @summary walletAddressに紐づくTokenERC721を全て取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
+         * @param {string} page 
+         * @param {string} perPage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokenERC721sByWalletAddress: async (mintAccessToken: string, walletAddress: string, options: any = {}): Promise<RequestArgs> => {
+        getTokenERC721sByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getTokenERC721sByWalletAddress', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
             assertParamExists('getTokenERC721sByWalletAddress', 'walletAddress', walletAddress)
+            // verify required parameter 'page' is not null or undefined
+            assertParamExists('getTokenERC721sByWalletAddress', 'page', page)
+            // verify required parameter 'perPage' is not null or undefined
+            assertParamExists('getTokenERC721sByWalletAddress', 'perPage', perPage)
             const localVarPath = `/sdk_v4/tokens/getTokenERC721sByWalletAddress`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1256,6 +1623,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['walletAddress'] = walletAddress;
             }
 
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
             if (mintAccessToken !== undefined && mintAccessToken !== null) {
                 localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
             }
@@ -1265,6 +1640,47 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary ウォレットに紐づくプロフィールの更新
+         * @param {string} mintAccessToken 
+         * @param {InlineObject} [inlineObject] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateProfile: async (mintAccessToken: string, inlineObject?: InlineObject, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('updateProfile', 'mintAccessToken', mintAccessToken)
+            const localVarPath = `/sdk_v4/profile`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(inlineObject, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1283,14 +1699,31 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary 指定したwalletAddressでBidしたItemStockを取得する
+         * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
-         * @param {string} walletAddress 
+         * @param {InlineObject1} [inlineObject1] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getBiddedItemStocksByWalletAddress(mintAccessToken, walletAddress, options);
+        async createProfile(mintAccessToken: string, inlineObject1?: InlineObject1, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createProfile(mintAccessToken, inlineObject1, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 指定したwalletAddressでBidしたItemStockを取得する
+         * @param {string} mintAccessToken 
+         * @param {string} walletAddress 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {string} [onlyBeforeEnd] 
+         * @param {'price' | 'endAt'} [sortBy] 
+         * @param {'asc' | 'desc'} [sortDirection] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getBiddedItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, onlyBeforeEnd, sortBy, sortDirection, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1298,11 +1731,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @summary 指定したwalletAddressで購入または落札したItemStockを取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {'price' | 'createAt'} [sortBy] 
+         * @param {'asc' | 'desc'} [sortDirection] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, options);
+        async getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, sortBy, sortDirection, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1321,11 +1758,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary プロジェクトのItemを全て取得する
          * @param {string} mintAccessToken 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
+         * @param {'true' | 'false'} [onlyAvailableStock] 
+         * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
+         * @param {string} [tags] , 区切りで指定
+         * @param {'price'} [sortBy] 
+         * @param {'asc' | 'desc'} [sortDirection] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItems(mintAccessToken: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getItems(mintAccessToken, options);
+        async getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItems(mintAccessToken, page, perPage, saleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1338,6 +1783,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          */
         async getProductERC721ById(mintAccessToken: string, id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getProductERC721ById(mintAccessToken, id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary ウォレットに紐づくプロフィールの取得
+         * @param {string} mintAccessToken 
+         * @param {string} walletAddress 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getProfile(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProfile(mintAccessToken, walletAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1370,11 +1827,25 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @summary walletAddressに紐づくTokenERC721を全て取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
+         * @param {string} page 
+         * @param {string} perPage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2007>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, options);
+        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2007>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary ウォレットに紐づくプロフィールの更新
+         * @param {string} mintAccessToken 
+         * @param {InlineObject} [inlineObject] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateProfile(mintAccessToken: string, inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateProfile(mintAccessToken, inlineObject, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1389,25 +1860,45 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
-         * @summary 指定したwalletAddressでBidしたItemStockを取得する
+         * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
-         * @param {string} walletAddress 
+         * @param {InlineObject1} [inlineObject1] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2004> {
-            return localVarFp.getBiddedItemStocksByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
+        createProfile(mintAccessToken: string, inlineObject1?: InlineObject1, options?: any): AxiosPromise<InlineResponse2008> {
+            return localVarFp.createProfile(mintAccessToken, inlineObject1, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 指定したwalletAddressでBidしたItemStockを取得する
+         * @param {string} mintAccessToken 
+         * @param {string} walletAddress 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {string} [onlyBeforeEnd] 
+         * @param {'price' | 'endAt'} [sortBy] 
+         * @param {'asc' | 'desc'} [sortDirection] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse2004> {
+            return localVarFp.getBiddedItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, onlyBeforeEnd, sortBy, sortDirection, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 指定したwalletAddressで購入または落札したItemStockを取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {'price' | 'createAt'} [sortBy] 
+         * @param {'asc' | 'desc'} [sortDirection] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2005> {
-            return localVarFp.getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
+        getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse2005> {
+            return localVarFp.getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, sortBy, sortDirection, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1424,11 +1915,19 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary プロジェクトのItemを全て取得する
          * @param {string} mintAccessToken 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
+         * @param {'true' | 'false'} [onlyAvailableStock] 
+         * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
+         * @param {string} [tags] , 区切りで指定
+         * @param {'price'} [sortBy] 
+         * @param {'asc' | 'desc'} [sortDirection] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItems(mintAccessToken: string, options?: any): AxiosPromise<InlineResponse200> {
-            return localVarFp.getItems(mintAccessToken, options).then((request) => request(axios, basePath));
+        getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse200> {
+            return localVarFp.getItems(mintAccessToken, page, perPage, saleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1440,6 +1939,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         getProductERC721ById(mintAccessToken: string, id: string, options?: any): AxiosPromise<InlineResponse2006> {
             return localVarFp.getProductERC721ById(mintAccessToken, id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary ウォレットに紐づくプロフィールの取得
+         * @param {string} mintAccessToken 
+         * @param {string} walletAddress 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProfile(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2008> {
+            return localVarFp.getProfile(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1469,11 +1979,24 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @summary walletAddressに紐づくTokenERC721を全て取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
+         * @param {string} page 
+         * @param {string} perPage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse2007> {
-            return localVarFp.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
+        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: any): AxiosPromise<InlineResponse2007> {
+            return localVarFp.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary ウォレットに紐づくプロフィールの更新
+         * @param {string} mintAccessToken 
+         * @param {InlineObject} [inlineObject] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateProfile(mintAccessToken: string, inlineObject?: InlineObject, options?: any): AxiosPromise<InlineResponse2008> {
+            return localVarFp.updateProfile(mintAccessToken, inlineObject, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1487,15 +2010,33 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
 export class DefaultApi extends BaseAPI {
     /**
      * 
-     * @summary 指定したwalletAddressでBidしたItemStockを取得する
+     * @summary ウォレットに紐づくプロフィールの作成
      * @param {string} mintAccessToken 
-     * @param {string} walletAddress 
+     * @param {InlineObject1} [inlineObject1] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any) {
-        return DefaultApiFp(this.configuration).getBiddedItemStocksByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(this.axios, this.basePath));
+    public createProfile(mintAccessToken: string, inlineObject1?: InlineObject1, options?: any) {
+        return DefaultApiFp(this.configuration).createProfile(mintAccessToken, inlineObject1, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 指定したwalletAddressでBidしたItemStockを取得する
+     * @param {string} mintAccessToken 
+     * @param {string} walletAddress 
+     * @param {string} page 
+     * @param {string} perPage 
+     * @param {string} [onlyBeforeEnd] 
+     * @param {'price' | 'endAt'} [sortBy] 
+     * @param {'asc' | 'desc'} [sortDirection] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options?: any) {
+        return DefaultApiFp(this.configuration).getBiddedItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, onlyBeforeEnd, sortBy, sortDirection, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1503,12 +2044,16 @@ export class DefaultApi extends BaseAPI {
      * @summary 指定したwalletAddressで購入または落札したItemStockを取得する
      * @param {string} mintAccessToken 
      * @param {string} walletAddress 
+     * @param {string} page 
+     * @param {string} perPage 
+     * @param {'price' | 'createAt'} [sortBy] 
+     * @param {'asc' | 'desc'} [sortDirection] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any) {
-        return DefaultApiFp(this.configuration).getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(this.axios, this.basePath));
+    public getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options?: any) {
+        return DefaultApiFp(this.configuration).getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, sortBy, sortDirection, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1528,12 +2073,20 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary プロジェクトのItemを全て取得する
      * @param {string} mintAccessToken 
+     * @param {string} page 
+     * @param {string} perPage 
+     * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
+     * @param {'true' | 'false'} [onlyAvailableStock] 
+     * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
+     * @param {string} [tags] , 区切りで指定
+     * @param {'price'} [sortBy] 
+     * @param {'asc' | 'desc'} [sortDirection] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItems(mintAccessToken: string, options?: any) {
-        return DefaultApiFp(this.configuration).getItems(mintAccessToken, options).then((request) => request(this.axios, this.basePath));
+    public getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: any) {
+        return DefaultApiFp(this.configuration).getItems(mintAccessToken, page, perPage, saleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1547,6 +2100,19 @@ export class DefaultApi extends BaseAPI {
      */
     public getProductERC721ById(mintAccessToken: string, id: string, options?: any) {
         return DefaultApiFp(this.configuration).getProductERC721ById(mintAccessToken, id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary ウォレットに紐づくプロフィールの取得
+     * @param {string} mintAccessToken 
+     * @param {string} walletAddress 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getProfile(mintAccessToken: string, walletAddress: string, options?: any) {
+        return DefaultApiFp(this.configuration).getProfile(mintAccessToken, walletAddress, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1581,12 +2147,27 @@ export class DefaultApi extends BaseAPI {
      * @summary walletAddressに紐づくTokenERC721を全て取得する
      * @param {string} mintAccessToken 
      * @param {string} walletAddress 
+     * @param {string} page 
+     * @param {string} perPage 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, options?: any) {
-        return DefaultApiFp(this.configuration).getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, options).then((request) => request(this.axios, this.basePath));
+    public getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: any) {
+        return DefaultApiFp(this.configuration).getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary ウォレットに紐づくプロフィールの更新
+     * @param {string} mintAccessToken 
+     * @param {InlineObject} [inlineObject] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public updateProfile(mintAccessToken: string, inlineObject?: InlineObject, options?: any) {
+        return DefaultApiFp(this.configuration).updateProfile(mintAccessToken, inlineObject, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

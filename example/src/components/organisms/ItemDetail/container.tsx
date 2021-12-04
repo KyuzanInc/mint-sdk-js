@@ -174,7 +174,9 @@ export const Container: React.VFC = () => {
 
     if (
       item?.paymentMethodData.paymentMethod ===
-      'ethereum-contract-erc721-shop-auction'
+        'ethereum-contract-erc721-shop-auction' ||
+      item?.paymentMethodData.paymentMethod ===
+        'ethereum-contract-erc721-shop-fixed-price'
     ) {
       if (
         connectedNetworkId !==

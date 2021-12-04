@@ -39,7 +39,10 @@ export const getItemsActionCreator = createAsyncThunk<
   }
 >('app/items/get', async (_, thunkApi) => {
   try {
-    const items = await getSdk().getItems()
+    const items = await getSdk().getItems({
+      page: 1,
+      perPage: 100,
+    })
     return {
       live: items,
       ended: [],

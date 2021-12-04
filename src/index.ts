@@ -1,6 +1,5 @@
 import { ItemStock } from './types/v2/ItemStock'
-import Axios, { AxiosInstance } from 'axios'
-import * as Agent from 'agentkeepalive'
+import Axios from 'axios'
 import * as ethers from 'ethers'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
@@ -13,7 +12,6 @@ import {
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
-import { AxiosBody } from './types/AxiosBody'
 import { Token } from './types/Token'
 import {
   WalletStrategy,
@@ -96,11 +94,6 @@ export class MintSDK {
   /**
    * @ignore
    */
-  private axios: AxiosInstance
-
-  /**
-   * @ignore
-   */
   private apiClientV2: ReturnType<typeof DefaultApiFactoryV2>
 
   private walletStrategy: WalletStrategy
@@ -129,21 +122,7 @@ export class MintSDK {
     }
 
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
-    const keepAliveAgent = new Agent.HttpsAgent({
-      keepAlive: true,
-    })
-    this.axios = Axios.create({
-      httpsAgent: keepAliveAgent,
-      baseURL: backendBaseUrl,
-      headers: {
-        'annapurna-access-token': accessToken,
-      },
-    })
-    this.apiClientV2 = DefaultApiFactoryV2(
-      undefined,
-      backendBaseUrl,
-      this.axios
-    )
+    this.apiClientV2 = DefaultApiFactoryV2(undefined, backendBaseUrl)
   }
 
   /**
@@ -251,6 +230,7 @@ export class MintSDK {
    * #### 制限事項
    *
    * @param paging
+   * @param tags , 区切りで指定
    * @returns
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -259,8 +239,41 @@ export class MintSDK {
    * const items = await sdk.getItems(...)
    * ```
    */
-  public getItems = async () => {
-    const { data } = await this.apiClientV2.getItems(this.accessToken)
+  public getItems = async ({
+    page,
+    perPage,
+    tags,
+    sort,
+    saleStatus,
+    paymentMethod,
+    onlyAvailableStock,
+  }: {
+    page: number
+    perPage: number
+    tags?: string
+    saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd'
+    paymentMethod?: PaymentMethod
+    onlyAvailableStock?: boolean
+    sort?: {
+      sortBy: 'price'
+      sortDirection: 'asc' | 'desc'
+    }
+  }) => {
+    const { data } = await this.apiClientV2.getItems(
+      this.accessToken,
+      page.toString(),
+      perPage.toString(),
+      saleStatus,
+      typeof onlyAvailableStock === 'undefined'
+        ? undefined
+        : onlyAvailableStock
+        ? 'true'
+        : 'false',
+      paymentMethod,
+      tags,
+      sort?.sortBy,
+      sort?.sortDirection
+    )
     return data.data as Item[]
   }
 
@@ -278,10 +291,22 @@ export class MintSDK {
    * const items = await sdk.getBoughtItemStocksByWalletAddress(...)
    * ```
    */
-  public getBoughtItemStocksByWalletAddress = async (walletAddress: string) => {
+  public getBoughtItemStocksByWalletAddress = async (arg: {
+    walletAddress: string
+    page: number
+    perPage: number
+    sort?: {
+      sortBy: 'price' | 'createAt'
+      sortDirection: 'asc' | 'desc'
+    }
+  }) => {
     const { data } = await this.apiClientV2.getBoughtItemStocksByWalletAddress(
       this.accessToken,
-      walletAddress
+      arg.walletAddress,
+      arg.page.toString(),
+      arg.perPage.toString(),
+      arg.sort?.sortBy ?? undefined,
+      arg.sort?.sortDirection ?? undefined
     )
     return data.data.itemStocks as ItemStock[]
   }
@@ -298,10 +323,28 @@ export class MintSDK {
    * const item = await sdk.getItemsByBidderAddress('0x1111......')
    * ```
    */
-  public getItemStocksByBidderAddress = async (address: string) => {
+  public getItemStocksByBidderAddress = async (arg: {
+    walletAddress: string
+    page: number
+    perPage: number
+    onlyBeforeEnd?: boolean
+    sort?: {
+      sortBy: 'price' | 'endAt'
+      sortDirection: 'asc' | 'desc'
+    }
+  }) => {
     const { data } = await this.apiClientV2.getBiddedItemStocksByWalletAddress(
       this.accessToken,
-      address
+      arg.walletAddress,
+      arg.page.toString(),
+      arg.perPage.toString(),
+      typeof arg.onlyBeforeEnd === 'undefined'
+        ? undefined
+        : arg.onlyBeforeEnd
+        ? 'true'
+        : 'false',
+      arg.sort?.sortBy ?? undefined,
+      arg.sort?.sortDirection ?? undefined
     )
     const itemStocks = data.data
     return itemStocks as ItemStock[]
@@ -347,40 +390,6 @@ export class MintSDK {
     return data.data
   }
 
-  // /**
-  //  * アイテムの履歴(bidされた、買われた)の取得
-  //  * 最新の物から返される
-  //  *
-  //  * @param itemId {@link Item}のitemId
-  //  * @returns
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  *
-  //  * const sdk = await MintSDK.initialize(...)
-  //  * const item = await sdk.getItemLogs('Item.itemId')
-  //  * ```
-  //  */
-  // public getItemLogs = async (
-  //   itemId: string,
-  //   paging = {
-  //     perPage: 30,
-  //     page: 1,
-  //   }
-  // ) => {
-  //   const { data } = await this.apiClient.getItemLogs(
-  //     this.accessToken,
-  //     itemId,
-  //     paging.perPage.toString(),
-  //     paging.page.toString()
-  //   )
-  //   const logs = data.data
-  //   return logs.map((l) => ({
-  //     ...l,
-  //     createAt: new Date(l.createAt),
-  //   }))
-  // }
-
   /**
    * 指定したアドレスが所持しているMINT経由で獲得したトークンを取得
    *
@@ -393,10 +402,16 @@ export class MintSDK {
    * const tokens = await sdk.getTokensByAddress('0x11111...')
    * ```
    */
-  public getTokensByAddress = async (address: string) => {
+  public getTokensByAddress = async (arg: {
+    walletAddress: string
+    page: number
+    perPage: number
+  }) => {
     const { data } = await this.apiClientV2.getTokenERC721sByWalletAddress(
       this.accessToken,
-      address
+      arg.walletAddress,
+      arg.page.toString(),
+      arg.perPage.toString()
     )
     return data.data
   }
@@ -593,7 +608,9 @@ export class MintSDK {
       resItem.paymentMethodData.paymentMethod !==
       'ethereum-contract-erc721-shop-fixed-price'
     ) {
-      return
+      return new Error(
+        `PaymentMethod is not ethereum-contract-erc721-shop-fixed-price: ${resItem.paymentMethodData.paymentMethod}`
+      )
     }
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
@@ -601,12 +618,6 @@ export class MintSDK {
       JSON.parse(resItem.paymentMethodData.contractDataERC721Shop.abi),
       signer
     )
-
-    if (
-      item.paymentMethodData.paymentMethod !== 'credit-card-stripe-fixed-price'
-    ) {
-      throw new Error('not fixedPrice')
-    }
 
     // sign
     const {
@@ -727,10 +738,10 @@ export class MintSDK {
    * await sdk.getServerUnixTime()  // ex) 1615444120104
    * ```
    */
-  public getServerUnixTime = async () => {
-    const { data } = await this.axios.get<AxiosBody<number>>('serverSideTime')
-    return data.data
-  }
+  // public getServerUnixTime = async () => {
+  //   const { data } = await this.axios.get<AxiosBody<number>>('serverSideTime')
+  //   return data.data
+  // }
 
   /**
    * MetaMaskかどうかを判定
@@ -747,29 +758,6 @@ export class MintSDK {
   public isInjectedWallet = () => {
     return typeof (window as any).ethereum !== 'undefined'
   }
-
-  // /**
-  //  * 適切なネットワークかを判定
-  //  *
-  //  * @returns trueならば適切なネットワーク
-  //  *
-  //  * ```typescript
-  //  * import { MintSDK } from '@kyuzan/mint-sdk-js'
-  //  *
-  //  * const sdk = MintSDK.initialize(...)
-  //  * await sdk.isCorrectNetwork() // true
-  //  * ```
-  //  */
-  // public isCorrectNetwork = async () => {
-  //   if (this.isInjectedWallet()) {
-  //     return this.networkIds.includes(
-  //       parseInt((window as any).ethereum.networkVersion, 10) as any
-  //     )
-  //   } else {
-  //     const network = await this.walletStrategy.getProvider().getNetwork()
-  //     return this.networkIds.includes(network.chainId as any)
-  //   }
-  // }a
 
   /**
    * 接続中のネットワークIDを返す
@@ -989,33 +977,4 @@ export class MintSDK {
       throw new WrongNetworkError('Network is not correct')
     }
   }
-
-  // /**
-  //  * @ignore
-  //  */
-  // private getMintShopContractInfo = async (networkId: NetworkId) => {
-  //   const { data } = await this.axios.get('/v2_projectConfig')
-  //   const networkLabel = networkIdMapLabel[networkId]
-  //   const abi = data.data.contract.mintShopContract[networkLabel].abi
-  //   const address = data.data.contract.mintShopContract[networkLabel].address
-  //   return {
-  //     abi,
-  //     address,
-  //   }
-  // }
-
-  // /**
-  //  * @ignore
-  //  */
-  // private formatItem = (item: Item) => {
-  //   return {
-  //     ...item,
-  //     startAt: item.startAt ? new Date(item.startAt) : undefined,
-  //     endAt: item.endAt ? new Date(item.endAt) : undefined,
-  //     defaultEndAt: item.defaultEndAt ? new Date(item.defaultEndAt) : undefined,
-  //     withdrawableAt: item.withdrawableAt
-  //       ? new Date(item.withdrawableAt)
-  //       : undefined,
-  //   } as Item
-  // }
 }

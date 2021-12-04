@@ -84,7 +84,7 @@ export const SaleActionModal: React.VFC<Props> = ({
                 errorText={errorText}
               />
             )}
-            {itemTradeType === 'credit-card-stripe-fixed-price' && (
+            {itemTradeType === 'ethereum-contract-erc721-shop-fixed-price' && (
               <FixedSaleAction
                 loading={loading}
                 unit={unit}
