@@ -1,6 +1,5 @@
 import { ItemStock } from './types/v2/ItemStock'
-import Axios, { AxiosInstance } from 'axios'
-import * as Agent from 'agentkeepalive'
+import Axios from 'axios'
 import * as ethers from 'ethers'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
@@ -13,7 +12,6 @@ import {
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
 import { Residence } from './types/Residence'
-import { AxiosBody } from './types/AxiosBody'
 import { Token } from './types/Token'
 import {
   WalletStrategy,
@@ -96,11 +94,6 @@ export class MintSDK {
   /**
    * @ignore
    */
-  private axios: AxiosInstance
-
-  /**
-   * @ignore
-   */
   private apiClientV2: ReturnType<typeof DefaultApiFactoryV2>
 
   private walletStrategy: WalletStrategy
@@ -129,21 +122,7 @@ export class MintSDK {
     }
 
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
-    const keepAliveAgent = new Agent.HttpsAgent({
-      keepAlive: true,
-    })
-    this.axios = Axios.create({
-      httpsAgent: keepAliveAgent,
-      baseURL: backendBaseUrl,
-      headers: {
-        'annapurna-access-token': accessToken,
-      },
-    })
-    this.apiClientV2 = DefaultApiFactoryV2(
-      undefined,
-      backendBaseUrl,
-      this.axios
-    )
+    this.apiClientV2 = DefaultApiFactoryV2(undefined, backendBaseUrl)
   }
 
   /**
@@ -251,6 +230,7 @@ export class MintSDK {
    * #### 制限事項
    *
    * @param paging
+   * @param tags , 区切りで指定
    * @returns
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -259,8 +239,41 @@ export class MintSDK {
    * const items = await sdk.getItems(...)
    * ```
    */
-  public getItems = async () => {
-    const { data } = await this.apiClientV2.getItems(this.accessToken)
+  public getItems = async ({
+    page,
+    perPage,
+    tags,
+    sort,
+    saleStatus,
+    paymentMethod,
+    onlyAvailableStock,
+  }: {
+    page: number
+    perPage: number
+    tags?: string
+    saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd'
+    paymentMethod?: PaymentMethod
+    onlyAvailableStock?: boolean
+    sort?: {
+      sortBy: 'price'
+      sortDirection: 'asc' | 'desc'
+    }
+  }) => {
+    const { data } = await this.apiClientV2.getItems(
+      this.accessToken,
+      page.toString(),
+      perPage.toString(),
+      saleStatus,
+      typeof onlyAvailableStock === 'undefined'
+        ? undefined
+        : onlyAvailableStock
+        ? 'true'
+        : 'false',
+      paymentMethod,
+      tags,
+      sort?.sortBy,
+      sort?.sortDirection
+    )
     return data.data as Item[]
   }
 
@@ -593,7 +606,9 @@ export class MintSDK {
       resItem.paymentMethodData.paymentMethod !==
       'ethereum-contract-erc721-shop-fixed-price'
     ) {
-      return
+      return new Error(
+        `PaymentMethod is not ethereum-contract-erc721-shop-fixed-price: ${resItem.paymentMethodData.paymentMethod}`
+      )
     }
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
@@ -601,12 +616,6 @@ export class MintSDK {
       JSON.parse(resItem.paymentMethodData.contractDataERC721Shop.abi),
       signer
     )
-
-    if (
-      item.paymentMethodData.paymentMethod !== 'credit-card-stripe-fixed-price'
-    ) {
-      throw new Error('not fixedPrice')
-    }
 
     // sign
     const {
@@ -727,10 +736,10 @@ export class MintSDK {
    * await sdk.getServerUnixTime()  // ex) 1615444120104
    * ```
    */
-  public getServerUnixTime = async () => {
-    const { data } = await this.axios.get<AxiosBody<number>>('serverSideTime')
-    return data.data
-  }
+  // public getServerUnixTime = async () => {
+  //   const { data } = await this.axios.get<AxiosBody<number>>('serverSideTime')
+  //   return data.data
+  // }
 
   /**
    * MetaMaskかどうかを判定
