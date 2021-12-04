@@ -291,10 +291,22 @@ export class MintSDK {
    * const items = await sdk.getBoughtItemStocksByWalletAddress(...)
    * ```
    */
-  public getBoughtItemStocksByWalletAddress = async (walletAddress: string) => {
+  public getBoughtItemStocksByWalletAddress = async (arg: {
+    walletAddress: string
+    page: number
+    perPage: number
+    sort?: {
+      sortBy: 'price' | 'createAt'
+      sortDirection: 'asc' | 'desc'
+    }
+  }) => {
     const { data } = await this.apiClientV2.getBoughtItemStocksByWalletAddress(
       this.accessToken,
-      walletAddress
+      arg.walletAddress,
+      arg.page.toString(),
+      arg.perPage.toString(),
+      arg.sort?.sortBy ?? undefined,
+      arg.sort?.sortDirection ?? undefined
     )
     return data.data.itemStocks as ItemStock[]
   }
@@ -311,10 +323,28 @@ export class MintSDK {
    * const item = await sdk.getItemsByBidderAddress('0x1111......')
    * ```
    */
-  public getItemStocksByBidderAddress = async (address: string) => {
+  public getItemStocksByBidderAddress = async (arg: {
+    walletAddress: string
+    page: number
+    perPage: number
+    onlyBeforeEnd?: boolean
+    sort?: {
+      sortBy: 'price' | 'endAt'
+      sortDirection: 'asc' | 'desc'
+    }
+  }) => {
     const { data } = await this.apiClientV2.getBiddedItemStocksByWalletAddress(
       this.accessToken,
-      address
+      arg.walletAddress,
+      arg.page.toString(),
+      arg.perPage.toString(),
+      typeof arg.onlyBeforeEnd === 'undefined'
+        ? undefined
+        : arg.onlyBeforeEnd
+        ? 'true'
+        : 'false',
+      arg.sort?.sortBy ?? undefined,
+      arg.sort?.sortDirection ?? undefined
     )
     const itemStocks = data.data
     return itemStocks as ItemStock[]
@@ -372,10 +402,16 @@ export class MintSDK {
    * const tokens = await sdk.getTokensByAddress('0x11111...')
    * ```
    */
-  public getTokensByAddress = async (address: string) => {
+  public getTokensByAddress = async (arg: {
+    walletAddress: string
+    page: number
+    perPage: number
+  }) => {
     const { data } = await this.apiClientV2.getTokenERC721sByWalletAddress(
       this.accessToken,
-      address
+      arg.walletAddress,
+      arg.page.toString(),
+      arg.perPage.toString()
     )
     return data.data
   }

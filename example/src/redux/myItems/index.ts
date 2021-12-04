@@ -35,7 +35,15 @@ export const getBidedActionCreator = createAsyncThunk<
   }
 >('app/myItems/bidedItems/get', async ({ bidderAddress }, thunkApi) => {
   try {
-    return await getSdk().getItemStocksByBidderAddress(bidderAddress)
+    return await getSdk().getItemStocksByBidderAddress({
+      walletAddress: bidderAddress,
+      page: 1,
+      perPage: 1000,
+      sort: {
+        sortBy: 'endAt',
+        sortDirection: 'asc',
+      },
+    })
   } catch (err) {
     return thunkApi.rejectWithValue('Itemを取得できませんでした')
   }
@@ -49,7 +57,11 @@ export const getOwnTokensActionCreator = createAsyncThunk<
   }
 >('app/myItems/ownItems/get', async ({ walletAddress }, thunkApi) => {
   try {
-    return await getSdk().getTokensByAddress(walletAddress)
+    return await getSdk().getTokensByAddress({
+      walletAddress,
+      page: 1,
+      perPage: 100,
+    })
   } catch (err) {
     return thunkApi.rejectWithValue('Itemを取得できませんでした')
   }
