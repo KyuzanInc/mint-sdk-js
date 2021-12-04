@@ -180,8 +180,10 @@ export const Presentation: React.VFC<Props> = (args) => {
         connectWallet={args.handleConnectWallet}
         closeModal={args.handleCloseConnectWalletModal}
       />
-      {args.item.paymentMethodData.paymentMethod ===
-        'ethereum-contract-erc721-shop-auction' && (
+      {(args.item.paymentMethodData.paymentMethod ===
+        'ethereum-contract-erc721-shop-auction' ||
+        args.item.paymentMethodData.paymentMethod ===
+          'ethereum-contract-erc721-shop-fixed-price') && (
         <SaleActionModal
           itemTradeType={tradeType}
           itemName={args.item.name}
@@ -190,7 +192,10 @@ export const Presentation: React.VFC<Props> = (args) => {
           media={args.item.previews[0]}
           unit={getItemPriceUnit(args.item)}
           minBidPrice={
-            args.item.paymentMethodData.minBidPercentage * args.item.price
+            args.item.paymentMethodData.paymentMethod ===
+            'ethereum-contract-erc721-shop-auction'
+              ? args.item.paymentMethodData.minBidPercentage * args.item.price
+              : undefined
           }
           walletBalance={args.userWalletBalance}
           isOpen={args.actionModalOpen}
