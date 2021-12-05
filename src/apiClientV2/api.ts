@@ -77,6 +77,12 @@ export interface Bid {
     bidPrice: number;
     /**
      * 
+     * @type {CryptoCurrencyRate}
+     * @memberof Bid
+     */
+    cryptoCurrencyRate: CryptoCurrencyRate;
+    /**
+     * 
      * @type {string}
      * @memberof Bid
      */
@@ -189,6 +195,59 @@ export interface ContractERC721 {
      */
     tokenStandardType: TokenStandardType;
 }
+/**
+ * 
+ * @export
+ * @interface CryptoCurrencyRate
+ */
+export interface CryptoCurrencyRate {
+    /**
+     * 
+     * @type {string}
+     * @memberof CryptoCurrencyRate
+     */
+    createAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CryptoCurrencyRate
+     */
+    updateAt: string;
+    /**
+     * 
+     * @type {CryptoCurrencyType}
+     * @memberof CryptoCurrencyRate
+     */
+    currency: CryptoCurrencyType;
+    /**
+     * 
+     * @type {number}
+     * @memberof CryptoCurrencyRate
+     */
+    jpy: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CryptoCurrencyRate
+     */
+    eur: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CryptoCurrencyRate
+     */
+    usd: number;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum CryptoCurrencyType {
+    Eth = 'eth',
+    Matic = 'matic'
+}
+
 /**
  * 
  * @export
@@ -596,6 +655,12 @@ export interface Item {
      */
     price: number;
     /**
+     * 
+     * @type {CryptoCurrencyRate}
+     * @memberof Item
+     */
+    cryptoCurrencyRate: CryptoCurrencyRate;
+    /**
      * Mintに支払われる取引手数料
      * @type {number}
      * @memberof Item
@@ -632,7 +697,7 @@ export interface Item {
      */
     productERC721Ids: Array<string>;
     /**
-     * オークションItem以外はから配列が入る
+     * オークションItem以外は空配列が入る
      * @type {Array<Bid>}
      * @memberof Item
      */

@@ -608,7 +608,7 @@ export class MintSDK {
       resItem.paymentMethodData.paymentMethod !==
       'ethereum-contract-erc721-shop-fixed-price'
     ) {
-      return new Error(
+      throw new Error(
         `PaymentMethod is not ethereum-contract-erc721-shop-fixed-price: ${resItem.paymentMethodData.paymentMethod}`
       )
     }
