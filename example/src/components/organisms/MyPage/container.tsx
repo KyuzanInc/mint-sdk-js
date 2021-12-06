@@ -55,8 +55,8 @@ export const Container: React.VFC = () => {
     (state: { app: { transaction: { meta: { bidHash: string } } } }) =>
       state.app.transaction.meta.bidHash
   )
-  const withdrawItem = async (itemStockId: string, inJapan: boolean) => {
-    const item = bidedItems.find((i) => i.id === itemStockId)
+  const withdrawItem = async (itemId: string, inJapan: boolean) => {
+    const item = bidedItems.find((i) => i.item.id === itemId)
     if (!item) throw new Error('Something Wrong')
 
     if (
