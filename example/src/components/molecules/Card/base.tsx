@@ -13,8 +13,8 @@ export type Media = {
 
 type Props = {
   title?: string
-  totalStockNum: number
-  availableStockNum: number
+  totalStockNum?: number
+  availableStockNum?: number
   href: string
   media?: Media
   withPhysicalProduct?: boolean
