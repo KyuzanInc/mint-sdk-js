@@ -17,6 +17,8 @@ export const ActiveCard: React.FC<Props> = ({ item, onAuctionFinish }) => {
       href={`/items/${item.id}`}
       title={item.name}
       media={item.previews[0]}
+      availableStockNum={item.availableStockNum}
+      totalStockNum={item.itemStockIds.length}
       withPhysicalProduct={item.type === 'with-physical-item'}
     >
       <SaleInfo

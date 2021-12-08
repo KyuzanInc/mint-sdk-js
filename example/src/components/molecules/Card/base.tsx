@@ -13,6 +13,8 @@ export type Media = {
 
 type Props = {
   title?: string
+  totalStockNum: number
+  availableStockNum: number
   href: string
   media?: Media
   withPhysicalProduct?: boolean
@@ -25,6 +27,8 @@ export const CardBase: React.FC<Props> = ({
   media,
   children,
   withPhysicalProduct,
+  availableStockNum,
+  totalStockNum,
 }) => {
   return (
     <Link href={href}>
@@ -35,7 +39,7 @@ export const CardBase: React.FC<Props> = ({
         <CardContent>
           <Typography>
             {title ? (
-              title
+              `${title} （${availableStockNum}/${totalStockNum}）`
             ) : (
               <LoadingTypography>
                 <Skeleton width={237} count={2} />
