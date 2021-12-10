@@ -77,7 +77,7 @@ export const Presentation: React.VFC<Props> = (args) => {
   return (
     <>
       <Detail>
-        <Title>{args.item.name}</Title>
+        <Title>{`${args.item.name} （${args.item.availableStockNum}/${args.item.itemStockIds.length}）`}</Title>
         <TagWrap>
           {hasPyisicalItem && (
             <Tag

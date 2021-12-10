@@ -165,7 +165,10 @@ const Image = styled.img`
   object-fit: cover;
 `
 
-const SelectImgButton = styled(PrimaryButton)``
+const SelectImgButton = styled(PrimaryButton)`
+  pointer-events: none;
+  cursor: pointer;
+`
 
 const Title = styled.h1`
   margin-top: 64px;
