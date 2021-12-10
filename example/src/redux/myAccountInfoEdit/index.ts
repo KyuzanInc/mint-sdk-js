@@ -1,18 +1,11 @@
+import { AccountInfo } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { push } from 'connected-next-router'
+import { getSdk } from '../../sdk'
 
 export type MyAccountInfoEditState = {
   data: {
-    // TODO
-    accountInfo: {
-      avatarImgUrl: string
-      avatarImgId: string
-      displayName: string
-      bio: string
-      twitterAccountName: string
-      instagramAccountName: string
-      homepageUrl: string
-    }
+    accountInfo: AccountInfo
     uploadedImgId: string | undefined
     uploadedSignedUrl: string | undefined
   }
@@ -48,19 +41,17 @@ export const initialMyAccountInfoEditState: MyAccountInfoEditState = {
 
 // AsyncAction
 export const getAccountInfoActionCreator = createAsyncThunk<
-  // TODO
-  undefined,
+  AccountInfo | undefined,
   { walletAddress: string },
   {
     rejectValue: string
   }
->('app/myAccountInfo/get', async (_, thunkApi) => {
+>('app/myAccountInfo/get', async (arg, thunkApi) => {
   try {
-    // TODO
-    // const data = await getSdk().getAccountInfo({
-    //   walletAddress: arg.walletAddress,
-    // })
-    return undefined
+    const data = await getSdk().getAccountInfo({
+      walletAddress: arg.walletAddress,
+    })
+    return data
   } catch (err) {
     console.error(err)
     return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
@@ -77,13 +68,11 @@ export const uploadAvatarActionCreator = createAsyncThunk<
   {
     rejectValue: string
   }
->('app/myAccountInfo/uploadAvatar', async (_, thunkApi) => {
+>('app/myAccountInfo/uploadAvatar', async (arg, thunkApi) => {
   try {
-    // TODO
-    // return await getSdk().uploadAccountInfoAvatar({
-    //   file: arg.file,
-    // })
-    return undefined
+    return await getSdk().uploadAccountInfoAvatar({
+      file: arg.file,
+    })
   } catch (err) {
     console.error(err)
     return thunkApi.rejectWithValue(`画像のアップロードに失敗しました`)
@@ -106,8 +95,7 @@ export const updateAccountInfoActionCreator = createAsyncThunk<
 >(
   'app/myAccountInfo/update',
   async (
-    // TODO
-    _: {
+    arg: {
       avatarImgId: string
       displayName: string
       bio: string
@@ -118,7 +106,7 @@ export const updateAccountInfoActionCreator = createAsyncThunk<
     thunkApi
   ) => {
     try {
-      // await getSdk().updateAccountInfo(arg)
+      await getSdk().updateAccountInfo(arg)
       thunkApi.dispatch(push('/me'))
     } catch (err) {
       console.error(err)
