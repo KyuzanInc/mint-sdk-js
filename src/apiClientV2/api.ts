@@ -196,6 +196,17 @@ export interface ContractERC721 {
     tokenStandardType: TokenStandardType;
 }
 /**
+ * Stripeで利用する通貨型
+ * @export
+ * @enum {string}
+ */
+export enum CreditCardStripeCurrencyType {
+    Jpy = 'jpy',
+    Usd = 'usd',
+    Eur = 'eur'
+}
+
+/**
  * 
  * @export
  * @interface CryptoCurrencyRate
@@ -256,46 +267,16 @@ export enum CryptoCurrencyType {
 export interface InlineObject {
     /**
      * 
-     * @type {string}
+     * @type {WalletAddressProfile}
      * @memberof InlineObject
      */
-    walletAddress: string;
+    profile: WalletAddressProfile;
     /**
      * 
      * @type {string}
      * @memberof InlineObject
      */
-    avatarImageId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    displayName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    bio?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    twitterAccountName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    instagramAccountName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    homepageUrl?: string;
+    signature: string;
 }
 /**
  * 
@@ -305,46 +286,16 @@ export interface InlineObject {
 export interface InlineObject1 {
     /**
      * 
-     * @type {string}
+     * @type {WalletAddressProfile}
      * @memberof InlineObject1
      */
-    walletAddress: string;
+    profile: WalletAddressProfile;
     /**
      * 
      * @type {string}
      * @memberof InlineObject1
      */
-    avatarImageId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    displayName: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    bio: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    twitterAccountName: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    instagramAccountName: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    homepageUrl: string;
+    signature: string;
 }
 /**
  * 
@@ -578,6 +529,19 @@ export interface InlineResponse2008Data {
 /**
  * 
  * @export
+ * @interface InlineResponse2009
+ */
+export interface InlineResponse2009 {
+    /**
+     * StripeのPaymentIntentのSecret
+     * @type {string}
+     * @memberof InlineResponse2009
+     */
+    data: string;
+}
+/**
+ * 
+ * @export
  * @interface InlineResponse400
  */
 export interface InlineResponse400 {
@@ -715,6 +679,12 @@ export interface ItemPaymentMethodDataCreditCardStripeFixedPrice {
      * @memberof ItemPaymentMethodDataCreditCardStripeFixedPrice
      */
     paymentMethod: ItemPaymentMethodDataCreditCardStripeFixedPricePaymentMethodEnum;
+    /**
+     * 
+     * @type {CreditCardStripeCurrencyType}
+     * @memberof ItemPaymentMethodDataCreditCardStripeFixedPrice
+     */
+    currency: CreditCardStripeCurrencyType;
 }
 
 /**
@@ -1121,43 +1091,43 @@ export interface WalletAddressProfile {
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    walletAddress?: string;
+    walletAddress: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    avatarImageId?: string;
+    avatarImageId: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    displayName?: string;
+    displayName: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    bio?: string;
+    bio: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    twitterAccountName?: string;
+    twitterAccountName: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    instagramAccountName?: string;
+    instagramAccountName: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    homepageUrl?: string;
+    homepageUrl: string;
 }
 
 /**
@@ -1201,6 +1171,50 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(inlineObject1, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+         * @param {string} mintAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createStripePaymentIntent: async (mintAccessToken: string, itemId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('createStripePaymentIntent', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'itemId' is not null or undefined
+            assertParamExists('createStripePaymentIntent', 'itemId', itemId)
+            const localVarPath = `/sdk_v4/stripePayment/createStripePaymentIntent`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (itemId !== undefined) {
+                localVarQueryParameter['itemId'] = itemId;
+            }
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1776,6 +1790,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+         * @param {string} mintAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createStripePaymentIntent(mintAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createStripePaymentIntent(mintAccessToken, itemId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary 指定したwalletAddressでBidしたItemStockを取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
@@ -1936,6 +1962,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+         * @param {string} mintAccessToken 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createStripePaymentIntent(mintAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2009> {
+            return localVarFp.createStripePaymentIntent(mintAccessToken, itemId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 指定したwalletAddressでBidしたItemStockを取得する
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
@@ -2084,6 +2121,19 @@ export class DefaultApi extends BaseAPI {
      */
     public createProfile(mintAccessToken: string, inlineObject1?: InlineObject1, options?: any) {
         return DefaultApiFp(this.configuration).createProfile(mintAccessToken, inlineObject1, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+     * @param {string} mintAccessToken 
+     * @param {string} itemId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public createStripePaymentIntent(mintAccessToken: string, itemId: string, options?: any) {
+        return DefaultApiFp(this.configuration).createStripePaymentIntent(mintAccessToken, itemId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

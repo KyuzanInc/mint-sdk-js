@@ -1,6 +1,7 @@
 import { ItemStock } from './types/v2/ItemStock'
 import Axios from 'axios'
 import * as ethers from 'ethers'
+import {loadStripe, Stripe, StripeElements} from '@stripe/stripe-js';
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 import {
@@ -53,6 +54,8 @@ export {
   WalletInfo,
   WrongNetworkError,
   CurrencyUnit,
+  Stripe,
+  StripeElements
 }
 
 export class MintSDK {
@@ -123,6 +126,18 @@ export class MintSDK {
 
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
     this.apiClientV2 = DefaultApiFactoryV2(undefined, backendBaseUrl)
+  }
+
+  public createPaymentIntent = async (itemId: string) => {
+    console.log(itemId)
+    // keyをKyuzanで発行管理したものを使いたいので内部でStripeのインスタンスを生成している
+    const stripe = await loadStripe('pk_test_51Jx4PhEWW1vsLKYh0pmcI0irNmkigMxOQipe8rIqoilnPUXSL4QmqPeyERE4TuARUjFdiWYOIx0LmgeRgjt85DCk009J0XbBrx')
+    const { data } = await this.apiClientV2.createStripePaymentIntent(this.accessToken, itemId)
+    console.log(data.data)
+    return {
+      paymentIntentClientSecret: data.data,
+      stripe,
+    }
   }
 
   /**
