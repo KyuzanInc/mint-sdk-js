@@ -1,11 +1,12 @@
-import { AccountInfo } from '@kyuzan/mint-sdk-js'
+import { WalletAddressProfile } from '@kyuzan/mint-sdk-js/lib/apiClientV2'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { push } from 'connected-next-router'
 import { getSdk } from '../../sdk'
 
 export type MyAccountInfoEditState = {
   data: {
-    accountInfo: AccountInfo
+    accountInfo: WalletAddressProfile
+    avatarImageUrl: string | undefined
     uploadedImgId: string | undefined
     uploadedSignedUrl: string | undefined
   }
@@ -20,14 +21,15 @@ export type MyAccountInfoEditState = {
 export const initialMyAccountInfoEditState: MyAccountInfoEditState = {
   data: {
     accountInfo: {
-      avatarImgUrl: '',
-      avatarImgId: '',
+      walletAddress: '',
+      avatarImageId: '',
       displayName: '',
       bio: '',
       twitterAccountName: '',
       instagramAccountName: '',
       homepageUrl: '',
     },
+    avatarImageUrl: undefined,
     uploadedImgId: undefined,
     uploadedSignedUrl: undefined,
   },
@@ -41,7 +43,7 @@ export const initialMyAccountInfoEditState: MyAccountInfoEditState = {
 
 // AsyncAction
 export const getAccountInfoActionCreator = createAsyncThunk<
-  AccountInfo | undefined,
+  WalletAddressProfile | undefined,
   { walletAddress: string },
   {
     rejectValue: string
@@ -82,7 +84,8 @@ export const uploadAvatarActionCreator = createAsyncThunk<
 export const updateAccountInfoActionCreator = createAsyncThunk<
   void,
   {
-    avatarImgId: string
+    walletAddress: string
+    avatarImageId: string
     displayName: string
     bio: string
     twitterAccountName: string
@@ -96,7 +99,8 @@ export const updateAccountInfoActionCreator = createAsyncThunk<
   'app/myAccountInfo/update',
   async (
     arg: {
-      avatarImgId: string
+      walletAddress: string
+      avatarImageId: string
       displayName: string
       bio: string
       twitterAccountName: string
@@ -136,8 +140,8 @@ export const myAccountInfoEditSlice = createSlice({
       (state, { payload }) => {
         state.meta.loading = false
         state.data.accountInfo = payload || {
-          avatarImgUrl: '',
-          avatarImgId: '',
+          walletAddress: '',
+          avatarImageId: '',
           displayName: '',
           bio: '',
           twitterAccountName: '',
@@ -163,8 +167,8 @@ export const myAccountInfoEditSlice = createSlice({
         state.meta.imgUploading = false
         state.data.uploadedImgId = payload?.imgId || ''
         state.data.uploadedSignedUrl = payload?.uploadedImgUrl || ''
-        state.data.accountInfo.avatarImgUrl = payload?.uploadedImgUrl || ''
-        state.data.accountInfo.avatarImgId = payload?.imgId || ''
+        state.data.avatarImageUrl = payload?.uploadedImgUrl || ''
+        state.data.accountInfo.avatarImageId = payload?.imgId || ''
       }
     )
 

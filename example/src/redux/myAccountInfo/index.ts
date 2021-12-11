@@ -16,7 +16,7 @@ export const initialMyAccountInfoState: MyAccountInfoState = {
   data: {
     accountInfo: {
       avatarImgUrl: '',
-      avatarImgId: '',
+      avatarImageId: '',
       displayName: '',
       bio: '',
       twitterAccountName: '',
@@ -71,8 +71,8 @@ export const myAccountInfoSlice = createSlice({
       (state, { payload }) => {
         state.meta.loading = false
         state.data.accountInfo = payload || {
-          avatarImgUrl: '',
-          avatarImgId: '',
+          avatarImageUrl: '',
+          avatarImageId: '',
           displayName: '',
           bio: '',
           twitterAccountName: '',

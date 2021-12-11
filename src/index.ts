@@ -19,7 +19,7 @@ import {
   FortmaticStrategy,
   NodeStrategy,
 } from './strategies'
-import { BACKEND_URL } from './constants/index'
+import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
 import { ItemLog } from './types/ItemLog'
 import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
@@ -976,5 +976,64 @@ export class MintSDK {
     ) {
       throw new WrongNetworkError('Network is not correct')
     }
+  }
+
+  public updateAccountInfo = async (arg: {
+    walletAddress: string,
+    avatarImageId: string
+    displayName: string
+    bio: string
+    twitterAccountName: string
+    instagramAccountName: string
+    homepageUrl: string
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const wallet = this.walletStrategy.getProvider()
+    const profile = {
+      walletAddress: arg.walletAddress,
+      avatarImageId: arg.avatarImageId,
+      displayName: arg.displayName,
+      bio: arg.bio,
+      twitterAccountName: arg.twitterAccountName,
+      instagramAccountName: arg.instagramAccountName,
+      homepageUrl: arg.homepageUrl
+    }
+    const signature = await wallet.getSigner()._signTypedData(PROFILE_DOMAIN, PROFILE_TYPES, profile)
+    await this.apiClientV2.updateProfile(
+      this.accessToken, 
+      {
+        profile: profile, 
+        signature: signature
+      }
+    )
+  }
+
+  public uploadAccountInfoAvatar = async (arg: { file: File }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const response = await this.apiClientV2.getAvatar(this.accessToken)
+    if (!response.data.data) {
+      return
+    }
+    await this.uploadData({
+      signedUrl: response.data.data.uploadSignedUrl,
+      file: arg.file,
+    })
+    return {
+      imgId: response.data.data.imageId,
+      uploadedImgUrl: response.data.data.uploadSignedUrl,
+    }
+  }
+
+  public getAccountInfo = async (arg: { walletAddress: string }) => {
+    const response = await this.apiClientV2.getProfile(
+      this.accessToken,
+      arg.walletAddress
+    )
+    return { profile: response.data.data?.profile, avatarImageUrl: response.data.data?.avatarImageUrl }
   }
 }
