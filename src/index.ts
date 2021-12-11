@@ -101,6 +101,18 @@ export class MintSDK {
 
   private walletStrategy: WalletStrategy
 
+  private static stripeInstanceMap = new Map<string, Promise<Stripe | null>>()
+
+  private static loadStripeCached = (publishableKey: string) => {
+    const stripe = MintSDK.stripeInstanceMap.get(publishableKey)
+    if (stripe) {
+      return stripe;
+    }
+    const newStripe = loadStripe(publishableKey)
+    MintSDK.stripeInstanceMap.set(publishableKey, newStripe)
+    return newStripe
+  }
+
   /**
    *
    * @param accessToken
@@ -128,14 +140,20 @@ export class MintSDK {
     this.apiClientV2 = DefaultApiFactoryV2(undefined, backendBaseUrl)
   }
 
-  public createPaymentIntent = async (itemId: string) => {
+  /**
+   * クレジットカードでアイテムを購入するためにStripeを初期化する。
+   * この関数は、Stripeの[PaymentIntent](https://stripe.com/docs/api/payment_intents/object)を初期化するための `clientSecret` と、
+   * Mintバックエンドと対応するAPIキーで初期化された{@link Stripe}を返す。
+   * @param itemId 購入する{@link Item}のitemId
+   * @returns 
+   */
+  public createStripePaymentIntent = async (itemId: string) => {
     console.log(itemId)
     // keyをKyuzanで発行管理したものを使いたいので内部でStripeのインスタンスを生成している
-    const stripe = await loadStripe('pk_test_51Jx4PhEWW1vsLKYh0pmcI0irNmkigMxOQipe8rIqoilnPUXSL4QmqPeyERE4TuARUjFdiWYOIx0LmgeRgjt85DCk009J0XbBrx')
     const { data } = await this.apiClientV2.createStripePaymentIntent(this.accessToken, itemId)
-    console.log(data.data)
+    const stripe = await MintSDK.loadStripeCached(data.publishableKey)
     return {
-      paymentIntentClientSecret: data.data,
+      paymentIntentClientSecret: data.secret,
       stripe,
     }
   }

@@ -533,11 +533,17 @@ export interface InlineResponse2008Data {
  */
 export interface InlineResponse2009 {
     /**
-     * StripeのPaymentIntentのSecret
+     * クライアント側でloadStripeに対して渡す公開可能なAPI-Key
      * @type {string}
      * @memberof InlineResponse2009
      */
-    data: string;
+    publishableKey: string;
+    /**
+     * StripeのPaymentIntentのClientSecret
+     * @type {string}
+     * @memberof InlineResponse2009
+     */
+    secret: string;
 }
 /**
  * 

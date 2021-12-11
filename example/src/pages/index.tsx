@@ -50,7 +50,7 @@ const Page = ({
       />
       <button onClick={async () => {
         const sdk = getSdk()
-        const { paymentIntentClientSecret, stripe } = await sdk.createPaymentIntent('HapHy1gIKF22aIJC8PXx')
+        const { paymentIntentClientSecret, stripe } = await sdk.createStripePaymentIntent('HapHy1gIKF22aIJC8PXx')
         setStripeInstance(stripe)
         const appearance = {
           theme: 'stripe',
