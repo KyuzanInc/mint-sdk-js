@@ -705,6 +705,12 @@ export interface Item {
      * @memberof Item
      */
     bids: Array<Bid>;
+    /**
+     * 
+     * @type {object}
+     * @memberof Item
+     */
+    metadata: object | null;
 }
 /**
  * 
