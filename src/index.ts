@@ -150,7 +150,7 @@ export class MintSDK {
   public createStripePaymentIntent = async (itemId: string) => {
     console.log(itemId)
     // keyをKyuzanで発行管理したものを使いたいので内部でStripeのインスタンスを生成している
-    const { data } = await this.apiClientV2.createStripePaymentIntent(this.accessToken, itemId)
+    const { data } = await this.apiClientV2.createStripePaymentIntent(this.accessToken, {itemId})
     const stripe = await MintSDK.loadStripeCached(data.publishableKey)
     return {
       paymentIntentClientSecret: data.secret,
