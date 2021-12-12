@@ -256,95 +256,16 @@ export enum CryptoCurrencyType {
 export interface InlineObject {
     /**
      * 
-     * @type {string}
+     * @type {WalletAddressProfile}
      * @memberof InlineObject
      */
-    walletAddress: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    avatarImageId?: string;
+    profile: WalletAddressProfile;
     /**
      * 
      * @type {string}
      * @memberof InlineObject
      */
-    displayName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    bio?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    twitterAccountName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    instagramAccountName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    homepageUrl?: string;
-}
-/**
- * 
- * @export
- * @interface InlineObject1
- */
-export interface InlineObject1 {
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    walletAddress: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    avatarImageId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    displayName: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    bio: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    twitterAccountName: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    instagramAccountName: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    homepageUrl: string;
+    signature: string;
 }
 /**
  * 
@@ -383,6 +304,50 @@ export interface InlineResponse2001 {
      * @memberof InlineResponse2001
      */
     meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse20010
+ */
+export interface InlineResponse20010 {
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse20010
+     */
+    meta?: object;
+    /**
+     * 
+     * @type {InlineResponse20010Data}
+     * @memberof InlineResponse20010
+     */
+    data?: InlineResponse20010Data;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse20010Data
+ */
+export interface InlineResponse20010Data {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse20010Data
+     */
+    imageId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse20010Data
+     */
+    uploadSignedUrl: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse20010Data
+     */
+    readSignedUrl: string;
 }
 /**
  * 
@@ -572,6 +537,44 @@ export interface InlineResponse2008Data {
      * 
      * @type {WalletAddressProfile}
      * @memberof InlineResponse2008Data
+     */
+    profile: WalletAddressProfile;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse2008Data
+     */
+    avatarImageUrl: string;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2009
+ */
+export interface InlineResponse2009 {
+    /**
+     * 
+     * @type {InlineResponse2009Data}
+     * @memberof InlineResponse2009
+     */
+    data?: InlineResponse2009Data;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse2009
+     */
+    meta?: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse2009Data
+ */
+export interface InlineResponse2009Data {
+    /**
+     * 
+     * @type {WalletAddressProfile}
+     * @memberof InlineResponse2009Data
      */
     profile?: WalletAddressProfile;
 }
@@ -1121,43 +1124,43 @@ export interface WalletAddressProfile {
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    walletAddress?: string;
+    walletAddress: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    avatarImageId?: string;
+    avatarImageId: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    displayName?: string;
+    displayName: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    bio?: string;
+    bio: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    twitterAccountName?: string;
+    twitterAccountName: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    instagramAccountName?: string;
+    instagramAccountName: string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    homepageUrl?: string;
+    homepageUrl: string;
 }
 
 /**
@@ -1168,16 +1171,15 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
-         * @summary ウォレットに紐づくプロフィールの作成
+         * @summary アバター画像の署名付きURLの取得
          * @param {string} mintAccessToken 
-         * @param {InlineObject1} [inlineObject1] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createProfile: async (mintAccessToken: string, inlineObject1?: InlineObject1, options: any = {}): Promise<RequestArgs> => {
+        getAvatar: async (mintAccessToken: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
-            assertParamExists('createProfile', 'mintAccessToken', mintAccessToken)
-            const localVarPath = `/sdk_v4/profile`;
+            assertParamExists('getAvatar', 'mintAccessToken', mintAccessToken)
+            const localVarPath = `/sdk_v4/avatar`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1185,7 +1187,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1195,12 +1197,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(inlineObject1, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1604,14 +1603,16 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary スマコンの操作に必要なSignを返す
+         * @summary Item購入に関してスマコンの操作に必要なSignを返す
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
+         * @param {string} [walletAddress] 購入時のみ必須
+         * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSignByItemStockId: async (mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options: any = {}): Promise<RequestArgs> => {
+        getSignByItemStockId: async (mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getSignByItemStockId', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'itemStockId' is not null or undefined
@@ -1636,6 +1637,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (signatureType !== undefined) {
                 localVarQueryParameter['signatureType'] = signatureType;
+            }
+
+            if (walletAddress !== undefined) {
+                localVarQueryParameter['walletAddress'] = walletAddress;
+            }
+
+            if (residence !== undefined) {
+                localVarQueryParameter['residence'] = residence;
             }
 
             if (mintAccessToken !== undefined && mintAccessToken !== null) {
@@ -1713,7 +1722,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary ウォレットに紐づくプロフィールの更新
+         * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
          * @param {InlineObject} [inlineObject] 
          * @param {*} [options] Override http request option.
@@ -1730,7 +1739,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1764,14 +1773,13 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary ウォレットに紐づくプロフィールの作成
+         * @summary アバター画像の署名付きURLの取得
          * @param {string} mintAccessToken 
-         * @param {InlineObject1} [inlineObject1] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createProfile(mintAccessToken: string, inlineObject1?: InlineObject1, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createProfile(mintAccessToken, inlineObject1, options);
+        async getAvatar(mintAccessToken: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20010>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAvatar(mintAccessToken, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1876,15 +1884,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary スマコンの操作に必要なSignを返す
+         * @summary Item購入に関してスマコンの操作に必要なSignを返す
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
+         * @param {string} [walletAddress] 購入時のみ必須
+         * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, options);
+        async getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1903,13 +1913,13 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary ウォレットに紐づくプロフィールの更新
+         * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
          * @param {InlineObject} [inlineObject] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateProfile(mintAccessToken: string, inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
+        async updateProfile(mintAccessToken: string, inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateProfile(mintAccessToken, inlineObject, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1925,14 +1935,13 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
-         * @summary ウォレットに紐づくプロフィールの作成
+         * @summary アバター画像の署名付きURLの取得
          * @param {string} mintAccessToken 
-         * @param {InlineObject1} [inlineObject1] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createProfile(mintAccessToken: string, inlineObject1?: InlineObject1, options?: any): AxiosPromise<InlineResponse2008> {
-            return localVarFp.createProfile(mintAccessToken, inlineObject1, options).then((request) => request(axios, basePath));
+        getAvatar(mintAccessToken: string, options?: any): AxiosPromise<InlineResponse20010> {
+            return localVarFp.getAvatar(mintAccessToken, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2029,15 +2038,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary スマコンの操作に必要なSignを返す
+         * @summary Item購入に関してスマコンの操作に必要なSignを返す
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
+         * @param {string} [walletAddress] 購入時のみ必須
+         * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options?: any): AxiosPromise<InlineResponse2003> {
-            return localVarFp.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, options).then((request) => request(axios, basePath));
+        getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any): AxiosPromise<InlineResponse2003> {
+            return localVarFp.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2054,13 +2065,13 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary ウォレットに紐づくプロフィールの更新
+         * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
          * @param {InlineObject} [inlineObject] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateProfile(mintAccessToken: string, inlineObject?: InlineObject, options?: any): AxiosPromise<InlineResponse2008> {
+        updateProfile(mintAccessToken: string, inlineObject?: InlineObject, options?: any): AxiosPromise<InlineResponse2009> {
             return localVarFp.updateProfile(mintAccessToken, inlineObject, options).then((request) => request(axios, basePath));
         },
     };
@@ -2075,15 +2086,14 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
 export class DefaultApi extends BaseAPI {
     /**
      * 
-     * @summary ウォレットに紐づくプロフィールの作成
+     * @summary アバター画像の署名付きURLの取得
      * @param {string} mintAccessToken 
-     * @param {InlineObject1} [inlineObject1] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public createProfile(mintAccessToken: string, inlineObject1?: InlineObject1, options?: any) {
-        return DefaultApiFp(this.configuration).createProfile(mintAccessToken, inlineObject1, options).then((request) => request(this.axios, this.basePath));
+    public getAvatar(mintAccessToken: string, options?: any) {
+        return DefaultApiFp(this.configuration).getAvatar(mintAccessToken, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2195,16 +2205,18 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary スマコンの操作に必要なSignを返す
+     * @summary Item購入に関してスマコンの操作に必要なSignを返す
      * @param {string} mintAccessToken 
      * @param {string} itemStockId 
      * @param {SignatureType} signatureType 
+     * @param {string} [walletAddress] 購入時のみ必須
+     * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options?: any) {
-        return DefaultApiFp(this.configuration).getSignByItemStockId(mintAccessToken, itemStockId, signatureType, options).then((request) => request(this.axios, this.basePath));
+    public getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any) {
+        return DefaultApiFp(this.configuration).getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2224,7 +2236,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary ウォレットに紐づくプロフィールの更新
+     * @summary ウォレットに紐づくプロフィールの作成
      * @param {string} mintAccessToken 
      * @param {InlineObject} [inlineObject] 
      * @param {*} [options] Override http request option.

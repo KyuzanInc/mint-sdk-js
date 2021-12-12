@@ -523,7 +523,7 @@ export class MintSDK {
    */
   public sendTxMakeSuccessfulBid = async (
     itemId: string,
-    _: Residence = 'unknown'
+    residence: Residence = 'unknown'
   ) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
@@ -537,6 +537,9 @@ export class MintSDK {
       return
     }
 
+    await this.validateNetworkForItem(resItem)
+    const wallet = this.walletStrategy.getProvider()
+    const signer = wallet.getSigner()
     const {
       data: {
         data: { contractMethodArg },
@@ -544,12 +547,11 @@ export class MintSDK {
     } = await this.apiClientV2.getSignByItemStockId(
       this.accessToken,
       resItem.itemStockIds[0],
-      SignatureType.AuctionWithdraw
+      SignatureType.AuctionWithdraw,
+      await signer.getAddress(),
+      residence
     )
 
-    await this.validateNetworkForItem(resItem)
-    const wallet = this.walletStrategy.getProvider()
-    const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       resItem.paymentMethodData.contractDataERC721Shop.contractAddress,
       JSON.parse(resItem.paymentMethodData.contractDataERC721Shop.abi),
@@ -558,14 +560,6 @@ export class MintSDK {
     const tx = (await shopContract.buyAuction(
       ...contractMethodArg
     )) as ethers.providers.TransactionResponse
-
-    // TODO
-    // const hash = tx.hash
-    // await this.axios.post('/v2_registerTransactionReceiptsApp', {
-    //   txHash: hash,
-    //   itemId,
-    //   residence: userResidence,
-    // })
     return tx
   }
 
@@ -595,7 +589,10 @@ export class MintSDK {
    * }
    * ```
    */
-  public sendTxBuyItem = async (itemId: string, _: Residence = 'unknown') => {
+  public sendTxBuyItem = async (
+    itemId: string,
+    residence: Residence = 'unknown'
+  ) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
@@ -618,7 +615,6 @@ export class MintSDK {
       JSON.parse(resItem.paymentMethodData.contractDataERC721Shop.abi),
       signer
     )
-
     // sign
     const {
       data: {
@@ -635,18 +631,14 @@ export class MintSDK {
     } = await this.apiClientV2.getSignByItemStockId(
       this.accessToken,
       itemStockId,
-      SignatureType.FixedPrice
+      SignatureType.FixedPrice,
+      await signer.getAddress(),
+      residence
     )
     const price = ethers.utils.parseEther(item.price.toString()).toString()
     const tx = (await shopContract.buyFixedPrice(...contractMethodArg, {
       value: price,
     })) as ethers.providers.TransactionResponse
-    // TODO
-    // await this.axios.post('/v2_registerTransactionReceiptsApp', {
-    //   txHash: tx.hash,
-    //   itemId,
-    //   residence: userResidence,
-    // })
     return tx
   }
 
