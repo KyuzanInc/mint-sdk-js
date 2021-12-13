@@ -8,6 +8,7 @@ import {
   DefaultApiFactory as DefaultApiFactoryV2,
   TokenERC721,
   Bid,
+  WalletAddressProfile,
 } from './apiClientV2/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
@@ -19,7 +20,7 @@ import {
   FortmaticStrategy,
   NodeStrategy,
 } from './strategies'
-import { BACKEND_URL } from './constants/index'
+import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
 import { ItemLog } from './types/ItemLog'
 import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
@@ -41,6 +42,7 @@ export {
   ItemStock,
   TokenERC721,
   Bid,
+  WalletAddressProfile,
   // v1
   ItemLog,
   ItemTradeType,
@@ -967,6 +969,73 @@ export class MintSDK {
       currentNetwork !== item.paymentMethodData.contractDataERC721Shop.networkId
     ) {
       throw new WrongNetworkError('Network is not correct')
+    }
+  }
+
+  public updateAccountInfo = async (arg: {
+    avatarImageId: string
+    displayName: string
+    bio: string
+    twitterAccountName: string
+    instagramAccountName: string
+    homepageUrl: string
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const wallet = this.walletStrategy.getProvider()
+    const signer = await wallet.getSigner()
+    const profile = {
+      walletAddress: await signer.getAddress(),
+      avatarImageId: arg.avatarImageId,
+      displayName: arg.displayName,
+      bio: arg.bio,
+      twitterAccountName: arg.twitterAccountName,
+      instagramAccountName: arg.instagramAccountName,
+      homepageUrl: arg.homepageUrl,
+    }
+    const signature = await signer._signTypedData(
+      PROFILE_DOMAIN,
+      PROFILE_TYPES,
+      profile
+    )
+    await this.apiClientV2.updateProfile(this.accessToken, {
+      profile: profile,
+      signature: signature,
+    })
+  }
+
+  public uploadAccountInfoAvatar = async (arg: { file: File }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const response = await this.apiClientV2.getAvatar(this.accessToken)
+    if (!response.data.data) {
+      return
+    }
+    await this.uploadData({
+      signedUrl: response.data.data.uploadSignedUrl,
+      file: arg.file,
+    })
+    return {
+      imgId: response.data.data.imageId,
+      uploadedImgUrl: response.data.data.readSignedUrl,
+    }
+  }
+
+  public getAccountInfo = async (arg: { walletAddress: string }) => {
+    const response = await this.apiClientV2.getProfile(
+      this.accessToken,
+      arg.walletAddress
+    )
+    if (response.data.data === null) {
+      return null
+    }
+
+    return {
+      profile: response.data.data.profile,
+      avatarImageUrl: response.data.data.avatarImageUrl,
     }
   }
 }

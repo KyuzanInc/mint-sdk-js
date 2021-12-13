@@ -519,13 +519,13 @@ export interface InlineResponse2008 {
      * @type {InlineResponse2008Data}
      * @memberof InlineResponse2008
      */
-    data?: InlineResponse2008Data;
+    data: InlineResponse2008Data | null;
     /**
      * 
      * @type {object}
      * @memberof InlineResponse2008
      */
-    meta?: object;
+    meta: object;
 }
 /**
  * 
@@ -1520,7 +1520,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * 
+         * プロフィールがない場合はnullがdataの値に入る
          * @summary ウォレットに紐づくプロフィールの取得
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
@@ -1865,7 +1865,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 
+         * プロフィールがない場合はnullがdataの値に入る
          * @summary ウォレットに紐づくプロフィールの取得
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
@@ -2021,7 +2021,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.getProductERC721ById(mintAccessToken, id, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * プロフィールがない場合はnullがdataの値に入る
          * @summary ウォレットに紐づくプロフィールの取得
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
@@ -2184,7 +2184,7 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     * 
+     * プロフィールがない場合はnullがdataの値に入る
      * @summary ウォレットに紐づくプロフィールの取得
      * @param {string} mintAccessToken 
      * @param {string} walletAddress 

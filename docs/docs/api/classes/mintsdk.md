@@ -699,11 +699,11 @@ ___
 
 ### updateAccountInfo
 
-▸ **updateAccountInfo**(`arg`: { `avatarImgId`: *string* ; `bio`: *string* ; `displayName`: *string* ; `homepageUrl`: *string* ; `instagramAccountName`: *string* ; `twitterAccountName`: *string*  }): *Promise*<void\>
+▸ **updateAccountInfo**(`arg`: { `avatarImageId`: *string* ; `bio`: *string* ; `displayName`: *string* ; `homepageUrl`: *string* ; `instagramAccountName`: *string* ; `twitterAccountName`: *string*  }): *Promise*<void\>
 
 ユーザーのウォレットアドレスの画像や表示名を設定できる
 全ての項目は optionalです。設定しない場合は空文字を入れてください
-`avatarImgId`は`sdk.uploadImg`の返り値です
+`avatarImageId`は`sdk.uploadImg`の返り値です
 
 **Required**
 - ウォレットに接続していること
@@ -713,7 +713,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `arg` | *object* |
-| `arg.avatarImgId` | *string* |
+| `arg.avatarImageId` | *string* |
 | `arg.bio` | *string* |
 | `arg.displayName` | *string* |
 | `arg.homepageUrl` | *string* |
