@@ -1,4 +1,4 @@
-import { WalletAddressProfile } from '@kyuzan/mint-sdk-js/lib/apiClientV2'
+import { WalletAddressProfile } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { push } from 'connected-next-router'
 import { getSdk } from '../../sdk'
@@ -43,7 +43,7 @@ export const initialMyAccountInfoEditState: MyAccountInfoEditState = {
 
 // AsyncAction
 export const getAccountInfoActionCreator = createAsyncThunk<
-  WalletAddressProfile | undefined,
+  WalletAddressProfile | null,
   { walletAddress: string },
   {
     rejectValue: string
@@ -53,9 +53,8 @@ export const getAccountInfoActionCreator = createAsyncThunk<
     const data = await getSdk().getAccountInfo({
       walletAddress: arg.walletAddress,
     })
-    return data
+    return data?.profile || null
   } catch (err) {
-    console.error(err)
     return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
   }
 })
@@ -84,7 +83,6 @@ export const uploadAvatarActionCreator = createAsyncThunk<
 export const updateAccountInfoActionCreator = createAsyncThunk<
   void,
   {
-    walletAddress: string
     avatarImageId: string
     displayName: string
     bio: string
@@ -99,7 +97,6 @@ export const updateAccountInfoActionCreator = createAsyncThunk<
   'app/myAccountInfo/update',
   async (
     arg: {
-      walletAddress: string
       avatarImageId: string
       displayName: string
       bio: string

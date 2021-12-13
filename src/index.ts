@@ -1,3 +1,4 @@
+import { WalletAddressProfile } from './../lib/apiClientV2/api.d'
 import { ItemStock } from './types/v2/ItemStock'
 import Axios from 'axios'
 import * as ethers from 'ethers'
@@ -41,6 +42,7 @@ export {
   ItemStock,
   TokenERC721,
   Bid,
+  WalletAddressProfile,
   // v1
   ItemLog,
   ItemTradeType,
@@ -971,7 +973,6 @@ export class MintSDK {
   }
 
   public updateAccountInfo = async (arg: {
-    walletAddress: string
     avatarImageId: string
     displayName: string
     bio: string
@@ -983,8 +984,9 @@ export class MintSDK {
       throw new Error('Wallet is not connected')
     }
     const wallet = this.walletStrategy.getProvider()
+    const signer = await wallet.getSigner()
     const profile = {
-      walletAddress: arg.walletAddress,
+      walletAddress: await signer.getAddress(),
       avatarImageId: arg.avatarImageId,
       displayName: arg.displayName,
       bio: arg.bio,
@@ -992,9 +994,11 @@ export class MintSDK {
       instagramAccountName: arg.instagramAccountName,
       homepageUrl: arg.homepageUrl,
     }
-    const signature = await wallet
-      .getSigner()
-      ._signTypedData(PROFILE_DOMAIN, PROFILE_TYPES, profile)
+    const signature = await signer._signTypedData(
+      PROFILE_DOMAIN,
+      PROFILE_TYPES,
+      profile
+    )
     await this.apiClientV2.updateProfile(this.accessToken, {
       profile: profile,
       signature: signature,
@@ -1025,9 +1029,13 @@ export class MintSDK {
       this.accessToken,
       arg.walletAddress
     )
+    if (response.data.data === null) {
+      return null
+    }
+
     return {
-      profile: response.data.data?.profile,
-      avatarImageUrl: response.data.data?.avatarImageUrl,
+      profile: response.data.data.profile,
+      avatarImageUrl: response.data.data.avatarImageUrl,
     }
   }
 }

@@ -16,7 +16,7 @@ export const Container: React.VFC = () => {
   )
   const avatarImageUrl = useAppSelector(
     (state) => state.app.myAccountInfoEdit.data.avatarImageUrl
-  )  
+  )
   const accountInfo = useAppSelector(
     (state) => state.app.myAccountInfoEdit.data.accountInfo
   )
@@ -36,7 +36,6 @@ export const Container: React.VFC = () => {
     }) => {
       dispatch(
         updateAccountInfoActionCreator({
-          walletAddress: accountInfo.walletAddress,
           avatarImageId: uploadedImgId || accountInfo.avatarImageId,
           displayName: data.displayName,
           bio: data.bio,
@@ -78,7 +77,7 @@ export const Container: React.VFC = () => {
       submitting={submitting}
       uploadingImg={uploadingImg}
       loading={accountInfoLoading}
-      avatarImgUrl={uploadedImgUrl ?? avatarImageUrl ?? ""}
+      avatarImgUrl={uploadedImgUrl ?? avatarImageUrl ?? ''}
       displayName={accountInfo.displayName}
       bio={accountInfo.bio}
       twitterAccountName={accountInfo.twitterAccountName}
