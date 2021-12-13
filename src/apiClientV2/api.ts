@@ -705,6 +705,12 @@ export interface Item {
      * @memberof Item
      */
     bids: Array<Bid>;
+    /**
+     * 
+     * @type {object}
+     * @memberof Item
+     */
+    metadata: object | null;
 }
 /**
  * 
@@ -1603,14 +1609,16 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary スマコンの操作に必要なSignを返す
+         * @summary Item購入に関してスマコンの操作に必要なSignを返す
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
+         * @param {string} [walletAddress] 購入時のみ必須
+         * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSignByItemStockId: async (mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options: any = {}): Promise<RequestArgs> => {
+        getSignByItemStockId: async (mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getSignByItemStockId', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'itemStockId' is not null or undefined
@@ -1635,6 +1643,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (signatureType !== undefined) {
                 localVarQueryParameter['signatureType'] = signatureType;
+            }
+
+            if (walletAddress !== undefined) {
+                localVarQueryParameter['walletAddress'] = walletAddress;
+            }
+
+            if (residence !== undefined) {
+                localVarQueryParameter['residence'] = residence;
             }
 
             if (mintAccessToken !== undefined && mintAccessToken !== null) {
@@ -1874,15 +1890,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary スマコンの操作に必要なSignを返す
+         * @summary Item購入に関してスマコンの操作に必要なSignを返す
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
+         * @param {string} [walletAddress] 購入時のみ必須
+         * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, options);
+        async getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2026,15 +2044,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary スマコンの操作に必要なSignを返す
+         * @summary Item購入に関してスマコンの操作に必要なSignを返す
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
+         * @param {string} [walletAddress] 購入時のみ必須
+         * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options?: any): AxiosPromise<InlineResponse2003> {
-            return localVarFp.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, options).then((request) => request(axios, basePath));
+        getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any): AxiosPromise<InlineResponse2003> {
+            return localVarFp.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2191,16 +2211,18 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary スマコンの操作に必要なSignを返す
+     * @summary Item購入に関してスマコンの操作に必要なSignを返す
      * @param {string} mintAccessToken 
      * @param {string} itemStockId 
      * @param {SignatureType} signatureType 
+     * @param {string} [walletAddress] 購入時のみ必須
+     * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, options?: any) {
-        return DefaultApiFp(this.configuration).getSignByItemStockId(mintAccessToken, itemStockId, signatureType, options).then((request) => request(this.axios, this.basePath));
+    public getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any) {
+        return DefaultApiFp(this.configuration).getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
