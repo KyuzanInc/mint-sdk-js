@@ -1,4 +1,3 @@
-import { WalletAddressProfile } from './../lib/apiClientV2/api.d'
 import { ItemStock } from './types/v2/ItemStock'
 import Axios from 'axios'
 import * as ethers from 'ethers'
@@ -9,6 +8,7 @@ import {
   DefaultApiFactory as DefaultApiFactoryV2,
   TokenERC721,
   Bid,
+  WalletAddressProfile,
 } from './apiClientV2/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
