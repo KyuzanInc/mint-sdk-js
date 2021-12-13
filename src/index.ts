@@ -971,7 +971,7 @@ export class MintSDK {
   }
 
   public updateAccountInfo = async (arg: {
-    walletAddress: string,
+    walletAddress: string
     avatarImageId: string
     displayName: string
     bio: string
@@ -990,16 +990,15 @@ export class MintSDK {
       bio: arg.bio,
       twitterAccountName: arg.twitterAccountName,
       instagramAccountName: arg.instagramAccountName,
-      homepageUrl: arg.homepageUrl
+      homepageUrl: arg.homepageUrl,
     }
-    const signature = await wallet.getSigner()._signTypedData(PROFILE_DOMAIN, PROFILE_TYPES, profile)
-    await this.apiClientV2.updateProfile(
-      this.accessToken, 
-      {
-        profile: profile, 
-        signature: signature
-      }
-    )
+    const signature = await wallet
+      .getSigner()
+      ._signTypedData(PROFILE_DOMAIN, PROFILE_TYPES, profile)
+    await this.apiClientV2.updateProfile(this.accessToken, {
+      profile: profile,
+      signature: signature,
+    })
   }
 
   public uploadAccountInfoAvatar = async (arg: { file: File }) => {
@@ -1017,7 +1016,7 @@ export class MintSDK {
     })
     return {
       imgId: response.data.data.imageId,
-      uploadedImgUrl: response.data.data.uploadSignedUrl,
+      uploadedImgUrl: response.data.data.readSignedUrl,
     }
   }
 
@@ -1026,6 +1025,9 @@ export class MintSDK {
       this.accessToken,
       arg.walletAddress
     )
-    return { profile: response.data.data?.profile, avatarImageUrl: response.data.data?.avatarImageUrl }
+    return {
+      profile: response.data.data?.profile,
+      avatarImageUrl: response.data.data?.avatarImageUrl,
+    }
   }
 }
