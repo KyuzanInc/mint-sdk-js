@@ -43,17 +43,16 @@ export const initialMyAccountInfoEditState: MyAccountInfoEditState = {
 
 // AsyncAction
 export const getAccountInfoActionCreator = createAsyncThunk<
-  WalletAddressProfile | null,
+  { profile: WalletAddressProfile; avatarImageUrl: string } | null,
   { walletAddress: string },
   {
     rejectValue: string
   }
 >('app/myAccountInfo/get', async (arg, thunkApi) => {
   try {
-    const data = await getSdk().getAccountInfo({
+    return await getSdk().getAccountInfo({
       walletAddress: arg.walletAddress,
     })
-    return data?.profile || null
   } catch (err) {
     return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
   }
@@ -136,7 +135,8 @@ export const myAccountInfoEditSlice = createSlice({
       getAccountInfoActionCreator.fulfilled,
       (state, { payload }) => {
         state.meta.loading = false
-        state.data.accountInfo = payload || {
+        state.data.avatarImageUrl = payload?.avatarImageUrl
+        state.data.accountInfo = payload?.profile || {
           walletAddress: '',
           avatarImageId: '',
           displayName: '',

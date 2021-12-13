@@ -45,7 +45,7 @@ export const Container: React.VFC = () => {
         }) as any
       )
     },
-    [uploadedImgId, accountInfo]
+    [uploadedImgId, accountInfo.walletAddress, accountInfo.avatarImageId]
   )
   const uploadingImg = useAppSelector(
     (state) => state.app.myAccountInfoEdit.meta.imgUploading

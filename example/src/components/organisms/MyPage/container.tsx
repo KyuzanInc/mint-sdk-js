@@ -152,14 +152,16 @@ export const Container: React.VFC = () => {
           ? shippingInfo[selectShippingInfoItemId]
           : undefined
       }
-      accountDisplayName={accountInfo.displayName || undefined}
-      accountBio={accountInfo.bio || undefined}
-      accountProfileUrl={accountInfo.avatarImgUrl || undefined}
+      accountDisplayName={accountInfo.profile.displayName}
+      accountBio={accountInfo.profile.bio || undefined}
+      accountProfileUrl={accountInfo.avatarImageUrl || undefined}
       accountInstagramAccountName={
-        accountInfo.instagramAccountName || undefined
+        accountInfo.profile.instagramAccountName || undefined
       }
-      accountTwitterAccountName={accountInfo.twitterAccountName || undefined}
-      accountSiteUrl={accountInfo.homepageUrl || undefined}
+      accountTwitterAccountName={
+        accountInfo.profile.twitterAccountName || undefined
+      }
+      accountSiteUrl={accountInfo.profile.homepageUrl || undefined}
       accountLoading={accountInfoLoading}
       accountOnClickEdit={goEditPage}
       onComplete={updateItems}
