@@ -280,6 +280,29 @@ export class MintSDK {
   }
 
   /**
+   * ItemStockを取得する
+   *
+   * #### 制限事項
+   * - Itemが公開されていない場合は400
+   *
+   * @param walletAddress
+   * @returns
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   *
+   * const items = await sdk.getItemStockById(...)
+   * ```
+   */
+  public getItemStockById = async (arg: { itemStockId: string }) => {
+    const { data } = await this.apiClientV2.getItemStockById(
+      this.accessToken,
+      arg.itemStockId
+    )
+    return data.data as ItemStock
+  }
+
+  /**
    * 指定したwalletAddressで購入または落札したItemStockを取得する
    *
    * #### 制限事項
