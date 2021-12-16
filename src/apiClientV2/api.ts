@@ -384,6 +384,25 @@ export interface InlineResponse20011Data {
 /**
  * 
  * @export
+ * @interface InlineResponse20012
+ */
+export interface InlineResponse20012 {
+    /**
+     * 
+     * @type {ContractERC721}
+     * @memberof InlineResponse20012
+     */
+    data: ContractERC721;
+    /**
+     * 
+     * @type {object}
+     * @memberof InlineResponse20012
+     */
+    meta: object;
+}
+/**
+ * 
+ * @export
  * @interface InlineResponse2002
  */
 export interface InlineResponse2002 {
@@ -1374,6 +1393,50 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary ContractERC721をId指定で取得する
+         * @param {string} mintAccessToken 
+         * @param {string} contractId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getContractERC721ById: async (mintAccessToken: string, contractId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getContractERC721ById', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'contractId' is not null or undefined
+            assertParamExists('getContractERC721ById', 'contractId', contractId)
+            const localVarPath = `/sdk_v4/contracts/getContractERC721ById`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (contractId !== undefined) {
+                localVarQueryParameter['contractId'] = contractId;
+            }
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary プロジェクトのItemをId指定で取得する
          * @param {string} mintAccessToken 
          * @param {string} itemId 
@@ -1886,6 +1949,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary ContractERC721をId指定で取得する
+         * @param {string} mintAccessToken 
+         * @param {string} contractId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getContractERC721ById(mintAccessToken: string, contractId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20012>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getContractERC721ById(mintAccessToken, contractId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary プロジェクトのItemをId指定で取得する
          * @param {string} mintAccessToken 
          * @param {string} itemId 
@@ -2057,6 +2132,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary ContractERC721をId指定で取得する
+         * @param {string} mintAccessToken 
+         * @param {string} contractId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getContractERC721ById(mintAccessToken: string, contractId: string, options?: any): AxiosPromise<InlineResponse20012> {
+            return localVarFp.getContractERC721ById(mintAccessToken, contractId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary プロジェクトのItemをId指定で取得する
          * @param {string} mintAccessToken 
          * @param {string} itemId 
@@ -2221,6 +2307,19 @@ export class DefaultApi extends BaseAPI {
      */
     public getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options?: any) {
         return DefaultApiFp(this.configuration).getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, sortBy, sortDirection, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary ContractERC721をId指定で取得する
+     * @param {string} mintAccessToken 
+     * @param {string} contractId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getContractERC721ById(mintAccessToken: string, contractId: string, options?: any) {
+        return DefaultApiFp(this.configuration).getContractERC721ById(mintAccessToken, contractId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

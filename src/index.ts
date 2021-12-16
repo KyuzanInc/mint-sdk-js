@@ -32,6 +32,7 @@ import { ItemTradeType } from './types/ItemTradeType'
 import { ItemType } from './types/v2/ItemType'
 import { Item } from './types/v2/Item'
 import { PaymentMethodData } from './types/v2/PaymentMethodData'
+import { ContractERC721 } from './types/v2/ContractERC721'
 
 export {
   // v2
@@ -439,6 +440,26 @@ export class MintSDK {
       arg.perPage.toString()
     )
     return data.data
+  }
+
+  /**
+   * ContractERC721を取得する
+   *
+   * @param contractId
+   * @returns
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   *
+   * const items = await sdk.getContractERC721ById(...)
+   * ```
+   */
+  public getContractERC721ById = async (arg: { contractId: string }) => {
+    const { data } = await this.apiClientV2.getContractERC721ById(
+      this.accessToken,
+      arg.contractId
+    )
+    return data.data as ContractERC721
   }
 
   /**
