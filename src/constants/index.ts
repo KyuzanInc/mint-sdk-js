@@ -1,5 +1,5 @@
 export const BACKEND_URL =
-  'https://asia-northeast1-annapurna-production.cloudfunctions.net/'
+  'https://asia-northeast1-mint-v2-production.cloudfunctions.net/'
 
 export const PROFILE_DOMAIN = { name: 'ProfileServices' }
 export const PROFILE_TYPES = {
