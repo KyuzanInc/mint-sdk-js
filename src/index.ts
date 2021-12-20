@@ -197,6 +197,25 @@ export class MintSDK {
     return await this.walletStrategy.getWalletInfo()
   }
 
+    /**
+   * ウォレット設定を開く（Fortmaticのみ）
+   *
+   * **Required**
+   * - ウォレットに接続していること
+   *
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   * await sdk.connectWallet()  // required
+   * await sdk.openSettings()
+   * ```
+   */
+  public openSettings: () => Promise<void> = async () => {
+    return await this.walletStrategy.openSettings()
+  }
+
   /**
    * Transactionが成功するとResolveするPromiseを返します
    *

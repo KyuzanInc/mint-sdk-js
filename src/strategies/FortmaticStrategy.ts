@@ -45,6 +45,10 @@ export class FortmaticStrategy implements WalletStrategy {
     }
   }
 
+  async openSettings() {
+    return this.fortmatic.user.settings()
+  }
+
   getProvider() {
     const provider = this.fortmatic.getProvider()
     return new ethers.providers.Web3Provider(provider as any)

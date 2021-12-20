@@ -54,6 +54,10 @@ export class MetamaskStrategy implements WalletStrategy {
     }
   }
 
+  async openSettings() {
+    return
+  }
+
   getProvider() {
     return this.metamaskProvider
   }

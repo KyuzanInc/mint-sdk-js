@@ -15,6 +15,11 @@ export class NodeStrategy implements WalletStrategy {
     return null as never
   }
 
+  async openSettings() {
+    throw new Error('this method should not call in node context')
+    return null as never
+  }
+
   getProvider() {
     throw new Error('this method should not call in node context')
     return null as never

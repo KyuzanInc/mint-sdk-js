@@ -6,6 +6,7 @@ export interface WalletStrategy {
   connectWallet(): Promise<void>
   getConnectedNetworkId(): Promise<number>
   getWalletInfo(): Promise<WalletInfo>
+  openSettings(): Promise<void>
   getProvider(): ethers.providers.Web3Provider
   disconnectWallet(): Promise<void>
   onAccountsChange(callback: (accounts: string[]) => any): void
