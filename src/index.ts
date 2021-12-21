@@ -197,7 +197,7 @@ export class MintSDK {
     return await this.walletStrategy.getWalletInfo()
   }
 
-    /**
+  /**
    * ウォレット設定を開く（Fortmaticのみ）
    *
    * **Required**
