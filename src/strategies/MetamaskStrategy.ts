@@ -55,7 +55,8 @@ export class MetamaskStrategy implements WalletStrategy {
   }
 
   async openSettings() {
-    return
+    throw new Error('this method is not available in metamask strategy')
+    return null as never
   }
 
   getProvider() {
