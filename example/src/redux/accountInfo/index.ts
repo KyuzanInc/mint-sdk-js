@@ -63,8 +63,8 @@ export const accountInfoSlice = createSlice({
         state.meta.loading = false
         state.data.accountInfoMap[payload.walletAddress] =
           payload.accountInfo || {
-            avatarImgUrl: '',
-            avatarImgId: '',
+            avatarImageUrl: '',
+            avatarImageId: '',
             displayName: '',
             bio: '',
             twitterAccountName: '',

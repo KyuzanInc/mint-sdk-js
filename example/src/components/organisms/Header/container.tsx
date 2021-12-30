@@ -33,7 +33,7 @@ export const Container: React.VFC = () => {
   }, [walletInfo?.address])
   return (
     <Presentation
-      accountAvatarImgUrl={accountInfo.avatarImgUrl}
+      accountAvatarImgUrl={accountInfo.avatarImageUrl}
       isLogin={isLogin}
       loading={!initialized}
       onClickConnectWallet={connectWallet}

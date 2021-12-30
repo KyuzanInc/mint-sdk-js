@@ -9,6 +9,7 @@ import {
   DefaultApiFactory as DefaultApiFactoryV2,
   TokenERC721,
   Bid,
+  WalletAddressProfile,
 } from './apiClientV2/api'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { WrongNetworkError } from './Errors'
@@ -20,7 +21,7 @@ import {
   FortmaticStrategy,
   NodeStrategy,
 } from './strategies'
-import { BACKEND_URL } from './constants/index'
+import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
 import { ItemLog } from './types/ItemLog'
 import { NetworkId } from './types/NetworkId'
 import { BigNumber } from './types/BigNumber'
@@ -32,6 +33,7 @@ import { ItemTradeType } from './types/ItemTradeType'
 import { ItemType } from './types/v2/ItemType'
 import { Item } from './types/v2/Item'
 import { PaymentMethodData } from './types/v2/PaymentMethodData'
+import { ContractERC721 } from './types/v2/ContractERC721'
 
 export {
   // v2
@@ -42,6 +44,7 @@ export {
   ItemStock,
   TokenERC721,
   Bid,
+  WalletAddressProfile,
   // v1
   ItemLog,
   ItemTradeType,
@@ -311,6 +314,29 @@ export class MintSDK {
   }
 
   /**
+   * ItemStockを取得する
+   *
+   * #### 制限事項
+   * - Itemが公開されていない場合は400
+   *
+   * @param walletAddress
+   * @returns
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   *
+   * const items = await sdk.getItemStockById(...)
+   * ```
+   */
+  public getItemStockById = async (arg: { itemStockId: string }) => {
+    const { data } = await this.apiClientV2.getItemStockById(
+      this.accessToken,
+      arg.itemStockId
+    )
+    return data.data as ItemStock
+  }
+
+  /**
    * 指定したwalletAddressで購入または落札したItemStockを取得する
    *
    * #### 制限事項
@@ -450,6 +476,26 @@ export class MintSDK {
   }
 
   /**
+   * ContractERC721を取得する
+   *
+   * @param contractId
+   * @returns
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   *
+   * const items = await sdk.getContractERC721ById(...)
+   * ```
+   */
+  public getContractERC721ById = async (arg: { contractId: string }) => {
+    const { data } = await this.apiClientV2.getContractERC721ById(
+      this.accessToken,
+      arg.contractId
+    )
+    return data.data as ContractERC721
+  }
+
+  /**
    * 指定した金額でBidするトランザクションを発行
    * Bidする謹賀具の総額を`bidPrice`に指定する
    *
@@ -556,7 +602,7 @@ export class MintSDK {
    */
   public sendTxMakeSuccessfulBid = async (
     itemId: string,
-    _: Residence = 'unknown'
+    residence: Residence = 'unknown'
   ) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
@@ -570,6 +616,9 @@ export class MintSDK {
       return
     }
 
+    await this.validateNetworkForItem(resItem)
+    const wallet = this.walletStrategy.getProvider()
+    const signer = wallet.getSigner()
     const {
       data: {
         data: { contractMethodArg },
@@ -577,12 +626,11 @@ export class MintSDK {
     } = await this.apiClientV2.getSignByItemStockId(
       this.accessToken,
       resItem.itemStockIds[0],
-      SignatureType.AuctionWithdraw
+      SignatureType.AuctionWithdraw,
+      await signer.getAddress(),
+      residence
     )
 
-    await this.validateNetworkForItem(resItem)
-    const wallet = this.walletStrategy.getProvider()
-    const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       resItem.paymentMethodData.contractDataERC721Shop.contractAddress,
       JSON.parse(resItem.paymentMethodData.contractDataERC721Shop.abi),
@@ -591,14 +639,6 @@ export class MintSDK {
     const tx = (await shopContract.buyAuction(
       ...contractMethodArg
     )) as ethers.providers.TransactionResponse
-
-    // TODO
-    // const hash = tx.hash
-    // await this.axios.post('/v2_registerTransactionReceiptsApp', {
-    //   txHash: hash,
-    //   itemId,
-    //   residence: userResidence,
-    // })
     return tx
   }
 
@@ -628,7 +668,10 @@ export class MintSDK {
    * }
    * ```
    */
-  public sendTxBuyItem = async (itemId: string, _: Residence = 'unknown') => {
+  public sendTxBuyItem = async (
+    itemId: string,
+    residence: Residence = 'unknown'
+  ) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
@@ -651,7 +694,6 @@ export class MintSDK {
       JSON.parse(resItem.paymentMethodData.contractDataERC721Shop.abi),
       signer
     )
-
     // sign
     const {
       data: {
@@ -668,18 +710,14 @@ export class MintSDK {
     } = await this.apiClientV2.getSignByItemStockId(
       this.accessToken,
       itemStockId,
-      SignatureType.FixedPrice
+      SignatureType.FixedPrice,
+      await signer.getAddress(),
+      residence
     )
     const price = ethers.utils.parseEther(item.price.toString()).toString()
     const tx = (await shopContract.buyFixedPrice(...contractMethodArg, {
       value: price,
     })) as ethers.providers.TransactionResponse
-    // TODO
-    // await this.axios.post('/v2_registerTransactionReceiptsApp', {
-    //   txHash: tx.hash,
-    //   itemId,
-    //   residence: userResidence,
-    // })
     return tx
   }
 
@@ -1008,6 +1046,73 @@ export class MintSDK {
       currentNetwork !== item.paymentMethodData.contractDataERC721Shop.networkId
     ) {
       throw new WrongNetworkError('Network is not correct')
+    }
+  }
+
+  public updateAccountInfo = async (arg: {
+    avatarImageId: string
+    displayName: string
+    bio: string
+    twitterAccountName: string
+    instagramAccountName: string
+    homepageUrl: string
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const wallet = this.walletStrategy.getProvider()
+    const signer = await wallet.getSigner()
+    const profile = {
+      walletAddress: await signer.getAddress(),
+      avatarImageId: arg.avatarImageId,
+      displayName: arg.displayName,
+      bio: arg.bio,
+      twitterAccountName: arg.twitterAccountName,
+      instagramAccountName: arg.instagramAccountName,
+      homepageUrl: arg.homepageUrl,
+    }
+    const signature = await signer._signTypedData(
+      PROFILE_DOMAIN,
+      PROFILE_TYPES,
+      profile
+    )
+    await this.apiClientV2.updateProfile(this.accessToken, {
+      profile: profile,
+      signature: signature,
+    })
+  }
+
+  public uploadAccountInfoAvatar = async (arg: { file: File }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const response = await this.apiClientV2.getAvatar(this.accessToken)
+    if (!response.data.data) {
+      return
+    }
+    await this.uploadData({
+      signedUrl: response.data.data.uploadSignedUrl,
+      file: arg.file,
+    })
+    return {
+      imgId: response.data.data.imageId,
+      uploadedImgUrl: response.data.data.readSignedUrl,
+    }
+  }
+
+  public getAccountInfo = async (arg: { walletAddress: string }) => {
+    const response = await this.apiClientV2.getProfile(
+      this.accessToken,
+      arg.walletAddress
+    )
+    if (response.data.data === null) {
+      return null
+    }
+
+    return {
+      profile: response.data.data.profile,
+      avatarImageUrl: response.data.data.avatarImageUrl,
     }
   }
 }

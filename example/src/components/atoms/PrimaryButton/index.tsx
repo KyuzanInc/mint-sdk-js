@@ -67,7 +67,6 @@ const Button = styled.button`
   line-height: 44px;
   border-radius: 22px;
   background-color: ${color.primary};
-  /* border: 0.5px solid ${color.primary}; */
   color: ${color.white};
   display: flex;
   align-items: center;
