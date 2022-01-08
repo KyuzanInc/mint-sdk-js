@@ -1,4 +1,4 @@
-import { ItemLog, NetworkId } from '@kyuzan/mint-sdk-js'
+import { Bid } from '@kyuzan/mint-sdk-js'
 import styled from '@emotion/styled'
 import React from 'react'
 import { color, font } from '../../../style'
@@ -6,15 +6,10 @@ import { HistoryCard } from '../../molecules/HistoryCard'
 
 type Props = {
   loading: boolean
-  history: ItemLog[]
-  networkId: NetworkId
+  history: Bid[]
 }
 
-export const Presentation: React.VFC<Props> = ({
-  loading,
-  history,
-  networkId,
-}) => {
+export const Presentation: React.VFC<Props> = ({ loading, history }) => {
   return (
     <History>
       <Label>入札履歴</Label>
@@ -25,12 +20,12 @@ export const Presentation: React.VFC<Props> = ({
           {loading &&
             new Array(6).fill(1).map((_, i) => (
               <HistoryList key={i}>
-                <HistoryCard networkId={networkId} loading={true} />
+                <HistoryCard loading={true} />
               </HistoryList>
             ))}
           {history.map((log, i) => (
             <HistoryList key={i}>
-              <HistoryCard loading={false} log={log} networkId={networkId} />
+              <HistoryCard loading={false} log={log} />
             </HistoryList>
           ))}
         </HistoryUL>
@@ -40,7 +35,6 @@ export const Presentation: React.VFC<Props> = ({
 }
 
 const History = styled.div`
-  /* width: 426px; */
   padding: 64px 0;
 `
 

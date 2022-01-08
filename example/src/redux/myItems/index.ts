@@ -1,16 +1,15 @@
-import { Item, Token } from '@kyuzan/mint-sdk-js'
+import { TokenERC721, ItemStock } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
 export type MyItemsState = {
   data: {
-    bidedItems: Item[]
-    ownItems: Token[]
+    bidedItems: ItemStock[]
+    ownItems: TokenERC721[]
   }
   meta: {
     bidedItemsLoading: boolean
     ownItemsLoading: boolean
-
     error: string | undefined
   }
 }
@@ -29,30 +28,40 @@ export const initialMyItemsState: MyItemsState = {
 
 // AsyncAction
 export const getBidedActionCreator = createAsyncThunk<
-  Item[],
+  ItemStock[],
   { bidderAddress: string },
   {
     rejectValue: string
   }
 >('app/myItems/bidedItems/get', async ({ bidderAddress }, thunkApi) => {
   try {
-    const items = await getSdk().getItemsByBidderAddress(bidderAddress)
-    return items ?? []
+    return await getSdk().getItemStocksByBidderAddress({
+      walletAddress: bidderAddress,
+      page: 1,
+      perPage: 1000,
+      sort: {
+        sortBy: 'endAt',
+        sortDirection: 'asc',
+      },
+    })
   } catch (err) {
     return thunkApi.rejectWithValue('Itemを取得できませんでした')
   }
 })
 
-export const getOwnItemsActionCreator = createAsyncThunk<
-  Token[],
+export const getOwnTokensActionCreator = createAsyncThunk<
+  TokenERC721[],
   { walletAddress: string },
   {
     rejectValue: string
   }
 >('app/myItems/ownItems/get', async ({ walletAddress }, thunkApi) => {
   try {
-    const items = await getSdk().getTokensByAddress(walletAddress)
-    return items ?? []
+    return await getSdk().getTokensByAddress({
+      walletAddress,
+      page: 1,
+      perPage: 100,
+    })
   } catch (err) {
     return thunkApi.rejectWithValue('Itemを取得できませんでした')
   }
@@ -78,19 +87,22 @@ export const myItemsSlice = createSlice({
     })
 
     builder.addCase(
-      getOwnItemsActionCreator.fulfilled,
+      getOwnTokensActionCreator.fulfilled,
       (state, { payload }) => {
         state.data.ownItems = payload
         state.meta.ownItemsLoading = false
       }
     )
-    builder.addCase(getOwnItemsActionCreator.pending, (state) => {
+    builder.addCase(getOwnTokensActionCreator.pending, (state) => {
       state.meta.ownItemsLoading = true
       state.meta.error = undefined
     })
-    builder.addCase(getOwnItemsActionCreator.rejected, (state, { payload }) => {
-      state.meta.ownItemsLoading = false
-      state.meta.error = payload
-    })
+    builder.addCase(
+      getOwnTokensActionCreator.rejected,
+      (state, { payload }) => {
+        state.meta.ownItemsLoading = false
+        state.meta.error = payload
+      }
+    )
   },
 })

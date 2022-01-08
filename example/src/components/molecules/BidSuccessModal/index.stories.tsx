@@ -5,6 +5,7 @@ import { addDays } from 'date-fns'
 
 export const Basic: React.VFC = () => (
   <BidSuccessModal
+    tradeType={'ethereum-contract-erc721-shop-auction'}
     closeModal={action('closeModal')}
     itemName={'TEST'}
     itemNetworkId={1}

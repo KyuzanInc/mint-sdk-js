@@ -1,21 +1,23 @@
 import { NetworkId } from '@kyuzan/mint-sdk-js'
-import { ItemDetail } from '../redux/item/index'
 
-export const getItemPriceUnit = (item: ItemDetail) => {
+export const getItemPriceUnit = (item: any) => {
   if (typeof item === 'undefined') return ''
-  if (item?.networkId === 1 || item?.networkId === 4) {
+  if (
+    item?.networkId === 1 ||
+    item?.networkId === 4 ||
+    item?.networkId === 31337
+  ) {
     return 'ETH'
   }
 
   if (item?.networkId === 80001 || item?.networkId === 137) {
     return 'MATIC'
   }
-
-  throw new Error('Not implemented')
+  return ''
 }
 
 export const getPriceUnit = (networkId: NetworkId) => {
-  if (networkId === 1 || networkId === 4) {
+  if (networkId === 1 || networkId === 4 || networkId === 31337) {
     return 'ETH'
   }
 
@@ -23,5 +25,5 @@ export const getPriceUnit = (networkId: NetworkId) => {
     return 'MATIC'
   }
 
-  throw new Error('Not implemented')
+  return ''
 }

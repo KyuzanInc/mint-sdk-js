@@ -1,23 +1,19 @@
 import { WalletStrategy } from './interface'
 import { WalletSetting } from '../types/WalletSetting'
-import { NetworkId } from 'index'
 import { ethers } from 'ethers'
 import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
 const Fortmatic = require('fortmatic')
 
 export class FortmaticStrategy implements WalletStrategy {
   private fortmatic: WidgetMode
-  private networkIds: NetworkId[]
   private eventConnectCallbacks: Array<() => any> = []
   private eventDisconnectCallbacks: Array<() => any> = []
   private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
 
   constructor(
-    networkIds: NetworkId[],
     walletSetting: WalletSetting,
     devOption?: { backendUrl?: string; jsonRPCUrl?: string }
   ) {
-    this.networkIds = networkIds
     this.fortmatic = new Fortmatic(
       walletSetting.fortmatic.key,
       devOption?.jsonRPCUrl

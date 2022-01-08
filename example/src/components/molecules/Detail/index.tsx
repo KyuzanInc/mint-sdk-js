@@ -1,14 +1,13 @@
 import React, { useCallback, useState } from 'react'
-import { ItemTradeType } from '@kyuzan/mint-sdk-js'
-
 import { LiveStatus } from './active'
 import { EndedStatus } from './ended'
 import styled from '@emotion/styled'
 import { color, font } from '../../../style'
 import { CountdownTimeDelta } from 'react-countdown'
+import { PaymentMethod } from '@kyuzan/mint-sdk-js'
 
 type Props = {
-  tradeType: ItemTradeType
+  tradeType: PaymentMethod
   endAt: Date
   price: number
   unit: string
@@ -22,7 +21,7 @@ export const StatusDetail: React.FC<Props> = ({
   tradeType,
   onTick,
 }) => {
-  const isAuction = tradeType === 'autoExtensionAuction'
+  const isAuction = tradeType === 'ethereum-contract-erc721-shop-auction'
 
   if (isAuction) {
     const endDate = endAt ?? new Date()

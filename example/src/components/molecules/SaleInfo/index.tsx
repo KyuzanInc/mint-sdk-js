@@ -7,33 +7,31 @@ import { format } from 'date-fns'
 import Image from 'next/image'
 import { getPriceUnit } from '../../../util/getItemPriceUnit'
 import { getNetworkIconPath } from '../../../util/getNetworkIconPath'
-import { NetworkId, ItemTradeType } from '@kyuzan/mint-sdk-js'
+import { NetworkId, PaymentMethod } from '@kyuzan/mint-sdk-js'
 import { isOnSale } from '../../../util/isOnSale'
 import { isSaleBeforeStart } from '../../../util/isSaleBeforeStart'
 import { isSaleEnd } from '../../../util/isSaleEnd'
 
 type Props = {
-  tradeType: ItemTradeType
+  tradeType: PaymentMethod
   networkId: NetworkId
-  startAt?: Date
-  endAt?: Date
-  initialPrice?: number
-  currentPrice?: number // 固定価格はここに値段を入れる
-  hasBought?: boolean // 固定価格
+  startAt: Date
+  endAt: Date
+  price: number // 固定価格はここに値段を入れる
+  hasBought: boolean // 固定価格
   onComplete?: () => void
 }
 
 export const SaleInfo: React.VFC<Props> = ({
   startAt,
   endAt,
-  initialPrice,
-  currentPrice,
+  price,
   networkId,
   onComplete,
   tradeType,
   hasBought,
 }) => {
-  const isAuction = tradeType === 'autoExtensionAuction'
+  const isAuction = tradeType === 'ethereum-contract-erc721-shop-auction'
   const startDate =
     (typeof startAt === 'string' ? new Date(startAt) : startAt) ?? new Date()
   const endDate =
@@ -44,11 +42,11 @@ export const SaleInfo: React.VFC<Props> = ({
   const formattedStartDate = format(startDate, 'yyyy.MM.dd HH:mm')
   const formattedEndDate = format(endDate, 'yyyy.MM.dd HH:mm')
   if (isAuction) {
-    let price = currentPrice || initialPrice || 0
-    if (price < 0.01) {
-      price = 0.01
+    let formatPrice = price
+    if (formatPrice < 0.01) {
+      formatPrice = 0.01
     } else {
-      price = Math.round(price * 100) / 100
+      formatPrice = Math.round(price * 100) / 100
     }
     return (
       <Container>
@@ -69,7 +67,7 @@ export const SaleInfo: React.VFC<Props> = ({
               </Icon>
             </StatusTitle>
             <StatusValue>
-              <Value>{price}</Value>
+              <Value>{formatPrice}</Value>
               <Unit>{getPriceUnit(networkId)}</Unit>
             </StatusValue>
           </StatusContent>
@@ -101,11 +99,11 @@ export const SaleInfo: React.VFC<Props> = ({
       </Container>
     )
   } else {
-    let price = currentPrice!
-    if (price < 0.01) {
-      price = 0.01
+    let formatPrice = price!
+    if (formatPrice < 0.01) {
+      formatPrice = 0.01
     } else {
-      price = Math.round(price * 100) / 100
+      formatPrice = Math.round(price * 100) / 100
     }
     return (
       <Container>
@@ -124,7 +122,7 @@ export const SaleInfo: React.VFC<Props> = ({
               </Icon>
             </StatusTitle>
             <StatusValue>
-              <Value>{price}</Value>
+              <Value>{formatPrice}</Value>
               <Unit>{getPriceUnit(networkId)}</Unit>
             </StatusValue>
           </StatusContent>

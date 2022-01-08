@@ -39,16 +39,18 @@ const ItemDetailPage = ({
     return state.app.item.data
   })
 
+  if (!item) return null
+
   return (
     <Container>
       <CommonMeta
         url={`${currentPath}/${baseUrl}`}
-        title={`${item?.name}`}
-        ogpImagePath={item?.previews[0].url ?? ''}
+        title={`${item.name}`}
+        ogpImagePath={item.previews[0].url}
       />
       <MediaContainer>
         <MediaInner>
-          <MediaContent media={item?.imageURIHTTP} height={480} />
+          <MediaContent media={item.previews[0]} height={480} />
         </MediaInner>
       </MediaContainer>
       <DetailContainer>

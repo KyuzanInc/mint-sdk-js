@@ -1,11 +1,12 @@
-import { AccountInfo } from '@kyuzan/mint-sdk-js'
+import { WalletAddressProfile } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { push } from 'connected-next-router'
 import { getSdk } from '../../sdk'
 
 export type MyAccountInfoEditState = {
   data: {
-    accountInfo: AccountInfo
+    accountInfo: WalletAddressProfile
+    avatarImageUrl: string | undefined
     uploadedImgId: string | undefined
     uploadedSignedUrl: string | undefined
   }
@@ -20,14 +21,15 @@ export type MyAccountInfoEditState = {
 export const initialMyAccountInfoEditState: MyAccountInfoEditState = {
   data: {
     accountInfo: {
-      avatarImgUrl: '',
-      avatarImgId: '',
+      walletAddress: '',
+      avatarImageId: '',
       displayName: '',
       bio: '',
       twitterAccountName: '',
       instagramAccountName: '',
       homepageUrl: '',
     },
+    avatarImageUrl: undefined,
     uploadedImgId: undefined,
     uploadedSignedUrl: undefined,
   },
@@ -41,19 +43,17 @@ export const initialMyAccountInfoEditState: MyAccountInfoEditState = {
 
 // AsyncAction
 export const getAccountInfoActionCreator = createAsyncThunk<
-  AccountInfo | undefined,
+  { profile: WalletAddressProfile; avatarImageUrl: string } | null,
   { walletAddress: string },
   {
     rejectValue: string
   }
 >('app/myAccountInfo/get', async (arg, thunkApi) => {
   try {
-    const data = await getSdk().getAccountInfo({
+    return await getSdk().getAccountInfo({
       walletAddress: arg.walletAddress,
     })
-    return data
   } catch (err) {
-    console.error(err)
     return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
   }
 })
@@ -82,7 +82,7 @@ export const uploadAvatarActionCreator = createAsyncThunk<
 export const updateAccountInfoActionCreator = createAsyncThunk<
   void,
   {
-    avatarImgId: string
+    avatarImageId: string
     displayName: string
     bio: string
     twitterAccountName: string
@@ -96,7 +96,7 @@ export const updateAccountInfoActionCreator = createAsyncThunk<
   'app/myAccountInfo/update',
   async (
     arg: {
-      avatarImgId: string
+      avatarImageId: string
       displayName: string
       bio: string
       twitterAccountName: string
@@ -135,9 +135,10 @@ export const myAccountInfoEditSlice = createSlice({
       getAccountInfoActionCreator.fulfilled,
       (state, { payload }) => {
         state.meta.loading = false
-        state.data.accountInfo = payload || {
-          avatarImgUrl: '',
-          avatarImgId: '',
+        state.data.avatarImageUrl = payload?.avatarImageUrl
+        state.data.accountInfo = payload?.profile || {
+          walletAddress: '',
+          avatarImageId: '',
           displayName: '',
           bio: '',
           twitterAccountName: '',
@@ -163,8 +164,8 @@ export const myAccountInfoEditSlice = createSlice({
         state.meta.imgUploading = false
         state.data.uploadedImgId = payload?.imgId || ''
         state.data.uploadedSignedUrl = payload?.uploadedImgUrl || ''
-        state.data.accountInfo.avatarImgUrl = payload?.uploadedImgUrl || ''
-        state.data.accountInfo.avatarImgId = payload?.imgId || ''
+        state.data.avatarImageUrl = payload?.uploadedImgUrl || ''
+        state.data.accountInfo.avatarImageId = payload?.imgId || ''
       }
     )
 

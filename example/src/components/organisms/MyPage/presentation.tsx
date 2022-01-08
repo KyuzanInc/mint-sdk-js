@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
-import { Item, ItemShippingInfo, Token } from '@kyuzan/mint-sdk-js'
+import * as mime from 'mime'
+import { ItemStock, TokenERC721 } from '@kyuzan/mint-sdk-js'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { color, font, media } from '../../../style'
@@ -7,15 +8,16 @@ import { EmptyTitle } from '../../atoms/CardList'
 import { Tabs } from '../../atoms/Tabs'
 import { ToolTip } from '../../atoms/ToolTip'
 import { AccountInfo } from '../../molecules/AccountInfo'
-import { Card } from '../../molecules/Card'
 import { LoadingCard } from '../../molecules/Card/loading'
 import { CardMyPage } from '../../molecules/CardMyPage'
 import { ShippingInfoModal } from '../../molecules/ShippingInfoModal'
+import { TokenCard } from '../../molecules/TokenCard/TokenCard'
 import { WalletModal } from '../../molecules/WalletModal'
+import { ipfsToHttp } from '../../../util/ipfsToHTTP'
 
 type Props = {
-  bidedItems: Item[]
-  ownTokens: Token[]
+  bidedItems: ItemStock[]
+  ownTokens: TokenERC721[]
   waitingBidedItems: boolean
   waitingOwnTokens: boolean
   showShippingInfoModal: boolean
@@ -24,7 +26,7 @@ type Props = {
   showShippingInfo: (itemId: string) => void
   userWalletAddress: string | undefined
   withdrawingItemId: string | undefined
-  shippingInfo: ItemShippingInfo | undefined
+  shippingInfo: any | undefined
   onConnectWallet: () => void
   connectingWallet: boolean
   accountDisplayName: string | undefined
@@ -45,7 +47,6 @@ export const Presentation: React.VFC<Props> = ({
   waitingOwnTokens,
   handleWithdrawItem,
   handleHideShippingInfo,
-  showShippingInfo,
   userWalletAddress,
   withdrawingItemId,
   ownTokens,
@@ -63,9 +64,6 @@ export const Presentation: React.VFC<Props> = ({
   onComplete,
 }) => {
   const [selectedTab, setSelectedTab] = useState<string>('bidding')
-  const withPhysicalItemTokens = ownTokens.filter(
-    (item) => item.item.type === 'nftWithPhysicalProduct'
-  )
   return (
     <>
       <Container>
@@ -122,15 +120,15 @@ export const Presentation: React.VFC<Props> = ({
               bidedItems.length !== 0 &&
               bidedItems.map((item) => {
                 return (
-                  <ItemContainer key={item.itemId}>
+                  <ItemContainer key={item.id}>
                     <CardMyPage
                       item={item}
                       loading={false}
                       userWalletAddress={userWalletAddress}
                       onWithdraw={(inJapan: boolean) =>
-                        handleWithdrawItem(item.itemId, inJapan)
+                        handleWithdrawItem(item.item.id, inJapan)
                       }
-                      withdrawing={withdrawingItemId === item.itemId}
+                      withdrawing={withdrawingItemId === item.item.id}
                       onComplete={onComplete}
                     />
                   </ItemContainer>
@@ -138,7 +136,8 @@ export const Presentation: React.VFC<Props> = ({
               })}
           </>
         )}
-        {selectedTab === 'withPhysical' && (
+        {/* TODO */}
+        {/* {selectedTab === 'withPhysical' && (
           <>
             {waitingOwnTokens && <CardMyPage loading={true} />}
             {!waitingOwnTokens && withPhysicalItemTokens.length === 0 && (
@@ -160,7 +159,7 @@ export const Presentation: React.VFC<Props> = ({
                 )
               })}
           </>
-        )}
+        )} */}
         {selectedTab === 'owned' && (
           <ItemsContainer>
             {waitingOwnTokens && <LoadingCard />}
@@ -171,8 +170,16 @@ export const Presentation: React.VFC<Props> = ({
               ownTokens.length !== 0 &&
               ownTokens.map((item) => {
                 return (
-                  <OwnedItemContainer key={item.item.itemId}>
-                    <Card item={item.item} loading={false} />
+                  <OwnedItemContainer key={item.id}>
+                    <TokenCard
+                      title={(item.metadata as any).name as string}
+                      media={{
+                        url: ipfsToHttp((item.metadata as any).image as string),
+                        mimeType: (mime as any).getType(
+                          (item.metadata as any).image
+                        ),
+                      }}
+                    />
                   </OwnedItemContainer>
                 )
               })}

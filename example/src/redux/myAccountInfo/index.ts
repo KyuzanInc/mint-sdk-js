@@ -1,10 +1,13 @@
-import { AccountInfo } from '@kyuzan/mint-sdk-js'
+import { WalletAddressProfile } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getSdk } from '../../sdk'
 
 export type MyAccountInfoState = {
   data: {
-    accountInfo: AccountInfo
+    accountInfo: {
+      profile: WalletAddressProfile
+      avatarImageUrl: string | undefined
+    }
   }
   meta: {
     loading: boolean
@@ -15,13 +18,16 @@ export type MyAccountInfoState = {
 export const initialMyAccountInfoState: MyAccountInfoState = {
   data: {
     accountInfo: {
-      avatarImgUrl: '',
-      avatarImgId: '',
-      displayName: '',
-      bio: '',
-      twitterAccountName: '',
-      instagramAccountName: '',
-      homepageUrl: '',
+      profile: {
+        walletAddress: '',
+        avatarImageId: '',
+        displayName: '',
+        bio: '',
+        twitterAccountName: '',
+        instagramAccountName: '',
+        homepageUrl: '',
+      },
+      avatarImageUrl: undefined,
     },
   },
   meta: {
@@ -32,17 +38,16 @@ export const initialMyAccountInfoState: MyAccountInfoState = {
 
 // AsyncAction
 export const getAccountInfoActionCreator = createAsyncThunk<
-  AccountInfo | undefined,
+  { profile: WalletAddressProfile; avatarImageUrl: string } | null,
   { walletAddress: string },
   {
     rejectValue: string
   }
 >('app/myAccountInfo/get', async (arg, thunkApi) => {
   try {
-    const data = await getSdk().getAccountInfo({
+    return await getSdk().getAccountInfo({
       walletAddress: arg.walletAddress,
     })
-    return data
   } catch (err) {
     console.error(err)
     return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
@@ -70,15 +75,8 @@ export const myAccountInfoSlice = createSlice({
       getAccountInfoActionCreator.fulfilled,
       (state, { payload }) => {
         state.meta.loading = false
-        state.data.accountInfo = payload || {
-          avatarImgUrl: '',
-          avatarImgId: '',
-          displayName: '',
-          bio: '',
-          twitterAccountName: '',
-          instagramAccountName: '',
-          homepageUrl: '',
-        }
+        state.data.accountInfo =
+          payload || initialMyAccountInfoState.data.accountInfo
       }
     )
   },

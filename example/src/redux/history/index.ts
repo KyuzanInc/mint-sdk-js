@@ -1,6 +1,5 @@
 import { ItemLog } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getSdk } from '../../sdk'
 
 export type HistoryState = {
   data: ItemLog[]
@@ -23,13 +22,10 @@ export const initialHistoryState: HistoryState = {
 // AsyncAction
 export const initialHistoryActionCreator = createAsyncThunk(
   'app/history/init',
-  async (itemId: string) => {
-    if (getSdk()) {
-      const history = await getSdk().getItemLogs(itemId)
-      return history
-    } else {
-      return []
-    }
+  async (_: string) => {
+    // TODO
+    // const history = await getSdk().getItemLogs(itemId)
+    return []
   }
 )
 
@@ -41,8 +37,9 @@ export const getHistoryActionCreator = createAsyncThunk<
   }
 >('app/history/get', async (itemId, thunkApi) => {
   try {
-    const history = await getSdk().getItemLogs(itemId)
-    return history
+    // TODO
+    // const history = await getSdk().getItemLogs(itemId)
+    return []
   } catch (err) {
     return thunkApi.rejectWithValue(
       `ItemId:${itemId}のHistoryを取得できませんでした`
@@ -61,10 +58,8 @@ export const historySlice = createSlice({
         if (typeof payload === 'undefined') {
           state.data = []
         } else {
-          state.data = payload.map((i) => ({
-            ...i,
-            createAt: new Date(i.createAt),
-          }))
+          // TODO
+          state.data = []
         }
       }
     )

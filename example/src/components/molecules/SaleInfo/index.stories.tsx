@@ -7,12 +7,12 @@ import { SaleInfo } from '.'
 export const AuctionLive: React.VFC = () => (
   <Container>
     <SaleInfo
-      tradeType={'autoExtensionAuction'}
+      tradeType={'ethereum-contract-erc721-shop-auction'}
       startAt={subDays(new Date(), 1)}
       endAt={addDays(new Date(), 10)}
       networkId={1}
-      initialPrice={1}
-      currentPrice={21.1}
+      price={1}
+      hasBought={false}
       onComplete={action('onComplete')}
     />
   </Container>
@@ -21,12 +21,12 @@ export const AuctionLive: React.VFC = () => (
 export const AuctionLivePolygon: React.VFC = () => (
   <Container>
     <SaleInfo
-      tradeType={'autoExtensionAuction'}
+      tradeType={'ethereum-contract-erc721-shop-auction'}
       startAt={subDays(new Date(), 1)}
       endAt={addDays(new Date(), 10)}
       networkId={137}
-      initialPrice={1}
-      currentPrice={21.1}
+      price={1}
+      hasBought={false}
       onComplete={action('onComplete')}
     />
   </Container>
@@ -35,12 +35,12 @@ export const AuctionLivePolygon: React.VFC = () => (
 export const AuctionEnd: React.VFC = () => (
   <Container>
     <SaleInfo
-      tradeType={'autoExtensionAuction'}
+      tradeType={'ethereum-contract-erc721-shop-auction'}
       startAt={new Date()}
       endAt={subDays(new Date(), 10)}
       networkId={1}
-      initialPrice={1}
-      currentPrice={21.1}
+      price={1}
+      hasBought={false}
       onComplete={action('onComplete')}
     />
   </Container>
@@ -49,11 +49,12 @@ export const AuctionEnd: React.VFC = () => (
 export const FixedPriceOnSale: React.VFC = () => (
   <Container>
     <SaleInfo
-      tradeType={'fixedPrice'}
+      tradeType={'ethereum-contract-erc721-shop-fixed-price'}
+      networkId={1}
       startAt={subDays(new Date(), 1)}
       endAt={addDays(new Date(), 10)}
-      networkId={1}
-      currentPrice={21.1}
+      price={1}
+      hasBought={false}
       onComplete={action('onComplete')}
     />
   </Container>
@@ -62,11 +63,11 @@ export const FixedPriceOnSale: React.VFC = () => (
 export const FixedPriceBought: React.VFC = () => (
   <Container>
     <SaleInfo
-      tradeType={'fixedPrice'}
+      tradeType={'ethereum-contract-erc721-shop-fixed-price'}
       startAt={subDays(new Date(), 1)}
       endAt={addDays(new Date(), 10)}
       networkId={1}
-      currentPrice={21.1}
+      price={1}
       onComplete={action('onComplete')}
       hasBought={true}
     />
@@ -76,11 +77,12 @@ export const FixedPriceBought: React.VFC = () => (
 export const FixedPriceBefore: React.VFC = () => (
   <Container>
     <SaleInfo
-      tradeType={'fixedPrice'}
+      tradeType={'ethereum-contract-erc721-shop-fixed-price'}
+      networkId={1}
       startAt={subDays(new Date(), 2)}
       endAt={subDays(new Date(), 1)}
-      networkId={1}
-      currentPrice={21.1}
+      price={1}
+      hasBought={false}
       onComplete={action('onComplete')}
     />
   </Container>

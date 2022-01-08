@@ -14,7 +14,6 @@ import {
 } from '../../../redux/wallet'
 import { getNetworkIdLabel } from '../../../util/getNetworkIdLabel'
 import { Presentation } from './presentation'
-import { useMedia } from '../../../util/useMedia'
 import router from 'next/router'
 import { CountdownTimeDelta } from 'react-countdown'
 
@@ -23,13 +22,16 @@ const EACH_TIME = 30000 // 30 seconds
 
 export const Container: React.VFC = () => {
   const dispatch = useAppDispatch()
-  const item = useAppSelector((state) => {
+
+  const itemDetail = useAppSelector((state) => {
     return state.app.item.data
   })
 
-  const endDate = item?.endAt ?? new Date()
+  const item = itemDetail
+
+  const endDate = item ? new Date(item.endAt) : new Date()
   const auctionIsEnded = endDate < new Date()
-  const startDate = item?.startAt ?? new Date()
+  const startDate = item ? new Date(item.startAt) : new Date()
   const auctionIsNotStarted = new Date() < startDate
   const auctionIsOutOfDate = auctionIsEnded || auctionIsNotStarted
 
@@ -56,8 +58,8 @@ export const Container: React.VFC = () => {
   }, [])
 
   const updateInfo = useCallback(async () => {
-    await dispatch(getItemActionCreator(item?.itemId ?? '') as any)
-    await dispatch(getHistoryActionCreator(item?.itemId ?? '') as any)
+    await dispatch(getItemActionCreator(item?.id ?? '') as any)
+    await dispatch(getHistoryActionCreator(item?.id ?? '') as any)
     await dispatch(initialWalletActionCreator() as any)
     setBidPrice('')
   }, [])
@@ -65,8 +67,6 @@ export const Container: React.VFC = () => {
   const [bidPrice, setBidPrice] = useState(`0.0`)
   const [isError, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
-
-  const isMobile = useMedia()
 
   const onTick = useCallback((calcTimeDelta: CountdownTimeDelta) => {
     // within 5 minutes
@@ -78,19 +78,18 @@ export const Container: React.VFC = () => {
   }, [])
 
   useEffect(() => {
-    if (bidPrice < (item?.minBidPrice ?? bidPrice)) {
-      setError(true)
-      isMobile
-        ? setErrorText(`${item?.minBidPrice} ETH以上で入札`)
-        : setErrorText(`${item?.minBidPrice} ETH以上で入札してください`)
-    } else if ((walletInfo?.balance ?? bidPrice) < bidPrice) {
+    // TODO
+    const balance = walletInfo?.balance
+      ? parseFloat(walletInfo.balance)
+      : parseFloat(bidPrice)
+    if (balance < parseFloat(bidPrice)) {
       setError(true)
       setErrorText(`お手持ちの金額を超えています`)
     } else {
       setError(false)
       setErrorText('')
     }
-  }, [bidPrice, walletInfo?.balance, item?.minBidPrice])
+  }, [bidPrice, walletInfo?.balance])
   const onChangeInput = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     (e) => {
       setBidPrice(e.target.value)
@@ -101,7 +100,7 @@ export const Container: React.VFC = () => {
     if (!item) return
     dispatch(
       bidActionCreator({
-        itemId: item.itemId,
+        itemId: item.id,
         bidPrice: parseFloat(bidPrice),
       }) as any
     )
@@ -112,7 +111,7 @@ export const Container: React.VFC = () => {
       if (!item) return
       await dispatch(
         buyFixedPriceItemActionCreator({
-          itemId: item.itemId,
+          itemId: item.id,
           inJapan,
         }) as any
       )
@@ -173,19 +172,27 @@ export const Container: React.VFC = () => {
       return
     }
 
-    if (connectedNetworkId !== item?.networkId) {
-      dispatch(
-        dialogSlice.actions.showDialog({
-          title: 'ネットワークを変更してください',
-          content: `${getNetworkIdLabel(
-            item?.networkId ?? 4
-          )}に接続してください。`,
-        })
-      )
-      return
-    }
+    if (
+      item?.paymentMethodData.paymentMethod ===
+        'ethereum-contract-erc721-shop-auction' ||
+      item?.paymentMethodData.paymentMethod ===
+        'ethereum-contract-erc721-shop-fixed-price'
+    ) {
+      if (
+        connectedNetworkId !==
+        item?.paymentMethodData.contractDataERC721Shop.networkId
+      ) {
+        dispatch(
+          dialogSlice.actions.showDialog({
+            title: 'ネットワークを変更してください',
+            content: `${getNetworkIdLabel(31337 ?? 4)}に接続してください。`,
+          })
+        )
+        return
+      }
 
-    openBidModal()
+      openBidModal()
+    }
   }, [item, walletIsConnect, auctionIsOutOfDate, connectedNetworkId])
 
   const [bidSuccessModalIsOpen, setBidSuccessModalIsOpen] = useState(false)
@@ -217,10 +224,14 @@ export const Container: React.VFC = () => {
     }
   }, [status])
 
+  if (waitingItem) {
+    return <Presentation loading={waitingItem} item={null} />
+  }
+
   return (
     <Presentation
       loading={waitingItem}
-      item={item}
+      item={itemDetail!}
       aboutPhysicalModalIsOpen={aboutPhysicalModalIsOpen}
       handleClosePhysicalModal={closePhysicalModal}
       handleOpenPhysicalModal={openPhysicalModal}

@@ -29,7 +29,7 @@ export const WithdrawModal: React.VFC<Props> = ({
   return (
     <Container>
       <MediaContainer>
-        <MediaContent media={item?.previews[0]} height={520} />
+        <MediaContent media={item.previews[0]} height={520} />
       </MediaContainer>
       <Right>
         <ModalContent item={item} bidHash={bidHash} shareUrl={shareUrl ?? ''} />
@@ -51,6 +51,12 @@ const ModalContent: React.VFC<ModalContentProps> = ({
       setShowToolTip(false)
     }, 2000)
   }, [])
+
+  if (
+    item.paymentMethodData.paymentMethod === 'credit-card-stripe-fixed-price'
+  ) {
+    throw new Error('not implemented')
+  }
   return (
     <ModalContainer>
       <Typography>Congratulation on getting your NFT !</Typography>
@@ -61,7 +67,10 @@ const ModalContent: React.VFC<ModalContentProps> = ({
         <br />
       </Description>
       <TransactionContainer>
-        <TransactionStatus networkId={item?.networkId} hash={bidHash ?? ''} />
+        <TransactionStatus
+          networkId={item.paymentMethodData.contractDataERC721Shop.networkId}
+          hash={bidHash ?? ''}
+        />
       </TransactionContainer>
       <PromotionContainer>
         <PromotionText>待っている間、 ちょっと自慢しませんか？</PromotionText>
@@ -186,7 +195,7 @@ const Icon = styled.div`
 `
 
 const DummyIconButton = styled.div`
-  margin 0;
+  margin: 0;
   display: flex;
   align-items: center;
   width: fit-content;
@@ -197,7 +206,7 @@ const DummyIconButton = styled.div`
   padding: 10px;
   &:hover {
     cursor: pointer;
-  };
+  }
 `
 
 const ToolTip = styled.div`

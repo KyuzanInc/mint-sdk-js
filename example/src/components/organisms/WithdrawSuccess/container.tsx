@@ -7,7 +7,7 @@ export const Container: React.VFC = () => {
   const dispatch = useAppDispatch()
   const [shareUrl, setShareUrl] = useState('')
 
-  const item = useAppSelector((state: { app: { item: { data: any } } }) => {
+  const item = useAppSelector((state) => {
     return state.app.item.data
   })
 
@@ -21,7 +21,7 @@ export const Container: React.VFC = () => {
   )
 
   useEffect(() => {
-    setShareUrl(`${window?.location.origin}/items/${item?.itemId}`)
+    setShareUrl(`${window?.location.origin}/items/${item?.id}`)
   }, [item])
 
   const getItem = useCallback(async () => {
@@ -33,6 +33,8 @@ export const Container: React.VFC = () => {
   useEffect(() => {
     getItem()
   }, [itemId])
+
+  if (!item) return null
 
   return <Presentation item={item} bidHash={bidHash} shareUrl={shareUrl} />
 }

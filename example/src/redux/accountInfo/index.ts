@@ -1,10 +1,9 @@
-import { AccountInfo } from '@kyuzan/mint-sdk-js'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getSdk } from '../../sdk'
 
 export type AccountInfoState = {
   data: {
-    accountInfoMap: Record<string, AccountInfo>
+    // TODO
+    accountInfoMap: Record<string, any>
   }
   meta: {
     loading: boolean
@@ -24,17 +23,17 @@ export const initialAccountInfoState: AccountInfoState = {
 
 // AsyncAction
 export const getAccountInfoActionCreator = createAsyncThunk<
-  { accountInfo: AccountInfo | undefined; walletAddress: string },
+  { accountInfo: undefined; walletAddress: string },
   { walletAddress: string },
   {
     rejectValue: string
   }
 >('app/accountInfo/get', async (arg, thunkApi) => {
   try {
-    const data = await getSdk().getAccountInfo({
-      walletAddress: arg.walletAddress,
-    })
-    return { accountInfo: data, walletAddress: arg.walletAddress }
+    // const data = await getSdk().getAccountInfo({
+    //   walletAddress: arg.walletAddress,
+    // })
+    return { accountInfo: undefined, walletAddress: arg.walletAddress }
   } catch (err) {
     console.error(err)
     return thunkApi.rejectWithValue(`Account情報を取得できませんでした`)
@@ -64,8 +63,8 @@ export const accountInfoSlice = createSlice({
         state.meta.loading = false
         state.data.accountInfoMap[payload.walletAddress] =
           payload.accountInfo || {
-            avatarImgUrl: '',
-            avatarImgId: '',
+            avatarImageUrl: '',
+            avatarImageId: '',
             displayName: '',
             bio: '',
             twitterAccountName: '',

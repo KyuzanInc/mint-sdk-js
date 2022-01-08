@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import { EndedAuctionList } from '../components/organisms/AuctionList/ended'
 import { LiveAuctionList } from '../components/organisms/AuctionList/active'
 import { LoadingList } from '../components/organisms/AuctionList/loading'
 import { useAppSelector, wrapper } from '../redux/getStore'
@@ -47,7 +46,7 @@ const Page = ({
       <InnerContainer>
         {waitingItems && <LoadingList />}
         {!waitingItems && <LiveAuctionList items={items.live} />}
-        {!waitingItems && <EndedAuctionList items={items.ended} />}
+        {/* {!waitingItems && <EndedAuctionList items={[]} />} */}
       </InnerContainer>
     </Container>
   )

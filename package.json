@@ -1,18 +1,20 @@
 {
   "name": "@kyuzan/mint-sdk-js",
   "description": "MINT NFT Platform Client SDK",
-  "version": "5.13.3",
+  "version": "6.0.0-alpha.8",
   "dependencies": {
     "@emotion/babel-plugin": "^11.3.0",
     "agentkeepalive": "^4.1.4",
     "axios": "^0.21.1",
     "eth-sig-util": "^3.0.1",
     "ethers": "^5.0.31",
-    "fortmatic": "^2.2.1"
+    "fortmatic": "^2.2.1",
+    "qs": "^6.10.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
     "@types/node": "^14.14.45",
+    "@types/qs": "^6.9.7",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "esbuild": "^0.8.57",
@@ -52,7 +54,9 @@
     "test:watch": "jest --watch",
     "publish:main": "npm run build:production && npm version major && npm publish",
     "publish:minor": "npm run build:production && npm version minor && npm publish",
-    "publish:patch": "npm run build:production && npm version patch && npm publish"
+    "publish:patch": "npm run build:production && npm version patch && npm publish",
+    "publish:alpha": "npm run build:production && npm version premajor --preid alpha && npm publish",
+    "publish:alpha:next": "npm run build:production && npm version prerelease && npm publish"
   },
   "repository": "https://github.com/KyuzanInc/annapurna-sdk-js",
   "homepage": "https://github.com/KyuzanInc/annapurna-sdk-js",

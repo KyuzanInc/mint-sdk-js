@@ -48,7 +48,7 @@ export const BoughtFixedPriceSuccessModal: React.VFC<Props> = ({
                 endAt={endAt}
                 price={price}
                 unit={unit}
-                tradeType={'fixedPrice'}
+                tradeType={'credit-card-stripe-fixed-price'}
               />
             </InfoContainer>
           </Left>
