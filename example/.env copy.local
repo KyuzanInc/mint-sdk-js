@@ -1,4 +1,0 @@
-# Setting for Mint SDK
-NEXT_PUBLIC_MINT_SDK_KEY=a96ce307-2b80-43c5-a11a-507101dee272
-NEXT_PUBLIC_MINT_FORTMATIC_KEY=pk_test_7459BD51DE1FC406
-NEXT_PUBLIC_MINT_BACKEND_URL=https://asia-northeast1-annapurna-development.cloudfunctions.net
