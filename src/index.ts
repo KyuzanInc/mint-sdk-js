@@ -1,41 +1,40 @@
-import { ItemStock } from './types/v2/ItemStock'
-import Axios from 'axios'
-import * as ethers from 'ethers'
-import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
+import Axios from 'axios'
+import { recoverTypedSignature_v4 } from 'eth-sig-util'
+import * as ethers from 'ethers'
 import {
-  SignatureType,
-  DefaultApiFactory as DefaultApiFactoryV2,
-  TokenERC721,
   Bid,
+  DefaultApiFactory as DefaultApiFactoryV2,
+  SignatureType,
+  TokenERC721,
   WalletAddressProfile,
 } from './apiClientV2/api'
-import { CurrencyUnit } from './types/CurrencyUnit'
-import { WrongNetworkError } from './Errors'
-import { Residence } from './types/Residence'
-import { Token } from './types/Token'
-import {
-  WalletStrategy,
-  MetamaskStrategy,
-  FortmaticStrategy,
-  NodeStrategy,
-} from './strategies'
 import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
-import { ItemLog } from './types/ItemLog'
-import { NetworkId } from './types/NetworkId'
+import { WrongNetworkError } from './Errors'
+import {
+  FortmaticStrategy,
+  MetamaskStrategy,
+  NodeStrategy,
+  WalletStrategy,
+} from './strategies'
 import { BigNumber } from './types/BigNumber'
-import { WalletInfo } from './types/WalletInfo'
-import { WalletSetting } from './types/WalletSetting'
-import { PaymentMethod } from './types/v2/PaymentMethods'
+import { CurrencyUnit } from './types/CurrencyUnit'
+import { ItemLog } from './types/ItemLog'
 import { ItemsType } from './types/ItemsType'
 import { ItemTradeType } from './types/ItemTradeType'
-import { ItemType } from './types/v2/ItemType'
-import { Item } from './types/v2/Item'
-import { PaymentMethodData } from './types/v2/PaymentMethodData'
+import { NetworkId } from './types/NetworkId'
+import { Residence } from './types/Residence'
+import { Token } from './types/Token'
 import { ContractERC721 } from './types/v2/ContractERC721'
+import { Item } from './types/v2/Item'
+import { ItemStock } from './types/v2/ItemStock'
+import { ItemType } from './types/v2/ItemType'
+import { PaymentMethodData } from './types/v2/PaymentMethodData'
+import { PaymentMethod } from './types/v2/PaymentMethods'
+import { WalletInfo } from './types/WalletInfo'
+import { WalletSetting } from './types/WalletSetting'
 
 export {
-  // v2
   Item,
   PaymentMethodData,
   PaymentMethod,
@@ -61,9 +60,11 @@ export {
 export class MintSDK {
   /**
    * ether(通常のETHと表示される価格)をBigNumberとして返す
+   * Returns the ether price as a BigNumber.
    *
    * @param ether 通常のETHと表示されるもの
    * @returns etherをBigNumberとしてparseしたもの
+   * @returns Returns a BigNumber format of the ether price
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -77,9 +78,11 @@ export class MintSDK {
 
   /**
    * BigNumberをether(通常のETHと表示される価格)にフォーマットして返す
+   * Returns an BigNumber that is formatted as an ether.
    *
    * @param bg
    * @returns Ether単位でパースされたstring
+   * @returns Returns a ether from the parsed BigNumber
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -130,8 +133,10 @@ export class MintSDK {
 
   /**
    * 有効なアカウントがあるの状態を返す
+   * Returns if an account is valid.
    *
    * @returns ウォレットが接続されていればtrue
+   * @returns If a wallet is connected, returns true
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -150,6 +155,10 @@ export class MintSDK {
    * ウォレットが接続されるとResolveされる
    * ウォレット接続をキャンセルした場合は、Rejectされる
    *
+   * Connects to a wallet.
+   * If Metamask is installed in the default browser, it will utilize Metamask, otherwise will use Fortmatic.
+   * If a wallet is connected, it will return Resolve, otherwise will return Reject.
+   *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
@@ -167,6 +176,10 @@ export class MintSDK {
    * Fortmaticの場合、切断される
    * **MetaMaskが接続されている場合は何も実行されない**
    *
+   * Disconnects the wallet.
+   * When utilizing Fortmatic, it disconnects from the service.
+   * When utilizing Metamask, **nothing will happen**.
+   *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
@@ -180,9 +193,11 @@ export class MintSDK {
 
   /**
    * ウォレットのアカウントと残高情報などの情報が取得できる
+   * Can get the transactional history and other account information.
    *
    * **Required**
    * - ウォレットに接続していること
+   * - Requires the wallet to be connected.
    *
    * @returns
    *
@@ -199,11 +214,14 @@ export class MintSDK {
 
   /**
    * Transactionが成功するとResolveするPromiseを返します
+   * When the transaction is successful, it returns a Resolve.
    *
    * **Required**
+   * - Requires a wallet to be connected.
    * - ウォレットに接続していること
    *
    * @param txHash {@link ethers.providers.TransactionResponse}のhashプロパティ
+   * The hash property of @param txHash {@link ethers.providers.TransactionResponse}
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -229,8 +247,10 @@ export class MintSDK {
   /**
    * 公開中の商品を取得
    * ステータスの変更は管理画面から行えます。
+   * Returns the Items with the flag `Items.openStatus === 'open'`
+   * The status of the items can be changed from the admin panel
    *
-   * #### 制限事項
+   * #### 制限事項 / Restrictions
    *
    * @param paging
    * @param tags , 区切りで指定
@@ -282,9 +302,11 @@ export class MintSDK {
 
   /**
    * ItemStockを取得する
+   * Returns the ItemStock
    *
-   * #### 制限事項
+   * #### 制限事項 / Restrictions
    * - Itemが公開されていない場合は400
+   * - If the Item is not public, it returns as 400
    *
    * @param walletAddress
    * @returns
@@ -305,8 +327,9 @@ export class MintSDK {
 
   /**
    * 指定したwalletAddressで購入または落札したItemStockを取得する
+   * Returns the ItemStock that was sold to a certain wallet address
    *
-   * #### 制限事項
+   * #### 制限事項  / Restrictions
    *
    * @param walletAddress
    * @returns
@@ -339,8 +362,9 @@ export class MintSDK {
 
   /**
    * 指定したアドレスがBidしたItemの一覧を取得
+   * Returns all the bidded items ( as ItemStock ) that a certain address has done
    *
-   * @param address ウォレットのアドレス
+   * @param address ウォレットのアドレス / wallet address
    * @returns
    *
    * ```typescript
@@ -378,6 +402,7 @@ export class MintSDK {
 
   /**
    * 商品をid指定でアイテムを取得
+   * Returns the Item from the specified itemId.
    *
    * @param itemId {@link ResponseItem}の`id`
    * @returns
@@ -398,6 +423,7 @@ export class MintSDK {
 
   /**
    * id指定で製品を取得
+   * Returns the ProductERC721 by the ID
    *
    * @param id
    * @returns
@@ -418,8 +444,9 @@ export class MintSDK {
 
   /**
    * 指定したアドレスが所持しているMINT経由で獲得したトークンを取得
+   * Returns the Tokens (NFT) that a certain address is holding through MINT
    *
-   * @param address Walletのアドレス
+   * @param address Walletのアドレス / Wallet address
    * @returns
    *
    * ```typescript
@@ -444,6 +471,7 @@ export class MintSDK {
 
   /**
    * ContractERC721を取得する
+   * Get the ContractERC721
    *
    * @param contractId
    * @returns
@@ -465,12 +493,15 @@ export class MintSDK {
   /**
    * 指定した金額でBidするトランザクションを発行
    * Bidする謹賀具の総額を`bidPrice`に指定する
+   * Creates a transaction from the specified bid price.
+   * The total amount of the bid is passed through the `bidPrice` argument.
    *
    * **Required**
    * - ウォレットに接続していること
+   * - Requires the wallet to be connected
    *
    * @param itemId {@link Item}のitemId
-   * @param bidPrice 単位はether
+   * @param bidPrice 単位はether / Unit is in ether
    * @returns
    *
    * ```typescript
@@ -544,10 +575,14 @@ export class MintSDK {
   /**
    * オークションで勝利したアイテムを引き出すトランザクションを発行
    * ユーザーの居住地を問うUIを合わせて実装必要です。居住地を設定することで消費税に関する会計処理などがスムーズに行えます
+   * Transaction to get the winnning item after a successful auction
+   * Requires a UI that asks for the users residence for accommodating for consumption tax purposes.
    *
    * **Required**
    * - ウォレットに接続していること
+   * - Requires a wallet to be connected.
    * - **自動延長オークションは、`withdrawableAt`以降に引き出し可能です**
+   * - **If automatic extension for the auction is enabled, withdrawing is only avaliable after `withdrawableAt`.**
    *
    * @param itemId {@link Item}のitemId
    * @param userResidence {@link Residence} 購入者の居住地を指定する
@@ -613,9 +648,12 @@ export class MintSDK {
    * FixedPriceのアイテムを購入するトランザクションを発行
    * ユーザーの居住地を問うUIを合わせて実装必要
    * 消費税に関する会計処理などがスムーズに行えます
+   * Creates a transaction for buying an Item at a fixed price.
+   * Requires a UI that asks for the users residence for accommodating for consumption tax purposes.
    *
    * **Required**
    * - ウォレットに接続していること
+   * - Requires a wallet to be connected.
    *
    * @param itemId {@link Item}のitemId
    * @param userResidence {@link Residence} 購入者の居住地を指定する
@@ -690,6 +728,7 @@ export class MintSDK {
 
   /**
    * アカウントが変更された際に呼び出される関数を設定できる
+   * Set a callback when the account has been changed.
    *
    * @param callback
    * @returns void
@@ -715,6 +754,7 @@ export class MintSDK {
 
   /**
    * ウォレットに接続した際に呼び出される関数を設定できる
+   * Set a callback when the wallet is connected.
    *
    * @param callback
    * @returns void
@@ -740,6 +780,7 @@ export class MintSDK {
 
   /**
    * ウォレットから切断した際に呼び出される関数を設定できる
+   * Set a callback when the wallet is disconnected.
    *
    * @param callback
    * @returns void
@@ -783,8 +824,9 @@ export class MintSDK {
 
   /**
    * MetaMaskかどうかを判定
+   * Validates if utilizing MetaMask.
    *
-   * @returns trueならばMetaMask
+   * @returns trueならばMetaMask / Returns true if utilizing MetaMask.
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -799,6 +841,7 @@ export class MintSDK {
 
   /**
    * 接続中のネットワークIDを返す
+   * Returns the connected network id.
    *
    * @returns
    *
@@ -849,9 +892,11 @@ export class MintSDK {
 
   /**
    * EIP-712仕様で与えられたデータを署名します。
+   * Sign the data, formatted as EIP-712
    *
    * **Required**
    * - ウォレットに接続していること
+   * - Requires a wallet to be connected.
    *
    * @param arg
    * @returns
@@ -899,6 +944,10 @@ export class MintSDK {
   /**
    * 署名されたデータを復号してウォレットアドレスを返します。
    * 返される文字列は小文字で返ってきます。
+   * Decrypts the signed data and returns the wallet address.
+   * The string returned will be in lowercase.
+   *
+   *
    * @param arg
    * @returns
    * ``` typesctipt
@@ -925,6 +974,8 @@ export class MintSDK {
 
   /**
    * signedUrlを用いてFileをアップロード
+   * upload the File using the signedURL
+   *
    * @ignore
    */
   private uploadData = async (arg: { signedUrl: string; file: File }) => {
@@ -935,9 +986,14 @@ export class MintSDK {
   }
 
   /**
+   *
    * 指定したネットワークをウォレットに追加する
    * 137 => Polygon本番ネットワーク
    * 80001 => Polygonテストネットワーク
+   *
+   * Adds a specified network to the wallet.
+   * 137 => Polygon production network
+   * 80001 => Polygon development / test network
    *
    * **Required**
    * sdk.isInjectedWallet() => trueの場合のみ（MetaMaskのみ使える）
@@ -1067,7 +1123,26 @@ export class MintSDK {
       uploadedImgUrl: response.data.data.readSignedUrl,
     }
   }
-
+  /**
+   * Returns the account information pertaining to the wallet such as display name or profile picture.
+   * If there is nothing set, will return a blank string.
+   *
+   * #### Parameters:
+   * | Name                | Type     |
+   * | :------------------ | :------- |
+   * | `arg`               | _object_ |
+   * | `arg.walletAddress` | _string_ |
+   *
+   * Returns {@link AccountInfo}
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = MintSDK.initialize(...)
+   * await sdk.connectWallet()
+   * const accountInfo = await sdk.getAccountInfo({ walletAddress: '0xxxxxxxx' })
+   * ```
+   * */
   public getAccountInfo = async (arg: { walletAddress: string }) => {
     const response = await this.apiClientV2.getProfile(
       this.accessToken,

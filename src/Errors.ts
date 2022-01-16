@@ -9,5 +9,6 @@ class BaseError extends Error {
 
 /**
  * ユーザーのウォレットが接続しているネットワークが正しくない
+ * The network connected to the wallet is not correct.
  */
 export class WrongNetworkError extends BaseError {}
