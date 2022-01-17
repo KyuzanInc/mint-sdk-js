@@ -1,31 +1,20 @@
-# SDK の package 公開方法
+# How to publish SDK
 
-GithubAction での公開方法を行うと簡単です。
+Run GitHub Actions `npm-publish` to publish
 
-## Github Action の実行
+## Run `npm-publish`
 
-1. [Github Actions](https://github.com/KyuzanInc/mint-sdk-js/actions)から`npm-publish`を選択
-2. `run workflow`で、`main`ブランチを選択し実行
-3. 自動で npm package 公開までアクションが実行されます。
+1. Select `npm-publish` in [Github Actions](https://github.com/KyuzanInc/mint-sdk-js/actions)
+2. `run workflow` with `main` branch
 
-## 公開までの Action 実行詳細・注意点
+## GitHub Actions Details
 
-### npm tag バージョンについて
-
-main に push された commit メッセージに基づいてリリースのバージョンのインクリメントを決めています
-
-- mejer version: commit メッセージまたは説明に "BREAKING CHANGE" or "major" という文字がある
-
-- minor version: commit メッセージまたは説明に "feat" という文字がある
-
-- patch version: 上記以外
-
-### docs と demo site のデプロイ
-
-SDK の package が公開成功した場合、最新の SDK を使うように docs と demo(example)のデプロイ Action が実行されます。
-
-トリガーについては`workflows`の各アクション詳細を確認してください。
-
-### 参考
-
-https://github.com/phips28/gh-action-bump-version
+* Based on the commit messages, increment the version from the latest release.
+  * If the string "BREAKING CHANGE", "major" or the Attention pattern `refactor!: drop support for Node 6` is found anywhere in any of the commit messages or descriptions the major
+    version will be incremented.
+  * If a commit message begins with the string "feat" or includes "minor" then the minor version will be increased. This works
+    for most common commit metadata for feature additions: `"feat: new API"` and `"feature: new API"`.
+  * If a commit message contains the word "pre-alpha" or "pre-beta" or "pre-rc" then the pre-release version will be increased (for example specifying pre-alpha: 1.6.0-alpha.1 -> 1.6.0-alpha.2 or, specifying pre-beta: 1.6.0-alpha.1 -> 1.6.0-beta.0)
+  * All other changes will increment the patch version.
+* Push the bumped npm version in package.json back into the repo.
+* Push a tag for the new version back into the repo.
