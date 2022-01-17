@@ -1,28 +1,35 @@
-## チケットへのリンク
+## PR Type
+What kind of change does this PR introduce?
 
-- https://example.com
+<!-- Please check the one that applies to this PR using "x". -->
 
-## やったこと
+- [ ] Bugfix
+- [ ] Feature
+- [ ] Code style update (formatting, local variables)
+- [ ] Refactoring (no functional changes, no api changes)
+- [ ] Build related changes
+- [ ] CI related changes
+- [ ] Documentation content changes
+- [ ] angular.io application / infrastructure changes
+- [ ] Other... Please describe:
 
-- このプルリクで何をしたのか？
 
-## やらないこと
+## What is the current behavior?
+<!-- Please describe the current behavior that you are modifying, or link to a relevant issue. -->
 
-- このプルリクでやらないことは何か？（あれば。無いなら「無し」で OK）（やらない場合は、いつやるのかを明記する。）
+Issue Number: N/A
 
-## できるようになること（ユーザ目線）
 
-- 何ができるようになるのか？（あれば。無いなら「無し」で OK）
+## What is the new behavior?
 
-## できなくなること（ユーザ目線）
 
-- 何ができなくなるのか？（あれば。無いなら「無し」で OK）
+## Does this PR introduce a breaking change?
 
-## 動作確認
+- [ ] Yes
+- [ ] No
 
-- どのような動作確認を行ったのか？　結果はどうか？
-- UI が関わるものは、スクショや動画を添付
 
-## その他
+<!-- If this PR contains a breaking change, please describe the impact and migration path for existing applications below. -->
 
-- レビュワーへの参考情報（実装上の懸念点や注意点などあれば記載）
+
+## Other information
