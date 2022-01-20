@@ -196,6 +196,17 @@ export interface ContractERC721 {
     tokenStandardType: TokenStandardType;
 }
 /**
+ * Stripeで利用する通貨型
+ * @export
+ * @enum {string}
+ */
+export enum CreditCardStripeCurrencyType {
+    Jpy = 'jpy',
+    Usd = 'usd',
+    Eur = 'eur'
+}
+
+/**
  * 
  * @export
  * @interface CryptoCurrencyRate
@@ -266,6 +277,25 @@ export interface InlineObject {
      * @memberof InlineObject
      */
     signature: string;
+}
+/**
+ * 
+ * @export
+ * @interface InlineObject1
+ */
+export interface InlineObject1 {
+    /**
+     * 購入するアイテムのID
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    itemId: string;
+    /**
+     * 購入者のウォレットアドレス
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    toAddress: string;
 }
 /**
  * 
@@ -399,6 +429,25 @@ export interface InlineResponse20012 {
      * @memberof InlineResponse20012
      */
     meta: object;
+}
+/**
+ * 
+ * @export
+ * @interface InlineResponse20013
+ */
+export interface InlineResponse20013 {
+    /**
+     * クライアント側でloadStripeに対して渡す公開可能なAPI-Key
+     * @type {string}
+     * @memberof InlineResponse20013
+     */
+    publishableKey: string;
+    /**
+     * StripeのPaymentIntentのClientSecret
+     * @type {string}
+     * @memberof InlineResponse20013
+     */
+    secret: string;
 }
 /**
  * 
@@ -762,6 +811,12 @@ export interface ItemPaymentMethodDataCreditCardStripeFixedPrice {
      * @memberof ItemPaymentMethodDataCreditCardStripeFixedPrice
      */
     paymentMethod: ItemPaymentMethodDataCreditCardStripeFixedPricePaymentMethodEnum;
+    /**
+     * 
+     * @type {CreditCardStripeCurrencyType}
+     * @memberof ItemPaymentMethodDataCreditCardStripeFixedPrice
+     */
+    currency: CreditCardStripeCurrencyType;
 }
 
 /**
@@ -1213,6 +1268,47 @@ export interface WalletAddressProfile {
  */
 export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+         * @param {string} mintAccessToken 
+         * @param {InlineObject1} [inlineObject1] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createStripePaymentIntent: async (mintAccessToken: string, inlineObject1?: InlineObject1, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('createStripePaymentIntent', 'mintAccessToken', mintAccessToken)
+            const localVarPath = `/sdk_v4/stripePayment/createStripePaymentIntent`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(inlineObject1, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary アバター画像の署名付きURLの取得
@@ -1905,6 +2001,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+         * @param {string} mintAccessToken 
+         * @param {InlineObject1} [inlineObject1] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createStripePaymentIntent(mintAccessToken: string, inlineObject1?: InlineObject1, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20013>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createStripePaymentIntent(mintAccessToken, inlineObject1, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary アバター画像の署名付きURLの取得
          * @param {string} mintAccessToken 
          * @param {*} [options] Override http request option.
@@ -2091,6 +2199,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+         * @param {string} mintAccessToken 
+         * @param {InlineObject1} [inlineObject1] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createStripePaymentIntent(mintAccessToken: string, inlineObject1?: InlineObject1, options?: any): AxiosPromise<InlineResponse20013> {
+            return localVarFp.createStripePaymentIntent(mintAccessToken, inlineObject1, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary アバター画像の署名付きURLの取得
          * @param {string} mintAccessToken 
          * @param {*} [options] Override http request option.
@@ -2262,6 +2381,19 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+     * @param {string} mintAccessToken 
+     * @param {InlineObject1} [inlineObject1] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public createStripePaymentIntent(mintAccessToken: string, inlineObject1?: InlineObject1, options?: any) {
+        return DefaultApiFp(this.configuration).createStripePaymentIntent(mintAccessToken, inlineObject1, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary アバター画像の署名付きURLの取得
