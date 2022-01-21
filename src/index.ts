@@ -111,24 +111,6 @@ export class MintSDK {
   private walletStrategy: WalletStrategy
 
   /**
-   * @ignore
-   */
-  private static stripeInstanceMap = new Map<string, Promise<Stripe | null>>()
-
-  /**
-   * @ignore
-   */
-  private static loadStripeCached = (publishableKey: string) => {
-    const stripe = MintSDK.stripeInstanceMap.get(publishableKey)
-    if (stripe) {
-      return stripe
-    }
-    const newStripe = loadStripe(publishableKey)
-    MintSDK.stripeInstanceMap.set(publishableKey, newStripe)
-    return newStripe
-  }
-
-  /**
    *
    * @param accessToken
    * @param networkId アイテムのネットワークIDを指定
@@ -789,7 +771,7 @@ export class MintSDK {
             : InlineObject1UserResidenceEnum.Unknown,
       }
     )
-    const stripe = await MintSDK.loadStripeCached(data.publishableKey)
+    const stripe =  await loadStripe(data.publishableKey)
     return {
       paymentIntentClientSecret: data.secret,
       stripe,
