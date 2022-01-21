@@ -1,4 +1,4 @@
-import { Item as APIItem } from '../../apiClientV2/api'
+import { Item as APIItem } from '../../apiClient/api'
 import { CryptoCurrencyRate } from './CryptoCurrencyRate'
 import { ItemType } from './ItemType'
 import { PaymentMethodData } from './PaymentMethodData'

@@ -1,4 +1,4 @@
-import { ContractERC721 as APIContractERC721 } from '../../apiClientV2/api'
+import { ContractERC721 as APIContractERC721 } from '../../apiClient/api'
 import { ChainType } from './ChainType'
 import { NetworkId } from './NetworkId'
 import { TokenStandardType } from './TokenStandardType'

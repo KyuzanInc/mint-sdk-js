@@ -1,4 +1,5 @@
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
+import { loadStripe, Stripe } from '@stripe/stripe-js'
 import Axios from 'axios'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import * as ethers from 'ethers'
@@ -8,7 +9,8 @@ import {
   SignatureType,
   TokenERC721,
   WalletAddressProfile,
-} from './apiClientV2/api'
+  InlineObject1UserResidenceEnum,
+} from './apiClient/api'
 import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
 import { WrongNetworkError } from './Errors'
 import {
@@ -102,7 +104,28 @@ export class MintSDK {
    */
   private apiClientV2: ReturnType<typeof DefaultApiFactoryV2>
 
+  /**
+   * @ignore
+   */
   private walletStrategy: WalletStrategy
+
+  /**
+   * @ignore
+   */
+  private static stripeInstanceMap = new Map<string, Promise<Stripe | null>>()
+
+  /**
+   * @ignore
+   */
+  private static loadStripeCached = (publishableKey: string) => {
+    const stripe = MintSDK.stripeInstanceMap.get(publishableKey)
+    if (stripe) {
+      return stripe
+    }
+    const newStripe = loadStripe(publishableKey)
+    MintSDK.stripeInstanceMap.set(publishableKey, newStripe)
+    return newStripe
+  }
 
   /**
    *
@@ -724,6 +747,56 @@ export class MintSDK {
       value: price,
     })) as ethers.providers.TransactionResponse
     return tx
+  }
+
+  /**
+   * クレジットカードでアイテムを購入するためにStripeを初期化する。
+   * この関数は、Stripeの[PaymentIntent](https://stripe.com/docs/api/payment_intents/object)を初期化するための `clientSecret` と、
+   * Mintバックエンドと対応するAPIキーで初期化された{@link Stripe}を返す。
+   * @param itemId 購入する{@link Item}のitemId
+   * @param toAddress
+   * @returns
+
+   * @param itemId {@link Item}のitemId
+   * @param userResidence {@link Residence} 購入者の居住地を指定する
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   * await sdk.connectWallet() // required
+   * try {
+   *  const tx = await sdk.sendTxBuyItem('item.itemId', 'jp')
+   *  // show loading
+   *  await tx.wait()
+   *  // success transaction
+   * } catch (err) {
+   *  // display error message
+   * }
+
+   */
+  public createStripePaymentIntent = async (arg: {
+    itemId: string
+    toAddress: string
+    residence: Residence
+  }) => {
+    // keyをKyuzanで発行管理したものを使いたいので内部でStripeのインスタンスを生成している
+    const { data } = await this.apiClientV2.createStripePaymentIntent(
+      this.accessToken,
+      {
+        itemId: arg.itemId,
+        toAddress: arg.toAddress,
+        userResidence:
+          arg.residence === 'jp'
+            ? InlineObject1UserResidenceEnum.Jp
+            : InlineObject1UserResidenceEnum.Unknown,
+      }
+    )
+    const stripe = await MintSDK.loadStripeCached(data.publishableKey)
+    return {
+      paymentIntentClientSecret: data.secret,
+      stripe,
+    }
   }
 
   /**

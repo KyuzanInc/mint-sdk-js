@@ -296,7 +296,23 @@ export interface InlineObject1 {
      * @memberof InlineObject1
      */
     toAddress: string;
+    /**
+     * 購入者の居住地
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    userResidence: InlineObject1UserResidenceEnum;
 }
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum InlineObject1UserResidenceEnum {
+    Jp = 'jp',
+    Unknown = 'unknown'
+}
+
 /**
  * 
  * @export

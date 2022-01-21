@@ -3,7 +3,7 @@ import {
   ItemPaymentMethodDataEthereumContractERC721ShopAuction,
   ItemPaymentMethodDataCreditCardStripeFixedPrice,
   ContractDataERC721Shop,
-} from '../../apiClientV2/api'
+} from '../../apiClient/api'
 
 export type PaymentMethodData =
   | ({
