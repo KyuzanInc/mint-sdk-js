@@ -45,6 +45,7 @@ export {
   TokenERC721,
   Bid,
   WalletAddressProfile,
+  Stripe,
   // v1
   ItemLog,
   ItemTradeType,
