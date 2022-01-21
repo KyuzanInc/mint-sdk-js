@@ -750,14 +750,13 @@ export class MintSDK {
   }
 
   /**
-   * クレジットカードでアイテムを購入するためにStripeを初期化する。
+   * 指定したItemをtoAddressが購入する処理を行う
    * この関数は、Stripeの[PaymentIntent](https://stripe.com/docs/api/payment_intents/object)を初期化するための `clientSecret` と、
    * Mintバックエンドと対応するAPIキーで初期化された{@link Stripe}を返す。
+   * {@link Stripe}を使いユーザーにクレカ情報入力UIを実装し表示する
+   *
    * @param itemId 購入する{@link Item}のitemId
    * @param toAddress
-   * @returns
-
-   * @param itemId {@link Item}のitemId
    * @param userResidence {@link Residence} 購入者の居住地を指定する
    * @returns
    *
@@ -765,15 +764,12 @@ export class MintSDK {
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = await MintSDK.initialize(...)
    * await sdk.connectWallet() // required
-   * try {
-   *  const tx = await sdk.sendTxBuyItem('item.itemId', 'jp')
-   *  // show loading
-   *  await tx.wait()
-   *  // success transaction
-   * } catch (err) {
-   *  // display error message
-   * }
-
+   * const {
+   *  paymentIntentClientSecret,
+   *  stripe,
+   * } = await sdk.createStripePaymentIntent({itemId: 'item.itemId', toAddress: '0x000', residence: 'jp'})
+   *
+   * // Implement UI
    */
   public createStripePaymentIntent = async (arg: {
     itemId: string
