@@ -2,6 +2,10 @@ name: npm-publish
 
 on:
   workflow_dispatch:
+    inputs:
+      newversion:
+        description: 'Semantic Version Bump Type (major minor patch)'
+        required: true
 jobs:
   npm-publish:
     runs-on: ubuntu-latest
