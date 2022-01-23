@@ -1,6 +1,6 @@
 {
   "name": "@kyuzan/mint-sdk-js",
-  "description": "MINT NFT Platform Client SDK",
+  "description": "Mint NFT Platform Client SDK",
   "version": "6.0.7",
   "dependencies": {
     "@emotion/babel-plugin": "^11.3.0",
@@ -55,8 +55,11 @@
     "publish:alpha": "npm run build:production && npm version premajor --preid alpha && npm publish",
     "publish:alpha:next": "npm run build:production && npm version prerelease && npm publish"
   },
-  "repository": "https://github.com/KyuzanInc/annapurna-sdk-js",
-  "homepage": "https://github.com/KyuzanInc/annapurna-sdk-js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/KyuzanInc/mint-sdk-js.git"
+  },
+  "homepage": "https://github.com/KyuzanInc/mint-sdk-js",
   "keywords": [
     "NFT"
   ]
