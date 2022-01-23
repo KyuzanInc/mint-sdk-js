@@ -771,7 +771,7 @@ export class MintSDK {
             : InlineObject1UserResidenceEnum.Unknown,
       }
     )
-    const stripe =  await loadStripe(data.publishableKey)
+    const stripe = await loadStripe(data.publishableKey)
     return {
       paymentIntentClientSecret: data.secret,
       stripe,
