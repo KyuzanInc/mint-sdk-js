@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       newversion:
-        description: 'Semantic Version Bump Type (major minor patch)'
+        description: 'Semantic Version Bump Type (`major` or `minor` or `patch`)'
         required: true
 jobs:
   npm-publish:
@@ -15,16 +15,12 @@ jobs:
           node-version: '14'
           cache: 'npm'
       - name: npm i
-        working-directory: ./
         run: npm ci
       - name: npm run lint:check
-        working-directory: ./
         run: npm run lint:check
       - name: npm run type:check
-        working-directory: ./
         run: npm run type:check
       - name: npm run format:check
-        working-directory: ./
         run: npm run format:check
       - name: Version and publish to npm
         uses: bcomnes/npm-bump@v2.0.2
