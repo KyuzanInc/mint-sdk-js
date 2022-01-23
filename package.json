@@ -1,7 +1,7 @@
 {
   "name": "@kyuzan/mint-sdk-js",
   "description": "MINT NFT Platform Client SDK",
-  "version": "6.0.4",
+  "version": "6.0.3",
   "dependencies": {
     "@emotion/babel-plugin": "^11.3.0",
     "agentkeepalive": "^4.1.4",
@@ -52,9 +52,6 @@
     "type:check": "tsc --project tsconfig.json --pretty --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "publish:main": "npm run build:production && npm version major && npm publish",
-    "publish:minor": "npm run build:production && npm version minor && npm publish",
-    "publish:patch": "npm run build:production && npm version patch && npm publish",
     "publish:alpha": "npm run build:production && npm version premajor --preid alpha && npm publish",
     "publish:alpha:next": "npm run build:production && npm version prerelease && npm publish"
   },
