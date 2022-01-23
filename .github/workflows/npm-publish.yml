@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       newversion:
-        description: 'Semantic Version Bump Type (major minor patch)'
+        description: 'Semantic Version Bump Type (`major` or `minor` or `patch`)'
         required: true
 jobs:
   npm-publish:
@@ -15,23 +15,19 @@ jobs:
           node-version: '14'
           cache: 'npm'
       - name: npm i
-        working-directory: ./
         run: npm ci
       - name: npm run lint:check
-        working-directory: ./
         run: npm run lint:check
       - name: npm run type:check
-        working-directory: ./
         run: npm run type:check
       - name: npm run format:check
-        working-directory: ./
         run: npm run format:check
       - name: Version and publish to npm
         uses: bcomnes/npm-bump@v2.0.2
         with:
           git_email: ci@kyuzan.com
           git_username: ${{ github.actor }}
-          newversion: ${{ github.event.inputs.newversion }} # 3,2,2
+          newversion: ${{ github.event.inputs.newversion }}
           push_version_commit: true # if your prePublishOnly step pushes git commits, you can omit this input or set it to false.
           github_token: ${{ secrets.GITHUB_TOKEN }} # built in actions token.  Passed tp gh-release if in use.
           npm_token: ${{ secrets.NPM_TOKEN }} # user set secret token generated at npm
