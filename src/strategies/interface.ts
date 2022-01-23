@@ -1,5 +1,5 @@
-import { WalletInfo } from '../types/WalletInfo'
 import { ethers } from 'ethers'
+import { WalletInfo } from '../types/WalletInfo'
 
 export interface WalletStrategy {
   isWalletConnect(): Promise<boolean>

@@ -1,5 +1,5 @@
-import { WalletStrategy } from './interface'
 import * as ethers from 'ethers'
+import { WalletStrategy } from './interface'
 
 export class MetamaskStrategy implements WalletStrategy {
   private metamaskProvider: ethers.providers.Web3Provider

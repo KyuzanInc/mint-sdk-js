@@ -1,7 +1,8 @@
-import { WalletStrategy } from './interface'
-import { WalletSetting } from '../types/WalletSetting'
 import { ethers } from 'ethers'
+// eslint-disable-next-line import/no-unresolved
 import { WidgetMode } from 'fortmatic/dist/cjs/src/core/sdk'
+import { WalletSetting } from '../types/WalletSetting'
+import { WalletStrategy } from './interface'
 const Fortmatic = require('fortmatic')
 
 export class FortmaticStrategy implements WalletStrategy {
