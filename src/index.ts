@@ -11,12 +11,8 @@ import {
 } from './apiClientV2/api'
 import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
 import { WrongNetworkError } from './Errors'
-import {
-  FortmaticStrategy,
-  MetamaskStrategy,
-  NodeStrategy,
-  WalletStrategy,
-} from './strategies'
+import { NodeStrategy, WalletStrategy } from './strategies'
+import { Web3ModalStrategy } from './strategies/Web3ModalStraategy'
 import { BigNumber } from './types/BigNumber'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { ItemLog } from './types/ItemLog'
@@ -119,12 +115,11 @@ export class MintSDK {
       jsonRPCUrl?: string
     }
   ) {
+    console.log('--------ssssssssss')
     if (typeof globalThis.window === 'undefined') {
       this.walletStrategy = new NodeStrategy()
-    } else if (MetamaskStrategy.checkExistsWeb3ProviderInWindow()) {
-      this.walletStrategy = new MetamaskStrategy()
     } else {
-      this.walletStrategy = new FortmaticStrategy(walletSetting, devOption)
+      this.walletStrategy = new Web3ModalStrategy(walletSetting)
     }
 
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL

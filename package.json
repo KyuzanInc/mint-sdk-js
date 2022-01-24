@@ -4,12 +4,14 @@
   "version": "6.0.8",
   "dependencies": {
     "@emotion/babel-plugin": "^11.3.0",
+    "@toruslabs/torus-embed": "^1.20.2",
     "agentkeepalive": "^4.1.4",
     "axios": "^0.25.0",
     "eth-sig-util": "^3.0.1",
     "ethers": "^5.0.31",
     "fortmatic": "^2.2.1",
-    "qs": "^6.10.1"
+    "qs": "^6.10.1",
+    "web3modal": "^1.9.5"
   },
   "devDependencies": {
     "@types/jest": "27.4.0",
