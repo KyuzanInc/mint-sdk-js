@@ -1,16 +1,16 @@
-const { argv } = require('process')
-const { build } = require('esbuild')
-const path = require('path')
+import * as path from 'path'
+import { argv } from 'process'
+import { build, BuildOptions } from 'esbuild'
 
 const isProduction = argv[2] === 'production'
 
-const options = {
-  entryPoints: [path.resolve(__dirname, 'src/index.ts')],
+const options: BuildOptions = {
+  entryPoints: [path.resolve(__dirname, 'src/index.ts')] as string[],
   minify: isProduction,
   bundle: true,
   target: ['es6'],
-  platform: 'browser',
-  format: 'cjs',
+  platform: 'neutral',
+  format: 'esm',
   watch: argv[3] === 'w',
   sourcemap: !isProduction,
   outdir: path.resolve(__dirname, 'lib'),
