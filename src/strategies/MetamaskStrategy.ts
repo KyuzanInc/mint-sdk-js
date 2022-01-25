@@ -64,7 +64,6 @@ export class MetamaskStrategy implements WalletStrategy {
   }
 
   async disconnectWallet() {
-    await Promise.resolve()
     this.emitDisconnect()
   }
 

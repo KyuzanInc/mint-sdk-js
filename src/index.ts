@@ -11,8 +11,7 @@ import {
 } from './apiClientV2/api'
 import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
 import { WrongNetworkError } from './Errors'
-import { NodeStrategy, WalletStrategy } from './strategies'
-import { Web3ModalStrategy } from './strategies/Web3ModalStraategy'
+import { NodeStrategy } from './strategies'
 import { BigNumber } from './types/BigNumber'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { ItemLog } from './types/ItemLog'
@@ -29,6 +28,7 @@ import { PaymentMethodData } from './types/v2/PaymentMethodData'
 import { PaymentMethod } from './types/v2/PaymentMethods'
 import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
+import { IWeb3Provider, Web3Provider } from './Web3Provider'
 
 export {
   Item,
@@ -98,7 +98,7 @@ export class MintSDK {
    */
   private apiClientV2: ReturnType<typeof DefaultApiFactoryV2>
 
-  private walletStrategy: WalletStrategy
+  private walletStrategy: IWeb3Provider
 
   /**
    *
@@ -115,11 +115,10 @@ export class MintSDK {
       jsonRPCUrl?: string
     }
   ) {
-    console.log('--------ssssssssss')
     if (typeof globalThis.window === 'undefined') {
       this.walletStrategy = new NodeStrategy()
     } else {
-      this.walletStrategy = new Web3ModalStrategy(walletSetting)
+      this.walletStrategy = new Web3Provider(walletSetting)
     }
 
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
@@ -164,26 +163,6 @@ export class MintSDK {
    */
   public connectWallet = async () => {
     await this.walletStrategy.connectWallet()
-  }
-
-  /**
-   * ウォレットから切断
-   * Fortmaticの場合、切断される
-   * **MetaMaskが接続されている場合は何も実行されない**
-   *
-   * Disconnects the wallet.
-   * When utilizing Fortmatic, it disconnects from the service.
-   * When utilizing Metamask, **nothing will happen**.
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   *
-   * const sdk = await MintSDK.initialize(...)
-   * await sdk.disconnectWallet()
-   * ```
-   */
-  public disconnectWallet = async () => {
-    await this.walletStrategy.disconnectWallet()
   }
 
   /**
