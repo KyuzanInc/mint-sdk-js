@@ -34,6 +34,16 @@ Visit [https://kyuzan.github.io/mint-sdk-docs](https://kyuzan.github.io/mint-sdk
 % npm i @kyuzan/mint-sdk-js
 ```
 
+## Z-INDEX
+
+You just need to add in your project:
+
+```css
+.web3modal-modal-lightbox {
+  z-index: 9999 !important;
+}
+```
+
 ## Supported Providers(Wallets)
 
 [x] MetaMask
