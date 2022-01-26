@@ -10,7 +10,7 @@ const options: BuildOptions = {
   bundle: true,
   target: ['es6'],
   platform: 'neutral',
-  format: 'esm',
+  format: 'cjs',
   watch: argv[3] === 'w',
   sourcemap: !isProduction,
   outdir: path.resolve(__dirname, 'lib'),
