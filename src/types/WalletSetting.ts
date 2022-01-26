@@ -8,7 +8,6 @@ export type WalletSetting = {
     cacheProvider?: boolean
   }
 
-  // MetaMask ans Torus are default provider. Others are optional.
   providers?: {
     torus?: {
       // Enable to customize the display in Modal.

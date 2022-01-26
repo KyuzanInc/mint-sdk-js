@@ -2,12 +2,19 @@ import { ethers } from 'ethers'
 import Web3Modal, { IProviderOptions } from 'web3modal'
 // eslint-disable-next-line import/no-unresolved
 import { IFortmaticConnectorOptions } from 'web3modal/dist/providers/connectors/fortmatic'
-import { WalletInfo, WalletSetting } from '.'
+import { WalletSetting } from '..'
+import { IWeb3Provider } from './IWeb3Provider'
+import {
+  FortmaticStrategy,
+  IProviderStrategy,
+  MetamaskStrategy,
+  TorusStrategy,
+} from './strategies'
 
-// // ここで、connectしたProviderごとに対応したmethodを呼ぶ
-export class Web3Provider implements IWeb3Provider {
+export class BrowserWeb3Provider implements IWeb3Provider {
   private web3Modal: Web3Modal | null
   private ethersProvider: ethers.providers.Web3Provider | null
+  private providerStrategy: IProviderStrategy | null
 
   private eventConnectCallbacks: Array<(info: { chainId: number }) => any> = []
   private eventDisconnectCallbacks: Array<
@@ -16,29 +23,32 @@ export class Web3Provider implements IWeb3Provider {
   private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
   private eventChainChangeCallbacks: Array<(chainId: number) => any> = []
 
-  constructor(private walletSetting: WalletSetting) {
+  constructor(private walletSetting: WalletSetting | null) {
     this.ethersProvider = null
     this.web3Modal = null
+    this.providerStrategy = null
   }
 
   public async connectWallet() {
     const { default: Fortmatic } = await import('fortmatic')
     const { default: Torus } = await import('@toruslabs/torus-embed')
     const providerOptions: IProviderOptions = {
-      torus: this.walletSetting.providers
+      torus: this.walletSetting?.providers?.torus
         ? {
             package: Torus, // required
-            display: this.walletSetting.providers.torus.display,
-            options: this.walletSetting.providers.torus.options,
+            display: this.walletSetting?.providers?.torus?.display,
+            options: {
+              config: this.walletSetting?.providers?.torus?.options,
+            },
           }
         : { package: Torus },
     }
 
-    if (this.walletSetting.providers.fortmatic) {
+    if (this.walletSetting?.providers?.fortmatic) {
       providerOptions['fortmatic'] = {
         package: Fortmatic,
         options: {
-          key: this.walletSetting.providers.fortmatic?.key, // required
+          key: this.walletSetting?.providers?.fortmatic?.key, // required
         } as IFortmaticConnectorOptions,
       }
     }
@@ -46,34 +56,43 @@ export class Web3Provider implements IWeb3Provider {
     this.web3Modal = new Web3Modal({
       providerOptions,
       cacheProvider:
-        this.walletSetting.selectWalletModal?.cacheProvider ?? false,
-      theme: this.walletSetting.selectWalletModal?.theme ?? 'light',
+        this.walletSetting?.selectWalletModal?.cacheProvider ?? false,
+      theme: this.walletSetting?.selectWalletModal?.theme ?? 'light',
     })
     const provider = await this.web3Modal.connect()
-    // TODO: Providerごとの特殊な操作（Walletのモーダル開く）についてどうするか
-    // Note: A Fortmatic instance is available on the provider as provider.fm
+    if (provider.fm) {
+      // Selected Fortmatic
+      // ref: https://github.com/Web3Modal/web3modal/blob/master/docs/providers/fortmatic.md
+      this.providerStrategy = new FortmaticStrategy(provider.fm)
+    } else if (provider.torus) {
+      // Selected Fortmatic
+      // ref: https://github.com/Web3Modal/web3modal/blob/master/docs/providers/torus.md
+      this.providerStrategy = new TorusStrategy(provider.torus)
+    } else {
+      // Selected Injected
+      this.providerStrategy = new MetamaskStrategy()
+    }
+    console.log(provider)
 
     // Events compatible with EIP-1193 standard.
     // Subscribe to accounts change
     provider.on('accountsChanged', this.emitAccountChange)
     // Subscribe to chainId change
-    provider.on('chainChanged', (chainId: number) => {
-      console.log(chainId)
-      this.emitChainChange(chainId)
-    })
+    provider.on('chainChanged', this.emitChainChange)
     // Subscribe to provider connection
     provider.on('connect', this.emitConnect)
     // Subscribe to provider disconnection
     provider.on('disconnect', this.emitDisconnect)
 
-    this.ethersProvider = new ethers.providers.Web3Provider(provider)
+    // ref: https://github.com/ethers-io/ethers.js/issues/866
+    this.ethersProvider = new ethers.providers.Web3Provider(provider, 'any')
 
     const network = await this.ethersProvider.getNetwork()
     this.emitConnect({ chainId: network.chainId })
   }
 
   public async openWallet() {
-    // TODO
+    await this.providerStrategy?.openWallet()
   }
 
   public async isWalletConnect() {
@@ -198,32 +217,4 @@ export class Web3Provider implements IWeb3Provider {
   private emitChainChange = (chainId: number) => {
     this.eventChainChangeCallbacks.forEach((f) => f(chainId))
   }
-}
-
-export interface IWeb3Provider {
-  isWalletConnect(): Promise<boolean>
-  connectWallet(): Promise<void>
-  getConnectedNetworkId(): Promise<number>
-  getWalletInfo(): Promise<WalletInfo>
-  getProvider(): ethers.providers.Web3Provider
-
-  // TODO: OpenWallet: 抽象化れたもの。torus.showWallet();などがあれば
-  // 接続されたproviderによって判断
-  openWallet(): Promise<void>
-
-  onAccountsChange(callback: (accounts: string[]) => any): void
-  offAccountsChange(callback?: (accounts: string[]) => any): void
-
-  onConnect(callback: (info: { chainId: number }) => any): void
-  offConnect(callback?: (info: { chainId: number }) => any): void
-
-  onDisconnect(
-    callback: (error: { code: number; message: string }) => any
-  ): void
-  offDisconnect(
-    callback?: (error: { code: number; message: string }) => any
-  ): void
-
-  onChainChange(callback: (chainId: number) => any): void
-  offChainChange(callback?: (chainId: number) => any): void
 }

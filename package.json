@@ -41,8 +41,6 @@
   },
   "scripts": {
     "dev": "run-p watch:*",
-    "doc:deploy": "cd ./docs && npm run deploy",
-    "doc:serve": "cd ./docs && npm run start",
     "build:develop": "npm run clean && tsc",
     "build:production": "npm run clean && npm run type:check && tsc",
     "clean": "rimraf lib",

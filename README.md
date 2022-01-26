@@ -15,7 +15,7 @@
   </a>
 </p>
 
-This is a client SDK in javascript for developing with on [MINT]((https://www.mintnft.jp/)).
+This is a client SDK in javascript for developing with on [Mint]((https://www.mintnft.jp/)).
 This library aims at providing tools to help build, release, maintain and grow your own NFT shop.
 
 ## Getting Started
@@ -33,3 +33,20 @@ Visit [https://kyuzan.github.io/mint-sdk-docs](https://kyuzan.github.io/mint-sdk
 ```bash
 % npm i @kyuzan/mint-sdk-js
 ```
+
+## Supported Providers(Wallets)
+
+[x] MetaMask
+[x] Torus
+[x] Fortmatic
+[ ] WalletConnect
+[ ] Portis
+[ ] Authereum
+[ ] Frame
+[ ] Bitski
+[ ] Venly
+[ ] DCent
+[ ] BurnerConnect
+[ ] MEWConnect
+[ ] Binance Chain Wallet
+[ ] WalletLink

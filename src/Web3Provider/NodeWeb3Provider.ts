@@ -1,6 +1,6 @@
-import { WalletStrategy } from './interface'
+import { IWeb3Provider } from './IWeb3Provider'
 
-export class NodeStrategy implements WalletStrategy {
+export class NodeWeb3Provider implements IWeb3Provider {
   constructor() {
     // noop
   }
