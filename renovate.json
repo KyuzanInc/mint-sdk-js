@@ -1,23 +1,4 @@
 {
-  "extends": ["config:base", "group:allNonMajor"],
-  "vulnerabilityAlerts": {
-    "labels": ["security"]
-  },
-  "timezone": "Asia/Tokyo",
-  "schedule": ["before 3am on Monday"],
-  "labels": ["dependencies"],
-  "packageRules": [
-    {
-      "matchPackagePatterns": ["eslint"],
-      "labels": ["linting"]
-    },
-    {
-      "matchPackagePatterns": ["@types"],
-      "labels": ["@types"]
-    },
-    {
-      "matchPackagePatterns": ["jest"],
-      "labels": ["testing"]
-    }
-  ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>KyuzanInc/renovate-config"]
 }

@@ -1,15 +1,16 @@
 {
   "name": "@kyuzan/mint-sdk-js",
   "description": "Mint NFT Platform Client SDK",
-  "version": "6.0.8",
+  "version": "7.0.0-alpha.3",
   "dependencies": {
     "@emotion/babel-plugin": "^11.3.0",
+    "@toruslabs/torus-embed": "^1.20.2",
     "agentkeepalive": "^4.1.4",
     "axios": "^0.25.0",
     "eth-sig-util": "^3.0.1",
     "ethers": "^5.0.31",
-    "fortmatic": "^2.2.1",
-    "qs": "^6.10.1"
+    "qs": "^6.10.1",
+    "web3modal": "^1.9.5"
   },
   "devDependencies": {
     "@types/jest": "27.4.0",
@@ -20,6 +21,7 @@
     "esbuild": "0.14.13",
     "eslint": "8.7.0",
     "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "^2.25.4",
     "jest": "27.4.7",
     "npm-run-all": "4.1.5",
     "prettier": "2.5.1",
@@ -38,8 +40,6 @@
   },
   "scripts": {
     "dev": "run-p watch:*",
-    "doc:deploy": "cd ./docs && npm run deploy",
-    "doc:serve": "cd ./docs && npm run start",
     "build:develop": "npm run clean && tsc",
     "build:production": "npm run clean && npm run type:check && tsc",
     "clean": "rimraf lib",
