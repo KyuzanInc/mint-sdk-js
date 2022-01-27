@@ -1,11 +1,8 @@
 import { ethers } from 'ethers'
 import Web3Modal, { IProviderOptions } from 'web3modal'
-// eslint-disable-next-line import/no-unresolved
-import { IFortmaticConnectorOptions } from 'web3modal/dist/providers/connectors/fortmatic'
 import { WalletSetting } from '..'
 import { IWeb3Provider } from './IWeb3Provider'
 import {
-  FortmaticStrategy,
   IProviderStrategy,
   MetamaskStrategy,
   TorusStrategy,
@@ -30,7 +27,6 @@ export class BrowserWeb3Provider implements IWeb3Provider {
   }
 
   public async connectWallet() {
-    const { default: Fortmatic } = await import('fortmatic')
     const { default: Torus } = await import('@toruslabs/torus-embed')
     const providerOptions: IProviderOptions = {
       torus: this.walletSetting?.providers?.torus
@@ -44,15 +40,6 @@ export class BrowserWeb3Provider implements IWeb3Provider {
         : { package: Torus },
     }
 
-    if (this.walletSetting?.providers?.fortmatic) {
-      providerOptions['fortmatic'] = {
-        package: Fortmatic,
-        options: {
-          key: this.walletSetting?.providers?.fortmatic?.key, // required
-        } as IFortmaticConnectorOptions,
-      }
-    }
-
     this.web3Modal = new Web3Modal({
       providerOptions,
       cacheProvider:
@@ -60,19 +47,14 @@ export class BrowserWeb3Provider implements IWeb3Provider {
       theme: this.walletSetting?.selectWalletModal?.theme ?? 'light',
     })
     const provider = await this.web3Modal.connect()
-    if (provider.fm) {
-      // Selected Fortmatic
-      // ref: https://github.com/Web3Modal/web3modal/blob/master/docs/providers/fortmatic.md
-      this.providerStrategy = new FortmaticStrategy(provider.fm)
-    } else if (provider.torus) {
-      // Selected Fortmatic
+    if (provider.torus) {
+      // Selected Torus
       // ref: https://github.com/Web3Modal/web3modal/blob/master/docs/providers/torus.md
       this.providerStrategy = new TorusStrategy(provider.torus)
     } else {
       // Selected Injected
       this.providerStrategy = new MetamaskStrategy()
     }
-    console.log(provider)
 
     // Events compatible with EIP-1193 standard.
     // Subscribe to accounts change

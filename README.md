@@ -48,7 +48,6 @@ You just need to add in your project:
 
 [x] MetaMask
 [x] Torus
-[x] Fortmatic
 [ ] WalletConnect
 [ ] Portis
 [ ] Authereum

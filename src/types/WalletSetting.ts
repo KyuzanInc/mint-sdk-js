@@ -14,8 +14,5 @@ export type WalletSetting = {
       display?: Partial<IProviderDisplay>
       options?: IOptions
     }
-    fortmatic?: {
-      key: string
-    }
   }
 }
