@@ -1,7 +1,7 @@
 {
   "name": "@kyuzan/mint-sdk-js",
   "description": "Mint NFT Platform Client SDK",
-  "version": "7.0.0-alpha.3",
+  "version": "7.0.0",
   "dependencies": {
     "@emotion/babel-plugin": "^11.3.0",
     "@toruslabs/torus-embed": "^1.20.2",
