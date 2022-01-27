@@ -13,12 +13,6 @@ import {
 } from './apiClient/api'
 import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
 import { WrongNetworkError } from './Errors'
-import {
-  FortmaticStrategy,
-  MetamaskStrategy,
-  NodeStrategy,
-  WalletStrategy,
-} from './strategies'
 import { BigNumber } from './types/BigNumber'
 import { CurrencyUnit } from './types/CurrencyUnit'
 import { ItemLog } from './types/ItemLog'
@@ -35,6 +29,9 @@ import { PaymentMethodData } from './types/v2/PaymentMethodData'
 import { PaymentMethod } from './types/v2/PaymentMethods'
 import { WalletInfo } from './types/WalletInfo'
 import { WalletSetting } from './types/WalletSetting'
+import { BrowserWeb3Provider } from './Web3Provider/BrowserWeb3Provider'
+import { IWeb3Provider } from './Web3Provider/IWeb3Provider'
+import { NodeWeb3Provider } from './Web3Provider/NodeWeb3Provider'
 
 export {
   Item,
@@ -46,18 +43,18 @@ export {
   Bid,
   WalletAddressProfile,
   Stripe,
+  WalletSetting,
+  WalletInfo,
+  WrongNetworkError,
+  CurrencyUnit,
+  NetworkId,
   // v1
   ItemLog,
   ItemTradeType,
   ItemsType,
   Residence,
-  NetworkId,
   BigNumber,
   Token,
-  WalletSetting,
-  WalletInfo,
-  WrongNetworkError,
-  CurrencyUnit,
 }
 
 export class MintSDK {
@@ -90,7 +87,7 @@ export class MintSDK {
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.connectWallet()  // required
    * const walletInfo = await sdk.getWalletInfo()
    * MintSDK.formatEther(walletInfo.balance) // 3.2
@@ -101,6 +98,72 @@ export class MintSDK {
   }
 
   /**
+   * Return OpenSea Page URL
+   *
+   * @param param.networkId
+   * @param param.contractAddress
+   * @param param.tokenId
+   * @returns string OpenSea URL
+   */
+  public static getOpenSeaURL = ({
+    networkId,
+    contractAddress,
+    tokenId,
+  }: {
+    networkId: NetworkId
+    contractAddress: string
+    tokenId: number
+  }) => {
+    if (networkId === 1) {
+      return `https://opensea.io/assets/${contractAddress}/${tokenId}`
+    }
+
+    if (networkId === 4) {
+      return `https://testnets.opensea.io/assets/${contractAddress}/${tokenId}`
+    }
+
+    if (networkId === 137) {
+      return `https://opensea.io/assets/matic/${contractAddress}/${tokenId}`
+    }
+
+    if (networkId === 80001) {
+      return `https://testnets.opensea.io/assets/matic/${contractAddress}/${tokenId}`
+    }
+
+    return ''
+  }
+
+  /**
+   * Return Etherscan Page URL
+   *
+   * @param param.networkId
+   * @param param.txHash
+   * @returns string URL
+   */
+  public static getTransactionURL = (arg: {
+    txHash: string
+    networkId: NetworkId
+  }) => {
+    if (arg.networkId === 1) {
+      return `https://etherscan.io/tx/${arg.txHash}`
+    }
+
+    if (arg.networkId === 4) {
+      return `https://rinkeby.etherscan.io/tx/${arg.txHash}`
+    }
+
+    if (arg.networkId === 137) {
+      return `https://explorer-mainnet.maticvigil.com/tx/${arg.txHash}`
+    }
+
+    if (arg.networkId === 80001) {
+      return `https://explorer-mumbai.maticvigil.com/tx/${arg.txHash}`
+    }
+
+    return ''
+  }
+
+  /**
    * @ignore
    */
   private apiClientV2: ReturnType<typeof DefaultApiFactoryV2>
@@ -108,17 +171,15 @@ export class MintSDK {
   /**
    * @ignore
    */
-  private walletStrategy: WalletStrategy
+  private web3Provider: IWeb3Provider
 
   /**
-   *
    * @param accessToken
-   * @param networkId アイテムのネットワークIDを指定
    * @param walletSetting
    */
   public constructor(
     private accessToken: string,
-    walletSetting: WalletSetting,
+    walletSetting?: WalletSetting,
     // for Developing SDK
     devOption?: {
       backendUrl?: string
@@ -126,11 +187,9 @@ export class MintSDK {
     }
   ) {
     if (typeof globalThis.window === 'undefined') {
-      this.walletStrategy = new NodeStrategy()
-    } else if (MetamaskStrategy.checkExistsWeb3ProviderInWindow()) {
-      this.walletStrategy = new MetamaskStrategy()
+      this.web3Provider = new NodeWeb3Provider()
     } else {
-      this.walletStrategy = new FortmaticStrategy(walletSetting, devOption)
+      this.web3Provider = new BrowserWeb3Provider(walletSetting ?? null)
     }
 
     const backendBaseUrl = devOption?.backendUrl ?? BACKEND_URL
@@ -147,54 +206,30 @@ export class MintSDK {
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.isWalletConnect()
    * ```
    */
   public isWalletConnect = async () => {
-    return await this.walletStrategy.isWalletConnect()
+    return await this.web3Provider.isWalletConnect()
   }
 
   /**
-   * ウォレットに接続
-   * MetamaskがインストールされているブラウザではMetamaskが、されていない場合はFortmaticに接続を行う
-   * ウォレットが接続されるとResolveされる
-   * ウォレット接続をキャンセルした場合は、Rejectされる
    *
    * Connects to a wallet.
-   * If Metamask is installed in the default browser, it will utilize Metamask, otherwise will use Fortmatic.
+   * MetaMask ans Torus are default provider. Others are optional.
    * If a wallet is connected, it will return Resolve, otherwise will return Reject.
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.isWalletConnect() // false
    * await sdk.connectWallet()
    * await sdk.isWalletConnect()  // true
    * ```
    */
   public connectWallet = async () => {
-    await this.walletStrategy.connectWallet()
-  }
-
-  /**
-   * ウォレットから切断
-   * Fortmaticの場合、切断される
-   * **MetaMaskが接続されている場合は何も実行されない**
-   *
-   * Disconnects the wallet.
-   * When utilizing Fortmatic, it disconnects from the service.
-   * When utilizing Metamask, **nothing will happen**.
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   *
-   * const sdk = await MintSDK.initialize(...)
-   * await sdk.disconnectWallet()
-   * ```
-   */
-  public disconnectWallet = async () => {
-    await this.walletStrategy.disconnectWallet()
+    await this.web3Provider.connectWallet()
   }
 
   /**
@@ -209,13 +244,13 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.connectWallet()  // required
    * await sdk.getWalletInfo()
    * ```
    */
   public getWalletInfo: () => Promise<WalletInfo> = async () => {
-    return await this.walletStrategy.getWalletInfo()
+    return await this.web3Provider.getWalletInfo()
   }
 
   /**
@@ -231,7 +266,7 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxBuyItem('item.itemId')
@@ -246,7 +281,7 @@ export class MintSDK {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
-    const wallet = this.walletStrategy.getProvider()
+    const wallet = this.web3Provider.getProvider()
     await wallet.waitForTransaction(txHash)
   }
 
@@ -263,7 +298,7 @@ export class MintSDK {
    * @returns
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    *
    * const items = await sdk.getItems(...)
    * ```
@@ -318,7 +353,7 @@ export class MintSDK {
    * @returns
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    *
    * const items = await sdk.getItemStockById(...)
    * ```
@@ -341,7 +376,7 @@ export class MintSDK {
    * @returns
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    *
    * const items = await sdk.getBoughtItemStocksByWalletAddress(...)
    * ```
@@ -375,7 +410,7 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * const item = await sdk.getItemsByBidderAddress('0x1111......')
    * ```
    */
@@ -415,7 +450,7 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * const item = await sdk.getItemById('item.id')
    * ```
    */
@@ -436,7 +471,7 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * const item = await sdk.getProductERC721ById('id')
    * ```
    */
@@ -483,7 +518,7 @@ export class MintSDK {
    * @returns
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    *
    * const items = await sdk.getContractERC721ById(...)
    * ```
@@ -512,7 +547,7 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxBid('item.itemId', 2)
@@ -537,7 +572,7 @@ export class MintSDK {
     }
 
     await this.validateNetworkForItem(resItem)
-    const wallet = this.walletStrategy.getProvider()
+    const wallet = this.web3Provider.getProvider()
     const signer = wallet.getSigner()
     const shopContract = new ethers.Contract(
       resItem.paymentMethodData.contractDataERC721Shop.contractAddress,
@@ -596,7 +631,7 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxMakeSuccessfulBid('item.itemId', 'jp')
@@ -625,7 +660,7 @@ export class MintSDK {
     }
 
     await this.validateNetworkForItem(resItem)
-    const wallet = this.walletStrategy.getProvider()
+    const wallet = this.web3Provider.getProvider()
     const signer = wallet.getSigner()
     const {
       data: {
@@ -667,7 +702,7 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.connectWallet() // required
    * try {
    *  const tx = await sdk.sendTxBuyItem('item.itemId', 'jp')
@@ -689,7 +724,7 @@ export class MintSDK {
 
     const item = await this.getItemById(itemId)
     await this.validateNetworkForItem(item)
-    const wallet = this.walletStrategy.getProvider()
+    const wallet = this.web3Provider.getProvider()
     const resItem = await this.getItemById(itemId)
     if (
       resItem.paymentMethodData.paymentMethod !==
@@ -779,6 +814,26 @@ export class MintSDK {
   }
 
   /**
+   * Open the connected wallet
+   *
+   * @param callback
+   * @returns void
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * sdk.openWallet()
+   * ```
+   */
+  public openWallet = async () => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    await this.web3Provider.openWallet()
+  }
+
+  /**
    * アカウントが変更された際に呼び出される関数を設定できる
    * Set a callback when the account has been changed.
    *
@@ -787,21 +842,21 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * sdk.onAccountsChange((accounts: string[]) => {
    *    // some thing
    * })
    * ```
    */
   public onAccountsChange = (callback: (accounts: string[]) => any) => {
-    this.walletStrategy.onAccountsChange(callback)
+    this.web3Provider.onAccountsChange(callback)
   }
 
   /**
    * @ignore
    */
   public offAccountsChange = (callback?: (accounts: string[]) => any) => {
-    this.walletStrategy.offAccountsChange(callback)
+    this.web3Provider.offAccountsChange(callback)
   }
 
   /**
@@ -813,21 +868,46 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * sdk.onConnect(() => {
    *    // some thing
    * })
    * ```
    */
   public onConnect = (callback: () => any) => {
-    this.walletStrategy.onConnect(callback)
+    this.web3Provider.onConnect(callback)
   }
 
   /**
    * @ignore
    */
   public offConnect = (callback?: () => any) => {
-    this.walletStrategy.offConnect(callback)
+    this.web3Provider.offConnect(callback)
+  }
+
+  /**
+   * Set a callback when the connected chain is change.
+   *
+   * @param callback
+   * @returns void
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * sdk.onChainChangeConnect(() => {
+   *    // some thing
+   * })
+   * ```
+   */
+  public onChainChange = (callback: (chainId: number) => any) => {
+    this.web3Provider.onChainChange(callback)
+  }
+
+  /**
+   * @ignore
+   */
+  public offChainChange = (callback?: (chainId: number) => any) => {
+    this.web3Provider.offChainChange(callback)
   }
 
   /**
@@ -839,40 +919,22 @@ export class MintSDK {
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   * const sdk = await MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * sdk.onDisconnect(() => {
    *    // some thing
    * })
    * ```
    */
   public onDisconnect = (callback: () => any) => {
-    this.walletStrategy.onDisconnect(callback)
+    this.web3Provider.onDisconnect(callback)
   }
 
   /**
    * @ignore
    */
   public offDisconnect = (callback?: () => any) => {
-    this.walletStrategy.offDisconnect(callback)
+    this.web3Provider.offDisconnect(callback)
   }
-
-  /**
-   * サーバーのUnixタイムを取得
-   *
-   * @returns unix time (ms)
-   *
-   * ```typescript
-   * import { MintSDK } from '@kyuzan/mint-sdk-js'
-   *
-   * const sdk = MintSDK.initialize(...)
-   * await sdk.connectWallet()
-   * await sdk.getServerUnixTime()  // ex) 1615444120104
-   * ```
-   */
-  // public getServerUnixTime = async () => {
-  //   const { data } = await this.axios.get<AxiosBody<number>>('serverSideTime')
-  //   return data.data
-  // }
 
   /**
    * MetaMaskかどうかを判定
@@ -883,7 +945,7 @@ export class MintSDK {
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.isInjectedWallet() // true
    * ```
    */
@@ -900,13 +962,13 @@ export class MintSDK {
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.connectWallet()
    * await sdk.getConnectedNetworkId()
    * ```
    */
   public getConnectedNetworkId = async () => {
-    return await this.walletStrategy.getConnectedNetworkId()
+    return await this.web3Provider.getConnectedNetworkId()
   }
 
   /**
@@ -918,7 +980,7 @@ export class MintSDK {
     }
     return new Promise<string>((resolve, reject) => {
       const msgParams = JSON.stringify(arg.msgParams)
-      const wallet = this.walletStrategy.getProvider()
+      const wallet = this.web3Provider.getProvider()
       wallet
         .getSigner()
         .getAddress()
@@ -955,7 +1017,7 @@ export class MintSDK {
    * ``` typesctipt
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * const arg = {
    *  domain: {name: "Member"},
    *  types: {Person: [ { name: 'name', type: 'string'}]},
@@ -974,7 +1036,7 @@ export class MintSDK {
       throw new Error('Wallet is not connected')
     }
 
-    const wallet = await this.walletStrategy.getProvider()
+    const wallet = await this.web3Provider.getProvider()
 
     const signature = await wallet
       .getSigner()
@@ -1005,7 +1067,7 @@ export class MintSDK {
    * ``` typesctipt
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * const { address } = await this.getWalletInfo()
    * const { data, sig } = await sdk.signTypedData(arg)
    * const recoverdAddress = MintSDK.recoverdSignData({data, sig})
@@ -1055,12 +1117,16 @@ export class MintSDK {
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.connectWallet()
    * await sdk.addEthereumChain(137)
    * ```
    */
   public addEthereumChain = async (networkId: 137 | 80001) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
     type AddEthereumChainParameter = {
       chainId: string // A 0x-prefixed hexadecimal string
       chainName: string
@@ -1100,11 +1166,10 @@ export class MintSDK {
         blockExplorerUrls: ['https://explorer-mumbai.maticvigil.com/'],
       },
     }
-    // TODO: Fortmaticだとシカとか、適切なエラーを投げてやればいい
-    await (window as any).ethereum.request({
-      method: 'wallet_addEthereumChain',
-      params: [NETWORK_ID_MAP_CHAIN_PARAMETER[networkId]], // you must have access to the specified account
-    })
+    await this.web3Provider.getProvider().send(
+      'wallet_addEthereumChain',
+      [NETWORK_ID_MAP_CHAIN_PARAMETER[networkId]] // you must have access to the specified account
+    )
   }
 
   /**
@@ -1135,7 +1200,7 @@ export class MintSDK {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
-    const wallet = this.walletStrategy.getProvider()
+    const wallet = this.web3Provider.getProvider()
     const signer = await wallet.getSigner()
     const profile = {
       walletAddress: await signer.getAddress(),
@@ -1190,7 +1255,7 @@ export class MintSDK {
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
-   * const sdk = MintSDK.initialize(...)
+   * const sdk = new MintSDK(...)
    * await sdk.connectWallet()
    * const accountInfo = await sdk.getAccountInfo({ walletAddress: '0xxxxxxxx' })
    * ```

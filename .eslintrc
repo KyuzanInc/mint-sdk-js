@@ -4,7 +4,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    // Uncomment the following lines to enable eslint-config-prettier
+    "plugin:import/recommended",
+    "plugin:import/typescript",
     "prettier"
   ],
   "env": {
@@ -31,6 +32,14 @@
       2,
       {
         "argsIgnorePattern": "^_"
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": { "order": "asc", "caseInsensitive": true } // 大文字小文字関係なくアルファベット順にしたい
       }
     ]
   }

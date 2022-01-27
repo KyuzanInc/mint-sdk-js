@@ -1,6 +1,6 @@
-import { WalletStrategy } from './interface'
+import { IWeb3Provider } from './IWeb3Provider'
 
-export class NodeStrategy implements WalletStrategy {
+export class NodeWeb3Provider implements IWeb3Provider {
   constructor() {
     // noop
   }
@@ -35,11 +35,16 @@ export class NodeStrategy implements WalletStrategy {
     return null as never
   }
 
-  onConnect(_callback: () => any) {
+  async openWallet() {
+    throw new Error('this method should not call in node context')
+    return null as never
+  }
+
+  onConnect(_callback: (info: { chainId: number }) => any) {
     // noop
   }
 
-  offConnect(_callback?: () => any) {
+  offConnect(_callback?: (info: { chainId: number }) => any) {
     // noop
   }
 
@@ -51,11 +56,19 @@ export class NodeStrategy implements WalletStrategy {
     // noop
   }
 
-  onDisconnect(_callback: () => any) {
+  onDisconnect(_callback: (error: { code: number; message: string }) => any) {
     // noop
   }
 
-  offDisconnect(_callback?: () => any) {
+  offDisconnect(_callback?: (error: { code: number; message: string }) => any) {
+    // noop
+  }
+
+  onChainChange(_callback: (chainId: number) => any) {
+    // noop
+  }
+
+  offChainChange(_callback: (chainId: number) => any) {
     // noop
   }
 }

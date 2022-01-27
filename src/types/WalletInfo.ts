@@ -1,5 +1,5 @@
-import { CurrencyUnit } from './CurrencyUnit'
 import { BigNumber } from './BigNumber'
+import { CurrencyUnit } from './CurrencyUnit'
 
 export type WalletInfo = {
   address: string

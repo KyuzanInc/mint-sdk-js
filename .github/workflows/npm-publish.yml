@@ -2,18 +2,34 @@ name: npm-publish
 
 on:
   workflow_dispatch:
+    inputs:
+      newversion:
+        description: 'Semantic Version Bump Type (`major` or `minor` or `patch`)'
+        required: true
 jobs:
   npm-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # npm に公開するように .npmrc ファイルを設定する
       - uses: actions/setup-node@v2
         with:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm install
-      - run: npm run build:production
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: npm i
+        run: npm ci
+      - name: npm run lint:check
+        run: npm run lint:check
+      - name: npm run type:check
+        run: npm run type:check
+      - name: npm run format:check
+        run: npm run format:check
+      - name: npm run format:check
+        run: npm run build:production
+      - name: Version and publish to npm
+        uses: bcomnes/npm-bump@v2.0.2
+        with:
+          git_email: ci@kyuzan.com
+          git_username: ${{ github.actor }}
+          newversion: ${{ github.event.inputs.newversion }}
+          push_version_commit: true # if your prePublishOnly step pushes git commits, you can omit this input or set it to false.
+          npm_token: ${{ secrets.NPM_TOKEN }} # user set secret token generated at npm
