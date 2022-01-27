@@ -1012,6 +1012,10 @@ export class MintSDK {
    * ```
    */
   public addEthereumChain = async (networkId: 137 | 80001) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
     type AddEthereumChainParameter = {
       chainId: string // A 0x-prefixed hexadecimal string
       chainName: string
@@ -1051,11 +1055,10 @@ export class MintSDK {
         blockExplorerUrls: ['https://explorer-mumbai.maticvigil.com/'],
       },
     }
-    // TODO: Fortmaticだとシカとか、適切なエラーを投げてやればいい
-    await (window as any).ethereum.request({
-      method: 'wallet_addEthereumChain',
-      params: [NETWORK_ID_MAP_CHAIN_PARAMETER[networkId]], // you must have access to the specified account
-    })
+    await this.web3Provider.getProvider().send(
+      'wallet_addEthereumChain',
+      [NETWORK_ID_MAP_CHAIN_PARAMETER[networkId]] // you must have access to the specified account
+    )
   }
 
   /**
