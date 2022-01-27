@@ -94,9 +94,71 @@ export class MintSDK {
     return ethers.utils.formatEther(bg)
   }
 
-  // TODO: CreateOpenSeaLink
-  // TODO: CreateIPFS Link
-  // TODO: Create etherscan Link
+  /**
+   * Return OpenSea Page URL
+   *
+   * @param param.networkId
+   * @param param.contractAddress
+   * @param param.tokenId
+   * @returns string OpenSea URL
+   */
+  public static getOpenSeaURL = ({
+    networkId,
+    contractAddress,
+    tokenId,
+  }: {
+    networkId: NetworkId
+    contractAddress: string
+    tokenId: number
+  }) => {
+    if (networkId === 1) {
+      return `https://opensea.io/assets/${contractAddress}/${tokenId}`
+    }
+
+    if (networkId === 4) {
+      return `https://testnets.opensea.io/assets/${contractAddress}/${tokenId}`
+    }
+
+    if (networkId === 137) {
+      return `https://opensea.io/assets/matic/${contractAddress}/${tokenId}`
+    }
+
+    if (networkId === 80001) {
+      return `https://testnets.opensea.io/assets/matic/${contractAddress}/${tokenId}`
+    }
+
+    return ''
+  }
+
+  /**
+   * Return Etherscan Page URL
+   *
+   * @param param.networkId
+   * @param param.txHash
+   * @returns string URL
+   */
+  public static getTransactionURL = (arg: {
+    txHash: string
+    networkId: NetworkId
+  }) => {
+    if (arg.networkId === 1) {
+      return `https://etherscan.io/tx/${arg.txHash}`
+    }
+
+    if (arg.networkId === 4) {
+      return `https://rinkeby.etherscan.io/tx/${arg.txHash}`
+    }
+
+    if (arg.networkId === 137) {
+      return `https://explorer-mainnet.maticvigil.com/tx/${arg.txHash}`
+    }
+
+    if (arg.networkId === 80001) {
+      return `https://explorer-mumbai.maticvigil.com/tx/${arg.txHash}`
+    }
+
+    return ''
+  }
 
   /**
    * @ignore
