@@ -1,9 +1,9 @@
 import {
   ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice,
   ItemPaymentMethodDataEthereumContractERC721ShopAuction,
-  ItemPaymentMethodDataCreditCardStripeFixedPrice,
   ContractDataERC721Shop,
 } from '../../apiClient/api'
+import { CreditCardStripeCurrencyType } from './CreditCardStripeCurrencyType'
 
 export type PaymentMethodData =
   | ({
@@ -19,6 +19,7 @@ export type PaymentMethodData =
       ItemPaymentMethodDataEthereumContractERC721ShopAuction,
       'paymentMethod'
     >)
-  | ({
+  | {
       paymentMethod: 'credit-card-stripe-fixed-price'
-    } & Omit<ItemPaymentMethodDataCreditCardStripeFixedPrice, 'paymentMethod'>)
+      currency: CreditCardStripeCurrencyType
+    }

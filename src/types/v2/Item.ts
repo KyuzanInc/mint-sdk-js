@@ -5,9 +5,9 @@ import { PaymentMethodData } from './PaymentMethodData'
 
 export type Item = Omit<
   APIItem,
-  'paymentMethodData' | 'type' | 'cryptoCurrency'
+  'paymentMethodData' | 'type' | 'cryptoCurrencyRate'
 > & {
   type: ItemType
   paymentMethodData: PaymentMethodData
-  cryptoCurrency: CryptoCurrencyRate
+  cryptoCurrencyRate: CryptoCurrencyRate
 }
