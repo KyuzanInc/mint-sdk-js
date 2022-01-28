@@ -48,6 +48,7 @@ export {
   WrongNetworkError,
   CurrencyUnit,
   NetworkId,
+  ContractERC721,
   // v1
   ItemLog,
   ItemTradeType,
