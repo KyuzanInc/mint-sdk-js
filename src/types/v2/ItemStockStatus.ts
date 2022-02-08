@@ -1,3 +1,3 @@
-import { ItemStockStatus as APIItemStockStatus } from './../../apiClientV2/api'
+import { ItemStockStatus as APIItemStockStatus } from '../../apiClient/api'
 
 export type ItemStockStatus = `${APIItemStockStatus}`

@@ -1,3 +1,3 @@
-import { ChainType as APIChainType } from './../../apiClientV2/api'
+import { ChainType as APIChainType } from '../../apiClient/api'
 
 export type ChainType = `${APIChainType}`

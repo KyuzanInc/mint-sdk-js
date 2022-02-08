@@ -1,4 +1,4 @@
-import { ItemStock as APIItemStock } from '../../apiClientV2/api'
+import { ItemStock as APIItemStock } from '../../apiClient/api'
 import { Item } from './Item'
 import { ItemStockStatus } from './ItemStockStatus'
 

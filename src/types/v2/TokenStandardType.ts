@@ -1,3 +1,3 @@
-import { TokenStandardType as APITokenStandardType } from './../../apiClientV2/api'
+import { TokenStandardType as APITokenStandardType } from '../../apiClient/api'
 
 export type TokenStandardType = `${APITokenStandardType}`

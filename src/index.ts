@@ -1,4 +1,5 @@
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
+import { loadStripe, Stripe } from '@stripe/stripe-js'
 import Axios from 'axios'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import * as ethers from 'ethers'
@@ -8,7 +9,8 @@ import {
   SignatureType,
   TokenERC721,
   WalletAddressProfile,
-} from './apiClientV2/api'
+  InlineObject1UserResidenceEnum,
+} from './apiClient/api'
 import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
 import { WrongNetworkError } from './Errors'
 import { BigNumber } from './types/BigNumber'
@@ -40,11 +42,13 @@ export {
   TokenERC721,
   Bid,
   WalletAddressProfile,
+  Stripe,
   WalletSetting,
   WalletInfo,
   WrongNetworkError,
   CurrencyUnit,
   NetworkId,
+  ContractERC721,
   // v1
   ItemLog,
   ItemTradeType,
@@ -762,6 +766,52 @@ export class MintSDK {
       value: price,
     })) as ethers.providers.TransactionResponse
     return tx
+  }
+
+  /**
+   * 指定したItemをtoAddressが購入する処理を行う
+   * この関数は、Stripeの[PaymentIntent](https://stripe.com/docs/api/payment_intents/object)を初期化するための `clientSecret` と、
+   * Mintバックエンドと対応するAPIキーで初期化された{@link Stripe}を返す。
+   * {@link Stripe}を使いユーザーにクレカ情報入力UIを実装し表示する
+   *
+   * @param itemId 購入する{@link Item}のitemId
+   * @param toAddress
+   * @param userResidence {@link Residence} 購入者の居住地を指定する
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = await MintSDK.initialize(...)
+   * await sdk.connectWallet() // required
+   * const {
+   *  paymentIntentClientSecret,
+   *  stripe,
+   * } = await sdk.createStripePaymentIntent({itemId: 'item.itemId', toAddress: '0x000', residence: 'jp'})
+   *
+   * // Implement UI
+   */
+  public createStripePaymentIntent = async (arg: {
+    itemId: string
+    toAddress: string
+    residence: Residence
+  }) => {
+    // keyをKyuzanで発行管理したものを使いたいので内部でStripeのインスタンスを生成している
+    const { data } = await this.apiClientV2.createStripePaymentIntent(
+      this.accessToken,
+      {
+        itemId: arg.itemId,
+        toAddress: arg.toAddress,
+        userResidence:
+          arg.residence === 'jp'
+            ? InlineObject1UserResidenceEnum.Jp
+            : InlineObject1UserResidenceEnum.Unknown,
+      }
+    )
+    const stripe = await loadStripe(data.publishableKey)
+    return {
+      paymentIntentClientSecret: data.secret,
+      stripe,
+    }
   }
 
   /**
