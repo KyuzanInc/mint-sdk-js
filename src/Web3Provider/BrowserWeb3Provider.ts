@@ -6,6 +6,7 @@ import {
   IProviderStrategy,
   MetamaskStrategy,
   TorusStrategy,
+  WalletConnectStrategy,
 } from './strategies'
 
 export class BrowserWeb3Provider implements IWeb3Provider {
@@ -28,6 +29,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
 
   public async connectWallet() {
     const { default: Torus } = await import('@toruslabs/torus-embed')
+    const { default: WC } = await import('@walletconnect/web3-provider')
     const providerOptions: IProviderOptions = {
       torus: this.walletSetting?.providers?.torus
         ? {
@@ -38,6 +40,16 @@ export class BrowserWeb3Provider implements IWeb3Provider {
             },
           }
         : { package: Torus },
+      walletconnect: {
+        package: WC,
+        options: {
+          infuraId: 'INFURA_ID', // required
+          rpc: {
+            137: 'https://rpc-mainnet.matic.network',
+            80001: 'https://rpc-mumbai.matic.today',
+          },
+        },
+      },
     }
 
     this.web3Modal = new Web3Modal({
@@ -51,6 +63,8 @@ export class BrowserWeb3Provider implements IWeb3Provider {
       // Selected Torus
       // ref: https://github.com/Web3Modal/web3modal/blob/master/docs/providers/torus.md
       this.providerStrategy = new TorusStrategy(provider.torus)
+    } else if (provider.wc) {
+      this.providerStrategy = new WalletConnectStrategy(provider.wc)
     } else {
       // Selected Injected
       this.providerStrategy = new MetamaskStrategy()
