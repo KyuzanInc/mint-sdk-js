@@ -833,6 +833,20 @@ export class MintSDK {
     }
   }
 
+  public createContractInstance = async (
+    addressOrName: ConstructorParameters<typeof ethers.Contract>[0],
+    contractInterface: ConstructorParameters<typeof ethers.Contract>[1]
+  ) => {
+    const isConnect = await this.isWalletConnect()
+
+    const wallet = this.web3Provider.getProvider()
+    return new ethers.Contract(
+      addressOrName,
+      contractInterface,
+      isConnect ? wallet.getSigner() : undefined
+    )
+  }
+
   /**
    * Open the connected wallet
    *
