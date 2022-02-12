@@ -255,6 +255,25 @@ export class MintSDK {
   }
 
   /**
+   * 接続されているProviderを返します
+   *
+   * **Required**
+   * - Requires the wallet to be connected.
+   *
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * await sdk.connectWallet()  // required
+   * await sdk.getProvider()
+   * ```
+   */
+  public getConnectedProvider = async () => {
+    return this.web3Provider.getProvider()
+  }
+
+  /**
    * Transactionが成功するとResolveするPromiseを返します
    * When the transaction is successful, it returns a Resolve.
    *
