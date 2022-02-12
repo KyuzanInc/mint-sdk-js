@@ -835,7 +835,8 @@ export class MintSDK {
 
   public createContractInstance = async (
     addressOrName: ConstructorParameters<typeof ethers.Contract>[0],
-    contractInterface: ConstructorParameters<typeof ethers.Contract>[1]
+    contractInterface: ConstructorParameters<typeof ethers.Contract>[1],
+    signerOrProvider: ConstructorParameters<typeof ethers.Contract>[2]
   ) => {
     const isConnect = await this.isWalletConnect()
 
@@ -843,7 +844,11 @@ export class MintSDK {
     return new ethers.Contract(
       addressOrName,
       contractInterface,
-      isConnect ? wallet.getSigner() : undefined
+      signerOrProvider
+        ? signerOrProvider
+        : isConnect
+        ? wallet.getSigner()
+        : undefined
     )
   }
 
