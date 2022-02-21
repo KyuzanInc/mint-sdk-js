@@ -459,6 +459,12 @@ export interface InlineResponse20013 {
      */
     publishableKey: string;
     /**
+     * StripeのCONNECTED_STRIPE_ACCOUNT_ID
+     * @type {string}
+     * @memberof InlineResponse20013
+     */
+    stripeAccount?: string;
+    /**
      * StripeのPaymentIntentのClientSecret
      * @type {string}
      * @memberof InlineResponse20013

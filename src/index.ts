@@ -826,7 +826,8 @@ export class MintSDK {
             : InlineObject1UserResidenceEnum.Unknown,
       }
     )
-    const stripe = await loadStripe(data.publishableKey)
+    // https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#set-up-stripe-elements
+    const stripe = await loadStripe(data.publishableKey, { stripeAccount: data.stripeAccount })
     return {
       paymentIntentClientSecret: data.secret,
       stripe,
