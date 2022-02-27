@@ -14,7 +14,7 @@
     "web3modal": "^1.9.5"
   },
   "devDependencies": {
-    "@types/jest": "27.4.0",
+    "@types/jest": "27.4.1",
     "@types/node": "16.11.24",
     "@types/qs": "6.9.7",
     "@typescript-eslint/eslint-plugin": "5.11.0",
