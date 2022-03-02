@@ -21,6 +21,7 @@ import { ItemTradeType } from './types/ItemTradeType'
 import { NetworkId } from './types/NetworkId'
 import { Residence } from './types/Residence'
 import { Token } from './types/Token'
+import { AccountInfo } from './types/v2/AccountInfo'
 import { ContractERC721 } from './types/v2/ContractERC721'
 import { Item } from './types/v2/Item'
 import { ItemStock } from './types/v2/ItemStock'
@@ -34,6 +35,7 @@ import { IWeb3Provider } from './Web3Provider/IWeb3Provider'
 import { NodeWeb3Provider } from './Web3Provider/NodeWeb3Provider'
 
 export {
+  AccountInfo,
   Item,
   PaymentMethodData,
   PaymentMethod,
