@@ -1367,8 +1367,8 @@ export class MintSDK {
       signer
     )
 
-    return (await shopContract[arg.methodName]({
-      ...arg.contractMethodArgs,
-    })) as ethers.providers.TransactionResponse
+    return (await shopContract[arg.methodName](
+      ...arg.contractMethodArgs
+    )) as ethers.providers.TransactionResponse
   }
 }
