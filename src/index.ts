@@ -1319,7 +1319,7 @@ export class MintSDK {
   /**
    * Request payment intent for user.
    *
-   * @returns If the call is successful, wallet pop-up with the right 
+   * @returns If the call is successful, wallet pop-up with the right
    * payment intent data will be shown
    *
    * Parameters:
@@ -1328,13 +1328,13 @@ export class MintSDK {
    * methodName: the name of method to be invoked
    * abi: the contract interface
    * contractMethodArgs: argument that will be passed to the `methodName` method
-   * 
-   * 
+   *
+   *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = new MintSDK(...)
-   * await sdk.requestPaymentWithPaymentIntent({ 
+   * await sdk.requestPaymentWithPaymentIntent({
    *  contractAddress: '0xxxxx',
    *  networkId: 1,
    *  methodName: 'confirmPayment',
@@ -1367,6 +1367,8 @@ export class MintSDK {
       signer
     )
 
-    return (await shopContract[arg.methodName]({ ...arg.contractMethodArgs })) as ethers.providers.TransactionResponse
+    return (await shopContract[arg.methodName]({
+      ...arg.contractMethodArgs,
+    })) as ethers.providers.TransactionResponse
   }
 }
