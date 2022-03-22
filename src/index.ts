@@ -1315,4 +1315,58 @@ export class MintSDK {
       avatarImageUrl: response.data.data.avatarImageUrl,
     }
   }
+
+  /**
+   * Request payment intent for user.
+   *
+   * @returns If the call is successful, wallet pop-up with the right 
+   * payment intent data will be shown
+   *
+   * Parameters:
+   * contractAddress: address where the contract is deployed
+   * networkId: network of the contract
+   * methodName: the name of method to be invoked
+   * abi: the contract interface
+   * contractMethodArgs: argument that will be passed to the `methodName` method
+   * 
+   * 
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.requestPaymentWithPaymentIntent({ 
+   *  contractAddress: '0xxxxx',
+   *  networkId: 1,
+   *  methodName: 'confirmPayment',
+   *  abi: '[{"type":"function","inputs":[{"type":"string","name":"symbol"},...],...},...]',
+   *  contractMethodArgs: ["someAddress", "10", "ETH",...]
+   * })
+   * ```
+   */
+  public requestPaymentWithPaymentIntent = async (arg: {
+    contractAddress: string
+    networkId: NetworkId
+    methodName: string // confirmPayment from the contract
+    abi: string // Application Binary Interface -
+    contractMethodArgs: any[]
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const currentNetwork = await this.getConnectedNetworkId()
+    if (currentNetwork !== arg.networkId) {
+      throw new WrongNetworkError('Network is not correct')
+    }
+
+    const wallet = this.web3Provider.getProvider()
+    const signer = wallet.getSigner()
+    const shopContract = new ethers.Contract(
+      arg.contractAddress,
+      JSON.parse(arg.abi),
+      signer
+    )
+
+    return (await shopContract[arg.methodName]({ ...arg.contractMethodArgs })) as ethers.providers.TransactionResponse
+  }
 }
