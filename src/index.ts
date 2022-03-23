@@ -1371,4 +1371,45 @@ export class MintSDK {
       ...arg.contractMethodArgs
     )) as ethers.providers.TransactionResponse
   }
+
+  /**
+   * Request payment intent for user.
+   *
+   * @returns If the call is successful, wallet pop-up with the right
+   * payment intent data will be shown
+   *
+   * Parameters:
+   * paymentIntentId: payment intent id
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.requestPaymentWithPaymentIntentId('assdfUD1F234sdf1')
+   * ```
+   */
+  public requestPaymentWithPaymentIntentId = async (
+    paymentIntentId: string
+  ) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const paymentIntentResponse = await this.apiClientV2.getPaymentIntentById(
+      this.accessToken,
+      paymentIntentId
+    )
+
+    if (paymentIntentResponse.data.data === null) {
+      return
+    }
+
+    const paymentIntent = paymentIntentResponse.data.data
+    const contractMethodResource = paymentIntent.contractMethodResource
+
+    return (await this.requestPaymentWithPaymentIntent({
+      ...contractMethodResource,
+      contractMethodArgs: contractMethodResource.args,
+    })) as ethers.providers.TransactionResponse
+  }
 }
