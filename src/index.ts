@@ -1412,4 +1412,37 @@ export class MintSDK {
       contractMethodArgs: contractMethodResource.args,
     })) as ethers.providers.TransactionResponse
   }
+
+  /**
+   * Returns whether the contract has nft
+   *
+   * @returns Returns true if the contract has an nft associated with it, or false if it doesn't
+   *
+   * Parameters:
+   * walletAddress: owner's wallet address
+   * contractAddress: target contract address
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * const hasNft = await sdk.hasNfts('your wallet address', 'contract address')
+   * if(hasNft) {
+   *  console.log('you have an NFT in this contract')
+   * }
+   * ```
+   */
+  public hasNfts = async (walletAddress: string, contractAddress: string) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const response = await this.apiClientV2.hasNfts(
+      this.accessToken,
+      walletAddress,
+      contractAddress
+    )
+    const hasNft = response.data.data
+
+    return hasNft
+  }
 }
