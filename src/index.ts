@@ -1416,7 +1416,7 @@ export class MintSDK {
   /**
    * get item by tokenERC721
    *
-   * @return　If the token has been bought or sold in the store, the item information is returned.
+   * @return If the token has been bought or sold in the store, the item information is returned.
    * If the token has not been bought or sold (e.g. a direct gift to the wallet), null is returned.
    *
    * @param arg
