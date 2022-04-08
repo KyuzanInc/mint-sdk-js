@@ -1412,4 +1412,43 @@ export class MintSDK {
       contractMethodArgs: contractMethodResource.args,
     })) as ethers.providers.TransactionResponse
   }
+
+  /**
+   * get item by tokenERC721
+   *
+   * @return　If the token has been bought or sold in the store, the item information is returned.
+   * If the token has not been bought or sold (e.g. a direct gift to the wallet), null is returned.
+   *
+   * @param arg
+   * tokenId: id of the token from which the item is to be retrieved
+   * contractAddress: address of the contract where the token is deployed
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * const item = await sdk.getItemByTokenERC721({
+   *  tokenId: '0xxxxx',
+   *  contractAddress: '0xxxxx'
+   * })
+   *
+   */
+
+  public getItemByTokenERC721 = async (arg: {
+    tokenId: string
+    contractAddress: string
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const response = await this.apiClientV2.getItemByTokenERC721(
+      this.accessToken,
+      arg.tokenId,
+      arg.contractAddress
+    )
+
+    const item = response.data.data
+    return item
+  }
 }
