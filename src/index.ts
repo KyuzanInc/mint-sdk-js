@@ -1421,31 +1421,25 @@ export class MintSDK {
    *
    * @param arg
    * tokenId: id of the token from which the item is to be retrieved
-   * contractAddress: address of the contract where the token is deployed
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    *
    * const sdk = new MintSDK(...)
    * const item = await sdk.getItemByTokenERC721({
-   *  tokenId: '0xxxxx',
-   *  contractAddress: '0xxxxx'
+   *  tokenId: token.id,
    * })
    *
    */
 
-  public getItemByTokenERC721 = async (arg: {
-    tokenId: string
-    contractAddress: string
-  }) => {
+  public getItemByTokenERC721 = async (arg: { tokenId: string }) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
 
     const response = await this.apiClientV2.getItemByTokenERC721(
       this.accessToken,
-      arg.tokenId,
-      arg.contractAddress
+      arg.tokenId
     )
 
     const item = response.data.data
