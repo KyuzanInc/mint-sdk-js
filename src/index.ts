@@ -1445,4 +1445,33 @@ export class MintSDK {
     const item = response.data.data
     return item
   }
+
+  /**
+   * Get shipping info status of given item stock id
+   *
+   * @returns shipping info status (one of 'shipping-address-not-registered' or 'shipping-address-registered' or 'shipped')
+   *
+   * Parameters:
+   * itemStockId: stock item id
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.getShippingInfoStatus('assdfUD1F234sdf1')
+   * ```
+   */
+  public getShippingInfoStatus = async (itemStockId: string) => {
+    const paymentIntentResponse =
+      await this.apiClientV2.getItemStockPhysicalShippingInfoStatusByItemStockId(
+        this.accessToken,
+        itemStockId
+      )
+
+    if (paymentIntentResponse.data.data === null) {
+      return
+    }
+
+    return paymentIntentResponse.data.data
+  }
 }
