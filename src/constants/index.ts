@@ -13,3 +13,20 @@ export const PROFILE_TYPES = {
     { name: 'homepageUrl', type: 'string' },
   ],
 }
+
+export const GET_SHIPPING_INFO_DOMAIN = {
+  name: 'Get Shipping Info',
+  version: '1',
+}
+export const GET_SHIPPING_INFO_TYPES = {
+  WalletAddress: [
+    {
+      name: 'walletAddress',
+      type: 'string',
+    },
+    {
+      name: 'requestTimestamp',
+      type: 'uint256',
+    },
+  ],
+}

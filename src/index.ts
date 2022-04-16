@@ -3,15 +3,22 @@ import { loadStripe, Stripe } from '@stripe/stripe-js'
 import Axios from 'axios'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import * as ethers from 'ethers'
+import { _TypedDataEncoder } from 'ethers/lib/utils'
 import {
   Bid,
   DefaultApiFactory as DefaultApiFactoryV2,
   SignatureType,
   TokenERC721,
   WalletAddressProfile,
-  InlineObject1UserResidenceEnum,
+  UserResidence,
 } from './apiClient/api'
-import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
+import {
+  BACKEND_URL,
+  GET_SHIPPING_INFO_DOMAIN,
+  GET_SHIPPING_INFO_TYPES,
+  PROFILE_DOMAIN,
+  PROFILE_TYPES,
+} from './constants/index'
 import { WrongNetworkError } from './Errors'
 import { BigNumber } from './types/BigNumber'
 import { CurrencyUnit } from './types/CurrencyUnit'
@@ -823,9 +830,7 @@ export class MintSDK {
         itemId: arg.itemId,
         toAddress: arg.toAddress,
         userResidence:
-          arg.residence === 'jp'
-            ? InlineObject1UserResidenceEnum.Jp
-            : InlineObject1UserResidenceEnum.Unknown,
+          arg.residence === 'jp' ? UserResidence.Jp : UserResidence.Unknown,
       }
     )
     const stripe = await loadStripe(data.publishableKey)
@@ -1082,12 +1087,10 @@ export class MintSDK {
     const signature = await wallet
       .getSigner()
       ._signTypedData(arg.domain, arg.types, arg.value)
-    const signData = JSON.stringify(
-      ethers.utils._TypedDataEncoder.getPayload(
-        arg.domain,
-        arg.types,
-        arg.value
-      )
+    const signData = _TypedDataEncoder.getPayload(
+      arg.domain,
+      arg.types,
+      arg.value
     )
 
     return {
@@ -1462,16 +1465,66 @@ export class MintSDK {
    * ```
    */
   public getShippingInfoStatus = async (itemStockId: string) => {
-    const paymentIntentResponse =
+    const shippingInfoStatusResponse =
       await this.apiClientV2.getItemStockPhysicalShippingInfoStatusByItemStockId(
         this.accessToken,
         itemStockId
       )
 
-    if (paymentIntentResponse.data.data === null) {
+    if (shippingInfoStatusResponse.data.data === null) {
       return
     }
 
-    return paymentIntentResponse.data.data
+    return shippingInfoStatusResponse.data.data
+  }
+
+  /**
+   * Get shipping info of given item stock id
+   *
+   * @returns shipping info of item stock id
+   *
+   * Parameters:
+   * itemStockId: stock item id
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.getShippingInfo('assdfUD1F234sdf1')
+   * ```
+   */
+  public getShippingInfo = async (itemStockId: string) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const currentNetwork = await this.getConnectedNetworkId()
+    const walletAddress = (await this.getWalletInfo()).address
+    const requestTimestamp = Date.now()
+    const value = {
+      walletAddress,
+      requestTimestamp,
+    }
+
+    const { data, sig } = await this.signTypedData({
+      domain: { ...GET_SHIPPING_INFO_DOMAIN, chainId: currentNetwork },
+      types: GET_SHIPPING_INFO_TYPES,
+      value,
+    })
+
+    const shippingInfoResponse =
+      await this.apiClientV2.getItemStockPhysicalShippingInfoByItemStockId(
+        this.accessToken,
+        itemStockId,
+        {
+          data,
+          signature: sig,
+        }
+      )
+
+    if (shippingInfoResponse.data.data === null) {
+      return
+    }
+
+    return shippingInfoResponse.data.data
   }
 }
