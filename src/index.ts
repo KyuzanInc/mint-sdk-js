@@ -1445,4 +1445,65 @@ export class MintSDK {
 
     return hasNft
   }
+  /**
+   * get item by tokenERC721
+   *
+   * @return If the token has been bought or sold in the store, the item information is returned.
+   * If the token has not been bought or sold (e.g. a direct gift to the wallet), null is returned.
+   *
+   * @param arg
+   * tokenId: id of the token from which the item is to be retrieved
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * const item = await sdk.getItemByTokenERC721({
+   *  tokenId: token.id,
+   * })
+   * ```
+   */
+
+  public getItemByTokenERC721 = async (arg: { tokenId: string }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const response = await this.apiClientV2.getItemByTokenERC721(
+      this.accessToken,
+      arg.tokenId
+    )
+
+    const item = response.data.data
+    return item
+  }
+
+  /**
+   * Get shipping info status of given item stock id
+   *
+   * @returns shipping info status (one of 'shipping-address-not-registered' or 'shipping-address-registered' or 'shipped')
+   *
+   * Parameters:
+   * itemStockId: stock item id
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.getShippingInfoStatus('assdfUD1F234sdf1')
+   * ```
+   */
+  public getShippingInfoStatus = async (itemStockId: string) => {
+    const paymentIntentResponse =
+      await this.apiClientV2.getItemStockPhysicalShippingInfoStatusByItemStockId(
+        this.accessToken,
+        itemStockId
+      )
+
+    if (paymentIntentResponse.data.data === null) {
+      return
+    }
+
+    return paymentIntentResponse.data.data
+  }
 }

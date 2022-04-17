@@ -1,7 +1,7 @@
 {
   "name": "@kyuzan/mint-sdk-js",
   "description": "Mint NFT Platform Client SDK",
-  "version": "8.3.2",
+  "version": "8.4.0",
   "dependencies": {
     "@emotion/babel-plugin": "^11.3.0",
     "@stripe/stripe-js": "^1.22.0",
@@ -17,20 +17,20 @@
     "@types/jest": "27.4.1",
     "@types/node": "16.11.26",
     "@types/qs": "6.9.7",
-    "@typescript-eslint/eslint-plugin": "5.16.0",
-    "@typescript-eslint/parser": "5.16.0",
-    "esbuild": "0.14.27",
-    "eslint": "8.11.0",
+    "@typescript-eslint/eslint-plugin": "5.19.0",
+    "@typescript-eslint/parser": "5.19.0",
+    "esbuild": "0.14.35",
+    "eslint": "8.13.0",
     "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-import": "2.26.0",
     "jest": "27.5.1",
     "npm-run-all": "4.1.5",
-    "prettier": "2.6.0",
+    "prettier": "2.6.2",
     "rimraf": "3.0.2",
-    "ts-jest": "27.1.3",
-    "typedoc": "0.22.13",
-    "typedoc-plugin-markdown": "3.11.14",
-    "typescript": "4.6.2"
+    "ts-jest": "27.1.4",
+    "typedoc": "0.22.15",
+    "typedoc-plugin-markdown": "3.12.0",
+    "typescript": "4.6.3"
   },
   "files": [
     "lib"
