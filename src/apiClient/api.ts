@@ -1720,6 +1720,50 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary get item by tokenERC721 id
+         * @param {string} mintAccessToken 
+         * @param {string} tokenId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemByTokenERC721: async (mintAccessToken: string, tokenId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getItemByTokenERC721', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'tokenId' is not null or undefined
+            assertParamExists('getItemByTokenERC721', 'tokenId', tokenId)
+            const localVarPath = `/sdk_v4/items/getItemByTokenERC721`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (tokenId !== undefined) {
+                localVarQueryParameter['tokenId'] = tokenId;
+            }
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary ItemStockをId指定で取得する
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
@@ -2472,6 +2516,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary get item by tokenERC721 id
+         * @param {string} mintAccessToken 
+         * @param {string} tokenId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemByTokenERC721(mintAccessToken, tokenId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary ItemStockをId指定で取得する
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
@@ -2728,6 +2784,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary get item by tokenERC721 id
+         * @param {string} mintAccessToken 
+         * @param {string} tokenId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: any): AxiosPromise<InlineResponse2001> {
+            return localVarFp.getItemByTokenERC721(mintAccessToken, tokenId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary ItemStockをId指定で取得する
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
@@ -2979,6 +3046,19 @@ export class DefaultApi extends BaseAPI {
      */
     public getItemById(mintAccessToken: string, itemId: string, options?: any) {
         return DefaultApiFp(this.configuration).getItemById(mintAccessToken, itemId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary get item by tokenERC721 id
+     * @param {string} mintAccessToken 
+     * @param {string} tokenId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: any) {
+        return DefaultApiFp(this.configuration).getItemByTokenERC721(mintAccessToken, tokenId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
