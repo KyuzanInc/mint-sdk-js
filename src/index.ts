@@ -1432,14 +1432,17 @@ export class MintSDK {
    * }
    * ```
    */
-  public hasNfts = async (walletAddress: string, contractAddress: string) => {
+  public hasNfts = async (arg: {
+    walletAddress: string
+    contractAddress: string
+  }) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
     const response = await this.apiClientV2.hasNfts(
       this.accessToken,
-      walletAddress,
-      contractAddress
+      arg.walletAddress,
+      arg.contractAddress
     )
     const hasNft = response.data.data
 
