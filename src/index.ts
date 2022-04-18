@@ -1414,6 +1414,45 @@ export class MintSDK {
   }
 
   /**
+   * Returns whether the contract has specified nft
+   *
+   * @returns Returns true if the contract has an specified nft associated with it, or false if it doesn't
+   *
+   * Parameters:
+   * walletAddress: owner's wallet address
+   * contractAddress: target contract address
+   * tokenId: token.tokenId (not token.id)
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * const hasNft = await sdk.hasNfts('your wallet address', 'contract address', 'tokenId')
+   * if(hasNft) {
+   *  console.log('you have an NFT in this contract')
+   * }
+   * ```
+   */
+  public hasNft = async (arg: {
+    walletAddress: string
+    contractAddress: string
+    tokenId: string
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const response = await this.apiClientV2.hasNft(
+      this.accessToken,
+      arg.walletAddress,
+      arg.contractAddress,
+      arg.tokenId
+    )
+    const hasNft = response.data.data
+
+    return hasNft
+  }
+
+  /**
    * get item by tokenERC721
    *
    * @return If the token has been bought or sold in the store, the item information is returned.
