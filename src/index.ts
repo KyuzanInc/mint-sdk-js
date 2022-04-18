@@ -18,6 +18,8 @@ import {
   GET_SHIPPING_INFO_TYPES,
   PROFILE_DOMAIN,
   PROFILE_TYPES,
+  REGISTER_SHIPPING_INFO_DOMAIN,
+  REGISTER_SHIPPING_INFO_TYPES,
 } from './constants/index'
 import { WrongNetworkError } from './Errors'
 import { BigNumber } from './types/BigNumber'
@@ -1526,5 +1528,86 @@ export class MintSDK {
     }
 
     return shippingInfoResponse.data.data
+  }
+
+  /**
+   * Register shipping info of given item stock id
+   * If the shipping info has been registered before
+   * for the provided item stock id, this method will
+   * update the registered shipping address.
+   *
+   * @returns
+   *
+   * Parameters:
+   * itemStockId: stock item id
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.registerShippingInfo({
+      itemStockId: '4Egfb52QXwXYK4OLGzBR',
+      firstName: 'first test name',
+      lastName: 'last test name',
+      country: 'country test',
+      email: 'test@email.com',
+      postalCode: '123456',
+      city: 'country test',
+      state: 'state test',
+      address1: 'address one test',
+      phoneNumber: '+819123123123123',
+      address2: 'address two test',
+      address3: null,
+    }))
+   * ```
+   */
+  public registerShippingInfo = async (arg: {
+    itemStockId: string
+    firstName: string
+    lastName: string
+    country: string
+    email: string
+    postalCode: string
+    city: string
+    state: string
+    address1: string
+    phoneNumber: string
+    address2: string | null
+    address3: string | null
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const currentNetwork = await this.getConnectedNetworkId()
+    const requestTimestamp = Date.now()
+    const value = {
+      firstName: arg.firstName,
+      lastName: arg.lastName,
+      country: arg.country,
+      email: arg.email,
+      postalCode: arg.postalCode,
+      city: arg.city,
+      state: arg.state,
+      address1: arg.address1,
+      phoneNumber: arg.phoneNumber,
+      address2: arg.address2,
+      address3: arg.address3,
+      requestTimestamp,
+    }
+
+    const { data, sig } = await this.signTypedData({
+      domain: { ...REGISTER_SHIPPING_INFO_DOMAIN, chainId: currentNetwork },
+      types: REGISTER_SHIPPING_INFO_TYPES,
+      value,
+    })
+
+    await this.apiClientV2.createOrUpdateItemStockPhysicalShippingInfo(
+      this.accessToken,
+      arg.itemStockId,
+      {
+        data,
+        signature: sig,
+      }
+    )
   }
 }
