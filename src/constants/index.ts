@@ -30,3 +30,60 @@ export const GET_SHIPPING_INFO_TYPES = {
     },
   ],
 }
+
+export const REGISTER_SHIPPING_INFO_DOMAIN = {
+  name: 'Register Shipping Info',
+  version: '1',
+}
+export const REGISTER_SHIPPING_INFO_TYPES = {
+  ShippingInformation: [
+    {
+      name: 'address1',
+      type: 'string',
+    },
+    {
+      name: 'firstName',
+      type: 'string',
+    },
+    {
+      name: 'lastName',
+      type: 'string',
+    },
+    {
+      name: 'city',
+      type: 'string',
+    },
+    {
+      name: 'state',
+      type: 'string',
+    },
+    {
+      name: 'email',
+      type: 'string',
+    },
+    {
+      name: 'postalCode',
+      type: 'string',
+    },
+    {
+      name: 'phoneNumber',
+      type: 'string',
+    },
+    {
+      name: 'country',
+      type: 'string',
+    },
+    {
+      name: 'address2',
+      type: 'string',
+    },
+    {
+      name: 'address3',
+      type: 'string',
+    },
+    {
+      name: 'requestTimestamp',
+      type: 'uint256',
+    },
+  ],
+}
