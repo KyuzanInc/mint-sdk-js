@@ -1414,9 +1414,9 @@ export class MintSDK {
   }
 
   /**
-   * Returns whether the contract has specified nft
+   * Returns whether the wallet has specified nft
    *
-   * @returns Returns true if the contract has an specified nft associated with it, or false if it doesn't
+   * @returns Returns true if the wallet has an specified nft associated with the contract, or false if it doesn't
    *
    * Parameters:
    * walletAddress: owner's wallet address
