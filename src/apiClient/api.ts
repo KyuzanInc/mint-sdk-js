@@ -561,7 +561,7 @@ export interface InlineResponse20011 {
 /**
  * 
  * @export
- * @interface InlineResponse20012
+ * @interface InlineResponse20011Data
  */
 export interface InlineResponse20012 {
     /**
@@ -896,10 +896,10 @@ export interface InlineResponse2006Data {
 export interface InlineResponse2007 {
     /**
      * 
-     * @type {ItemStockPhysicalShippingInfoStatus}
+     * @type {ProductERC721}
      * @memberof InlineResponse2007
      */
-    data: ItemStockPhysicalShippingInfoStatus;
+    data: ProductERC721;
     /**
      * 
      * @type {object}
@@ -3593,7 +3593,7 @@ export class DefaultApi extends BaseAPI {
         return DefaultApiFp(this.configuration).getItemStockById(mintAccessToken, itemStockId, options).then((request) => request(this.axios, this.basePath));
     }
 
-    /**
+        /**
      * 
      * @summary API for getting item stock physical shipping info by item stock id
      * @param {string} mintAccessToken 
@@ -3617,8 +3617,8 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken: string, itemStockId: string, options?: any) {
-        return DefaultApiFp(this.configuration).getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken, itemStockId, options).then((request) => request(this.axios, this.basePath));
-    }
+            return DefaultApiFp(this.configuration).getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken, itemStockId, options).then((request) => request(this.axios, this.basePath));
+        }
 
     /**
      * 
