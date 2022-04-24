@@ -2735,11 +2735,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} contractAddress 
-         * @param {number} tokenId 
+         * @param {string} tokenId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        hasNft: async (mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: number, options: any = {}): Promise<RequestArgs> => {
+        hasNft: async (mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('hasNft', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
@@ -3146,11 +3146,11 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} contractAddress 
-         * @param {number} tokenId 
+         * @param {string} tokenId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20013>> {
+        async hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20010>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.hasNft(mintAccessToken, walletAddress, contractAddress, tokenId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3427,11 +3427,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} contractAddress 
-         * @param {number} tokenId 
+         * @param {string} tokenId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: number, options?: any): AxiosPromise<InlineResponse20013> {
+        hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: any): AxiosPromise<InlineResponse20010> {
             return localVarFp.hasNft(mintAccessToken, walletAddress, contractAddress, tokenId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3593,7 +3593,7 @@ export class DefaultApi extends BaseAPI {
         return DefaultApiFp(this.configuration).getItemStockById(mintAccessToken, itemStockId, options).then((request) => request(this.axios, this.basePath));
     }
 
-        /**
+    /**
      * 
      * @summary API for getting item stock physical shipping info by item stock id
      * @param {string} mintAccessToken 
@@ -3617,8 +3617,8 @@ export class DefaultApi extends BaseAPI {
      * @memberof DefaultApi
      */
     public getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken: string, itemStockId: string, options?: any) {
-            return DefaultApiFp(this.configuration).getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken, itemStockId, options).then((request) => request(this.axios, this.basePath));
-        }
+        return DefaultApiFp(this.configuration).getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken, itemStockId, options).then((request) => request(this.axios, this.basePath));
+    }
 
     /**
      * 
@@ -3743,12 +3743,12 @@ export class DefaultApi extends BaseAPI {
      * @param {string} mintAccessToken 
      * @param {string} walletAddress 
      * @param {string} contractAddress 
-     * @param {number} tokenId 
+     * @param {string} tokenId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: number, options?: any) {
+    public hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: any) {
         return DefaultApiFp(this.configuration).hasNft(mintAccessToken, walletAddress, contractAddress, tokenId, options).then((request) => request(this.axios, this.basePath));
     }
 
