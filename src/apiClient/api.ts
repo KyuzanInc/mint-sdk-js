@@ -521,6 +521,25 @@ export interface InlineResponse2001 {
     meta: object;
 }
 /**
+ *
+ * @export
+ * @interface InlineResponseTokenERC721Detail
+ */
+export interface InlineResponseTokenERC721Detail {
+    /**
+     *
+     * @type {TokenERC721}
+     * @memberof InlineResponseTokenERC721Detail
+     */
+    data: TokenERC721;
+    /**
+     *
+     * @type {object}
+     * @memberof InlineResponseTokenERC721Detail
+     */
+    meta: object;
+}
+/**
  * 
  * @export
  * @interface InlineResponse20010
@@ -2839,6 +2858,47 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
+         *
+         * @summary get TokenERC721 by Id
+         * @param {string} mintAccessToken
+         * @param {string} tokenId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTokenERC721ById: async (mintAccessToken: string, tokenId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getTokenERC721ById', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'tokenId' is not null or undefined
+            assertParamExists('getTokenERC721ById', 'tokenId', tokenId)
+            const localVarPath = `/sdk_v4/tokens/{tokenId}`
+              .replace(`{${"tokenId"}}`, encodeURIComponent(String(tokenId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
@@ -3168,6 +3228,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         *
+         * @summary get TokenERC721 by Id
+         * @param {string} mintAccessToken
+         * @param {string} tokenId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getTokenERC721ById(mintAccessToken: string, tokenId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponseTokenERC721Detail>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721ById(mintAccessToken, tokenId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * 
          * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
@@ -3445,6 +3517,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         hasNfts(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any): AxiosPromise<InlineResponse20013> {
             return localVarFp.hasNfts(mintAccessToken, walletAddress, contractAddress, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @summary get TokenERC721 by Id
+         * @param {string} mintAccessToken
+         * @param {string} tokenId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTokenERC721ById(mintAccessToken: string, tokenId: string, options?: any): AxiosPromise<InlineResponseTokenERC721Detail> {
+            return localVarFp.getTokenERC721ById(mintAccessToken, tokenId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3764,6 +3847,19 @@ export class DefaultApi extends BaseAPI {
      */
     public hasNfts(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any) {
         return DefaultApiFp(this.configuration).hasNfts(mintAccessToken, walletAddress, contractAddress, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     *
+     * @summary get TokenERC721 by Id
+     * @param {string} mintAccessToken
+     * @param {string} tokenId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getTokenERC721ById(mintAccessToken: string, tokenId: string, options?: any) {
+        return DefaultApiFp(this.configuration).getTokenERC721ById(mintAccessToken, tokenId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
