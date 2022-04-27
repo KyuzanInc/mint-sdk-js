@@ -3,15 +3,24 @@ import { loadStripe, Stripe } from '@stripe/stripe-js'
 import Axios from 'axios'
 import { recoverTypedSignature_v4 } from 'eth-sig-util'
 import * as ethers from 'ethers'
+import { _TypedDataEncoder } from 'ethers/lib/utils'
 import {
   Bid,
   DefaultApiFactory as DefaultApiFactoryV2,
   SignatureType,
   TokenERC721,
   WalletAddressProfile,
-  InlineObject1UserResidenceEnum,
+  UserResidence,
 } from './apiClient/api'
-import { BACKEND_URL, PROFILE_DOMAIN, PROFILE_TYPES } from './constants/index'
+import {
+  BACKEND_URL,
+  GET_SHIPPING_INFO_DOMAIN,
+  GET_SHIPPING_INFO_TYPES,
+  PROFILE_DOMAIN,
+  PROFILE_TYPES,
+  REGISTER_SHIPPING_INFO_DOMAIN,
+  REGISTER_SHIPPING_INFO_TYPES,
+} from './constants/index'
 import { WrongNetworkError } from './Errors'
 import { BigNumber } from './types/BigNumber'
 import { CurrencyUnit } from './types/CurrencyUnit'
@@ -21,6 +30,7 @@ import { ItemTradeType } from './types/ItemTradeType'
 import { NetworkId } from './types/NetworkId'
 import { Residence } from './types/Residence'
 import { Token } from './types/Token'
+import { AccountInfo } from './types/v2/AccountInfo'
 import { ContractERC721 } from './types/v2/ContractERC721'
 import { Item } from './types/v2/Item'
 import { ItemStock } from './types/v2/ItemStock'
@@ -34,6 +44,7 @@ import { IWeb3Provider } from './Web3Provider/IWeb3Provider'
 import { NodeWeb3Provider } from './Web3Provider/NodeWeb3Provider'
 
 export {
+  AccountInfo,
   Item,
   PaymentMethodData,
   PaymentMethod,
@@ -252,6 +263,25 @@ export class MintSDK {
    */
   public getWalletInfo: () => Promise<WalletInfo> = async () => {
     return await this.web3Provider.getWalletInfo()
+  }
+
+  /**
+   * 接続されているProviderを返します
+   *
+   * **Required**
+   * - Requires the wallet to be connected.
+   *
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * await sdk.connectWallet()  // required
+   * await sdk.getProvider()
+   * ```
+   */
+  public getConnectedProvider = async () => {
+    return this.web3Provider.getProvider()
   }
 
   /**
@@ -802,9 +832,7 @@ export class MintSDK {
         itemId: arg.itemId,
         toAddress: arg.toAddress,
         userResidence:
-          arg.residence === 'jp'
-            ? InlineObject1UserResidenceEnum.Jp
-            : InlineObject1UserResidenceEnum.Unknown,
+          arg.residence === 'jp' ? UserResidence.Jp : UserResidence.Unknown,
       }
     )
     const stripe = await loadStripe(data.publishableKey)
@@ -812,6 +840,25 @@ export class MintSDK {
       paymentIntentClientSecret: data.secret,
       stripe,
     }
+  }
+
+  public createContractInstance = async (
+    addressOrName: ConstructorParameters<typeof ethers.Contract>[0],
+    contractInterface: ConstructorParameters<typeof ethers.Contract>[1],
+    signerOrProvider: ConstructorParameters<typeof ethers.Contract>[2]
+  ) => {
+    const isConnect = await this.isWalletConnect()
+
+    const wallet = this.web3Provider.getProvider()
+    return new ethers.Contract(
+      addressOrName,
+      contractInterface,
+      signerOrProvider
+        ? signerOrProvider
+        : isConnect
+        ? wallet.getSigner()
+        : undefined
+    )
   }
 
   /**
@@ -1042,12 +1089,10 @@ export class MintSDK {
     const signature = await wallet
       .getSigner()
       ._signTypedData(arg.domain, arg.types, arg.value)
-    const signData = JSON.stringify(
-      ethers.utils._TypedDataEncoder.getPayload(
-        arg.domain,
-        arg.types,
-        arg.value
-      )
+    const signData = _TypedDataEncoder.getPayload(
+      arg.domain,
+      arg.types,
+      arg.value
     )
 
     return {
@@ -1274,5 +1319,370 @@ export class MintSDK {
       profile: response.data.data.profile,
       avatarImageUrl: response.data.data.avatarImageUrl,
     }
+  }
+
+  /**
+   * Request payment intent for user.
+   *
+   * @returns If the call is successful, wallet pop-up with the right
+   * payment intent data will be shown
+   *
+   * Parameters:
+   * contractAddress: address where the contract is deployed
+   * networkId: network of the contract
+   * methodName: the name of method to be invoked
+   * abi: the contract interface
+   * contractMethodArgs: argument that will be passed to the `methodName` method
+   *
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.requestPaymentWithPaymentIntent({
+   *  contractAddress: '0xxxxx',
+   *  networkId: 1,
+   *  methodName: 'confirmPayment',
+   *  abi: '[{"type":"function","inputs":[{"type":"string","name":"symbol"},...],...},...]',
+   *  contractMethodArgs: ["someAddress", "10", "ETH",...]
+   * })
+   * ```
+   */
+  public requestPaymentWithPaymentIntent = async (arg: {
+    contractAddress: string
+    networkId: NetworkId
+    methodName: string // confirmPayment from the contract
+    abi: string // Application Binary Interface -
+    contractMethodArgs: any[]
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const currentNetwork = await this.getConnectedNetworkId()
+    if (currentNetwork !== arg.networkId) {
+      throw new WrongNetworkError('Network is not correct')
+    }
+
+    const wallet = this.web3Provider.getProvider()
+    const signer = wallet.getSigner()
+    const shopContract = new ethers.Contract(
+      arg.contractAddress,
+      JSON.parse(arg.abi),
+      signer
+    )
+
+    return (await shopContract[arg.methodName](
+      ...arg.contractMethodArgs
+    )) as ethers.providers.TransactionResponse
+  }
+
+  /**
+   * Request payment intent for user.
+   *
+   * @returns If the call is successful, wallet pop-up with the right
+   * payment intent data will be shown
+   *
+   * Parameters:
+   * paymentIntentId: payment intent id
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.requestPaymentWithPaymentIntentId('assdfUD1F234sdf1')
+   * ```
+   */
+  public requestPaymentWithPaymentIntentId = async (
+    paymentIntentId: string
+  ) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const paymentIntentResponse = await this.apiClientV2.getPaymentIntentById(
+      this.accessToken,
+      paymentIntentId
+    )
+
+    if (paymentIntentResponse.data.data === null) {
+      return
+    }
+
+    const paymentIntent = paymentIntentResponse.data.data
+    const contractMethodResource = paymentIntent.contractMethodResource
+
+    return (await this.requestPaymentWithPaymentIntent({
+      ...contractMethodResource,
+      contractMethodArgs: contractMethodResource.args,
+    })) as ethers.providers.TransactionResponse
+  }
+
+  /**
+   * Returns whether the wallet has specified nft
+   *
+   * @returns Returns true if the wallet has an specified nft associated with the contract, or false if it doesn't
+   *
+   * Parameters:
+   * walletAddress: owner's wallet address
+   * contractAddress: target contract address
+   * tokenId: token.tokenId (not token.id)
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * const hasNft = await sdk.hasNfts('your wallet address', 'contract address', 'tokenId')
+   * if(hasNft) {
+   *  console.log('you have an NFT in this contract')
+   * }
+   * ```
+   */
+  public hasNft = async (arg: {
+    walletAddress: string
+    contractAddress: string
+    tokenId: string
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const response = await this.apiClientV2.hasNft(
+      this.accessToken,
+      arg.walletAddress,
+      arg.contractAddress,
+      arg.tokenId
+    )
+    const hasNft = response.data.data
+
+    return hasNft
+  }
+
+  /**
+   * Returns whether the wallet has nft
+   *
+   * @returns Returns true if the wallet has an nft associated with the contract, or false if it doesn't
+   *
+   * Parameters:
+   * walletAddress: owner's wallet address
+   * contractAddress: target contract address
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * const hasNft = await sdk.hasNfts('your wallet address', 'contract address')
+   * if(hasNft) {
+   *  console.log('you have an NFT in this contract')
+   * }
+   * ```
+   */
+  public hasNfts = async (arg: {
+    walletAddress: string
+    contractAddress: string
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const response = await this.apiClientV2.hasNfts(
+      this.accessToken,
+      arg.walletAddress,
+      arg.contractAddress
+    )
+    const hasNft = response.data.data
+
+    return hasNft
+  }
+
+  /**
+   * get item by tokenERC721
+   *
+   * @return If the token has been bought or sold in the store, the item information is returned.
+   * If the token has not been bought or sold (e.g. a direct gift to the wallet), null is returned.
+   *
+   * @param arg
+   * tokenId: id of the token from which the item is to be retrieved
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * const item = await sdk.getItemByTokenERC721({
+   *  tokenId: token.id,
+   * })
+   * ```
+   */
+
+  public getItemByTokenERC721 = async (arg: { tokenId: string }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const response = await this.apiClientV2.getItemByTokenERC721(
+      this.accessToken,
+      arg.tokenId
+    )
+
+    const item = response.data.data
+    return item
+  }
+
+  /**
+   * Get shipping info status of given item stock id
+   *
+   * @returns shipping info status (one of 'shipping-address-not-registered' or 'shipping-address-registered' or 'shipped')
+   *
+   * Parameters:
+   * itemStockId: stock item id
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.getShippingInfoStatus('assdfUD1F234sdf1')
+   * ```
+   */
+  public getShippingInfoStatus = async (itemStockId: string) => {
+    const shippingInfoStatusResponse =
+      await this.apiClientV2.getItemStockPhysicalShippingInfoStatusByItemStockId(
+        this.accessToken,
+        itemStockId
+      )
+
+    if (shippingInfoStatusResponse.data.data === null) {
+      return
+    }
+
+    return shippingInfoStatusResponse.data.data
+  }
+
+  /**
+   * Get shipping info of given item stock id
+   *
+   * @returns shipping info of item stock id
+   *
+   * Parameters:
+   * itemStockId: stock item id
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.getShippingInfo('assdfUD1F234sdf1')
+   * ```
+   */
+  public getShippingInfo = async (itemStockId: string) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const currentNetwork = await this.getConnectedNetworkId()
+    const walletAddress = (await this.getWalletInfo()).address
+    const requestTimestamp = Date.now()
+    const value = {
+      walletAddress,
+      requestTimestamp,
+    }
+
+    const { data, sig } = await this.signTypedData({
+      domain: { ...GET_SHIPPING_INFO_DOMAIN, chainId: currentNetwork },
+      types: GET_SHIPPING_INFO_TYPES,
+      value,
+    })
+
+    const shippingInfoResponse =
+      await this.apiClientV2.getItemStockPhysicalShippingInfoByItemStockId(
+        this.accessToken,
+        itemStockId,
+        {
+          data,
+          signature: sig,
+        }
+      )
+
+    if (shippingInfoResponse.data.data === null) {
+      return
+    }
+
+    return shippingInfoResponse.data.data
+  }
+
+  /**
+   * Register shipping info of given item stock id
+   * If the shipping info has been registered before
+   * for the provided item stock id, this method will
+   * update the registered shipping address.
+   *
+   * @returns
+   *
+   * Parameters:
+   * itemStockId: stock item id
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   *
+   * const sdk = new MintSDK(...)
+   * await sdk.registerShippingInfo({
+      itemStockId: '4Egfb52QXwXYK4OLGzBR',
+      firstName: 'first test name',
+      lastName: 'last test name',
+      country: 'country test',
+      email: 'test@email.com',
+      postalCode: '123456',
+      city: 'country test',
+      state: 'state test',
+      address1: 'address one test',
+      phoneNumber: '+819123123123123',
+      address2: 'address two test',
+      address3: null,
+    }))
+   * ```
+   */
+  public registerShippingInfo = async (arg: {
+    itemStockId: string
+    firstName: string
+    lastName: string
+    country: string
+    email: string
+    postalCode: string
+    city: string
+    state: string
+    address1: string
+    phoneNumber: string
+    address2: string | null
+    address3: string | null
+  }) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const currentNetwork = await this.getConnectedNetworkId()
+    const requestTimestamp = Date.now()
+    const value = {
+      firstName: arg.firstName,
+      lastName: arg.lastName,
+      country: arg.country,
+      email: arg.email,
+      postalCode: arg.postalCode,
+      city: arg.city,
+      state: arg.state,
+      address1: arg.address1,
+      phoneNumber: arg.phoneNumber,
+      address2: arg.address2,
+      address3: arg.address3,
+      requestTimestamp,
+    }
+
+    const { data, sig } = await this.signTypedData({
+      domain: { ...REGISTER_SHIPPING_INFO_DOMAIN, chainId: currentNetwork },
+      types: REGISTER_SHIPPING_INFO_TYPES,
+      value,
+    })
+
+    await this.apiClientV2.createOrUpdateItemStockPhysicalShippingInfo(
+      this.accessToken,
+      arg.itemStockId,
+      {
+        data,
+        signature: sig,
+      }
+    )
   }
 }
