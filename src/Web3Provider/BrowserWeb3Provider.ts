@@ -6,8 +6,10 @@ import {
   IProviderStrategy,
   MetamaskStrategy,
   TorusStrategy,
-  WalletConnectStrategy,
+  WalletConnectStrategy
 } from './strategies'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import { getSelectedWalletProvider } from '../util/getSelectedWalletProvider'
 
 export class BrowserWeb3Provider implements IWeb3Provider {
   private web3Modal: Web3Modal | null
@@ -15,9 +17,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
   private providerStrategy: IProviderStrategy | null
 
   private eventConnectCallbacks: Array<(info: { chainId: number }) => any> = []
-  private eventDisconnectCallbacks: Array<
-    (error: { code: number; message: string }) => any
-  > = []
+  private eventDisconnectCallbacks: Array<(error: { code: number; message: string }) => any> = []
   private eventAccountsChangeCallbacks: Array<(accounts: string[]) => any> = []
   private eventChainChangeCallbacks: Array<(chainId: number) => any> = []
 
@@ -29,34 +29,31 @@ export class BrowserWeb3Provider implements IWeb3Provider {
 
   public async connectWallet() {
     const { default: Torus } = await import('@toruslabs/torus-embed')
-    const { default: WC } = await import('@walletconnect/web3-provider')
     const providerOptions: IProviderOptions = {
-      torus: this.walletSetting?.providers?.torus
-        ? {
-            package: Torus, // required
-            display: this.walletSetting?.providers?.torus?.display,
-            options: {
-              config: this.walletSetting?.providers?.torus?.options,
-            },
-          }
-        : { package: Torus },
       walletconnect: {
-        package: WC,
+        package: WalletConnectProvider,
         options: {
-          infuraId: 'INFURA_ID', // required
-          rpc: {
-            137: 'https://rpc-mainnet.matic.network',
-            80001: 'https://rpc-mumbai.matic.today',
-          },
-        },
+          ...this.walletSetting?.providers?.walletconnect?.options
+        }
       },
+      torus: {
+        package: Torus,
+        display: this.walletSetting?.providers?.torus?.display,
+        options: {
+          config: this.walletSetting?.providers?.torus?.options
+        }
+      }
     }
 
     this.web3Modal = new Web3Modal({
-      providerOptions,
       cacheProvider:
         this.walletSetting?.selectWalletModal?.cacheProvider ?? false,
       theme: this.walletSetting?.selectWalletModal?.theme ?? 'light',
+      providerOptions: getSelectedWalletProvider(providerOptions, this.walletSetting, {
+        torus: {
+          package: Torus
+        }
+      })
     })
     const provider = await this.web3Modal.connect()
     if (provider.torus) {
@@ -114,7 +111,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     return {
       address,
       balance,
-      unit,
+      unit
     }
   }
 

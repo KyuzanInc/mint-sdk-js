@@ -6,7 +6,6 @@ export class WalletConnectStrategy implements IProviderStrategy {
     //
   }
   public async openWallet() {
-    // noop
-    return
+    await this.wc.enable()
   }
 }
