@@ -1685,4 +1685,24 @@ export class MintSDK {
       }
     )
   }
+
+  /**
+   * Returns the TokenERC721 from the specified tokenERC721Id.
+   *
+   * @param tokenERC721Id
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * const item = await sdk.getTokenERC721ById('tokenERC721.id')
+   * ```
+   */
+  public getTokenERC721ById = async (tokenERC721Id: string) => {
+    const { data } = await this.apiClientV2.getTokenERC721ById(
+      this.accessToken,
+      tokenERC721Id
+    )
+    return data.data
+  }
 }
