@@ -31,6 +31,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
 
   public async connectWallet() {
     const { default: Torus } = await import('@toruslabs/torus-embed')
+    const { default: WalletConnectProvider } = await import('@walletconnect/web3-provider')
     const providerOptions: IProviderOptions = {
       walletconnect: {
         package: WalletConnectProvider,
