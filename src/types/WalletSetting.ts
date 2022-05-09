@@ -1,18 +1,7 @@
 import { IProviderDisplay, ThemeColors } from 'web3modal'
 // eslint-disable-next-line import/no-unresolved
 import { IOptions } from 'web3modal/dist/providers/connectors/torus'
-
-type WalletConnectConnectorOptions = {
-  infuraId: string
-  rpc?: {
-    [chainId: number]: string
-  }
-  bridge?: string
-  qrcode?: boolean
-  qrcodeModalOptions?: {
-    mobileLinks?: string[]
-  }
-}
+import { IWalletConnectConnectorOptions } from 'web3modal/dist/providers/connectors/walletconnect'
 
 export type WalletSetting = {
   selectWalletModal?: {
@@ -27,7 +16,7 @@ export type WalletSetting = {
       options?: IOptions
     }
     walletconnect?: {
-      options: WalletConnectConnectorOptions
+      options: IWalletConnectConnectorOptions
     }
   }
 }
