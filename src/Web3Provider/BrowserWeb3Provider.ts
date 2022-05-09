@@ -1,4 +1,3 @@
-import WalletConnectProvider from '@walletconnect/web3-provider'
 import { ethers } from 'ethers'
 import Web3Modal, { IProviderOptions } from 'web3modal'
 import { WalletSetting } from '..'
