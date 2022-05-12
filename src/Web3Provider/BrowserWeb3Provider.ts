@@ -1,7 +1,6 @@
 import { ethers } from 'ethers'
 import Web3Modal, { IProviderOptions } from 'web3modal'
 import { WalletSetting } from '..'
-import { getSelectedWalletProvider } from '../util/getSelectedWalletProvider'
 import { IWeb3Provider } from './IWeb3Provider'
 import {
   IProviderStrategy,
@@ -30,36 +29,37 @@ export class BrowserWeb3Provider implements IWeb3Provider {
 
   public async connectWallet() {
     const { default: Torus } = await import('@toruslabs/torus-embed')
-    const { default: WalletConnectProvider } = await import('@walletconnect/web3-provider')
-    const providerOptions: IProviderOptions = {
-      walletconnect: {
-        package: WalletConnectProvider,
-        options: {
-          ...this.walletSetting?.providers?.walletconnect?.options,
-        },
-      },
+    const { default: WalletConnectProvider } = await import(
+      '@walletconnect/web3-provider'
+    )
+    let providerOptions: IProviderOptions = {
       torus: {
+        package: Torus,
+      },
+    }
+    if (!!this.walletSetting?.providers?.torus) {
+      providerOptions['torus'] = {
         package: Torus,
         display: this.walletSetting?.providers?.torus?.display,
         options: {
           config: this.walletSetting?.providers?.torus?.options,
         },
-      },
+      }
+    }
+    if (!!this.walletSetting?.providers?.walletconnect) {
+      providerOptions['walletconnect'] = {
+        package: WalletConnectProvider,
+        options: {
+          ...this.walletSetting?.providers?.walletconnect?.options,
+        },
+      }
     }
 
     this.web3Modal = new Web3Modal({
       cacheProvider:
         this.walletSetting?.selectWalletModal?.cacheProvider ?? false,
       theme: this.walletSetting?.selectWalletModal?.theme ?? 'light',
-      providerOptions: getSelectedWalletProvider(
-        providerOptions,
-        this.walletSetting,
-        {
-          torus: {
-            package: Torus,
-          },
-        }
-      ),
+      providerOptions: providerOptions,
     })
     const provider = await this.web3Modal.connect()
     if (provider.torus) {
