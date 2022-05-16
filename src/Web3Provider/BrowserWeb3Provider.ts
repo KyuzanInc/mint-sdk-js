@@ -6,6 +6,7 @@ import {
   IProviderStrategy,
   MetamaskStrategy,
   TorusStrategy,
+  WalletConnectStrategy,
 } from './strategies'
 
 export class BrowserWeb3Provider implements IWeb3Provider {
@@ -28,29 +29,45 @@ export class BrowserWeb3Provider implements IWeb3Provider {
 
   public async connectWallet() {
     const { default: Torus } = await import('@toruslabs/torus-embed')
+    const { default: WalletConnectProvider } = await import(
+      '@walletconnect/web3-provider'
+    )
     const providerOptions: IProviderOptions = {
-      torus: this.walletSetting?.providers?.torus
-        ? {
-            package: Torus, // required
-            display: this.walletSetting?.providers?.torus?.display,
-            options: {
-              config: this.walletSetting?.providers?.torus?.options,
-            },
-          }
-        : { package: Torus },
+      torus: {
+        package: Torus,
+      },
+    }
+    if (this.walletSetting?.providers?.torus) {
+      providerOptions['torus'] = {
+        package: Torus,
+        display: this.walletSetting?.providers?.torus?.display,
+        options: {
+          config: this.walletSetting?.providers?.torus?.options,
+        },
+      }
+    }
+    if (this.walletSetting?.providers?.walletconnect) {
+      providerOptions['walletconnect'] = {
+        package: WalletConnectProvider,
+        options: {
+          ...this.walletSetting?.providers?.walletconnect?.options,
+        },
+      }
     }
 
     this.web3Modal = new Web3Modal({
-      providerOptions,
       cacheProvider:
         this.walletSetting?.selectWalletModal?.cacheProvider ?? false,
       theme: this.walletSetting?.selectWalletModal?.theme ?? 'light',
+      providerOptions: providerOptions,
     })
     const provider = await this.web3Modal.connect()
     if (provider.torus) {
       // Selected Torus
       // ref: https://github.com/Web3Modal/web3modal/blob/master/docs/providers/torus.md
       this.providerStrategy = new TorusStrategy(provider.torus)
+    } else if (provider.wc) {
+      this.providerStrategy = new WalletConnectStrategy(provider.wc)
     } else {
       // Selected Injected
       this.providerStrategy = new MetamaskStrategy()
