@@ -48,7 +48,7 @@ You just need to add in your project:
 
 - [x] MetaMask
 - [x] Torus
-- [ ] WalletConnect
+- [x] WalletConnect
 - [ ] Portis
 - [ ] Authereum
 - [ ] Frame
