@@ -20,10 +20,12 @@
     "@types/qs": "6.9.7",
     "@typescript-eslint/eslint-plugin": "5.23.0",
     "@typescript-eslint/parser": "5.23.0",
+    "auto-changelog": "^2.4.0",
     "esbuild": "0.14.39",
     "eslint": "8.15.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
+    "gh-release": "^6.0.4",
     "jest": "28.1.0",
     "npm-run-all": "4.1.5",
     "prettier": "2.6.2",
@@ -55,7 +57,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "publish:alpha": "npm run build:production && npm version premajor --preid alpha && npm publish",
-    "publish:alpha:next": "npm run build:production && npm version prerelease && npm publish"
+    "publish:alpha:next": "npm run build:production && npm version prerelease && npm publish",
+    "prepublishOnly": "git push --follow-tags && gh-release -y",
+    "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
