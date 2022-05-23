@@ -1443,9 +1443,6 @@ export class MintSDK {
     contractAddress: string
     tokenId: string
   }) => {
-    if (!(await this.isWalletConnect())) {
-      throw new Error('Wallet is not connected')
-    }
     const response = await this.apiClientV2.hasNft(
       this.accessToken,
       arg.walletAddress,
@@ -1480,9 +1477,6 @@ export class MintSDK {
     walletAddress: string
     contractAddress: string
   }) => {
-    if (!(await this.isWalletConnect())) {
-      throw new Error('Wallet is not connected')
-    }
     const response = await this.apiClientV2.hasNfts(
       this.accessToken,
       arg.walletAddress,
@@ -1513,10 +1507,6 @@ export class MintSDK {
    */
 
   public getItemByTokenERC721 = async (arg: { tokenId: string }) => {
-    if (!(await this.isWalletConnect())) {
-      throw new Error('Wallet is not connected')
-    }
-
     const response = await this.apiClientV2.getItemByTokenERC721(
       this.accessToken,
       arg.tokenId
