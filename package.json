@@ -12,7 +12,7 @@
     "eth-sig-util": "^3.0.1",
     "ethers": "^5.6.2",
     "qs": "^6.10.1",
-    "web3modal": "^1.9.5"
+    "web3modal": "1.9.7"
   },
   "devDependencies": {
     "@types/jest": "27.5.1",
