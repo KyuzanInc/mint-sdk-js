@@ -17,7 +17,8 @@ export type WalletSetting = {
       options?: IOptions
     }
     walletconnect?: {
-      options: IWalletConnectConnectorOptions
+      // network is not required
+      options: Omit<IWalletConnectConnectorOptions, 'network'>
     }
   }
 }
