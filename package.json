@@ -12,16 +12,16 @@
     "eth-sig-util": "^3.0.1",
     "ethers": "^5.6.2",
     "qs": "^6.10.1",
-    "web3modal": "1.9.7"
+    "web3modal": "1.9.8"
   },
   "devDependencies": {
     "@types/jest": "27.5.2",
-    "@types/node": "16.11.38",
+    "@types/node": "16.11.39",
     "@types/qs": "6.9.7",
     "@typescript-eslint/eslint-plugin": "5.23.0",
     "@typescript-eslint/parser": "5.23.0",
     "auto-changelog": "2.4.0",
-    "esbuild": "0.14.42",
+    "esbuild": "0.14.43",
     "eslint": "8.15.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
