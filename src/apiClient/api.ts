@@ -14,7 +14,7 @@
 
 
 import { Configuration } from './configuration';
-import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
+import globalAxios, { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
@@ -32,76 +32,80 @@ export interface Bid {
      * @type {string}
      * @memberof Bid
      */
-    id: string;
+    'id': string;
     /**
      * 
      * @type {ChainType}
      * @memberof Bid
      */
-    chainType: ChainType;
+    'chainType': ChainType;
     /**
      * 
      * @type {NetworkId}
      * @memberof Bid
      */
-    networkId: NetworkId;
+    'networkId': NetworkId;
     /**
      * 
      * @type {string}
      * @memberof Bid
      */
-    createAt: string;
+    'createAt': string;
     /**
      * 
      * @type {string}
      * @memberof Bid
      */
-    updateAt: string;
+    'updateAt': string;
     /**
      * 
      * @type {string}
      * @memberof Bid
      */
-    itemDocumentId: string;
+    'itemDocumentId': string;
     /**
      * 
      * @type {string}
      * @memberof Bid
      */
-    bidder: string;
+    'bidder': string;
     /**
      * 
      * @type {number}
      * @memberof Bid
      */
-    bidPrice: number;
+    'bidPrice': number;
     /**
      * 
      * @type {CryptoCurrencyRate}
      * @memberof Bid
      */
-    cryptoCurrencyRate: CryptoCurrencyRate;
+    'cryptoCurrencyRate': CryptoCurrencyRate;
     /**
      * 
      * @type {string}
      * @memberof Bid
      */
-    transactionAt: string;
+    'transactionAt': string;
     /**
      * 
      * @type {string}
      * @memberof Bid
      */
-    transactionHash: string;
+    'transactionHash': string;
 }
 /**
  * 
  * @export
  * @enum {string}
  */
-export enum ChainType {
-    Ethereum = 'ethereum'
-}
+
+export const ChainType = {
+    Ethereum: 'ethereum'
+} as const;
+
+export type ChainType = typeof ChainType[keyof typeof ChainType];
+
 
 /**
  * ContractERC721またはContractERC721Shopに必要なデータ
@@ -114,25 +118,25 @@ export interface ContractDataERC721Shop {
      * @type {ChainType}
      * @memberof ContractDataERC721Shop
      */
-    chainType: ChainType;
+    'chainType': ChainType;
     /**
      * 
      * @type {NetworkId}
      * @memberof ContractDataERC721Shop
      */
-    networkId: NetworkId;
+    'networkId': NetworkId;
     /**
      * 
      * @type {string}
      * @memberof ContractDataERC721Shop
      */
-    contractAddress: string;
+    'contractAddress': string;
     /**
      * JSON.stringifyしたもの
      * @type {string}
      * @memberof ContractDataERC721Shop
      */
-    abi: string;
+    'abi': string;
 }
 /**
  * ContractERC721のデータ
@@ -145,55 +149,93 @@ export interface ContractERC721 {
      * @type {string}
      * @memberof ContractERC721
      */
-    id: string;
+    'id': string;
     /**
      * 
      * @type {string}
      * @memberof ContractERC721
      */
-    createAt: string;
+    'createAt': string;
     /**
      * 
      * @type {string}
      * @memberof ContractERC721
      */
-    updateAt: string;
+    'updateAt': string;
     /**
      * 
      * @type {string}
      * @memberof ContractERC721
      */
-    name: string;
+    'name': string;
     /**
      * 
      * @type {ChainType}
      * @memberof ContractERC721
      */
-    chainType: ChainType;
+    'chainType': ChainType;
     /**
      * 
      * @type {NetworkId}
      * @memberof ContractERC721
      */
-    networkId: NetworkId;
+    'networkId': NetworkId;
     /**
      * 
      * @type {string}
      * @memberof ContractERC721
      */
-    address: string;
+    'address': string;
     /**
      * 
      * @type {number}
      * @memberof ContractERC721
      */
-    initialDeployBlockNumber: number;
+    'initialDeployBlockNumber': number;
     /**
      * 
      * @type {TokenStandardType}
      * @memberof ContractERC721
      */
-    tokenStandardType: TokenStandardType;
+    'tokenStandardType': TokenStandardType;
+}
+/**
+ * 
+ * @export
+ * @interface CreateOrUpdateItemStockPhysicalShippingInfo200Response
+ */
+export interface CreateOrUpdateItemStockPhysicalShippingInfo200Response {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrUpdateItemStockPhysicalShippingInfo200Response
+     */
+    'data': string;
+    /**
+     * 
+     * @type {object}
+     * @memberof CreateOrUpdateItemStockPhysicalShippingInfo200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface CreateOrUpdateItemStockPhysicalShippingInfoRequest
+ */
+export interface CreateOrUpdateItemStockPhysicalShippingInfoRequest {
+    /**
+     * 
+     * @type {CreateOrUpdateItemStockPhysicalShippingInfoRequestData}
+     * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequest
+     */
+    'data': CreateOrUpdateItemStockPhysicalShippingInfoRequestData;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequest
+     */
+    'signature': string;
 }
 /**
  * Request body data model for CreateOrUpdateItemStockPhysicalShippingInfo API
@@ -206,84 +248,163 @@ export interface CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage {
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    firstName: string;
+    'firstName': string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    lastName: string;
+    'lastName': string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    country: string;
+    'country': string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    email: string;
+    'email': string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    postalCode: string;
+    'postalCode': string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    city: string;
+    'city': string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    state: string;
+    'state': string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    address1: string;
+    'address1': string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    phoneNumber: string;
+    'phoneNumber': string;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    address2: string | null;
+    'address2': string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    address3: string | null;
+    'address3': string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage
      */
-    requestTimestamp: string;
+    'requestTimestamp': string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateOrUpdateItemStockPhysicalShippingInfoRequestData
+ */
+export interface CreateOrUpdateItemStockPhysicalShippingInfoRequestData {
+    /**
+     * 
+     * @type {SignatureDomain}
+     * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestData
+     */
+    'domain': SignatureDomain;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestData
+     */
+    'primaryType': string;
+    /**
+     * 
+     * @type {CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage}
+     * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestData
+     */
+    'message': CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage;
+    /**
+     * 
+     * @type {object}
+     * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestData
+     */
+    'types': object;
+}
+/**
+ * 
+ * @export
+ * @interface CreateStripePaymentIntent200Response
+ */
+export interface CreateStripePaymentIntent200Response {
+    /**
+     * クライアント側でloadStripeに対して渡す公開可能なAPI-Key
+     * @type {string}
+     * @memberof CreateStripePaymentIntent200Response
+     */
+    'publishableKey': string;
+    /**
+     * StripeのPaymentIntentのClientSecret
+     * @type {string}
+     * @memberof CreateStripePaymentIntent200Response
+     */
+    'secret': string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateStripePaymentIntentRequest
+ */
+export interface CreateStripePaymentIntentRequest {
+    /**
+     * Item id that will be purchased
+     * @type {string}
+     * @memberof CreateStripePaymentIntentRequest
+     */
+    'itemId': string;
+    /**
+     * Buyer wallet address
+     * @type {string}
+     * @memberof CreateStripePaymentIntentRequest
+     */
+    'toAddress': string;
+    /**
+     * 
+     * @type {UserResidence}
+     * @memberof CreateStripePaymentIntentRequest
+     */
+    'userResidence': UserResidence;
 }
 /**
  * Stripeで利用する通貨型
  * @export
  * @enum {string}
  */
-export enum CreditCardStripeCurrencyType {
-    Jpy = 'jpy',
-    Usd = 'usd',
-    Eur = 'eur'
-}
+
+export const CreditCardStripeCurrencyType = {
+    Jpy: 'jpy',
+    Usd: 'usd',
+    Eur: 'eur'
+} as const;
+
+export type CreditCardStripeCurrencyType = typeof CreditCardStripeCurrencyType[keyof typeof CreditCardStripeCurrencyType];
+
 
 /**
  * 
@@ -296,48 +417,362 @@ export interface CryptoCurrencyRate {
      * @type {string}
      * @memberof CryptoCurrencyRate
      */
-    createAt: string;
+    'createAt': string;
     /**
      * 
      * @type {string}
      * @memberof CryptoCurrencyRate
      */
-    updateAt: string;
+    'updateAt': string;
     /**
      * 
      * @type {CryptoCurrencyType}
      * @memberof CryptoCurrencyRate
      */
-    currency: CryptoCurrencyType;
+    'currency': CryptoCurrencyType;
     /**
      * 
      * @type {number}
      * @memberof CryptoCurrencyRate
      */
-    jpy: number;
+    'jpy': number;
     /**
      * 
      * @type {number}
      * @memberof CryptoCurrencyRate
      */
-    eur: number;
+    'eur': number;
     /**
      * 
      * @type {number}
      * @memberof CryptoCurrencyRate
      */
-    usd: number;
+    'usd': number;
 }
 /**
  * 
  * @export
  * @enum {string}
  */
-export enum CryptoCurrencyType {
-    Eth = 'eth',
-    Matic = 'matic'
-}
 
+export const CryptoCurrencyType = {
+    Eth: 'eth',
+    Matic: 'matic'
+} as const;
+
+export type CryptoCurrencyType = typeof CryptoCurrencyType[keyof typeof CryptoCurrencyType];
+
+
+/**
+ * 
+ * @export
+ * @interface GetAvatar200Response
+ */
+export interface GetAvatar200Response {
+    /**
+     * 
+     * @type {object}
+     * @memberof GetAvatar200Response
+     */
+    'meta'?: object;
+    /**
+     * 
+     * @type {GetAvatar200ResponseData}
+     * @memberof GetAvatar200Response
+     */
+    'data'?: GetAvatar200ResponseData;
+}
+/**
+ * 
+ * @export
+ * @interface GetAvatar200ResponseData
+ */
+export interface GetAvatar200ResponseData {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAvatar200ResponseData
+     */
+    'imageId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAvatar200ResponseData
+     */
+    'uploadSignedUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAvatar200ResponseData
+     */
+    'readSignedUrl': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetBiddedItemStocksByWalletAddress200Response
+ */
+export interface GetBiddedItemStocksByWalletAddress200Response {
+    /**
+     * 
+     * @type {Array<ItemStock>}
+     * @memberof GetBiddedItemStocksByWalletAddress200Response
+     */
+    'data': Array<ItemStock>;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetBiddedItemStocksByWalletAddress200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetBoughtItemStocksByWalletAddress200Response
+ */
+export interface GetBoughtItemStocksByWalletAddress200Response {
+    /**
+     * 
+     * @type {GetBoughtItemStocksByWalletAddress200ResponseData}
+     * @memberof GetBoughtItemStocksByWalletAddress200Response
+     */
+    'data': GetBoughtItemStocksByWalletAddress200ResponseData;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetBoughtItemStocksByWalletAddress200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetBoughtItemStocksByWalletAddress200ResponseData
+ */
+export interface GetBoughtItemStocksByWalletAddress200ResponseData {
+    /**
+     * 
+     * @type {Array<ItemStock>}
+     * @memberof GetBoughtItemStocksByWalletAddress200ResponseData
+     */
+    'itemStocks': Array<ItemStock>;
+}
+/**
+ * 
+ * @export
+ * @interface GetContractERC721ById200Response
+ */
+export interface GetContractERC721ById200Response {
+    /**
+     * 
+     * @type {ContractERC721}
+     * @memberof GetContractERC721ById200Response
+     */
+    'data': ContractERC721;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetContractERC721ById200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetItemById200Response
+ */
+export interface GetItemById200Response {
+    /**
+     * 
+     * @type {Item}
+     * @memberof GetItemById200Response
+     */
+    'data': Item;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetItemById200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetItemStockById200Response
+ */
+export interface GetItemStockById200Response {
+    /**
+     * 
+     * @type {ItemStock}
+     * @memberof GetItemStockById200Response
+     */
+    'data': ItemStock;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetItemStockById200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetItemStockPhysicalShippingInfoByItemStockId200Response
+ */
+export interface GetItemStockPhysicalShippingInfoByItemStockId200Response {
+    /**
+     * 
+     * @type {ItemStockPhysicalShippingInfo}
+     * @memberof GetItemStockPhysicalShippingInfoByItemStockId200Response
+     */
+    'data': ItemStockPhysicalShippingInfo;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetItemStockPhysicalShippingInfoByItemStockId200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetItemStockPhysicalShippingInfoByItemStockIdRequest
+ */
+export interface GetItemStockPhysicalShippingInfoByItemStockIdRequest {
+    /**
+     * 
+     * @type {GetItemStockPhysicalShippingInfoByItemStockIdRequestData}
+     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequest
+     */
+    'data': GetItemStockPhysicalShippingInfoByItemStockIdRequestData;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequest
+     */
+    'signature': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetItemStockPhysicalShippingInfoByItemStockIdRequestData
+ */
+export interface GetItemStockPhysicalShippingInfoByItemStockIdRequestData {
+    /**
+     * 
+     * @type {SignatureDomain}
+     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestData
+     */
+    'domain': SignatureDomain;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestData
+     */
+    'primaryType': string;
+    /**
+     * 
+     * @type {GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage}
+     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestData
+     */
+    'message': GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestData
+     */
+    'types': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage
+ */
+export interface GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage
+     */
+    'walletAddress'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage
+     */
+    'requestTimestamp'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface GetItemStockPhysicalShippingInfoStatusByItemStockId200Response
+ */
+export interface GetItemStockPhysicalShippingInfoStatusByItemStockId200Response {
+    /**
+     * 
+     * @type {ItemStockPhysicalShippingInfoStatus}
+     * @memberof GetItemStockPhysicalShippingInfoStatusByItemStockId200Response
+     */
+    'data': ItemStockPhysicalShippingInfoStatus;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetItemStockPhysicalShippingInfoStatusByItemStockId200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetItems200Response
+ */
+export interface GetItems200Response {
+    /**
+     * 
+     * @type {Array<Item>}
+     * @memberof GetItems200Response
+     */
+    'data': Array<Item>;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetItems200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetItems400Response
+ */
+export interface GetItems400Response {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetItems400Response
+     */
+    'message': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetPaymentIntentById200Response
+ */
+export interface GetPaymentIntentById200Response {
+    /**
+     * 
+     * @type {GetPaymentIntentByIdResponseBodyData}
+     * @memberof GetPaymentIntentById200Response
+     */
+    'data': GetPaymentIntentByIdResponseBodyData;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetPaymentIntentById200Response
+     */
+    'meta': object;
+}
 /**
  * 
  * @export
@@ -349,13 +784,13 @@ export interface GetPaymentIntentByIdResponseBodyData {
      * @type {string}
      * @memberof GetPaymentIntentByIdResponseBodyData
      */
-    cryptoPaymentIntentId: string;
+    'cryptoPaymentIntentId': string;
     /**
      * 
      * @type {GetPaymentIntentByIdResponseBodyDataContractMethodResource}
      * @memberof GetPaymentIntentByIdResponseBodyData
      */
-    contractMethodResource: GetPaymentIntentByIdResponseBodyDataContractMethodResource;
+    'contractMethodResource': GetPaymentIntentByIdResponseBodyDataContractMethodResource;
 }
 /**
  * 
@@ -368,614 +803,221 @@ export interface GetPaymentIntentByIdResponseBodyDataContractMethodResource {
      * @type {string}
      * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
      */
-    contractAddress: string;
+    'contractAddress': string;
     /**
      * 
      * @type {NetworkId}
      * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
      */
-    networkId: NetworkId;
+    'networkId': NetworkId;
     /**
      * 
      * @type {ChainType}
      * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
      */
-    chainType: ChainType;
+    'chainType': ChainType;
     /**
      * 
      * @type {string}
      * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
      */
-    methodName: string;
+    'methodName': string;
     /**
      * 
      * @type {string}
      * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
      */
-    abi: string;
+    'abi': string;
     /**
      * 
-     * @type {Array<string | number | boolean | Array<any> | object>}
+     * @type {Array<any>}
      * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
      */
-    args: Array<string | number | boolean | Array<any> | object>;
+    'args': Array<any>;
 }
 /**
  * 
  * @export
- * @interface InlineObject
+ * @interface GetProductERC721ById200Response
  */
-export interface InlineObject {
-    /**
-     * 
-     * @type {SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdData}
-     * @memberof InlineObject
-     */
-    data: SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdData;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject
-     */
-    signature: string;
-}
-/**
- * 
- * @export
- * @interface InlineObject1
- */
-export interface InlineObject1 {
-    /**
-     * 
-     * @type {SdkV4ItemStockPhysicalShippingInfosCreateOrUpdateItemStockPhysicalShippingInfoData}
-     * @memberof InlineObject1
-     */
-    data: SdkV4ItemStockPhysicalShippingInfosCreateOrUpdateItemStockPhysicalShippingInfoData;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject1
-     */
-    signature: string;
-}
-/**
- * 
- * @export
- * @interface InlineObject2
- */
-export interface InlineObject2 {
-    /**
-     * 
-     * @type {WalletAddressProfile}
-     * @memberof InlineObject2
-     */
-    profile: WalletAddressProfile;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineObject2
-     */
-    signature: string;
-}
-/**
- * 
- * @export
- * @interface InlineObject3
- */
-export interface InlineObject3 {
-    /**
-     * Item id that will be purchased
-     * @type {string}
-     * @memberof InlineObject3
-     */
-    itemId: string;
-    /**
-     * Buyer wallet address
-     * @type {string}
-     * @memberof InlineObject3
-     */
-    toAddress: string;
-    /**
-     * 
-     * @type {UserResidence}
-     * @memberof InlineObject3
-     */
-    userResidence: UserResidence;
-}
-/**
- * 
- * @export
- * @interface InlineResponse200
- */
-export interface InlineResponse200 {
-    /**
-     * 
-     * @type {Array<Item>}
-     * @memberof InlineResponse200
-     */
-    data: Array<Item>;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse200
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2001
- */
-export interface InlineResponse2001 {
-    /**
-     * 
-     * @type {Item}
-     * @memberof InlineResponse2001
-     */
-    data: Item;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse2001
-     */
-    meta: object;
-}
-/**
- *
- * @export
- * @interface InlineResponseTokenERC721Detail
- */
-export interface InlineResponseTokenERC721Detail {
-    /**
-     *
-     * @type {TokenERC721}
-     * @memberof InlineResponseTokenERC721Detail
-     */
-    data: TokenERC721;
-    /**
-     *
-     * @type {object}
-     * @memberof InlineResponseTokenERC721Detail
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse20010
- */
-export interface InlineResponse20010 {
+export interface GetProductERC721ById200Response {
     /**
      * 
      * @type {ProductERC721}
-     * @memberof InlineResponse20010
+     * @memberof GetProductERC721ById200Response
      */
-    data: ProductERC721;
+    'data': ProductERC721;
     /**
      * 
      * @type {object}
-     * @memberof InlineResponse20010
+     * @memberof GetProductERC721ById200Response
      */
-    meta: object;
+    'meta': object;
 }
 /**
  * 
  * @export
- * @interface InlineResponse20011
+ * @interface GetProfile200Response
  */
-export interface InlineResponse20011 {
+export interface GetProfile200Response {
     /**
      * 
-     * @type {GetPaymentIntentByIdResponseBodyData}
-     * @memberof InlineResponse20011
+     * @type {GetProfile200ResponseData}
+     * @memberof GetProfile200Response
      */
-    data: GetPaymentIntentByIdResponseBodyData;
+    'data': GetProfile200ResponseData | null;
     /**
      * 
      * @type {object}
-     * @memberof InlineResponse20011
+     * @memberof GetProfile200Response
      */
-    meta: object;
+    'meta': object;
 }
 /**
  * 
  * @export
- * @interface InlineResponse20011Data
+ * @interface GetProfile200ResponseData
  */
-export interface InlineResponse20012 {
+export interface GetProfile200ResponseData {
+    /**
+     * 
+     * @type {WalletAddressProfile}
+     * @memberof GetProfile200ResponseData
+     */
+    'profile': WalletAddressProfile;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetProfile200ResponseData
+     */
+    'avatarImageUrl': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetSellableItemStockERC721Id200Response
+ */
+export interface GetSellableItemStockERC721Id200Response {
+    /**
+     * 
+     * @type {GetSellableItemStockERC721Id200ResponseData}
+     * @memberof GetSellableItemStockERC721Id200Response
+     */
+    'data': GetSellableItemStockERC721Id200ResponseData;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetSellableItemStockERC721Id200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetSellableItemStockERC721Id200ResponseData
+ */
+export interface GetSellableItemStockERC721Id200ResponseData {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSellableItemStockERC721Id200ResponseData
+     */
+    'itemStockId': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetSignByItemStockId200Response
+ */
+export interface GetSignByItemStockId200Response {
+    /**
+     * 
+     * @type {GetSignByItemStockId200ResponseData}
+     * @memberof GetSignByItemStockId200Response
+     */
+    'data': GetSignByItemStockId200ResponseData;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetSignByItemStockId200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetSignByItemStockId200ResponseData
+ */
+export interface GetSignByItemStockId200ResponseData {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSignByItemStockId200ResponseData
+     */
+    'signature': string;
+    /**
+     * 対応したコントラクトのメソッドに渡す
+     * @type {Array<any>}
+     * @memberof GetSignByItemStockId200ResponseData
+     */
+    'contractMethodArg': Array<any>;
+}
+/**
+ * 
+ * @export
+ * @interface GetTokenERC721ById200Response
+ */
+export interface GetTokenERC721ById200Response {
+    /**
+     * 
+     * @type {TokenERC721}
+     * @memberof GetTokenERC721ById200Response
+     */
+    'data': TokenERC721;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetTokenERC721ById200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetTokenERC721sByContractAddress200Response
+ */
+export interface GetTokenERC721sByContractAddress200Response {
     /**
      * 
      * @type {Array<TokenERC721>}
-     * @memberof InlineResponse20012
+     * @memberof GetTokenERC721sByContractAddress200Response
      */
-    data: Array<TokenERC721>;
+    'data': Array<TokenERC721>;
     /**
      * 
      * @type {object}
-     * @memberof InlineResponse20012
+     * @memberof GetTokenERC721sByContractAddress200Response
      */
-    meta: object;
+    'meta': object;
 }
 /**
  * 
  * @export
- * @interface InlineResponse20013
+ * @interface HasNfts200Response
  */
-export interface InlineResponse20013 {
+export interface HasNfts200Response {
     /**
      * 
      * @type {boolean}
-     * @memberof InlineResponse20013
+     * @memberof HasNfts200Response
      */
-    data: boolean;
+    'data': boolean;
     /**
      * 
      * @type {object}
-     * @memberof InlineResponse20013
+     * @memberof HasNfts200Response
      */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse20014
- */
-export interface InlineResponse20014 {
-    /**
-     * 
-     * @type {InlineResponse20014Data}
-     * @memberof InlineResponse20014
-     */
-    data: InlineResponse20014Data | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse20014
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse20014Data
- */
-export interface InlineResponse20014Data {
-    /**
-     * 
-     * @type {WalletAddressProfile}
-     * @memberof InlineResponse20014Data
-     */
-    profile: WalletAddressProfile;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse20014Data
-     */
-    avatarImageUrl: string;
-}
-/**
- * 
- * @export
- * @interface InlineResponse20015
- */
-export interface InlineResponse20015 {
-    /**
-     * 
-     * @type {InlineResponse20015Data}
-     * @memberof InlineResponse20015
-     */
-    data?: InlineResponse20015Data;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse20015
-     */
-    meta?: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse20015Data
- */
-export interface InlineResponse20015Data {
-    /**
-     * 
-     * @type {WalletAddressProfile}
-     * @memberof InlineResponse20015Data
-     */
-    profile?: WalletAddressProfile;
-}
-/**
- * 
- * @export
- * @interface InlineResponse20016
- */
-export interface InlineResponse20016 {
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse20016
-     */
-    meta?: object;
-    /**
-     * 
-     * @type {InlineResponse20016Data}
-     * @memberof InlineResponse20016
-     */
-    data?: InlineResponse20016Data;
-}
-/**
- * 
- * @export
- * @interface InlineResponse20016Data
- */
-export interface InlineResponse20016Data {
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse20016Data
-     */
-    imageId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse20016Data
-     */
-    uploadSignedUrl: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse20016Data
-     */
-    readSignedUrl: string;
-}
-/**
- * 
- * @export
- * @interface InlineResponse20017
- */
-export interface InlineResponse20017 {
-    /**
-     * 
-     * @type {ContractERC721}
-     * @memberof InlineResponse20017
-     */
-    data: ContractERC721;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse20017
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse20018
- */
-export interface InlineResponse20018 {
-    /**
-     * クライアント側でloadStripeに対して渡す公開可能なAPI-Key
-     * @type {string}
-     * @memberof InlineResponse20018
-     */
-    publishableKey: string;
-    /**
-     * StripeのPaymentIntentのClientSecret
-     * @type {string}
-     * @memberof InlineResponse20018
-     */
-    secret: string;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2002
- */
-export interface InlineResponse2002 {
-    /**
-     * 
-     * @type {InlineResponse2002Data}
-     * @memberof InlineResponse2002
-     */
-    data: InlineResponse2002Data;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse2002
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2002Data
- */
-export interface InlineResponse2002Data {
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse2002Data
-     */
-    itemStockId: string;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2003
- */
-export interface InlineResponse2003 {
-    /**
-     * 
-     * @type {InlineResponse2003Data}
-     * @memberof InlineResponse2003
-     */
-    data: InlineResponse2003Data;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse2003
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2003Data
- */
-export interface InlineResponse2003Data {
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse2003Data
-     */
-    signature: string;
-    /**
-     * 対応したコントラクトのメソッドに渡す
-     * @type {Array<string | number | boolean | Array<any> | object>}
-     * @memberof InlineResponse2003Data
-     */
-    contractMethodArg: Array<string | number | boolean | Array<any> | object>;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2004
- */
-export interface InlineResponse2004 {
-    /**
-     * 
-     * @type {ItemStock}
-     * @memberof InlineResponse2004
-     */
-    data: ItemStock;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse2004
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2005
- */
-export interface InlineResponse2005 {
-    /**
-     * 
-     * @type {Array<ItemStock>}
-     * @memberof InlineResponse2005
-     */
-    data: Array<ItemStock>;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse2005
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2006
- */
-export interface InlineResponse2006 {
-    /**
-     * 
-     * @type {InlineResponse2006Data}
-     * @memberof InlineResponse2006
-     */
-    data: InlineResponse2006Data;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse2006
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2006Data
- */
-export interface InlineResponse2006Data {
-    /**
-     * 
-     * @type {Array<ItemStock>}
-     * @memberof InlineResponse2006Data
-     */
-    itemStocks: Array<ItemStock>;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2007
- */
-export interface InlineResponse2007 {
-    /**
-     * 
-     * @type {ProductERC721}
-     * @memberof InlineResponse2007
-     */
-    data: ProductERC721;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse2007
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2008
- */
-export interface InlineResponse2008 {
-    /**
-     * 
-     * @type {ItemStockPhysicalShippingInfo}
-     * @memberof InlineResponse2008
-     */
-    data: ItemStockPhysicalShippingInfo;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse2008
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse2009
- */
-export interface InlineResponse2009 {
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse2009
-     */
-    data: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof InlineResponse2009
-     */
-    meta: object;
-}
-/**
- * 
- * @export
- * @interface InlineResponse400
- */
-export interface InlineResponse400 {
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse400
-     */
-    message: string;
+    'meta': object;
 }
 /**
  * 
@@ -988,116 +1030,123 @@ export interface Item {
      * @type {string}
      * @memberof Item
      */
-    id: string;
+    'id': string;
     /**
      * 
      * @type {string}
      * @memberof Item
      */
-    createAt: string;
+    'createAt': string;
     /**
      * 
      * @type {string}
      * @memberof Item
      */
-    updateAt: string;
+    'updateAt': string;
     /**
      * 
      * @type {string}
      * @memberof Item
      */
-    name: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof Item
      */
-    description: string;
+    'description': string;
     /**
      * Itemのプレビュー用URL
      * @type {Array<PreviewMedia>}
      * @memberof Item
      */
-    previews: Array<PreviewMedia>;
+    'previews': Array<PreviewMedia>;
     /**
      * 
      * @type {ItemType}
      * @memberof Item
      */
-    type: ItemType;
+    'type': ItemType;
     /**
      * 
      * @type {string}
      * @memberof Item
      */
-    startAt: string;
+    'startAt': string;
     /**
      * 
      * @type {string}
      * @memberof Item
      */
-    endAt: string;
+    'endAt': string;
     /**
      * 
      * @type {number}
      * @memberof Item
      */
-    price: number;
+    'price': number;
     /**
      * 
      * @type {CryptoCurrencyRate}
      * @memberof Item
      */
-    cryptoCurrencyRate: CryptoCurrencyRate;
+    'cryptoCurrencyRate': CryptoCurrencyRate;
     /**
      * Mintに支払われる取引手数料
      * @type {number}
      * @memberof Item
      */
-    feeRatePermill: number;
+    'feeRatePermill': number;
     /**
      * 任意のTag
      * @type {Array<string>}
      * @memberof Item
      */
-    tags: Array<string>;
+    'tags': Array<string>;
     /**
-     * paymentMethodによって異なるデータ
-     * @type {ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice | ItemPaymentMethodDataEthereumContractERC721ShopAuction | ItemPaymentMethodDataCreditCardStripeFixedPrice}
+     * 
+     * @type {ItemPaymentMethodData}
      * @memberof Item
      */
-    paymentMethodData: ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice | ItemPaymentMethodDataEthereumContractERC721ShopAuction | ItemPaymentMethodDataCreditCardStripeFixedPrice;
+    'paymentMethodData': ItemPaymentMethodData;
     /**
      * 
      * @type {Array<string>}
      * @memberof Item
      */
-    itemStockIds: Array<string>;
+    'itemStockIds': Array<string>;
     /**
      * 
      * @type {number}
      * @memberof Item
      */
-    availableStockNum: number;
+    'availableStockNum': number;
     /**
      * 
      * @type {Array<string>}
      * @memberof Item
      */
-    productERC721Ids: Array<string>;
+    'productERC721Ids': Array<string>;
     /**
      * オークションItem以外は空配列が入る
      * @type {Array<Bid>}
      * @memberof Item
      */
-    bids: Array<Bid>;
+    'bids': Array<Bid>;
     /**
      * 
      * @type {object}
      * @memberof Item
      */
-    metadata: object | null;
+    'metadata': object | null;
 }
+/**
+ * @type ItemPaymentMethodData
+ * paymentMethodによって異なるデータ
+ * @export
+ */
+export type ItemPaymentMethodData = ItemPaymentMethodDataCreditCardStripeFixedPrice | ItemPaymentMethodDataEthereumContractERC721ShopAuction | ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice;
+
 /**
  * 
  * @export
@@ -1109,22 +1158,20 @@ export interface ItemPaymentMethodDataCreditCardStripeFixedPrice {
      * @type {string}
      * @memberof ItemPaymentMethodDataCreditCardStripeFixedPrice
      */
-    paymentMethod: ItemPaymentMethodDataCreditCardStripeFixedPricePaymentMethodEnum;
+    'paymentMethod': ItemPaymentMethodDataCreditCardStripeFixedPricePaymentMethodEnum;
     /**
      * 
      * @type {CreditCardStripeCurrencyType}
      * @memberof ItemPaymentMethodDataCreditCardStripeFixedPrice
      */
-    currency: CreditCardStripeCurrencyType;
+    'currency': CreditCardStripeCurrencyType;
 }
 
-/**
-    * @export
-    * @enum {string}
-    */
-export enum ItemPaymentMethodDataCreditCardStripeFixedPricePaymentMethodEnum {
-    CreditCardStripeFixedPrice = 'credit-card-stripe-fixed-price'
-}
+export const ItemPaymentMethodDataCreditCardStripeFixedPricePaymentMethodEnum = {
+    CreditCardStripeFixedPrice: 'credit-card-stripe-fixed-price'
+} as const;
+
+export type ItemPaymentMethodDataCreditCardStripeFixedPricePaymentMethodEnum = typeof ItemPaymentMethodDataCreditCardStripeFixedPricePaymentMethodEnum[keyof typeof ItemPaymentMethodDataCreditCardStripeFixedPricePaymentMethodEnum];
 
 /**
  * 
@@ -1137,34 +1184,32 @@ export interface ItemPaymentMethodDataEthereumContractERC721ShopAuction {
      * @type {string}
      * @memberof ItemPaymentMethodDataEthereumContractERC721ShopAuction
      */
-    paymentMethod: ItemPaymentMethodDataEthereumContractERC721ShopAuctionPaymentMethodEnum;
+    'paymentMethod': ItemPaymentMethodDataEthereumContractERC721ShopAuctionPaymentMethodEnum;
     /**
      * 
      * @type {ContractDataERC721Shop}
      * @memberof ItemPaymentMethodDataEthereumContractERC721ShopAuction
      */
-    contractDataERC721Shop: ContractDataERC721Shop;
+    'contractDataERC721Shop': ContractDataERC721Shop;
     /**
      * 
      * @type {number}
      * @memberof ItemPaymentMethodDataEthereumContractERC721ShopAuction
      */
-    minBidPercentage: number;
+    'minBidPercentage': number;
     /**
      * 
      * @type {string}
      * @memberof ItemPaymentMethodDataEthereumContractERC721ShopAuction
      */
-    defaultEndAt: string;
+    'defaultEndAt': string;
 }
 
-/**
-    * @export
-    * @enum {string}
-    */
-export enum ItemPaymentMethodDataEthereumContractERC721ShopAuctionPaymentMethodEnum {
-    EthereumContractErc721ShopAuction = 'ethereum-contract-erc721-shop-auction'
-}
+export const ItemPaymentMethodDataEthereumContractERC721ShopAuctionPaymentMethodEnum = {
+    EthereumContractErc721ShopAuction: 'ethereum-contract-erc721-shop-auction'
+} as const;
+
+export type ItemPaymentMethodDataEthereumContractERC721ShopAuctionPaymentMethodEnum = typeof ItemPaymentMethodDataEthereumContractERC721ShopAuctionPaymentMethodEnum[keyof typeof ItemPaymentMethodDataEthereumContractERC721ShopAuctionPaymentMethodEnum];
 
 /**
  * 
@@ -1177,22 +1222,20 @@ export interface ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice {
      * @type {string}
      * @memberof ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice
      */
-    paymentMethod: ItemPaymentMethodDataEthereumContractERC721ShopFixedPricePaymentMethodEnum;
+    'paymentMethod': ItemPaymentMethodDataEthereumContractERC721ShopFixedPricePaymentMethodEnum;
     /**
      * 
      * @type {ContractDataERC721Shop}
      * @memberof ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice
      */
-    contractDataERC721Shop: ContractDataERC721Shop;
+    'contractDataERC721Shop': ContractDataERC721Shop;
 }
 
-/**
-    * @export
-    * @enum {string}
-    */
-export enum ItemPaymentMethodDataEthereumContractERC721ShopFixedPricePaymentMethodEnum {
-    EthereumContractErc721ShopFixedPrice = 'ethereum-contract-erc721-shop-fixed-price'
-}
+export const ItemPaymentMethodDataEthereumContractERC721ShopFixedPricePaymentMethodEnum = {
+    EthereumContractErc721ShopFixedPrice: 'ethereum-contract-erc721-shop-fixed-price'
+} as const;
+
+export type ItemPaymentMethodDataEthereumContractERC721ShopFixedPricePaymentMethodEnum = typeof ItemPaymentMethodDataEthereumContractERC721ShopFixedPricePaymentMethodEnum[keyof typeof ItemPaymentMethodDataEthereumContractERC721ShopFixedPricePaymentMethodEnum];
 
 /**
  * 
@@ -1205,37 +1248,37 @@ export interface ItemStock {
      * @type {string}
      * @memberof ItemStock
      */
-    id: string;
+    'id': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStock
      */
-    createAt: string;
+    'createAt': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStock
      */
-    updateAt: string;
+    'updateAt': string;
     /**
      * 
      * @type {ItemStockStatus}
      * @memberof ItemStock
      */
-    status: ItemStockStatus;
+    'status': ItemStockStatus;
     /**
      * 
      * @type {Array<ProductERC721>}
      * @memberof ItemStock
      */
-    productsData: Array<ProductERC721>;
+    'productsData': Array<ProductERC721>;
     /**
      * 
      * @type {Item}
      * @memberof ItemStock
      */
-    item: Item;
+    'item': Item;
 }
 /**
  * ItemStockPhysicalShippingInfo data model
@@ -1248,136 +1291,139 @@ export interface ItemStockPhysicalShippingInfo {
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    id: string | null;
+    'id': string | null;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    firstName: string;
+    'firstName': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    lastName: string;
+    'lastName': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    country: string;
+    'country': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    email: string;
+    'email': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    postalCode: string;
+    'postalCode': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    city: string;
+    'city': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    state: string;
+    'state': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    address1: string;
+    'address1': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    phoneNumber: string;
+    'phoneNumber': string;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    address2: string | null;
+    'address2': string | null;
     /**
      * 
      * @type {string}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    address3: string | null;
+    'address3': string | null;
     /**
      * 
      * @type {ItemStockPhysicalShippingInfoStatus}
      * @memberof ItemStockPhysicalShippingInfo
      */
-    status: ItemStockPhysicalShippingInfoStatus;
+    'status': ItemStockPhysicalShippingInfoStatus;
 }
 /**
  * 
  * @export
  * @enum {string}
  */
-export enum ItemStockPhysicalShippingInfoStatus {
-    ShippingAddressNotRegistered = 'shipping-address-not-registered',
-    ShippingAddressRegistered = 'shipping-address-registered',
-    Shipped = 'shipped'
-}
+
+export const ItemStockPhysicalShippingInfoStatus = {
+    ShippingAddressNotRegistered: 'shipping-address-not-registered',
+    ShippingAddressRegistered: 'shipping-address-registered',
+    Shipped: 'shipped'
+} as const;
+
+export type ItemStockPhysicalShippingInfoStatus = typeof ItemStockPhysicalShippingInfoStatus[keyof typeof ItemStockPhysicalShippingInfoStatus];
+
 
 /**
  * 
  * @export
  * @enum {string}
  */
-export enum ItemStockStatus {
-    Created = 'created',
-    Minted = 'minted'
-}
+
+export const ItemStockStatus = {
+    Created: 'created',
+    Minted: 'minted'
+} as const;
+
+export type ItemStockStatus = typeof ItemStockStatus[keyof typeof ItemStockStatus];
+
 
 /**
  * アイテムの種類
  * @export
  * @enum {string}
  */
-export enum ItemType {
-    Normal = 'normal',
-    WithPhysicalItem = 'with-physical-item'
-}
+
+export const ItemType = {
+    Normal: 'normal',
+    WithPhysicalItem: 'with-physical-item'
+} as const;
+
+export type ItemType = typeof ItemType[keyof typeof ItemType];
+
 
 /**
  * 
  * @export
  * @enum {string}
  */
-export enum NetworkId {
-    NUMBER_1 = 1,
-    NUMBER_4 = 4,
-    NUMBER_80001 = 80001,
-    NUMBER_137 = 137,
-    NUMBER_31337 = 31337
-}
 
-/**
- * 
- * @export
- * @enum {string}
- */
-export enum NetworkIdString {
-    _1 = '1',
-    _4 = '4',
-    _80001 = '80001',
-    _137 = '137',
-    _31337 = '31337'
-}
+export const NetworkId = {
+    NUMBER_1: 1,
+    NUMBER_4: 4,
+    NUMBER_80001: 80001,
+    NUMBER_137: 137,
+    NUMBER_31337: 31337
+} as const;
+
+export type NetworkId = typeof NetworkId[keyof typeof NetworkId];
+
 
 /**
  * プレビュー用のメディア
@@ -1390,13 +1436,13 @@ export interface PreviewMedia {
      * @type {string}
      * @memberof PreviewMedia
      */
-    url: string;
+    'url': string;
     /**
      * 
      * @type {string}
      * @memberof PreviewMedia
      */
-    mimeType: string;
+    'mimeType': string;
 }
 /**
  * 
@@ -1409,174 +1455,91 @@ export interface ProductERC721 {
      * @type {string}
      * @memberof ProductERC721
      */
-    id: string;
+    'id': string;
     /**
      * 
      * @type {string}
      * @memberof ProductERC721
      */
-    createAt: string;
+    'createAt': string;
     /**
      * 
      * @type {string}
      * @memberof ProductERC721
      */
-    updateAt: string;
+    'updateAt': string;
     /**
      * 
      * @type {string}
      * @memberof ProductERC721
      */
-    status: ProductERC721StatusEnum;
+    'status': ProductERC721StatusEnum;
     /**
      * 
      * @type {TokenStandardType}
      * @memberof ProductERC721
      */
-    tokenStandardType: TokenStandardType;
+    'tokenStandardType': TokenStandardType;
     /**
      * 
      * @type {string}
      * @memberof ProductERC721
      */
-    contractERC721Id: string;
+    'contractERC721Id': string;
     /**
      * 
      * @type {number}
      * @memberof ProductERC721
      */
-    tokenId: number;
+    'tokenId': number;
     /**
      * 
      * @type {string}
      * @memberof ProductERC721
      */
-    tokenURI: string | null;
+    'tokenURI': string | null;
     /**
      * 
      * @type {string}
      * @memberof ProductERC721
      */
-    creatorAddress: string;
+    'creatorAddress': string;
     /**
      * 
      * @type {object}
      * @memberof ProductERC721
      */
-    metadata: object | null;
+    'metadata': object | null;
     /**
      * 
      * @type {string}
      * @memberof ProductERC721
      */
-    itemStockDocumentId: string | null;
+    'itemStockDocumentId': string | null;
     /**
      * 
      * @type {string}
      * @memberof ProductERC721
      */
-    productBlueprintId: string | null;
+    'productBlueprintId': string | null;
     /**
      * 
      * @type {string}
      * @memberof ProductERC721
      */
-    productGroupId: string | null;
+    'productGroupId': string | null;
 }
 
-/**
-    * @export
-    * @enum {string}
-    */
-export enum ProductERC721StatusEnum {
-    Created = 'created',
-    PackedInItem = 'packed-in-item',
-    TxProgressing = 'tx-progressing',
-    Minted = 'minted',
-    Archived = 'archived'
-}
+export const ProductERC721StatusEnum = {
+    Created: 'created',
+    PackedInItem: 'packed-in-item',
+    TxProgressing: 'tx-progressing',
+    Minted: 'minted',
+    Archived: 'archived'
+} as const;
 
-/**
- * 
- * @export
- * @interface SdkV4ItemStockPhysicalShippingInfosCreateOrUpdateItemStockPhysicalShippingInfoData
- */
-export interface SdkV4ItemStockPhysicalShippingInfosCreateOrUpdateItemStockPhysicalShippingInfoData {
-    /**
-     * 
-     * @type {SignatureDomain}
-     * @memberof SdkV4ItemStockPhysicalShippingInfosCreateOrUpdateItemStockPhysicalShippingInfoData
-     */
-    domain: SignatureDomain;
-    /**
-     * 
-     * @type {string}
-     * @memberof SdkV4ItemStockPhysicalShippingInfosCreateOrUpdateItemStockPhysicalShippingInfoData
-     */
-    primaryType: string;
-    /**
-     * 
-     * @type {CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage}
-     * @memberof SdkV4ItemStockPhysicalShippingInfosCreateOrUpdateItemStockPhysicalShippingInfoData
-     */
-    message: CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage;
-    /**
-     * 
-     * @type {object}
-     * @memberof SdkV4ItemStockPhysicalShippingInfosCreateOrUpdateItemStockPhysicalShippingInfoData
-     */
-    types: object;
-}
-/**
- * 
- * @export
- * @interface SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdData
- */
-export interface SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdData {
-    /**
-     * 
-     * @type {SignatureDomain}
-     * @memberof SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdData
-     */
-    domain: SignatureDomain;
-    /**
-     * 
-     * @type {string}
-     * @memberof SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdData
-     */
-    primaryType: string;
-    /**
-     * 
-     * @type {SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdDataMessage}
-     * @memberof SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdData
-     */
-    message: SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdDataMessage;
-    /**
-     * 
-     * @type {object}
-     * @memberof SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdData
-     */
-    types: object;
-}
-/**
- * 
- * @export
- * @interface SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdDataMessage
- */
-export interface SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdDataMessage {
-    /**
-     * 
-     * @type {string}
-     * @memberof SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdDataMessage
-     */
-    walletAddress?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShippingInfoByItemStockIdDataMessage
-     */
-    requestTimestamp?: string;
-}
+export type ProductERC721StatusEnum = typeof ProductERC721StatusEnum[keyof typeof ProductERC721StatusEnum];
+
 /**
  * 
  * @export
@@ -1585,33 +1548,37 @@ export interface SdkV4ItemStockPhysicalShippingInfosGetItemStockPhysicalShipping
 export interface SignatureDomain {
     /**
      * 
-     * @type {NetworkIdString}
+     * @type {string}
      * @memberof SignatureDomain
      */
-    chainId: NetworkIdString;
+    'chainId': string;
     /**
      * 
      * @type {string}
      * @memberof SignatureDomain
      */
-    name: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof SignatureDomain
      */
-    version: string;
+    'version': string;
 }
 /**
  * 
  * @export
  * @enum {string}
  */
-export enum SignatureType {
-    FixedPrice = 'ethereum-contract-erc721-shop-fixed-price',
-    AuctionBid = 'ethereum-contract-erc721-shop-auction-bid',
-    AuctionWithdraw = 'ethereum-contract-erc721-shop-auction-withdraw'
-}
+
+export const SignatureType = {
+    FixedPrice: 'ethereum-contract-erc721-shop-fixed-price',
+    AuctionBid: 'ethereum-contract-erc721-shop-auction-bid',
+    AuctionWithdraw: 'ethereum-contract-erc721-shop-auction-withdraw'
+} as const;
+
+export type SignatureType = typeof SignatureType[keyof typeof SignatureType];
+
 
 /**
  * 
@@ -1624,82 +1591,86 @@ export interface TokenERC721 {
      * @type {string}
      * @memberof TokenERC721
      */
-    id: string;
+    'id': string;
     /**
      * 
      * @type {string}
      * @memberof TokenERC721
      */
-    createAt: string;
+    'createAt': string;
     /**
      * 
      * @type {string}
      * @memberof TokenERC721
      */
-    updateAt: string;
+    'updateAt': string;
     /**
      * 
      * @type {TokenStandardType}
      * @memberof TokenERC721
      */
-    tokenStandardType: TokenStandardType;
+    'tokenStandardType': TokenStandardType;
     /**
      * 
      * @type {string}
      * @memberof TokenERC721
      */
-    contractERC721Id: string;
+    'contractERC721Id': string;
     /**
      * 
      * @type {number}
      * @memberof TokenERC721
      */
-    tokenId: number;
+    'tokenId': number;
     /**
      * 
      * @type {string}
      * @memberof TokenERC721
      */
-    tokenURI: string;
+    'tokenURI': string;
     /**
      * 
      * @type {object}
      * @memberof TokenERC721
      */
-    metadata: object;
+    'metadata': object;
     /**
      * 
      * @type {string}
      * @memberof TokenERC721
      */
-    mintTransactionHash: string;
+    'mintTransactionHash': string;
     /**
      * 
      * @type {string}
      * @memberof TokenERC721
      */
-    initialOwnerAddress: string;
+    'initialOwnerAddress': string;
     /**
      * 
      * @type {string}
      * @memberof TokenERC721
      */
-    currentOwnerAddress: string;
+    'currentOwnerAddress': string;
     /**
      * 
      * @type {Array<TransferData>}
      * @memberof TokenERC721
      */
-    transferHistory: Array<TransferData>;
+    'transferHistory': Array<TransferData>;
 }
 /**
  * 
  * @export
  * @enum {string}
  */
-export enum TokenStandardType {
-    Erc721 = 'ERC721'
-}
+
+export const TokenStandardType = {
+    Erc721: 'ERC721'
+} as const;
+
+export type TokenStandardType = typeof TokenStandardType[keyof typeof TokenStandardType];
+
 
 /**
  * 
@@ -1712,29 +1683,84 @@ export interface TransferData {
      * @type {string}
      * @memberof TransferData
      */
-    from: string;
+    'from': string;
     /**
      * 
      * @type {string}
      * @memberof TransferData
      */
-    to: string;
+    'to': string;
     /**
      * 
      * @type {string}
      * @memberof TransferData
      */
-    transactionHash: string;
+    'transactionHash': string;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateProfile200Response
+ */
+export interface UpdateProfile200Response {
+    /**
+     * 
+     * @type {UpdateProfile200ResponseData}
+     * @memberof UpdateProfile200Response
+     */
+    'data'?: UpdateProfile200ResponseData;
+    /**
+     * 
+     * @type {object}
+     * @memberof UpdateProfile200Response
+     */
+    'meta'?: object;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateProfile200ResponseData
+ */
+export interface UpdateProfile200ResponseData {
+    /**
+     * 
+     * @type {WalletAddressProfile}
+     * @memberof UpdateProfile200ResponseData
+     */
+    'profile'?: WalletAddressProfile;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateProfileRequest
+ */
+export interface UpdateProfileRequest {
+    /**
+     * 
+     * @type {WalletAddressProfile}
+     * @memberof UpdateProfileRequest
+     */
+    'profile': WalletAddressProfile;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProfileRequest
+     */
+    'signature': string;
 }
 /**
  * 
  * @export
  * @enum {string}
  */
-export enum UserResidence {
-    Jp = 'jp',
-    Unknown = 'unknown'
-}
+
+export const UserResidence = {
+    Jp: 'jp',
+    Unknown: 'unknown'
+} as const;
+
+export type UserResidence = typeof UserResidence[keyof typeof UserResidence];
+
 
 /**
  * 
@@ -1747,43 +1773,43 @@ export interface WalletAddressProfile {
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    walletAddress: string;
+    'walletAddress': string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    avatarImageId: string;
+    'avatarImageId': string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    displayName: string;
+    'displayName': string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    bio: string;
+    'bio': string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    twitterAccountName: string;
+    'twitterAccountName': string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    instagramAccountName: string;
+    'instagramAccountName': string;
     /**
      * 
      * @type {string}
      * @memberof WalletAddressProfile
      */
-    homepageUrl: string;
+    'homepageUrl': string;
 }
 
 /**
@@ -1797,11 +1823,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @summary API for creating or updating item stock physical shipping info for given item stock id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
-         * @param {InlineObject1} [inlineObject1] 
+         * @param {CreateOrUpdateItemStockPhysicalShippingInfoRequest} [createOrUpdateItemStockPhysicalShippingInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createOrUpdateItemStockPhysicalShippingInfo: async (mintAccessToken: string, itemStockId: string, inlineObject1?: InlineObject1, options: any = {}): Promise<RequestArgs> => {
+        createOrUpdateItemStockPhysicalShippingInfo: async (mintAccessToken: string, itemStockId: string, createOrUpdateItemStockPhysicalShippingInfoRequest?: CreateOrUpdateItemStockPhysicalShippingInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('createOrUpdateItemStockPhysicalShippingInfo', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'itemStockId' is not null or undefined
@@ -1830,10 +1856,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(inlineObject1, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createOrUpdateItemStockPhysicalShippingInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1844,11 +1870,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
          * @param {string} mintAccessToken 
-         * @param {InlineObject3} [inlineObject3] 
+         * @param {CreateStripePaymentIntentRequest} [createStripePaymentIntentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createStripePaymentIntent: async (mintAccessToken: string, inlineObject3?: InlineObject3, options: any = {}): Promise<RequestArgs> => {
+        createStripePaymentIntent: async (mintAccessToken: string, createStripePaymentIntentRequest?: CreateStripePaymentIntentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('createStripePaymentIntent', 'mintAccessToken', mintAccessToken)
             const localVarPath = `/sdk_v4/stripePayment/createStripePaymentIntent`;
@@ -1871,10 +1897,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(inlineObject3, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createStripePaymentIntentRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1888,7 +1914,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAvatar: async (mintAccessToken: string, options: any = {}): Promise<RequestArgs> => {
+        getAvatar: async (mintAccessToken: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getAvatar', 'mintAccessToken', mintAccessToken)
             const localVarPath = `/sdk_v4/avatar`;
@@ -1909,7 +1935,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -1931,7 +1957,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBiddedItemStocksByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options: any = {}): Promise<RequestArgs> => {
+        getBiddedItemStocksByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getBiddedItemStocksByWalletAddress', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
@@ -1982,7 +2008,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2003,7 +2029,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBoughtItemStocksByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options: any = {}): Promise<RequestArgs> => {
+        getBoughtItemStocksByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getBoughtItemStocksByWalletAddress', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
@@ -2050,7 +2076,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2067,7 +2093,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getContractERC721ById: async (mintAccessToken: string, contractId: string, options: any = {}): Promise<RequestArgs> => {
+        getContractERC721ById: async (mintAccessToken: string, contractId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getContractERC721ById', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'contractId' is not null or undefined
@@ -2094,7 +2120,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2111,7 +2137,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemById: async (mintAccessToken: string, itemId: string, options: any = {}): Promise<RequestArgs> => {
+        getItemById: async (mintAccessToken: string, itemId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getItemById', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'itemId' is not null or undefined
@@ -2135,7 +2161,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2152,7 +2178,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemByTokenERC721: async (mintAccessToken: string, tokenId: string, options: any = {}): Promise<RequestArgs> => {
+        getItemByTokenERC721: async (mintAccessToken: string, tokenId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getItemByTokenERC721', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'tokenId' is not null or undefined
@@ -2179,7 +2205,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2196,7 +2222,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemStockById: async (mintAccessToken: string, itemStockId: string, options: any = {}): Promise<RequestArgs> => {
+        getItemStockById: async (mintAccessToken: string, itemStockId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getItemStockById', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'itemStockId' is not null or undefined
@@ -2223,7 +2249,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2237,11 +2263,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @summary API for getting item stock physical shipping info by item stock id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
-         * @param {InlineObject} [inlineObject] 
+         * @param {GetItemStockPhysicalShippingInfoByItemStockIdRequest} [getItemStockPhysicalShippingInfoByItemStockIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemStockPhysicalShippingInfoByItemStockId: async (mintAccessToken: string, itemStockId: string, inlineObject?: InlineObject, options: any = {}): Promise<RequestArgs> => {
+        getItemStockPhysicalShippingInfoByItemStockId: async (mintAccessToken: string, itemStockId: string, getItemStockPhysicalShippingInfoByItemStockIdRequest?: GetItemStockPhysicalShippingInfoByItemStockIdRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getItemStockPhysicalShippingInfoByItemStockId', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'itemStockId' is not null or undefined
@@ -2270,10 +2296,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(inlineObject, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getItemStockPhysicalShippingInfoByItemStockIdRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2288,7 +2314,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemStockPhysicalShippingInfoStatusByItemStockId: async (mintAccessToken: string, itemStockId: string, options: any = {}): Promise<RequestArgs> => {
+        getItemStockPhysicalShippingInfoStatusByItemStockId: async (mintAccessToken: string, itemStockId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getItemStockPhysicalShippingInfoStatusByItemStockId', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'itemStockId' is not null or undefined
@@ -2315,7 +2341,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2339,7 +2365,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItems: async (mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options: any = {}): Promise<RequestArgs> => {
+        getItems: async (mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getItems', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'page' is not null or undefined
@@ -2396,7 +2422,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2413,7 +2439,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPaymentIntentById: async (mintAccessToken: string, paymentIntentId: string, options: any = {}): Promise<RequestArgs> => {
+        getPaymentIntentById: async (mintAccessToken: string, paymentIntentId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getPaymentIntentById', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'paymentIntentId' is not null or undefined
@@ -2437,7 +2463,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2454,7 +2480,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductERC721ById: async (mintAccessToken: string, id: string, options: any = {}): Promise<RequestArgs> => {
+        getProductERC721ById: async (mintAccessToken: string, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getProductERC721ById', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'id' is not null or undefined
@@ -2481,7 +2507,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2498,7 +2524,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProfile: async (mintAccessToken: string, walletAddress: string, options: any = {}): Promise<RequestArgs> => {
+        getProfile: async (mintAccessToken: string, walletAddress: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getProfile', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
@@ -2525,7 +2551,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2542,7 +2568,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSellableItemStockERC721Id: async (mintAccessToken: string, itemId: string, options: any = {}): Promise<RequestArgs> => {
+        getSellableItemStockERC721Id: async (mintAccessToken: string, itemId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getSellableItemStockERC721Id', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'itemId' is not null or undefined
@@ -2569,7 +2595,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2589,7 +2615,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSignByItemStockId: async (mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options: any = {}): Promise<RequestArgs> => {
+        getSignByItemStockId: async (mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getSignByItemStockId', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'itemStockId' is not null or undefined
@@ -2630,7 +2656,89 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary get TokenERC721 by Id
+         * @param {string} mintAccessToken 
+         * @param {string} tokenId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTokenERC721ById: async (mintAccessToken: string, tokenId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getTokenERC721ById', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'tokenId' is not null or undefined
+            assertParamExists('getTokenERC721ById', 'tokenId', tokenId)
+            const localVarPath = `/sdk_v4/tokens/{tokenId}`
+                .replace(`{${"tokenId"}}`, encodeURIComponent(String(tokenId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get TokenERC721 associated with contractAddress
+         * @param {string} mintAccessToken 
+         * @param {string} contractAddress 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTokenERC721sByContractAddress: async (mintAccessToken: string, contractAddress: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getTokenERC721sByContractAddress', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'contractAddress' is not null or undefined
+            assertParamExists('getTokenERC721sByContractAddress', 'contractAddress', contractAddress)
+            const localVarPath = `/sdk_v4/tokens/getTokenERC721sByContractAddress/{contractAddress}`
+                .replace(`{${"contractAddress"}}`, encodeURIComponent(String(contractAddress)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2649,7 +2757,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokenERC721sByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, options: any = {}): Promise<RequestArgs> => {
+        getTokenERC721sByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getTokenERC721sByWalletAddress', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
@@ -2688,7 +2796,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2706,7 +2814,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokentERC721sByWalletAddressFromAnyContract: async (mintAccessToken: string, walletAddress: string, contractAddress: string, options: any = {}): Promise<RequestArgs> => {
+        getTokentERC721sByWalletAddressFromAnyContract: async (mintAccessToken: string, walletAddress: string, contractAddress: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getTokentERC721sByWalletAddressFromAnyContract', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
@@ -2739,7 +2847,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2758,7 +2866,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        hasNft: async (mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options: any = {}): Promise<RequestArgs> => {
+        hasNft: async (mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('hasNft', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
@@ -2797,7 +2905,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2815,7 +2923,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        hasNfts: async (mintAccessToken: string, walletAddress: string, contractAddress: string, options: any = {}): Promise<RequestArgs> => {
+        hasNfts: async (mintAccessToken: string, walletAddress: string, contractAddress: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('hasNfts', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
@@ -2848,48 +2956,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary get TokenERC721 by Id
-         * @param {string} mintAccessToken
-         * @param {string} tokenId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getTokenERC721ById: async (mintAccessToken: string, tokenId: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'mintAccessToken' is not null or undefined
-            assertParamExists('getTokenERC721ById', 'mintAccessToken', mintAccessToken)
-            // verify required parameter 'tokenId' is not null or undefined
-            assertParamExists('getTokenERC721ById', 'tokenId', tokenId)
-            const localVarPath = `/sdk_v4/tokens/{tokenId}`
-              .replace(`{${"tokenId"}}`, encodeURIComponent(String(tokenId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (mintAccessToken !== undefined && mintAccessToken !== null) {
-                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
-            }
-
-
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2902,11 +2969,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
-         * @param {InlineObject2} [inlineObject2] 
+         * @param {UpdateProfileRequest} [updateProfileRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateProfile: async (mintAccessToken: string, inlineObject2?: InlineObject2, options: any = {}): Promise<RequestArgs> => {
+        updateProfile: async (mintAccessToken: string, updateProfileRequest?: UpdateProfileRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('updateProfile', 'mintAccessToken', mintAccessToken)
             const localVarPath = `/sdk_v4/profile`;
@@ -2929,10 +2996,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(inlineObject2, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(updateProfileRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2954,24 +3021,24 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @summary API for creating or updating item stock physical shipping info for given item stock id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
-         * @param {InlineObject1} [inlineObject1] 
+         * @param {CreateOrUpdateItemStockPhysicalShippingInfoRequest} [createOrUpdateItemStockPhysicalShippingInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken: string, itemStockId: string, inlineObject1?: InlineObject1, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken, itemStockId, inlineObject1, options);
+        async createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken: string, itemStockId: string, createOrUpdateItemStockPhysicalShippingInfoRequest?: CreateOrUpdateItemStockPhysicalShippingInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateOrUpdateItemStockPhysicalShippingInfo200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken, itemStockId, createOrUpdateItemStockPhysicalShippingInfoRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
          * @param {string} mintAccessToken 
-         * @param {InlineObject3} [inlineObject3] 
+         * @param {CreateStripePaymentIntentRequest} [createStripePaymentIntentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createStripePaymentIntent(mintAccessToken: string, inlineObject3?: InlineObject3, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20018>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createStripePaymentIntent(mintAccessToken, inlineObject3, options);
+        async createStripePaymentIntent(mintAccessToken: string, createStripePaymentIntentRequest?: CreateStripePaymentIntentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateStripePaymentIntent200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createStripePaymentIntent(mintAccessToken, createStripePaymentIntentRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2981,7 +3048,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAvatar(mintAccessToken: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20016>> {
+        async getAvatar(mintAccessToken: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAvatar200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAvatar(mintAccessToken, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2998,7 +3065,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
+        async getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetBiddedItemStocksByWalletAddress200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getBiddedItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, onlyBeforeEnd, sortBy, sortDirection, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3014,7 +3081,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2006>> {
+        async getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetBoughtItemStocksByWalletAddress200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, sortBy, sortDirection, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3026,7 +3093,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getContractERC721ById(mintAccessToken: string, contractId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20017>> {
+        async getContractERC721ById(mintAccessToken: string, contractId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetContractERC721ById200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getContractERC721ById(mintAccessToken, contractId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3038,7 +3105,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemById(mintAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+        async getItemById(mintAccessToken: string, itemId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItemById200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemById(mintAccessToken, itemId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3050,7 +3117,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+        async getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItemById200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemByTokenERC721(mintAccessToken, tokenId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3062,7 +3129,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemStockById(mintAccessToken: string, itemStockId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
+        async getItemStockById(mintAccessToken: string, itemStockId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItemStockById200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemStockById(mintAccessToken, itemStockId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3071,12 +3138,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @summary API for getting item stock physical shipping info by item stock id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
-         * @param {InlineObject} [inlineObject] 
+         * @param {GetItemStockPhysicalShippingInfoByItemStockIdRequest} [getItemStockPhysicalShippingInfoByItemStockIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken: string, itemStockId: string, inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken, itemStockId, inlineObject, options);
+        async getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken: string, itemStockId: string, getItemStockPhysicalShippingInfoByItemStockIdRequest?: GetItemStockPhysicalShippingInfoByItemStockIdRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItemStockPhysicalShippingInfoByItemStockId200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken, itemStockId, getItemStockPhysicalShippingInfoByItemStockIdRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3087,7 +3154,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken: string, itemStockId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2007>> {
+        async getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken: string, itemStockId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItemStockPhysicalShippingInfoStatusByItemStockId200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken, itemStockId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3106,7 +3173,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+        async getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItems200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItems(mintAccessToken, page, perPage, saleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3118,7 +3185,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPaymentIntentById(mintAccessToken: string, paymentIntentId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20011>> {
+        async getPaymentIntentById(mintAccessToken: string, paymentIntentId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetPaymentIntentById200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPaymentIntentById(mintAccessToken, paymentIntentId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3130,7 +3197,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProductERC721ById(mintAccessToken: string, id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20010>> {
+        async getProductERC721ById(mintAccessToken: string, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetProductERC721ById200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getProductERC721ById(mintAccessToken, id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3142,7 +3209,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProfile(mintAccessToken: string, walletAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20014>> {
+        async getProfile(mintAccessToken: string, walletAddress: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetProfile200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getProfile(mintAccessToken, walletAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3154,7 +3221,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSellableItemStockERC721Id(mintAccessToken: string, itemId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+        async getSellableItemStockERC721Id(mintAccessToken: string, itemId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSellableItemStockERC721Id200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getSellableItemStockERC721Id(mintAccessToken, itemId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3169,8 +3236,32 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
+        async getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSignByItemStockId200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary get TokenERC721 by Id
+         * @param {string} mintAccessToken 
+         * @param {string} tokenId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getTokenERC721ById(mintAccessToken: string, tokenId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTokenERC721ById200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721ById(mintAccessToken, tokenId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get TokenERC721 associated with contractAddress
+         * @param {string} mintAccessToken 
+         * @param {string} contractAddress 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getTokenERC721sByContractAddress(mintAccessToken: string, contractAddress: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTokenERC721sByContractAddress200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721sByContractAddress(mintAccessToken, contractAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3183,7 +3274,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20012>> {
+        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTokenERC721sByContractAddress200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3196,7 +3287,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20012>> {
+        async getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTokenERC721sByContractAddress200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken, walletAddress, contractAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3210,7 +3301,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20010>> {
+        async hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<HasNfts200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.hasNft(mintAccessToken, walletAddress, contractAddress, tokenId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3223,32 +3314,20 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async hasNfts(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20013>> {
+        async hasNfts(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<HasNfts200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.hasNfts(mintAccessToken, walletAddress, contractAddress, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         *
-         * @summary get TokenERC721 by Id
-         * @param {string} mintAccessToken
-         * @param {string} tokenId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getTokenERC721ById(mintAccessToken: string, tokenId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponseTokenERC721Detail>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721ById(mintAccessToken, tokenId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
-         * @param {InlineObject2} [inlineObject2] 
+         * @param {UpdateProfileRequest} [updateProfileRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateProfile(mintAccessToken: string, inlineObject2?: InlineObject2, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20015>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateProfile(mintAccessToken, inlineObject2, options);
+        async updateProfile(mintAccessToken: string, updateProfileRequest?: UpdateProfileRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateProfile200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateProfile(mintAccessToken, updateProfileRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -3266,23 +3345,23 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @summary API for creating or updating item stock physical shipping info for given item stock id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
-         * @param {InlineObject1} [inlineObject1] 
+         * @param {CreateOrUpdateItemStockPhysicalShippingInfoRequest} [createOrUpdateItemStockPhysicalShippingInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken: string, itemStockId: string, inlineObject1?: InlineObject1, options?: any): AxiosPromise<InlineResponse2009> {
-            return localVarFp.createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken, itemStockId, inlineObject1, options).then((request) => request(axios, basePath));
+        createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken: string, itemStockId: string, createOrUpdateItemStockPhysicalShippingInfoRequest?: CreateOrUpdateItemStockPhysicalShippingInfoRequest, options?: any): AxiosPromise<CreateOrUpdateItemStockPhysicalShippingInfo200Response> {
+            return localVarFp.createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken, itemStockId, createOrUpdateItemStockPhysicalShippingInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
          * @param {string} mintAccessToken 
-         * @param {InlineObject3} [inlineObject3] 
+         * @param {CreateStripePaymentIntentRequest} [createStripePaymentIntentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createStripePaymentIntent(mintAccessToken: string, inlineObject3?: InlineObject3, options?: any): AxiosPromise<InlineResponse20018> {
-            return localVarFp.createStripePaymentIntent(mintAccessToken, inlineObject3, options).then((request) => request(axios, basePath));
+        createStripePaymentIntent(mintAccessToken: string, createStripePaymentIntentRequest?: CreateStripePaymentIntentRequest, options?: any): AxiosPromise<CreateStripePaymentIntent200Response> {
+            return localVarFp.createStripePaymentIntent(mintAccessToken, createStripePaymentIntentRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3291,7 +3370,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAvatar(mintAccessToken: string, options?: any): AxiosPromise<InlineResponse20016> {
+        getAvatar(mintAccessToken: string, options?: any): AxiosPromise<GetAvatar200Response> {
             return localVarFp.getAvatar(mintAccessToken, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3307,7 +3386,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse2005> {
+        getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<GetBiddedItemStocksByWalletAddress200Response> {
             return localVarFp.getBiddedItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, onlyBeforeEnd, sortBy, sortDirection, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3322,7 +3401,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse2006> {
+        getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<GetBoughtItemStocksByWalletAddress200Response> {
             return localVarFp.getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, sortBy, sortDirection, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3333,7 +3412,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getContractERC721ById(mintAccessToken: string, contractId: string, options?: any): AxiosPromise<InlineResponse20017> {
+        getContractERC721ById(mintAccessToken: string, contractId: string, options?: any): AxiosPromise<GetContractERC721ById200Response> {
             return localVarFp.getContractERC721ById(mintAccessToken, contractId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3344,7 +3423,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemById(mintAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2001> {
+        getItemById(mintAccessToken: string, itemId: string, options?: any): AxiosPromise<GetItemById200Response> {
             return localVarFp.getItemById(mintAccessToken, itemId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3355,7 +3434,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: any): AxiosPromise<InlineResponse2001> {
+        getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: any): AxiosPromise<GetItemById200Response> {
             return localVarFp.getItemByTokenERC721(mintAccessToken, tokenId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3366,7 +3445,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemStockById(mintAccessToken: string, itemStockId: string, options?: any): AxiosPromise<InlineResponse2004> {
+        getItemStockById(mintAccessToken: string, itemStockId: string, options?: any): AxiosPromise<GetItemStockById200Response> {
             return localVarFp.getItemStockById(mintAccessToken, itemStockId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3374,12 +3453,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @summary API for getting item stock physical shipping info by item stock id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
-         * @param {InlineObject} [inlineObject] 
+         * @param {GetItemStockPhysicalShippingInfoByItemStockIdRequest} [getItemStockPhysicalShippingInfoByItemStockIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken: string, itemStockId: string, inlineObject?: InlineObject, options?: any): AxiosPromise<InlineResponse2008> {
-            return localVarFp.getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken, itemStockId, inlineObject, options).then((request) => request(axios, basePath));
+        getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken: string, itemStockId: string, getItemStockPhysicalShippingInfoByItemStockIdRequest?: GetItemStockPhysicalShippingInfoByItemStockIdRequest, options?: any): AxiosPromise<GetItemStockPhysicalShippingInfoByItemStockId200Response> {
+            return localVarFp.getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken, itemStockId, getItemStockPhysicalShippingInfoByItemStockIdRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3389,7 +3468,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken: string, itemStockId: string, options?: any): AxiosPromise<InlineResponse2007> {
+        getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken: string, itemStockId: string, options?: any): AxiosPromise<GetItemStockPhysicalShippingInfoStatusByItemStockId200Response> {
             return localVarFp.getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken, itemStockId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3407,7 +3486,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<InlineResponse200> {
+        getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<GetItems200Response> {
             return localVarFp.getItems(mintAccessToken, page, perPage, saleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3418,7 +3497,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPaymentIntentById(mintAccessToken: string, paymentIntentId: string, options?: any): AxiosPromise<InlineResponse20011> {
+        getPaymentIntentById(mintAccessToken: string, paymentIntentId: string, options?: any): AxiosPromise<GetPaymentIntentById200Response> {
             return localVarFp.getPaymentIntentById(mintAccessToken, paymentIntentId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3429,7 +3508,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductERC721ById(mintAccessToken: string, id: string, options?: any): AxiosPromise<InlineResponse20010> {
+        getProductERC721ById(mintAccessToken: string, id: string, options?: any): AxiosPromise<GetProductERC721ById200Response> {
             return localVarFp.getProductERC721ById(mintAccessToken, id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3440,7 +3519,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProfile(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<InlineResponse20014> {
+        getProfile(mintAccessToken: string, walletAddress: string, options?: any): AxiosPromise<GetProfile200Response> {
             return localVarFp.getProfile(mintAccessToken, walletAddress, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3451,7 +3530,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSellableItemStockERC721Id(mintAccessToken: string, itemId: string, options?: any): AxiosPromise<InlineResponse2002> {
+        getSellableItemStockERC721Id(mintAccessToken: string, itemId: string, options?: any): AxiosPromise<GetSellableItemStockERC721Id200Response> {
             return localVarFp.getSellableItemStockERC721Id(mintAccessToken, itemId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3465,8 +3544,30 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any): AxiosPromise<InlineResponse2003> {
+        getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any): AxiosPromise<GetSignByItemStockId200Response> {
             return localVarFp.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary get TokenERC721 by Id
+         * @param {string} mintAccessToken 
+         * @param {string} tokenId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTokenERC721ById(mintAccessToken: string, tokenId: string, options?: any): AxiosPromise<GetTokenERC721ById200Response> {
+            return localVarFp.getTokenERC721ById(mintAccessToken, tokenId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get TokenERC721 associated with contractAddress
+         * @param {string} mintAccessToken 
+         * @param {string} contractAddress 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTokenERC721sByContractAddress(mintAccessToken: string, contractAddress: string, options?: any): AxiosPromise<GetTokenERC721sByContractAddress200Response> {
+            return localVarFp.getTokenERC721sByContractAddress(mintAccessToken, contractAddress, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3478,7 +3579,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: any): AxiosPromise<InlineResponse20012> {
+        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: any): AxiosPromise<GetTokenERC721sByContractAddress200Response> {
             return localVarFp.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3490,7 +3591,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any): AxiosPromise<InlineResponse20012> {
+        getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any): AxiosPromise<GetTokenERC721sByContractAddress200Response> {
             return localVarFp.getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken, walletAddress, contractAddress, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3503,7 +3604,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: any): AxiosPromise<InlineResponse20010> {
+        hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: any): AxiosPromise<HasNfts200Response> {
             return localVarFp.hasNft(mintAccessToken, walletAddress, contractAddress, tokenId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3515,30 +3616,19 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        hasNfts(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any): AxiosPromise<InlineResponse20013> {
+        hasNfts(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any): AxiosPromise<HasNfts200Response> {
             return localVarFp.hasNfts(mintAccessToken, walletAddress, contractAddress, options).then((request) => request(axios, basePath));
-        },
-        /**
-         *
-         * @summary get TokenERC721 by Id
-         * @param {string} mintAccessToken
-         * @param {string} tokenId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getTokenERC721ById(mintAccessToken: string, tokenId: string, options?: any): AxiosPromise<InlineResponseTokenERC721Detail> {
-            return localVarFp.getTokenERC721ById(mintAccessToken, tokenId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary ウォレットに紐づくプロフィールの作成
          * @param {string} mintAccessToken 
-         * @param {InlineObject2} [inlineObject2] 
+         * @param {UpdateProfileRequest} [updateProfileRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateProfile(mintAccessToken: string, inlineObject2?: InlineObject2, options?: any): AxiosPromise<InlineResponse20015> {
-            return localVarFp.updateProfile(mintAccessToken, inlineObject2, options).then((request) => request(axios, basePath));
+        updateProfile(mintAccessToken: string, updateProfileRequest?: UpdateProfileRequest, options?: any): AxiosPromise<UpdateProfile200Response> {
+            return localVarFp.updateProfile(mintAccessToken, updateProfileRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -3555,26 +3645,26 @@ export class DefaultApi extends BaseAPI {
      * @summary API for creating or updating item stock physical shipping info for given item stock id
      * @param {string} mintAccessToken 
      * @param {string} itemStockId 
-     * @param {InlineObject1} [inlineObject1] 
+     * @param {CreateOrUpdateItemStockPhysicalShippingInfoRequest} [createOrUpdateItemStockPhysicalShippingInfoRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken: string, itemStockId: string, inlineObject1?: InlineObject1, options?: any) {
-        return DefaultApiFp(this.configuration).createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken, itemStockId, inlineObject1, options).then((request) => request(this.axios, this.basePath));
+    public createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken: string, itemStockId: string, createOrUpdateItemStockPhysicalShippingInfoRequest?: CreateOrUpdateItemStockPhysicalShippingInfoRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).createOrUpdateItemStockPhysicalShippingInfo(mintAccessToken, itemStockId, createOrUpdateItemStockPhysicalShippingInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
      * @param {string} mintAccessToken 
-     * @param {InlineObject3} [inlineObject3] 
+     * @param {CreateStripePaymentIntentRequest} [createStripePaymentIntentRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public createStripePaymentIntent(mintAccessToken: string, inlineObject3?: InlineObject3, options?: any) {
-        return DefaultApiFp(this.configuration).createStripePaymentIntent(mintAccessToken, inlineObject3, options).then((request) => request(this.axios, this.basePath));
+    public createStripePaymentIntent(mintAccessToken: string, createStripePaymentIntentRequest?: CreateStripePaymentIntentRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).createStripePaymentIntent(mintAccessToken, createStripePaymentIntentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3585,7 +3675,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getAvatar(mintAccessToken: string, options?: any) {
+    public getAvatar(mintAccessToken: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getAvatar(mintAccessToken, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3603,7 +3693,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options?: any) {
+    public getBiddedItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, onlyBeforeEnd?: string, sortBy?: 'price' | 'endAt', sortDirection?: 'asc' | 'desc', options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getBiddedItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, onlyBeforeEnd, sortBy, sortDirection, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3620,7 +3710,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options?: any) {
+    public getBoughtItemStocksByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, sortBy?: 'price' | 'createAt', sortDirection?: 'asc' | 'desc', options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getBoughtItemStocksByWalletAddress(mintAccessToken, walletAddress, page, perPage, sortBy, sortDirection, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3633,7 +3723,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getContractERC721ById(mintAccessToken: string, contractId: string, options?: any) {
+    public getContractERC721ById(mintAccessToken: string, contractId: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getContractERC721ById(mintAccessToken, contractId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3646,7 +3736,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItemById(mintAccessToken: string, itemId: string, options?: any) {
+    public getItemById(mintAccessToken: string, itemId: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getItemById(mintAccessToken, itemId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3659,7 +3749,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: any) {
+    public getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getItemByTokenERC721(mintAccessToken, tokenId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3672,7 +3762,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItemStockById(mintAccessToken: string, itemStockId: string, options?: any) {
+    public getItemStockById(mintAccessToken: string, itemStockId: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getItemStockById(mintAccessToken, itemStockId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3681,13 +3771,13 @@ export class DefaultApi extends BaseAPI {
      * @summary API for getting item stock physical shipping info by item stock id
      * @param {string} mintAccessToken 
      * @param {string} itemStockId 
-     * @param {InlineObject} [inlineObject] 
+     * @param {GetItemStockPhysicalShippingInfoByItemStockIdRequest} [getItemStockPhysicalShippingInfoByItemStockIdRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken: string, itemStockId: string, inlineObject?: InlineObject, options?: any) {
-        return DefaultApiFp(this.configuration).getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken, itemStockId, inlineObject, options).then((request) => request(this.axios, this.basePath));
+    public getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken: string, itemStockId: string, getItemStockPhysicalShippingInfoByItemStockIdRequest?: GetItemStockPhysicalShippingInfoByItemStockIdRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getItemStockPhysicalShippingInfoByItemStockId(mintAccessToken, itemStockId, getItemStockPhysicalShippingInfoByItemStockIdRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3699,7 +3789,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken: string, itemStockId: string, options?: any) {
+    public getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken: string, itemStockId: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getItemStockPhysicalShippingInfoStatusByItemStockId(mintAccessToken, itemStockId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3719,7 +3809,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: any) {
+    public getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getItems(mintAccessToken, page, perPage, saleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3732,7 +3822,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getPaymentIntentById(mintAccessToken: string, paymentIntentId: string, options?: any) {
+    public getPaymentIntentById(mintAccessToken: string, paymentIntentId: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getPaymentIntentById(mintAccessToken, paymentIntentId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3745,7 +3835,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getProductERC721ById(mintAccessToken: string, id: string, options?: any) {
+    public getProductERC721ById(mintAccessToken: string, id: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getProductERC721ById(mintAccessToken, id, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3758,7 +3848,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getProfile(mintAccessToken: string, walletAddress: string, options?: any) {
+    public getProfile(mintAccessToken: string, walletAddress: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getProfile(mintAccessToken, walletAddress, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3771,7 +3861,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getSellableItemStockERC721Id(mintAccessToken: string, itemId: string, options?: any) {
+    public getSellableItemStockERC721Id(mintAccessToken: string, itemId: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getSellableItemStockERC721Id(mintAccessToken, itemId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3787,8 +3877,34 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any) {
+    public getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary get TokenERC721 by Id
+     * @param {string} mintAccessToken 
+     * @param {string} tokenId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getTokenERC721ById(mintAccessToken: string, tokenId: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getTokenERC721ById(mintAccessToken, tokenId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get TokenERC721 associated with contractAddress
+     * @param {string} mintAccessToken 
+     * @param {string} contractAddress 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getTokenERC721sByContractAddress(mintAccessToken: string, contractAddress: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getTokenERC721sByContractAddress(mintAccessToken, contractAddress, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3802,7 +3918,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: any) {
+    public getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3816,7 +3932,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any) {
+    public getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken, walletAddress, contractAddress, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3831,7 +3947,7 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: any) {
+    public hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).hasNft(mintAccessToken, walletAddress, contractAddress, tokenId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -3845,34 +3961,21 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public hasNfts(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any) {
+    public hasNfts(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).hasNfts(mintAccessToken, walletAddress, contractAddress, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     *
-     * @summary get TokenERC721 by Id
-     * @param {string} mintAccessToken
-     * @param {string} tokenId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public getTokenERC721ById(mintAccessToken: string, tokenId: string, options?: any) {
-        return DefaultApiFp(this.configuration).getTokenERC721ById(mintAccessToken, tokenId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary ウォレットに紐づくプロフィールの作成
      * @param {string} mintAccessToken 
-     * @param {InlineObject2} [inlineObject2] 
+     * @param {UpdateProfileRequest} [updateProfileRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public updateProfile(mintAccessToken: string, inlineObject2?: InlineObject2, options?: any) {
-        return DefaultApiFp(this.configuration).updateProfile(mintAccessToken, inlineObject2, options).then((request) => request(this.axios, this.basePath));
+    public updateProfile(mintAccessToken: string, updateProfileRequest?: UpdateProfileRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).updateProfile(mintAccessToken, updateProfileRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
