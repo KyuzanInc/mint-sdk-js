@@ -1695,4 +1695,24 @@ export class MintSDK {
     )
     return data.data
   }
+
+  /**
+   * Returns TokenERC721 list from the specified contractAddress.
+   *
+   * @param contractAddress
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * const tokens = await sdk.getTokenERC721s('contractAddress')
+   * ```
+   */
+  public getTokenERC721s = async (contractAddress: string) => {
+    const { data } = await this.apiClientV2.getTokenERC721sByContractAddress(
+      this.accessToken,
+      contractAddress
+    )
+    return data.data
+  }
 }
