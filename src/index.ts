@@ -21,6 +21,7 @@ import {
   REGISTER_SHIPPING_INFO_DOMAIN,
   REGISTER_SHIPPING_INFO_TYPES,
 } from './constants/index'
+export * from './contracts'
 import { WrongNetworkError } from './Errors'
 import { BigNumber } from './types/BigNumber'
 import { CurrencyUnit } from './types/CurrencyUnit'
