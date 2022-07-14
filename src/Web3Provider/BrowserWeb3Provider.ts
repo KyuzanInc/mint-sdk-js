@@ -128,7 +128,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     const provider = this.web3ModalProvider
     await (provider as any).request({
       method: 'wallet_switchEthereumChain',
-      params: [{ chainId: ethers.utils.hexlify(networkId) }],
+      params: [{ chainId: ethers.utils.hexValue(networkId) }],
     })
   }
 
