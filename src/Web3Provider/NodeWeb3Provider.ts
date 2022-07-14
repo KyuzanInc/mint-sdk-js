@@ -40,6 +40,11 @@ export class NodeWeb3Provider implements IWeb3Provider {
     return null as never
   }
 
+  async switchNetwork() {
+    throw new Error('this method should not call in node context')
+    return null as never
+  }
+
   onConnect(_callback: (info: { chainId: number }) => any) {
     // noop
   }

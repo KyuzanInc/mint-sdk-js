@@ -246,6 +246,14 @@ export class MintSDK {
   }
 
   /**
+   * Request users to switch network
+   *
+   */
+  public switchNetwork = async (networkId: NetworkId) => {
+    await this.web3Provider.switchNetwork(networkId)
+  }
+
+  /**
    * ウォレットのアカウントと残高情報などの情報が取得できる
    * Can get the transactional history and other account information.
    *

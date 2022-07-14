@@ -121,6 +121,15 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     }
   }
 
+  public async switchNetwork(networkId: number) {
+    const provider = this.ethersProvider
+    if (provider === null) throw Error('not wallet connect')
+    await (provider as any).request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: ethers.utils.hexlify(networkId) }],
+    })
+  }
+
   public getProvider() {
     if (this.ethersProvider === null) throw Error('not wallet connect')
     return this.ethersProvider

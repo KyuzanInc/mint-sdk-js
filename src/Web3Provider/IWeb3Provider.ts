@@ -8,6 +8,7 @@ export interface IWeb3Provider {
   getWalletInfo(): Promise<WalletInfo>
   getProvider(): ethers.providers.Web3Provider
   openWallet(): Promise<void>
+  switchNetwork(networkId: number): Promise<any>
 
   onAccountsChange(callback: (accounts: string[]) => any): void
   offAccountsChange(callback?: (accounts: string[]) => any): void
