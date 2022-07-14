@@ -11,6 +11,7 @@ import {
 
 export class BrowserWeb3Provider implements IWeb3Provider {
   private web3Modal: Web3Modal | null
+  private web3ModalProvider: any | null
   private ethersProvider: ethers.providers.Web3Provider | null
   private providerStrategy: IProviderStrategy | null
 
@@ -73,6 +74,8 @@ export class BrowserWeb3Provider implements IWeb3Provider {
       this.providerStrategy = new MetamaskStrategy()
     }
 
+    this.web3ModalProvider = provider
+
     // Events compatible with EIP-1193 standard.
     // Subscribe to accounts change
     provider.on('accountsChanged', this.emitAccountChange)
@@ -122,8 +125,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
   }
 
   public async switchNetwork(networkId: number) {
-    const provider = this.ethersProvider
-    if (provider === null) throw Error('not wallet connect')
+    const provider = this.web3ModalProvider
     await (provider as any).request({
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: ethers.utils.hexlify(networkId) }],
