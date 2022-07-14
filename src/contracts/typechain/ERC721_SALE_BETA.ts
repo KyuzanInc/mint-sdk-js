@@ -39,7 +39,6 @@ export interface ERC721_SALE_BETAInterface extends utils.Interface {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
-    "initialize(string)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "mint()": FunctionFragment;
     "mintAllowList()": FunctionFragment;
@@ -77,7 +76,6 @@ export interface ERC721_SALE_BETAInterface extends utils.Interface {
       | "approve"
       | "balanceOf"
       | "getApproved"
-      | "initialize"
       | "isApprovedForAll"
       | "mint"
       | "mintAllowList"
@@ -139,10 +137,6 @@ export interface ERC721_SALE_BETAInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getApproved",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "initialize",
-    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
@@ -260,7 +254,6 @@ export interface ERC721_SALE_BETAInterface extends utils.Interface {
     functionFragment: "getApproved",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isApprovedForAll",
     data: BytesLike
@@ -453,11 +446,6 @@ export interface ERC721_SALE_BETA extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    initialize(
-      baseURI_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -604,11 +592,6 @@ export interface ERC721_SALE_BETA extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  initialize(
-    baseURI_: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   isApprovedForAll(
     owner: PromiseOrValue<string>,
     operator: PromiseOrValue<string>,
@@ -754,11 +737,6 @@ export interface ERC721_SALE_BETA extends BaseContract {
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    initialize(
-      baseURI_: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     isApprovedForAll(
       owner: PromiseOrValue<string>,
@@ -943,11 +921,6 @@ export interface ERC721_SALE_BETA extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    initialize(
-      baseURI_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -1095,11 +1068,6 @@ export interface ERC721_SALE_BETA extends BaseContract {
     getApproved(
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    initialize(
-      baseURI_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     isApprovedForAll(
