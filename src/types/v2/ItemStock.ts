@@ -1,9 +1,9 @@
 import {
   ItemStock as APIItemStock,
   ItemStocksDataItemStocksInner,
-  ItemStockPhysicalShippingInfoStatus,
 } from '../../apiClient/api'
 import { Item } from './Item'
+import { ItemStockPhysicalShippingInfoStatus } from './ItemStockPhysicalShippingInfoStatus'
 import { ItemStockStatus } from './ItemStockStatus'
 
 export type ItemStock = Omit<APIItemStock, 'status' | 'item'> & {
