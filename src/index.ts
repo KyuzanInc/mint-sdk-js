@@ -33,7 +33,10 @@ import { Token } from './types/Token'
 import { AccountInfo } from './types/v2/AccountInfo'
 import { ContractERC721 } from './types/v2/ContractERC721'
 import { Item } from './types/v2/Item'
-import { ItemStock } from './types/v2/ItemStock'
+import {
+  ItemStock,
+  ItemStockWithPhysicalShippingInfoStatus,
+} from './types/v2/ItemStock'
 import { ItemType } from './types/v2/ItemType'
 import { PaymentMethodData } from './types/v2/PaymentMethodData'
 import { PaymentMethod } from './types/v2/PaymentMethods'
@@ -429,7 +432,7 @@ export class MintSDK {
       arg.sort?.sortBy ?? undefined,
       arg.sort?.sortDirection ?? undefined
     )
-    return data.data.itemStocks as ItemStock[]
+    return data.data.itemStocks as ItemStockWithPhysicalShippingInfoStatus[]
   }
 
   /**

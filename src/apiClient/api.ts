@@ -24,6 +24,31 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface AvatarData
+ */
+export interface AvatarData {
+    /**
+     * 
+     * @type {string}
+     * @memberof AvatarData
+     */
+    'imageId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AvatarData
+     */
+    'uploadSignedUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AvatarData
+     */
+    'readSignedUrl': string;
+}
+/**
+ * 
+ * @export
  * @interface Bid
  */
 export interface Bid {
@@ -108,7 +133,7 @@ export type ChainType = typeof ChainType[keyof typeof ChainType];
 
 
 /**
- * ContractERC721またはContractERC721Shopに必要なデータ
+ * Data required for ContractERC721 or ContractERC721Shop
  * @export
  * @interface ContractDataERC721Shop
  */
@@ -132,14 +157,14 @@ export interface ContractDataERC721Shop {
      */
     'contractAddress': string;
     /**
-     * JSON.stringifyしたもの
+     * JSON.stringified
      * @type {string}
      * @memberof ContractDataERC721Shop
      */
     'abi': string;
 }
 /**
- * ContractERC721のデータ
+ * Data of ContractERC721
  * @export
  * @interface ContractERC721
  */
@@ -202,6 +227,80 @@ export interface ContractERC721 {
 /**
  * 
  * @export
+ * @interface ContractMethodResource
+ */
+export interface ContractMethodResource {
+    /**
+     * 
+     * @type {string}
+     * @memberof ContractMethodResource
+     */
+    'contractAddress': string;
+    /**
+     * 
+     * @type {NetworkId}
+     * @memberof ContractMethodResource
+     */
+    'networkId': NetworkId;
+    /**
+     * 
+     * @type {ChainType}
+     * @memberof ContractMethodResource
+     */
+    'chainType': ChainType;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContractMethodResource
+     */
+    'methodName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContractMethodResource
+     */
+    'abi': string;
+    /**
+     * 
+     * @type {Array<any>}
+     * @memberof ContractMethodResource
+     */
+    'args': Array<any>;
+}
+/**
+ * 
+ * @export
+ * @interface CreateOrUpdateItemStock
+ */
+export interface CreateOrUpdateItemStock {
+    /**
+     * 
+     * @type {SignatureDomain}
+     * @memberof CreateOrUpdateItemStock
+     */
+    'domain': SignatureDomain;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOrUpdateItemStock
+     */
+    'primaryType': string;
+    /**
+     * 
+     * @type {CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage}
+     * @memberof CreateOrUpdateItemStock
+     */
+    'message': CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage;
+    /**
+     * 
+     * @type {object}
+     * @memberof CreateOrUpdateItemStock
+     */
+    'types': object;
+}
+/**
+ * 
+ * @export
  * @interface CreateOrUpdateItemStockPhysicalShippingInfo200Response
  */
 export interface CreateOrUpdateItemStockPhysicalShippingInfo200Response {
@@ -226,10 +325,10 @@ export interface CreateOrUpdateItemStockPhysicalShippingInfo200Response {
 export interface CreateOrUpdateItemStockPhysicalShippingInfoRequest {
     /**
      * 
-     * @type {CreateOrUpdateItemStockPhysicalShippingInfoRequestData}
+     * @type {CreateOrUpdateItemStock}
      * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequest
      */
-    'data': CreateOrUpdateItemStockPhysicalShippingInfoRequestData;
+    'data': CreateOrUpdateItemStock;
     /**
      * 
      * @type {string}
@@ -319,48 +418,17 @@ export interface CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage {
 /**
  * 
  * @export
- * @interface CreateOrUpdateItemStockPhysicalShippingInfoRequestData
- */
-export interface CreateOrUpdateItemStockPhysicalShippingInfoRequestData {
-    /**
-     * 
-     * @type {SignatureDomain}
-     * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestData
-     */
-    'domain': SignatureDomain;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestData
-     */
-    'primaryType': string;
-    /**
-     * 
-     * @type {CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage}
-     * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestData
-     */
-    'message': CreateOrUpdateItemStockPhysicalShippingInfoRequestBodyMessage;
-    /**
-     * 
-     * @type {object}
-     * @memberof CreateOrUpdateItemStockPhysicalShippingInfoRequestData
-     */
-    'types': object;
-}
-/**
- * 
- * @export
  * @interface CreateStripePaymentIntent200Response
  */
 export interface CreateStripePaymentIntent200Response {
     /**
-     * クライアント側でloadStripeに対して渡す公開可能なAPI-Key
+     * Publishable API-Key passed to loadStripe on the client side
      * @type {string}
      * @memberof CreateStripePaymentIntent200Response
      */
     'publishableKey': string;
     /**
-     * StripeのPaymentIntentのClientSecret
+     * Stripe\'s PaymentIntent ClientSecret
      * @type {string}
      * @memberof CreateStripePaymentIntent200Response
      */
@@ -392,7 +460,7 @@ export interface CreateStripePaymentIntentRequest {
     'userResidence': UserResidence;
 }
 /**
- * Stripeで利用する通貨型
+ * Currency type used in Stripe
  * @export
  * @enum {string}
  */
@@ -466,6 +534,50 @@ export type CryptoCurrencyType = typeof CryptoCurrencyType[keyof typeof CryptoCu
 /**
  * 
  * @export
+ * @interface DomainAndPrimaryTypeAndMessage
+ */
+export interface DomainAndPrimaryTypeAndMessage {
+    /**
+     * 
+     * @type {SignatureDomain}
+     * @memberof DomainAndPrimaryTypeAndMessage
+     */
+    'domain': SignatureDomain;
+    /**
+     * 
+     * @type {string}
+     * @memberof DomainAndPrimaryTypeAndMessage
+     */
+    'primaryType': string;
+    /**
+     * 
+     * @type {MessageObject}
+     * @memberof DomainAndPrimaryTypeAndMessage
+     */
+    'message': MessageObject;
+    /**
+     * 
+     * @type {object}
+     * @memberof DomainAndPrimaryTypeAndMessage
+     */
+    'types': object;
+}
+/**
+ * 
+ * @export
+ * @interface ErrorResponse
+ */
+export interface ErrorResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof ErrorResponse
+     */
+    'message': string;
+}
+/**
+ * 
+ * @export
  * @interface GetAvatar200Response
  */
 export interface GetAvatar200Response {
@@ -477,35 +589,10 @@ export interface GetAvatar200Response {
     'meta'?: object;
     /**
      * 
-     * @type {GetAvatar200ResponseData}
+     * @type {AvatarData}
      * @memberof GetAvatar200Response
      */
-    'data'?: GetAvatar200ResponseData;
-}
-/**
- * 
- * @export
- * @interface GetAvatar200ResponseData
- */
-export interface GetAvatar200ResponseData {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetAvatar200ResponseData
-     */
-    'imageId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetAvatar200ResponseData
-     */
-    'uploadSignedUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetAvatar200ResponseData
-     */
-    'readSignedUrl': string;
+    'data'?: AvatarData;
 }
 /**
  * 
@@ -534,29 +621,16 @@ export interface GetBiddedItemStocksByWalletAddress200Response {
 export interface GetBoughtItemStocksByWalletAddress200Response {
     /**
      * 
-     * @type {GetBoughtItemStocksByWalletAddress200ResponseData}
+     * @type {ItemStocksData}
      * @memberof GetBoughtItemStocksByWalletAddress200Response
      */
-    'data': GetBoughtItemStocksByWalletAddress200ResponseData;
+    'data': ItemStocksData;
     /**
      * 
      * @type {object}
      * @memberof GetBoughtItemStocksByWalletAddress200Response
      */
     'meta': object;
-}
-/**
- * 
- * @export
- * @interface GetBoughtItemStocksByWalletAddress200ResponseData
- */
-export interface GetBoughtItemStocksByWalletAddress200ResponseData {
-    /**
-     * 
-     * @type {Array<ItemStock>}
-     * @memberof GetBoughtItemStocksByWalletAddress200ResponseData
-     */
-    'itemStocks': Array<ItemStock>;
 }
 /**
  * 
@@ -593,6 +667,25 @@ export interface GetItemById200Response {
      * 
      * @type {object}
      * @memberof GetItemById200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetItemByTokenERC721200Response
+ */
+export interface GetItemByTokenERC721200Response {
+    /**
+     * 
+     * @type {Item}
+     * @memberof GetItemByTokenERC721200Response
+     */
+    'data': Item;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetItemByTokenERC721200Response
      */
     'meta': object;
 }
@@ -642,66 +735,16 @@ export interface GetItemStockPhysicalShippingInfoByItemStockId200Response {
 export interface GetItemStockPhysicalShippingInfoByItemStockIdRequest {
     /**
      * 
-     * @type {GetItemStockPhysicalShippingInfoByItemStockIdRequestData}
+     * @type {DomainAndPrimaryTypeAndMessage}
      * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequest
      */
-    'data': GetItemStockPhysicalShippingInfoByItemStockIdRequestData;
+    'data': DomainAndPrimaryTypeAndMessage;
     /**
      * 
      * @type {string}
      * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequest
      */
     'signature': string;
-}
-/**
- * 
- * @export
- * @interface GetItemStockPhysicalShippingInfoByItemStockIdRequestData
- */
-export interface GetItemStockPhysicalShippingInfoByItemStockIdRequestData {
-    /**
-     * 
-     * @type {SignatureDomain}
-     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestData
-     */
-    'domain': SignatureDomain;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestData
-     */
-    'primaryType': string;
-    /**
-     * 
-     * @type {GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage}
-     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestData
-     */
-    'message': GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage;
-    /**
-     * 
-     * @type {object}
-     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestData
-     */
-    'types': object;
-}
-/**
- * 
- * @export
- * @interface GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage
- */
-export interface GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage
-     */
-    'walletAddress'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetItemStockPhysicalShippingInfoByItemStockIdRequestDataMessage
-     */
-    'requestTimestamp'?: string;
 }
 /**
  * 
@@ -744,19 +787,6 @@ export interface GetItems200Response {
 /**
  * 
  * @export
- * @interface GetItems400Response
- */
-export interface GetItems400Response {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetItems400Response
-     */
-    'message': string;
-}
-/**
- * 
- * @export
  * @interface GetPaymentIntentById200Response
  */
 export interface GetPaymentIntentById200Response {
@@ -787,53 +817,10 @@ export interface GetPaymentIntentByIdResponseBodyData {
     'cryptoPaymentIntentId': string;
     /**
      * 
-     * @type {GetPaymentIntentByIdResponseBodyDataContractMethodResource}
+     * @type {ContractMethodResource}
      * @memberof GetPaymentIntentByIdResponseBodyData
      */
-    'contractMethodResource': GetPaymentIntentByIdResponseBodyDataContractMethodResource;
-}
-/**
- * 
- * @export
- * @interface GetPaymentIntentByIdResponseBodyDataContractMethodResource
- */
-export interface GetPaymentIntentByIdResponseBodyDataContractMethodResource {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
-     */
-    'contractAddress': string;
-    /**
-     * 
-     * @type {NetworkId}
-     * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
-     */
-    'networkId': NetworkId;
-    /**
-     * 
-     * @type {ChainType}
-     * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
-     */
-    'chainType': ChainType;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
-     */
-    'methodName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
-     */
-    'abi': string;
-    /**
-     * 
-     * @type {Array<any>}
-     * @memberof GetPaymentIntentByIdResponseBodyDataContractMethodResource
-     */
-    'args': Array<any>;
+    'contractMethodResource': ContractMethodResource;
 }
 /**
  * 
@@ -862,35 +849,16 @@ export interface GetProductERC721ById200Response {
 export interface GetProfile200Response {
     /**
      * 
-     * @type {GetProfile200ResponseData}
+     * @type {ProfileData}
      * @memberof GetProfile200Response
      */
-    'data': GetProfile200ResponseData | null;
+    'data': ProfileData | null;
     /**
      * 
      * @type {object}
      * @memberof GetProfile200Response
      */
     'meta': object;
-}
-/**
- * 
- * @export
- * @interface GetProfile200ResponseData
- */
-export interface GetProfile200ResponseData {
-    /**
-     * 
-     * @type {WalletAddressProfile}
-     * @memberof GetProfile200ResponseData
-     */
-    'profile': WalletAddressProfile;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetProfile200ResponseData
-     */
-    'avatarImageUrl': string;
 }
 /**
  * 
@@ -900,29 +868,16 @@ export interface GetProfile200ResponseData {
 export interface GetSellableItemStockERC721Id200Response {
     /**
      * 
-     * @type {GetSellableItemStockERC721Id200ResponseData}
+     * @type {SellableItemStockERC721IdData}
      * @memberof GetSellableItemStockERC721Id200Response
      */
-    'data': GetSellableItemStockERC721Id200ResponseData;
+    'data': SellableItemStockERC721IdData;
     /**
      * 
      * @type {object}
      * @memberof GetSellableItemStockERC721Id200Response
      */
     'meta': object;
-}
-/**
- * 
- * @export
- * @interface GetSellableItemStockERC721Id200ResponseData
- */
-export interface GetSellableItemStockERC721Id200ResponseData {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSellableItemStockERC721Id200ResponseData
-     */
-    'itemStockId': string;
 }
 /**
  * 
@@ -932,35 +887,16 @@ export interface GetSellableItemStockERC721Id200ResponseData {
 export interface GetSignByItemStockId200Response {
     /**
      * 
-     * @type {GetSignByItemStockId200ResponseData}
+     * @type {SignData}
      * @memberof GetSignByItemStockId200Response
      */
-    'data': GetSignByItemStockId200ResponseData;
+    'data': SignData;
     /**
      * 
      * @type {object}
      * @memberof GetSignByItemStockId200Response
      */
     'meta': object;
-}
-/**
- * 
- * @export
- * @interface GetSignByItemStockId200ResponseData
- */
-export interface GetSignByItemStockId200ResponseData {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSignByItemStockId200ResponseData
-     */
-    'signature': string;
-    /**
-     * 対応したコントラクトのメソッドに渡す
-     * @type {Array<any>}
-     * @memberof GetSignByItemStockId200ResponseData
-     */
-    'contractMethodArg': Array<any>;
 }
 /**
  * 
@@ -997,6 +933,63 @@ export interface GetTokenERC721sByContractAddress200Response {
      * 
      * @type {object}
      * @memberof GetTokenERC721sByContractAddress200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetTokenERC721sByWalletAddress200Response
+ */
+export interface GetTokenERC721sByWalletAddress200Response {
+    /**
+     * 
+     * @type {Array<TokenERC721>}
+     * @memberof GetTokenERC721sByWalletAddress200Response
+     */
+    'data': Array<TokenERC721>;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetTokenERC721sByWalletAddress200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetTokentERC721sByWalletAddressFromAnyContract200Response
+ */
+export interface GetTokentERC721sByWalletAddressFromAnyContract200Response {
+    /**
+     * 
+     * @type {Array<TokenERC721>}
+     * @memberof GetTokentERC721sByWalletAddressFromAnyContract200Response
+     */
+    'data': Array<TokenERC721>;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetTokentERC721sByWalletAddressFromAnyContract200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface HasNft200Response
+ */
+export interface HasNft200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof HasNft200Response
+     */
+    'data': boolean;
+    /**
+     * 
+     * @type {object}
+     * @memberof HasNft200Response
      */
     'meta': object;
 }
@@ -1056,7 +1049,7 @@ export interface Item {
      */
     'description': string;
     /**
-     * Itemのプレビュー用URL
+     * URL for item preview
      * @type {Array<PreviewMedia>}
      * @memberof Item
      */
@@ -1092,23 +1085,23 @@ export interface Item {
      */
     'cryptoCurrencyRate': CryptoCurrencyRate;
     /**
-     * Mintに支払われる取引手数料
+     * Transaction fees paid to Mint
      * @type {number}
      * @memberof Item
      */
     'feeRatePermill': number;
     /**
-     * 任意のTag
+     * Any Tag
      * @type {Array<string>}
      * @memberof Item
      */
     'tags': Array<string>;
     /**
      * 
-     * @type {ItemPaymentMethodData}
+     * @type {PaymentMethodData}
      * @memberof Item
      */
-    'paymentMethodData': ItemPaymentMethodData;
+    'paymentMethodData': PaymentMethodData;
     /**
      * 
      * @type {Array<string>}
@@ -1128,7 +1121,7 @@ export interface Item {
      */
     'productERC721Ids': Array<string>;
     /**
-     * オークションItem以外は空配列が入る
+     * An empty array is entered except for auction items
      * @type {Array<Bid>}
      * @memberof Item
      */
@@ -1140,13 +1133,6 @@ export interface Item {
      */
     'metadata': object | null;
 }
-/**
- * @type ItemPaymentMethodData
- * paymentMethodによって異なるデータ
- * @export
- */
-export type ItemPaymentMethodData = ItemPaymentMethodDataCreditCardStripeFixedPrice | ItemPaymentMethodDataEthereumContractERC721ShopAuction | ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice;
-
 /**
  * 
  * @export
@@ -1395,7 +1381,82 @@ export type ItemStockStatus = typeof ItemStockStatus[keyof typeof ItemStockStatu
 
 
 /**
- * アイテムの種類
+ * 
+ * @export
+ * @interface ItemStocksData
+ */
+export interface ItemStocksData {
+    /**
+     * 
+     * @type {Array<ItemStocksDataItemStocksInner>}
+     * @memberof ItemStocksData
+     */
+    'itemStocks': Array<ItemStocksDataItemStocksInner>;
+}
+/**
+ * 
+ * @export
+ * @interface ItemStocksDataItemStocksInner
+ */
+export interface ItemStocksDataItemStocksInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemStocksDataItemStocksInner
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemStocksDataItemStocksInner
+     */
+    'createAt': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemStocksDataItemStocksInner
+     */
+    'updateAt': string;
+    /**
+     * 
+     * @type {ItemStockStatus}
+     * @memberof ItemStocksDataItemStocksInner
+     */
+    'status': ItemStockStatus;
+    /**
+     * 
+     * @type {Array<ProductERC721>}
+     * @memberof ItemStocksDataItemStocksInner
+     */
+    'productsData': Array<ProductERC721>;
+    /**
+     * 
+     * @type {Item}
+     * @memberof ItemStocksDataItemStocksInner
+     */
+    'item': Item;
+    /**
+     * 
+     * @type {ItemStockPhysicalShippingInfoStatus}
+     * @memberof ItemStocksDataItemStocksInner
+     */
+    'physicalShippingInfoStatus': ItemStockPhysicalShippingInfoStatus;
+}
+/**
+ * 
+ * @export
+ * @interface ItemStocksDataItemStocksInnerAllOf
+ */
+export interface ItemStocksDataItemStocksInnerAllOf {
+    /**
+     * 
+     * @type {ItemStockPhysicalShippingInfoStatus}
+     * @memberof ItemStocksDataItemStocksInnerAllOf
+     */
+    'physicalShippingInfoStatus': ItemStockPhysicalShippingInfoStatus;
+}
+/**
+ * Item Type
  * @export
  * @enum {string}
  */
@@ -1408,6 +1469,25 @@ export const ItemType = {
 export type ItemType = typeof ItemType[keyof typeof ItemType];
 
 
+/**
+ * 
+ * @export
+ * @interface MessageObject
+ */
+export interface MessageObject {
+    /**
+     * 
+     * @type {string}
+     * @memberof MessageObject
+     */
+    'walletAddress'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MessageObject
+     */
+    'requestTimestamp'?: string;
+}
 /**
  * 
  * @export
@@ -1426,7 +1506,14 @@ export type NetworkId = typeof NetworkId[keyof typeof NetworkId];
 
 
 /**
- * プレビュー用のメディア
+ * @type PaymentMethodData
+ * Data that differs depending on the paymentMethod
+ * @export
+ */
+export type PaymentMethodData = ItemPaymentMethodDataCreditCardStripeFixedPrice | ItemPaymentMethodDataEthereumContractERC721ShopAuction | ItemPaymentMethodDataEthereumContractERC721ShopFixedPrice;
+
+/**
+ * Preview Media
  * @export
  * @interface PreviewMedia
  */
@@ -1540,6 +1627,57 @@ export const ProductERC721StatusEnum = {
 
 export type ProductERC721StatusEnum = typeof ProductERC721StatusEnum[keyof typeof ProductERC721StatusEnum];
 
+/**
+ * 
+ * @export
+ * @interface ProfileData
+ */
+export interface ProfileData {
+    /**
+     * 
+     * @type {WalletAddressProfile}
+     * @memberof ProfileData
+     */
+    'profile': WalletAddressProfile;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileData
+     */
+    'avatarImageUrl': string;
+}
+/**
+ * 
+ * @export
+ * @interface SellableItemStockERC721IdData
+ */
+export interface SellableItemStockERC721IdData {
+    /**
+     * 
+     * @type {string}
+     * @memberof SellableItemStockERC721IdData
+     */
+    'itemStockId': string;
+}
+/**
+ * 
+ * @export
+ * @interface SignData
+ */
+export interface SignData {
+    /**
+     * 
+     * @type {string}
+     * @memberof SignData
+     */
+    'signature': string;
+    /**
+     * Arguments of the corresponding contract method
+     * @type {Array<any>}
+     * @memberof SignData
+     */
+    'contractMethodArg': Array<any>;
+}
 /**
  * 
  * @export
@@ -1705,10 +1843,10 @@ export interface TransferData {
 export interface UpdateProfile200Response {
     /**
      * 
-     * @type {UpdateProfile200ResponseData}
+     * @type {UpdateProfileData}
      * @memberof UpdateProfile200Response
      */
-    'data'?: UpdateProfile200ResponseData;
+    'data'?: UpdateProfileData;
     /**
      * 
      * @type {object}
@@ -1719,13 +1857,13 @@ export interface UpdateProfile200Response {
 /**
  * 
  * @export
- * @interface UpdateProfile200ResponseData
+ * @interface UpdateProfileData
  */
-export interface UpdateProfile200ResponseData {
+export interface UpdateProfileData {
     /**
      * 
      * @type {WalletAddressProfile}
-     * @memberof UpdateProfile200ResponseData
+     * @memberof UpdateProfileData
      */
     'profile'?: WalletAddressProfile;
 }
@@ -1868,7 +2006,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+         * @summary Create a PyamentIntent to purchase a given item with a credit card (Stripe) and return the corresponding Secret
          * @param {string} mintAccessToken 
          * @param {CreateStripePaymentIntentRequest} [createStripePaymentIntentRequest] 
          * @param {*} [options] Override http request option.
@@ -1909,7 +2047,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary アバター画像の署名付きURLの取得
+         * @summary Get signed URL for avatar image
          * @param {string} mintAccessToken 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1946,7 +2084,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary 指定したwalletAddressでBidしたItemStockを取得する
+         * @summary Get Bidded ItemStocks By WalletAddress
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} page 
@@ -2019,7 +2157,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary 指定したwalletAddressで購入または落札したItemStockを取得する
+         * @summary Get ItemStock purchased or sold at the specified walletAddress
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} page 
@@ -2087,7 +2225,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary ContractERC721をId指定で取得する
+         * @summary Get ContractERC721 by  contracId
          * @param {string} mintAccessToken 
          * @param {string} contractId 
          * @param {*} [options] Override http request option.
@@ -2131,7 +2269,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary プロジェクトのItemをId指定で取得する
+         * @summary Get Item of project by specifying Id
          * @param {string} mintAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -2216,7 +2354,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary ItemStockをId指定で取得する
+         * @summary get ItemStock by Id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {*} [options] Override http request option.
@@ -2352,14 +2490,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary プロジェクトのItemを全て取得する
+         * @summary Get all the items of the project
          * @param {string} mintAccessToken 
          * @param {string} page 
          * @param {string} perPage 
          * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
          * @param {'true' | 'false'} [onlyAvailableStock] 
          * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
-         * @param {string} [tags] , 区切りで指定
+         * @param {string} [tags] Specified by the delimiter of \&#39;,\&#39;
          * @param {'price'} [sortBy] 
          * @param {'asc' | 'desc'} [sortDirection] 
          * @param {*} [options] Override http request option.
@@ -2474,7 +2612,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Itemにパックされていて、ItemのstatusがpublishなProductERC721を取得
+         * @summary Get ProductERC721 which is packed in Item and the status of Item is publish
          * @param {string} mintAccessToken 
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -2517,8 +2655,8 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * プロフィールがない場合はnullがdataの値に入る
-         * @summary ウォレットに紐づくプロフィールの取得
+         * If there is no profile, null will be in the value of data
+         * @summary Get the profile associated with the wallet
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {*} [options] Override http request option.
@@ -2562,7 +2700,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStockId`を取得する
+         * @summary Get a sellable (not yet sold) `ItemStockId` for a`Item` to sell on a Smart Contract
          * @param {string} mintAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -2606,12 +2744,12 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Item購入に関してスマコンの操作に必要なSignを返す
+         * @summary Returns the Sign required to operate the Smart Contract for Item purchase
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
-         * @param {string} [walletAddress] 購入時のみ必須
-         * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
+         * @param {string} [walletAddress] Required only at the time of purchase
+         * @param {'jp' | 'unknown'} [residence] Required only at the time of purchase
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2749,7 +2887,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary walletAddressに紐づくTokenERC721を全て取得する
+         * @summary Get all TokenERC721 associated with walletAddress
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} page 
@@ -2967,7 +3105,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary ウォレットに紐づくプロフィールの作成
+         * @summary Create a profile associated with your wallet
          * @param {string} mintAccessToken 
          * @param {UpdateProfileRequest} [updateProfileRequest] 
          * @param {*} [options] Override http request option.
@@ -3031,7 +3169,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+         * @summary Create a PyamentIntent to purchase a given item with a credit card (Stripe) and return the corresponding Secret
          * @param {string} mintAccessToken 
          * @param {CreateStripePaymentIntentRequest} [createStripePaymentIntentRequest] 
          * @param {*} [options] Override http request option.
@@ -3043,7 +3181,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary アバター画像の署名付きURLの取得
+         * @summary Get signed URL for avatar image
          * @param {string} mintAccessToken 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3054,7 +3192,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 指定したwalletAddressでBidしたItemStockを取得する
+         * @summary Get Bidded ItemStocks By WalletAddress
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} page 
@@ -3071,7 +3209,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 指定したwalletAddressで購入または落札したItemStockを取得する
+         * @summary Get ItemStock purchased or sold at the specified walletAddress
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} page 
@@ -3087,7 +3225,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary ContractERC721をId指定で取得する
+         * @summary Get ContractERC721 by  contracId
          * @param {string} mintAccessToken 
          * @param {string} contractId 
          * @param {*} [options] Override http request option.
@@ -3099,7 +3237,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary プロジェクトのItemをId指定で取得する
+         * @summary Get Item of project by specifying Id
          * @param {string} mintAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -3117,13 +3255,13 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItemById200Response>> {
+        async getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItemByTokenERC721200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getItemByTokenERC721(mintAccessToken, tokenId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
-         * @summary ItemStockをId指定で取得する
+         * @summary get ItemStock by Id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {*} [options] Override http request option.
@@ -3160,14 +3298,14 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary プロジェクトのItemを全て取得する
+         * @summary Get all the items of the project
          * @param {string} mintAccessToken 
          * @param {string} page 
          * @param {string} perPage 
          * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
          * @param {'true' | 'false'} [onlyAvailableStock] 
          * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
-         * @param {string} [tags] , 区切りで指定
+         * @param {string} [tags] Specified by the delimiter of \&#39;,\&#39;
          * @param {'price'} [sortBy] 
          * @param {'asc' | 'desc'} [sortDirection] 
          * @param {*} [options] Override http request option.
@@ -3191,7 +3329,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Itemにパックされていて、ItemのstatusがpublishなProductERC721を取得
+         * @summary Get ProductERC721 which is packed in Item and the status of Item is publish
          * @param {string} mintAccessToken 
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -3202,8 +3340,8 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * プロフィールがない場合はnullがdataの値に入る
-         * @summary ウォレットに紐づくプロフィールの取得
+         * If there is no profile, null will be in the value of data
+         * @summary Get the profile associated with the wallet
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {*} [options] Override http request option.
@@ -3215,7 +3353,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStockId`を取得する
+         * @summary Get a sellable (not yet sold) `ItemStockId` for a`Item` to sell on a Smart Contract
          * @param {string} mintAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -3227,12 +3365,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Item購入に関してスマコンの操作に必要なSignを返す
+         * @summary Returns the Sign required to operate the Smart Contract for Item purchase
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
-         * @param {string} [walletAddress] 購入時のみ必須
-         * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
+         * @param {string} [walletAddress] Required only at the time of purchase
+         * @param {'jp' | 'unknown'} [residence] Required only at the time of purchase
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3266,7 +3404,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary walletAddressに紐づくTokenERC721を全て取得する
+         * @summary Get all TokenERC721 associated with walletAddress
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} page 
@@ -3274,7 +3412,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTokenERC721sByContractAddress200Response>> {
+        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTokenERC721sByWalletAddress200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3287,7 +3425,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTokenERC721sByContractAddress200Response>> {
+        async getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTokentERC721sByWalletAddressFromAnyContract200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken, walletAddress, contractAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3301,7 +3439,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<HasNfts200Response>> {
+        async hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<HasNft200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.hasNft(mintAccessToken, walletAddress, contractAddress, tokenId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3320,7 +3458,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary ウォレットに紐づくプロフィールの作成
+         * @summary Create a profile associated with your wallet
          * @param {string} mintAccessToken 
          * @param {UpdateProfileRequest} [updateProfileRequest] 
          * @param {*} [options] Override http request option.
@@ -3354,7 +3492,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+         * @summary Create a PyamentIntent to purchase a given item with a credit card (Stripe) and return the corresponding Secret
          * @param {string} mintAccessToken 
          * @param {CreateStripePaymentIntentRequest} [createStripePaymentIntentRequest] 
          * @param {*} [options] Override http request option.
@@ -3365,7 +3503,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary アバター画像の署名付きURLの取得
+         * @summary Get signed URL for avatar image
          * @param {string} mintAccessToken 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3375,7 +3513,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary 指定したwalletAddressでBidしたItemStockを取得する
+         * @summary Get Bidded ItemStocks By WalletAddress
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} page 
@@ -3391,7 +3529,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary 指定したwalletAddressで購入または落札したItemStockを取得する
+         * @summary Get ItemStock purchased or sold at the specified walletAddress
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} page 
@@ -3406,7 +3544,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary ContractERC721をId指定で取得する
+         * @summary Get ContractERC721 by  contracId
          * @param {string} mintAccessToken 
          * @param {string} contractId 
          * @param {*} [options] Override http request option.
@@ -3417,7 +3555,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary プロジェクトのItemをId指定で取得する
+         * @summary Get Item of project by specifying Id
          * @param {string} mintAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -3434,12 +3572,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: any): AxiosPromise<GetItemById200Response> {
+        getItemByTokenERC721(mintAccessToken: string, tokenId: string, options?: any): AxiosPromise<GetItemByTokenERC721200Response> {
             return localVarFp.getItemByTokenERC721(mintAccessToken, tokenId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary ItemStockをId指定で取得する
+         * @summary get ItemStock by Id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {*} [options] Override http request option.
@@ -3473,14 +3611,14 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary プロジェクトのItemを全て取得する
+         * @summary Get all the items of the project
          * @param {string} mintAccessToken 
          * @param {string} page 
          * @param {string} perPage 
          * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
          * @param {'true' | 'false'} [onlyAvailableStock] 
          * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
-         * @param {string} [tags] , 区切りで指定
+         * @param {string} [tags] Specified by the delimiter of \&#39;,\&#39;
          * @param {'price'} [sortBy] 
          * @param {'asc' | 'desc'} [sortDirection] 
          * @param {*} [options] Override http request option.
@@ -3502,7 +3640,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary Itemにパックされていて、ItemのstatusがpublishなProductERC721を取得
+         * @summary Get ProductERC721 which is packed in Item and the status of Item is publish
          * @param {string} mintAccessToken 
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -3512,8 +3650,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.getProductERC721ById(mintAccessToken, id, options).then((request) => request(axios, basePath));
         },
         /**
-         * プロフィールがない場合はnullがdataの値に入る
-         * @summary ウォレットに紐づくプロフィールの取得
+         * If there is no profile, null will be in the value of data
+         * @summary Get the profile associated with the wallet
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {*} [options] Override http request option.
@@ -3524,7 +3662,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStockId`を取得する
+         * @summary Get a sellable (not yet sold) `ItemStockId` for a`Item` to sell on a Smart Contract
          * @param {string} mintAccessToken 
          * @param {string} itemId 
          * @param {*} [options] Override http request option.
@@ -3535,12 +3673,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary Item購入に関してスマコンの操作に必要なSignを返す
+         * @summary Returns the Sign required to operate the Smart Contract for Item purchase
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
-         * @param {string} [walletAddress] 購入時のみ必須
-         * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
+         * @param {string} [walletAddress] Required only at the time of purchase
+         * @param {'jp' | 'unknown'} [residence] Required only at the time of purchase
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3571,7 +3709,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary walletAddressに紐づくTokenERC721を全て取得する
+         * @summary Get all TokenERC721 associated with walletAddress
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
          * @param {string} page 
@@ -3579,7 +3717,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: any): AxiosPromise<GetTokenERC721sByContractAddress200Response> {
+        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: any): AxiosPromise<GetTokenERC721sByWalletAddress200Response> {
             return localVarFp.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3591,7 +3729,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any): AxiosPromise<GetTokenERC721sByContractAddress200Response> {
+        getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any): AxiosPromise<GetTokentERC721sByWalletAddressFromAnyContract200Response> {
             return localVarFp.getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken, walletAddress, contractAddress, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3604,7 +3742,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: any): AxiosPromise<HasNfts200Response> {
+        hasNft(mintAccessToken: string, walletAddress: string, contractAddress: string, tokenId: string, options?: any): AxiosPromise<HasNft200Response> {
             return localVarFp.hasNft(mintAccessToken, walletAddress, contractAddress, tokenId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3621,7 +3759,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary ウォレットに紐づくプロフィールの作成
+         * @summary Create a profile associated with your wallet
          * @param {string} mintAccessToken 
          * @param {UpdateProfileRequest} [updateProfileRequest] 
          * @param {*} [options] Override http request option.
@@ -3656,7 +3794,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary クレジットカード(Stripe)で指定のアイテムを購入するためのPyamentIntentを作成し、対応するSecretを返す
+     * @summary Create a PyamentIntent to purchase a given item with a credit card (Stripe) and return the corresponding Secret
      * @param {string} mintAccessToken 
      * @param {CreateStripePaymentIntentRequest} [createStripePaymentIntentRequest] 
      * @param {*} [options] Override http request option.
@@ -3669,7 +3807,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary アバター画像の署名付きURLの取得
+     * @summary Get signed URL for avatar image
      * @param {string} mintAccessToken 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3681,7 +3819,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary 指定したwalletAddressでBidしたItemStockを取得する
+     * @summary Get Bidded ItemStocks By WalletAddress
      * @param {string} mintAccessToken 
      * @param {string} walletAddress 
      * @param {string} page 
@@ -3699,7 +3837,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary 指定したwalletAddressで購入または落札したItemStockを取得する
+     * @summary Get ItemStock purchased or sold at the specified walletAddress
      * @param {string} mintAccessToken 
      * @param {string} walletAddress 
      * @param {string} page 
@@ -3716,7 +3854,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary ContractERC721をId指定で取得する
+     * @summary Get ContractERC721 by  contracId
      * @param {string} mintAccessToken 
      * @param {string} contractId 
      * @param {*} [options] Override http request option.
@@ -3729,7 +3867,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary プロジェクトのItemをId指定で取得する
+     * @summary Get Item of project by specifying Id
      * @param {string} mintAccessToken 
      * @param {string} itemId 
      * @param {*} [options] Override http request option.
@@ -3755,7 +3893,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary ItemStockをId指定で取得する
+     * @summary get ItemStock by Id
      * @param {string} mintAccessToken 
      * @param {string} itemStockId 
      * @param {*} [options] Override http request option.
@@ -3795,14 +3933,14 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary プロジェクトのItemを全て取得する
+     * @summary Get all the items of the project
      * @param {string} mintAccessToken 
      * @param {string} page 
      * @param {string} perPage 
      * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
      * @param {'true' | 'false'} [onlyAvailableStock] 
      * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
-     * @param {string} [tags] , 区切りで指定
+     * @param {string} [tags] Specified by the delimiter of \&#39;,\&#39;
      * @param {'price'} [sortBy] 
      * @param {'asc' | 'desc'} [sortDirection] 
      * @param {*} [options] Override http request option.
@@ -3828,7 +3966,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary Itemにパックされていて、ItemのstatusがpublishなProductERC721を取得
+     * @summary Get ProductERC721 which is packed in Item and the status of Item is publish
      * @param {string} mintAccessToken 
      * @param {string} id 
      * @param {*} [options] Override http request option.
@@ -3840,8 +3978,8 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     * プロフィールがない場合はnullがdataの値に入る
-     * @summary ウォレットに紐づくプロフィールの取得
+     * If there is no profile, null will be in the value of data
+     * @summary Get the profile associated with the wallet
      * @param {string} mintAccessToken 
      * @param {string} walletAddress 
      * @param {*} [options] Override http request option.
@@ -3854,7 +3992,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary スマコンで販売している`Item`の販売可能な(まだ売れていない)`ItemStockId`を取得する
+     * @summary Get a sellable (not yet sold) `ItemStockId` for a`Item` to sell on a Smart Contract
      * @param {string} mintAccessToken 
      * @param {string} itemId 
      * @param {*} [options] Override http request option.
@@ -3867,12 +4005,12 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary Item購入に関してスマコンの操作に必要なSignを返す
+     * @summary Returns the Sign required to operate the Smart Contract for Item purchase
      * @param {string} mintAccessToken 
      * @param {string} itemStockId 
      * @param {SignatureType} signatureType 
-     * @param {string} [walletAddress] 購入時のみ必須
-     * @param {'jp' | 'unknown'} [residence] 購入時のみ必須
+     * @param {string} [walletAddress] Required only at the time of purchase
+     * @param {'jp' | 'unknown'} [residence] Required only at the time of purchase
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -3909,7 +4047,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary walletAddressに紐づくTokenERC721を全て取得する
+     * @summary Get all TokenERC721 associated with walletAddress
      * @param {string} mintAccessToken 
      * @param {string} walletAddress 
      * @param {string} page 
@@ -3967,7 +4105,7 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary ウォレットに紐づくプロフィールの作成
+     * @summary Create a profile associated with your wallet
      * @param {string} mintAccessToken 
      * @param {UpdateProfileRequest} [updateProfileRequest] 
      * @param {*} [options] Override http request option.
