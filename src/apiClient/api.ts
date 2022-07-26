@@ -779,10 +779,10 @@ export interface GetItems200Response {
     'data': Array<Item>;
     /**
      * 
-     * @type {object}
+     * @type {PaginationMetadata}
      * @memberof GetItems200Response
      */
-    'meta': object;
+    'meta': PaginationMetadata;
 }
 /**
  * 
@@ -1505,6 +1505,31 @@ export const NetworkId = {
 export type NetworkId = typeof NetworkId[keyof typeof NetworkId];
 
 
+/**
+ * Contains pagination metadata such as page number, total page and total items
+ * @export
+ * @interface PaginationMetadata
+ */
+export interface PaginationMetadata {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationMetadata
+     */
+    'totalPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationMetadata
+     */
+    'pageNumber': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationMetadata
+     */
+    'totalItems': number;
+}
 /**
  * @type PaymentMethodData
  * Data that differs depending on the paymentMethod
@@ -2495,6 +2520,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} page 
          * @param {string} perPage 
          * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
+         * @param {'scheduled' | 'onSale' | 'end'} [itemSaleStatus] 
          * @param {'true' | 'false'} [onlyAvailableStock] 
          * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
          * @param {string} [tags] Specified by the delimiter of \&#39;,\&#39;
@@ -2503,7 +2529,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItems: async (mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getItems: async (mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', itemSaleStatus?: 'scheduled' | 'onSale' | 'end', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getItems', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'page' is not null or undefined
@@ -2532,6 +2558,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (saleStatus !== undefined) {
                 localVarQueryParameter['saleStatus'] = saleStatus;
+            }
+
+            if (itemSaleStatus !== undefined) {
+                localVarQueryParameter['itemSaleStatus'] = itemSaleStatus;
             }
 
             if (onlyAvailableStock !== undefined) {
@@ -3303,6 +3333,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {string} page 
          * @param {string} perPage 
          * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
+         * @param {'scheduled' | 'onSale' | 'end'} [itemSaleStatus] 
          * @param {'true' | 'false'} [onlyAvailableStock] 
          * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
          * @param {string} [tags] Specified by the delimiter of \&#39;,\&#39;
@@ -3311,8 +3342,8 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItems200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getItems(mintAccessToken, page, perPage, saleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options);
+        async getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', itemSaleStatus?: 'scheduled' | 'onSale' | 'end', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItems200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItems(mintAccessToken, page, perPage, saleStatus, itemSaleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3616,6 +3647,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {string} page 
          * @param {string} perPage 
          * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
+         * @param {'scheduled' | 'onSale' | 'end'} [itemSaleStatus] 
          * @param {'true' | 'false'} [onlyAvailableStock] 
          * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
          * @param {string} [tags] Specified by the delimiter of \&#39;,\&#39;
@@ -3624,8 +3656,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<GetItems200Response> {
-            return localVarFp.getItems(mintAccessToken, page, perPage, saleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options).then((request) => request(axios, basePath));
+        getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', itemSaleStatus?: 'scheduled' | 'onSale' | 'end', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: any): AxiosPromise<GetItems200Response> {
+            return localVarFp.getItems(mintAccessToken, page, perPage, saleStatus, itemSaleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3938,6 +3970,7 @@ export class DefaultApi extends BaseAPI {
      * @param {string} page 
      * @param {string} perPage 
      * @param {'beforeStart' | 'beforeEnd' | 'afterEnd'} [saleStatus] 
+     * @param {'scheduled' | 'onSale' | 'end'} [itemSaleStatus] 
      * @param {'true' | 'false'} [onlyAvailableStock] 
      * @param {'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price'} [paymentMethod] 
      * @param {string} [tags] Specified by the delimiter of \&#39;,\&#39;
@@ -3947,8 +3980,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getItems(mintAccessToken, page, perPage, saleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options).then((request) => request(this.axios, this.basePath));
+    public getItems(mintAccessToken: string, page: string, perPage: string, saleStatus?: 'beforeStart' | 'beforeEnd' | 'afterEnd', itemSaleStatus?: 'scheduled' | 'onSale' | 'end', onlyAvailableStock?: 'true' | 'false', paymentMethod?: 'ethereum-contract-erc721-shop-fixed-price' | 'ethereum-contract-erc721-shop-auction' | 'credit-card-stripe-fixed-price', tags?: string, sortBy?: 'price', sortDirection?: 'asc' | 'desc', options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getItems(mintAccessToken, page, perPage, saleStatus, itemSaleStatus, onlyAvailableStock, paymentMethod, tags, sortBy, sortDirection, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
