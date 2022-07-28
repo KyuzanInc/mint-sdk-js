@@ -325,11 +325,21 @@ export class MintSDK {
    * Returns the Items with the flag `Items.openStatus === 'open'`
    * The status of the items can be changed from the admin panel
    *
+   * IMPORTANT: This method is on deprecation path, please move to
+   * getItemsV2. getItemsV2 method also support pagination metadata
+   * and onSale status filter.
+   *
    * #### 制限事項 / Restrictions
    *
-   * @param paging
-   * @param tags , 区切りで指定
+   * @param page requested page number
+   * @param perPage requested number of item per page
+   * @param tags tag filter - nullable
+   * @param saleStatus saleStatus filter - nullable
+   * @param paymentMethod paymentMethod filter - nullable
+   * @param onlyAvailableStock onlyAvailableStock filter - nullable
+   * @param sort sort preference details on returned items
    * @returns
+   *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = new MintSDK(...)
@@ -362,6 +372,7 @@ export class MintSDK {
       page.toString(),
       perPage.toString(),
       saleStatus,
+      undefined,
       typeof onlyAvailableStock === 'undefined'
         ? undefined
         : onlyAvailableStock
@@ -373,6 +384,80 @@ export class MintSDK {
       sort?.sortDirection
     )
     return data.data as Item[]
+  }
+
+  /**
+   * 公開中の商品を取得
+   * ステータスの変更は管理画面から行えます。
+   * Returns the Items with the flag `Items.openStatus === 'open'`
+   * The status of the items can be changed from the admin panel
+   * Additionally this function also returns pagination metadata.
+   *
+   * #### 制限事項 / Restrictions
+   *
+   * @param page requested page number
+   * @param perPage requested number of item per page
+   * @param tags tag filter - nullable
+   * @param saleStatus saleStatus filter - nullable; note that this saleStatus information maybe late by 1 minute.
+   * @param paymentMethod paymentMethod filter - nullable
+   * @param onlyAvailableStock onlyAvailableStock filter - nullable
+   * @param sort sort preference details on returned items
+   * @return
+   * {
+   *   data: [
+   *     {
+   *       ... Item information
+   *     },
+   *     {
+   *       ... Item information
+   *     },
+   *   ],
+   *   meta: { totalItems: 1, pageNumber: 1, totalPage: 1, perPage: 100 }
+   * }
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   *
+   * const items = await sdk.getItemsV2(...)
+   * ```
+   */
+  public getItemsV2 = async ({
+    page,
+    perPage,
+    tags,
+    sort,
+    saleStatus,
+    paymentMethod,
+    onlyAvailableStock,
+  }: {
+    page: number
+    perPage: number
+    tags?: string
+    saleStatus?: 'scheduled' | 'onSale' | 'end'
+    paymentMethod?: PaymentMethod
+    onlyAvailableStock?: boolean
+    sort?: {
+      sortBy: 'price'
+      sortDirection: 'asc' | 'desc'
+    }
+  }) => {
+    const { data } = await this.apiClientV2.getItems(
+      this.accessToken,
+      page.toString(),
+      perPage.toString(),
+      undefined,
+      saleStatus,
+      typeof onlyAvailableStock === 'undefined'
+        ? undefined
+        : onlyAvailableStock
+        ? 'true'
+        : 'false',
+      paymentMethod,
+      tags,
+      sort?.sortBy,
+      sort?.sortDirection
+    )
+    return data
   }
 
   /**
