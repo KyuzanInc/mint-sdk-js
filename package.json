@@ -16,12 +16,12 @@
   },
   "devDependencies": {
     "@types/jest": "28.1.6",
-    "@types/node": "16.11.45",
+    "@types/node": "16.11.46",
     "@types/qs": "6.9.7",
     "@typescript-eslint/eslint-plugin": "5.30.7",
     "@typescript-eslint/parser": "5.30.7",
     "auto-changelog": "2.4.0",
-    "esbuild": "0.14.49",
+    "esbuild": "0.14.50",
     "eslint": "8.20.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
@@ -30,8 +30,8 @@
     "prettier": "2.7.1",
     "rimraf": "3.0.2",
     "ts-jest": "28.0.7",
-    "typedoc": "0.23.7",
-    "typedoc-plugin-markdown": "3.13.3",
+    "typedoc": "0.23.9",
+    "typedoc-plugin-markdown": "3.13.4",
     "typescript": "4.7.4"
   },
   "files": [
