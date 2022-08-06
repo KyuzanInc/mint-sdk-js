@@ -2922,10 +2922,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} walletAddress 
          * @param {string} page 
          * @param {string} perPage 
+         * @param {string} [contractAddress] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokenERC721sByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getTokenERC721sByWalletAddress: async (mintAccessToken: string, walletAddress: string, page: string, perPage: string, contractAddress?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getTokenERC721sByWalletAddress', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'walletAddress' is not null or undefined
@@ -2956,6 +2957,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (perPage !== undefined) {
                 localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (contractAddress !== undefined) {
+                localVarQueryParameter['contractAddress'] = contractAddress;
             }
 
             if (mintAccessToken !== undefined && mintAccessToken !== null) {
@@ -3440,11 +3445,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {string} walletAddress 
          * @param {string} page 
          * @param {string} perPage 
+         * @param {string} [contractAddress] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTokenERC721sByWalletAddress200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options);
+        async getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, contractAddress?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTokenERC721sByWalletAddress200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, contractAddress, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3746,11 +3752,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {string} walletAddress 
          * @param {string} page 
          * @param {string} perPage 
+         * @param {string} [contractAddress] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: any): AxiosPromise<GetTokenERC721sByWalletAddress200Response> {
-            return localVarFp.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options).then((request) => request(axios, basePath));
+        getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, contractAddress?: string, options?: any): AxiosPromise<GetTokenERC721sByWalletAddress200Response> {
+            return localVarFp.getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, contractAddress, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4085,12 +4092,13 @@ export class DefaultApi extends BaseAPI {
      * @param {string} walletAddress 
      * @param {string} page 
      * @param {string} perPage 
+     * @param {string} [contractAddress] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, options).then((request) => request(this.axios, this.basePath));
+    public getTokenERC721sByWalletAddress(mintAccessToken: string, walletAddress: string, page: string, perPage: string, contractAddress?: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getTokenERC721sByWalletAddress(mintAccessToken, walletAddress, page, perPage, contractAddress, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

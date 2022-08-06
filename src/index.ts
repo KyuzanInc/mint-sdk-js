@@ -619,12 +619,14 @@ export class MintSDK {
     walletAddress: string
     page: number
     perPage: number
+    contractAddress?: string
   }) => {
     const { data } = await this.apiClientV2.getTokenERC721sByWalletAddress(
       this.accessToken,
       arg.walletAddress,
       arg.page.toString(),
-      arg.perPage.toString()
+      arg.perPage.toString(),
+      arg.contractAddress
     )
     return data.data
   }
