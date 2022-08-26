@@ -1835,6 +1835,7 @@ export class MintSDK {
       throw new Error('Wallet is not connected')
     }
 
+    // TODO: add signature check
     const { data } = await this.apiClientV2.addWalletToWalletList(
       this.accessToken,
       walletId,
