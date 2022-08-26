@@ -1805,4 +1805,24 @@ export class MintSDK {
     )
     return data.data
   }
+
+  /**
+   * Returns 
+   * 
+   * @param walletListId
+   * @returns The information for the walletList includes Event information
+   * 
+   * ```typescript
+   * import ( MintSDK ) from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * const walletList = await sdk.getWalletList('walletListId)
+   * ```
+   */
+  public getWalletList = async (walletListId: string) => {
+    const { data } = await this.apiClientV2.getWalletListByWalletId(
+      this.accessToken,
+      walletListId
+    )
+    return data.data
+  }
 }
