@@ -1808,10 +1808,20 @@ export class MintSDK {
   }
 
   /**
-   * Returns
+   * Returns the information for the walletList includes Event information
    *
    * @param walletListId
-   * @returns The information for the walletList includes Event information
+   * @returns
+   * walletList: {
+   *  id: string;
+   *  walletListName: string;
+   *  eventSetting: {
+   *    eventImagePreviewUrl: string;
+   *    eventName: string;
+   *    eventDetails: string;
+   *    eventImageId: string;
+   *  }
+   * }
    *
    * ```typescript
    * import ( MintSDK ) from '@kyuzan/mint-sdk-js'
