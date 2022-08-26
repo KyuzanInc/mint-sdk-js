@@ -1125,6 +1125,7 @@ export class MintSDK {
         .then((from) => {
           const params = [from, msgParams]
           const method = 'eth_signTypedData_v4'
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           wallet.provider.sendAsync!(
             {
               method,
@@ -1806,27 +1807,30 @@ export class MintSDK {
     return data.data
   }
 
-  /** 
+  /**
    * Register the wallet address
-   * 
+   *
    * Parameters:
    * walletId: Wallet Id that you want to add wallet to.
    * walletAddress: Wallet address that you want to add.
-   * 
+   *
    * @returns
-   * 
+   *
    * **Required**
    * - Requires a wallet to be connected.
-   * 
+   *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = new MintSDK(...)
    * await sdk.connectWallet() // required
-   * 
+   *
    * await registerWalletToWalletList('walletId', 'walletAddress')
    * ```
    */
-  public registerWalletToWalletList = async (walletId: string, walletAddress: string) => {
+  public registerWalletToWalletList = async (
+    walletId: string,
+    walletAddress: string
+  ) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
