@@ -1125,6 +1125,7 @@ export class MintSDK {
         .then((from) => {
           const params = [from, msgParams]
           const method = 'eth_signTypedData_v4'
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           wallet.provider.sendAsync!(
             {
               method,
@@ -1807,11 +1808,11 @@ export class MintSDK {
   }
 
   /**
-   * Returns 
-   * 
+   * Returns
+   *
    * @param walletListId
    * @returns The information for the walletList includes Event information
-   * 
+   *
    * ```typescript
    * import ( MintSDK ) from '@kyuzan/mint-sdk-js'
    * const sdk = new MintSDK(...)
