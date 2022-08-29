@@ -1810,7 +1810,7 @@ export class MintSDK {
   /**
    * Returns the information for the walletList includes Event information
    *
-   * @param walletListId
+   * @param walletId
    * @returns
    * walletList: {
    *  id: string;
@@ -1826,13 +1826,13 @@ export class MintSDK {
    * ```typescript
    * import ( MintSDK ) from '@kyuzan/mint-sdk-js'
    * const sdk = new MintSDK(...)
-   * const walletList = await sdk.getWalletList('walletListId)
+   * const walletList = await sdk.getWalletListByWalletId('walletId)
    * ```
    */
-  public getWalletList = async (walletListId: string) => {
+  public getWalletListByWalletId = async (walletId: string) => {
     const { data } = await this.apiClientV2.getWalletListByWalletId(
       this.accessToken,
-      walletListId
+      walletId
     )
     return data.data
   }
