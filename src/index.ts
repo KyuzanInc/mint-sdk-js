@@ -1836,4 +1836,42 @@ export class MintSDK {
     )
     return data.data
   }
+
+  /**
+   * Register the wallet address
+   *
+   * Parameters:
+   * walletId: Wallet Id that you want to add wallet to.
+   * walletAddress: Wallet address that you want to add.
+   *
+   * @returns
+   *
+   * **Required**
+   * - Requires a wallet to be connected.
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * await sdk.connectWallet() // required
+   *
+   * await registerWalletToWalletList('walletId', 'walletAddress')
+   * ```
+   */
+  public registerWalletToWalletList = async (
+    walletId: string,
+    walletAddress: string
+  ) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    // TODO: add signature check
+    const { data } = await this.apiClientV2.addWalletToWalletList(
+      this.accessToken,
+      walletId,
+      { walletAddress }
+    )
+
+    return data.data
+  }
 }
