@@ -1808,6 +1808,36 @@ export class MintSDK {
   }
 
   /**
+   * Returns the information for the walletList includes Event information
+   *
+   * @param walletId
+   * @returns
+   * walletList: {
+   *  id: string;
+   *  walletListName: string;
+   *  eventSetting: {
+   *    eventImagePreviewUrl: string;
+   *    eventName: string;
+   *    eventDetails: string;
+   *    eventImageId: string;
+   *  }
+   * }
+   *
+   * ```typescript
+   * import ( MintSDK ) from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * const walletList = await sdk.getWalletListByWalletId('walletId)
+   * ```
+   */
+  public getWalletListByWalletId = async (walletId: string) => {
+    const { data } = await this.apiClientV2.getWalletListByWalletId(
+      this.accessToken,
+      walletId
+    )
+    return data.data
+  }
+
+  /**
    * Register the wallet address
    *
    * Parameters:
