@@ -1881,12 +1881,9 @@ export class MintSDK {
       value,
     })
 
-    await this.apiClientV2.addWalletToWalletList(
-      this.accessToken,
-      {
-        data,
-        signature: sig,
-      }
-    )
+    await this.apiClientV2.addWalletToWalletList(this.accessToken, {
+      data,
+      signature: sig,
+    })
   }
 }
