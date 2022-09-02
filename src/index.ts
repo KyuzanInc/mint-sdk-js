@@ -1858,9 +1858,7 @@ export class MintSDK {
    * await registerWalletToWalletList('walletId')
    * ```
    */
-  public registerWalletToWalletList = async (
-    walletId: string
-  ) => {
+  public registerWalletToWalletList = async (walletId: string) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
