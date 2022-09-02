@@ -628,7 +628,7 @@ export class MintSDK {
       arg.perPage.toString(),
       arg.contractAddress
     )
-    return data.data
+    return data
   }
 
   /**
