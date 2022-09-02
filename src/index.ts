@@ -1856,16 +1856,17 @@ export class MintSDK {
    * const sdk = new MintSDK(...)
    * await sdk.connectWallet() // required
    *
-   * await registerWalletToWalletList('walletId', 'walletAddress')
+   * await registerWalletToWalletList('walletId')
    * ```
    */
   public registerWalletToWalletList = async (
-    walletId: string,
-    walletAddress: string
+    walletId: string
   ) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
+    const walletInfo = await this.getWalletInfo()
+    const walletAddress = walletInfo.address
 
     const currentNetwork = await this.getConnectedNetworkId()
     const requestTimestamp = Date.now()
