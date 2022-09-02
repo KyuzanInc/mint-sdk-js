@@ -1844,7 +1844,6 @@ export class MintSDK {
    *
    * Parameters:
    * walletId: Wallet Id that you want to add wallet to.
-   * walletAddress: Wallet address that you want to add.
    *
    * @returns
    *
