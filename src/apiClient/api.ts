@@ -48,10 +48,72 @@ export interface AddWalletToWalletList200Response {
 export interface AddWalletToWalletListRequest {
     /**
      * 
+     * @type {AddWalletToWalletListRequestBody}
+     * @memberof AddWalletToWalletListRequest
+     */
+    'data': AddWalletToWalletListRequestBody;
+    /**
+     * 
      * @type {string}
      * @memberof AddWalletToWalletListRequest
      */
+    'signature': string;
+}
+/**
+ * 
+ * @export
+ * @interface AddWalletToWalletListRequestBody
+ */
+export interface AddWalletToWalletListRequestBody {
+    /**
+     * 
+     * @type {SignatureDomain}
+     * @memberof AddWalletToWalletListRequestBody
+     */
+    'domain': SignatureDomain;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWalletToWalletListRequestBody
+     */
+    'primaryType': string;
+    /**
+     * 
+     * @type {AddWalletToWalletListRequestBodyMessage}
+     * @memberof AddWalletToWalletListRequestBody
+     */
+    'message': AddWalletToWalletListRequestBodyMessage;
+    /**
+     * 
+     * @type {object}
+     * @memberof AddWalletToWalletListRequestBody
+     */
+    'types': object;
+}
+/**
+ * 
+ * @export
+ * @interface AddWalletToWalletListRequestBodyMessage
+ */
+export interface AddWalletToWalletListRequestBodyMessage {
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWalletToWalletListRequestBodyMessage
+     */
     'walletAddress': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWalletToWalletListRequestBodyMessage
+     */
+    'walletId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWalletToWalletListRequestBodyMessage
+     */
+    'requestTimestamp': string;
 }
 /**
  * 
@@ -2092,16 +2154,13 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary API for adding new wallet to wallet list
          * @param {string} mintAccessToken 
-         * @param {string} walletId 
          * @param {AddWalletToWalletListRequest} [addWalletToWalletListRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addWalletToWalletList: async (mintAccessToken: string, walletId: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addWalletToWalletList: async (mintAccessToken: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('addWalletToWalletList', 'mintAccessToken', mintAccessToken)
-            // verify required parameter 'walletId' is not null or undefined
-            assertParamExists('addWalletToWalletList', 'walletId', walletId)
             const localVarPath = `/sdk_v4/walletLists/addWallet`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2113,10 +2172,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (walletId !== undefined) {
-                localVarQueryParameter['walletId'] = walletId;
-            }
 
             if (mintAccessToken !== undefined && mintAccessToken !== null) {
                 localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
@@ -3392,13 +3447,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary API for adding new wallet to wallet list
          * @param {string} mintAccessToken 
-         * @param {string} walletId 
          * @param {AddWalletToWalletListRequest} [addWalletToWalletListRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addWalletToWalletList(mintAccessToken: string, walletId: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddWalletToWalletList200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addWalletToWalletList(mintAccessToken, walletId, addWalletToWalletListRequest, options);
+        async addWalletToWalletList(mintAccessToken: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddWalletToWalletList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addWalletToWalletList(mintAccessToken, addWalletToWalletListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3743,13 +3797,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary API for adding new wallet to wallet list
          * @param {string} mintAccessToken 
-         * @param {string} walletId 
          * @param {AddWalletToWalletListRequest} [addWalletToWalletListRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addWalletToWalletList(mintAccessToken: string, walletId: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options?: any): AxiosPromise<AddWalletToWalletList200Response> {
-            return localVarFp.addWalletToWalletList(mintAccessToken, walletId, addWalletToWalletListRequest, options).then((request) => request(axios, basePath));
+        addWalletToWalletList(mintAccessToken: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options?: any): AxiosPromise<AddWalletToWalletList200Response> {
+            return localVarFp.addWalletToWalletList(mintAccessToken, addWalletToWalletListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4068,14 +4121,13 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary API for adding new wallet to wallet list
      * @param {string} mintAccessToken 
-     * @param {string} walletId 
      * @param {AddWalletToWalletListRequest} [addWalletToWalletListRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public addWalletToWalletList(mintAccessToken: string, walletId: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).addWalletToWalletList(mintAccessToken, walletId, addWalletToWalletListRequest, options).then((request) => request(this.axios, this.basePath));
+    public addWalletToWalletList(mintAccessToken: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).addWalletToWalletList(mintAccessToken, addWalletToWalletListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

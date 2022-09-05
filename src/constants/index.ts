@@ -31,6 +31,27 @@ export const GET_SHIPPING_INFO_TYPES = {
   ],
 }
 
+export const REGISTER_WALLET_DOMAIN = {
+  name: 'Register Wallet',
+  version: '1',
+}
+export const REGISTER_WALLET_TYPES = {
+  WalletAddress: [
+    {
+      name: 'walletAddress',
+      type: 'string',
+    },
+    {
+      name: 'walletId',
+      type: 'string',
+    },
+    {
+      name: 'requestTimestamp',
+      type: 'uint256',
+    },
+  ],
+}
+
 export const REGISTER_SHIPPING_INFO_DOMAIN = {
   name: 'Register Shipping Info',
   version: '1',
