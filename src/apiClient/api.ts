@@ -24,6 +24,100 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface AddWalletToWalletList200Response
+ */
+export interface AddWalletToWalletList200Response {
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWalletToWalletList200Response
+     */
+    'data': string;
+    /**
+     * 
+     * @type {object}
+     * @memberof AddWalletToWalletList200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface AddWalletToWalletListRequest
+ */
+export interface AddWalletToWalletListRequest {
+    /**
+     * 
+     * @type {AddWalletToWalletListRequestBody}
+     * @memberof AddWalletToWalletListRequest
+     */
+    'data': AddWalletToWalletListRequestBody;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWalletToWalletListRequest
+     */
+    'signature': string;
+}
+/**
+ * 
+ * @export
+ * @interface AddWalletToWalletListRequestBody
+ */
+export interface AddWalletToWalletListRequestBody {
+    /**
+     * 
+     * @type {SignatureDomain}
+     * @memberof AddWalletToWalletListRequestBody
+     */
+    'domain': SignatureDomain;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWalletToWalletListRequestBody
+     */
+    'primaryType': string;
+    /**
+     * 
+     * @type {AddWalletToWalletListRequestBodyMessage}
+     * @memberof AddWalletToWalletListRequestBody
+     */
+    'message': AddWalletToWalletListRequestBodyMessage;
+    /**
+     * 
+     * @type {object}
+     * @memberof AddWalletToWalletListRequestBody
+     */
+    'types': object;
+}
+/**
+ * 
+ * @export
+ * @interface AddWalletToWalletListRequestBodyMessage
+ */
+export interface AddWalletToWalletListRequestBodyMessage {
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWalletToWalletListRequestBodyMessage
+     */
+    'walletAddress': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWalletToWalletListRequestBodyMessage
+     */
+    'walletId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddWalletToWalletListRequestBodyMessage
+     */
+    'requestTimestamp': string;
+}
+/**
+ * 
+ * @export
  * @interface AvatarData
  */
 export interface AvatarData {
@@ -971,6 +1065,25 @@ export interface GetTokentERC721sByWalletAddressFromAnyContract200Response {
      * 
      * @type {object}
      * @memberof GetTokentERC721sByWalletAddressFromAnyContract200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetWalletListByWalletIdResponse
+ */
+export interface GetWalletListByWalletIdResponse {
+    /**
+     * 
+     * @type {WalletList}
+     * @memberof GetWalletListByWalletIdResponse
+     */
+    'data': WalletList;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetWalletListByWalletIdResponse
      */
     'meta': object;
 }
@@ -1974,6 +2087,62 @@ export interface WalletAddressProfile {
      */
     'homepageUrl': string;
 }
+/**
+ * 
+ * @export
+ * @interface WalletList
+ */
+export interface WalletList {
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletList
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletList
+     */
+    'walletListName': string;
+    /**
+     * 
+     * @type {WalletListEventSetting}
+     * @memberof WalletList
+     */
+    'eventSetting': WalletListEventSetting | null;
+}
+/**
+ * 
+ * @export
+ * @interface WalletListEventSetting
+ */
+export interface WalletListEventSetting {
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletListEventSetting
+     */
+    'eventName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletListEventSetting
+     */
+    'eventImageId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletListEventSetting
+     */
+    'eventDetails': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletListEventSetting
+     */
+    'eventImagePreviewUrl': string;
+}
 
 /**
  * DefaultApi - axios parameter creator
@@ -1981,6 +2150,47 @@ export interface WalletAddressProfile {
  */
 export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @summary API for adding new wallet to wallet list
+         * @param {string} mintAccessToken 
+         * @param {AddWalletToWalletListRequest} [addWalletToWalletListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addWalletToWalletList: async (mintAccessToken: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('addWalletToWalletList', 'mintAccessToken', mintAccessToken)
+            const localVarPath = `/sdk_v4/walletLists/addWallet`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(addWalletToWalletListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary API for creating or updating item stock physical shipping info for given item stock id
@@ -3031,6 +3241,50 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Get WalletList detail of given wallet id
+         * @param {string} mintAccessToken 
+         * @param {string} walletId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getWalletListByWalletId: async (mintAccessToken: string, walletId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getWalletListByWalletId', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'walletId' is not null or undefined
+            assertParamExists('getWalletListByWalletId', 'walletId', walletId)
+            const localVarPath = `/sdk_v4/walletLists/getByWalletId`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (walletId !== undefined) {
+                localVarQueryParameter['walletId'] = walletId;
+            }
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary has token id of nft or not in contract
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
@@ -3189,6 +3443,18 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 export const DefaultApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
     return {
+        /**
+         * 
+         * @summary API for adding new wallet to wallet list
+         * @param {string} mintAccessToken 
+         * @param {AddWalletToWalletListRequest} [addWalletToWalletListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addWalletToWalletList(mintAccessToken: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddWalletToWalletList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addWalletToWalletList(mintAccessToken, addWalletToWalletListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
         /**
          * 
          * @summary API for creating or updating item stock physical shipping info for given item stock id
@@ -3468,6 +3734,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get WalletList detail of given wallet id
+         * @param {string} mintAccessToken 
+         * @param {string} walletId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getWalletListByWalletId(mintAccessToken: string, walletId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWalletListByWalletIdResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getWalletListByWalletId(mintAccessToken, walletId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary has token id of nft or not in contract
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
@@ -3515,6 +3793,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
 export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = DefaultApiFp(configuration)
     return {
+        /**
+         * 
+         * @summary API for adding new wallet to wallet list
+         * @param {string} mintAccessToken 
+         * @param {AddWalletToWalletListRequest} [addWalletToWalletListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addWalletToWalletList(mintAccessToken: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options?: any): AxiosPromise<AddWalletToWalletList200Response> {
+            return localVarFp.addWalletToWalletList(mintAccessToken, addWalletToWalletListRequest, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @summary API for creating or updating item stock physical shipping info for given item stock id
@@ -3773,6 +4062,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Get WalletList detail of given wallet id
+         * @param {string} mintAccessToken 
+         * @param {string} walletId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getWalletListByWalletId(mintAccessToken: string, walletId: string, options?: any): AxiosPromise<GetWalletListByWalletIdResponse> {
+            return localVarFp.getWalletListByWalletId(mintAccessToken, walletId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary has token id of nft or not in contract
          * @param {string} mintAccessToken 
          * @param {string} walletAddress 
@@ -3817,6 +4117,19 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @summary API for adding new wallet to wallet list
+     * @param {string} mintAccessToken 
+     * @param {AddWalletToWalletListRequest} [addWalletToWalletListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public addWalletToWalletList(mintAccessToken: string, addWalletToWalletListRequest?: AddWalletToWalletListRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).addWalletToWalletList(mintAccessToken, addWalletToWalletListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary API for creating or updating item stock physical shipping info for given item stock id
@@ -4113,6 +4426,19 @@ export class DefaultApi extends BaseAPI {
      */
     public getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getTokentERC721sByWalletAddressFromAnyContract(mintAccessToken, walletAddress, contractAddress, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get WalletList detail of given wallet id
+     * @param {string} mintAccessToken 
+     * @param {string} walletId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getWalletListByWalletId(mintAccessToken: string, walletId: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getWalletListByWalletId(mintAccessToken, walletId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

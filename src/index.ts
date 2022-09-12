@@ -20,6 +20,8 @@ import {
   PROFILE_TYPES,
   REGISTER_SHIPPING_INFO_DOMAIN,
   REGISTER_SHIPPING_INFO_TYPES,
+  REGISTER_WALLET_DOMAIN,
+  REGISTER_WALLET_TYPES,
 } from './constants/index'
 import { WrongNetworkError } from './Errors'
 import { BigNumber } from './types/BigNumber'
@@ -1125,6 +1127,7 @@ export class MintSDK {
         .then((from) => {
           const params = [from, msgParams]
           const method = 'eth_signTypedData_v4'
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           wallet.provider.sendAsync!(
             {
               method,
@@ -1804,5 +1807,81 @@ export class MintSDK {
       contractAddress
     )
     return data.data
+  }
+
+  /**
+   * Returns the information for the walletList includes Event information
+   *
+   * @param walletId
+   * @returns
+   * walletList: {
+   *  id: string;
+   *  walletListName: string;
+   *  eventSetting: {
+   *    eventImagePreviewUrl: string;
+   *    eventName: string;
+   *    eventDetails: string;
+   *    eventImageId: string;
+   *  }
+   * }
+   *
+   * ```typescript
+   * import ( MintSDK ) from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * const walletList = await sdk.getWalletListByWalletId('walletId)
+   * ```
+   */
+  public getWalletListByWalletId = async (walletId: string) => {
+    const { data } = await this.apiClientV2.getWalletListByWalletId(
+      this.accessToken,
+      walletId
+    )
+    return data.data
+  }
+
+  /**
+   * Register the wallet address
+   *
+   * Parameters:
+   * walletId: Wallet Id that you want to add wallet to.
+   *
+   * @returns
+   *
+   * **Required**
+   * - Requires a wallet to be connected.
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * await sdk.connectWallet() // required
+   *
+   * await registerWalletToWalletList('walletId')
+   * ```
+   */
+  public registerWalletToWalletList = async (walletId: string) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const walletInfo = await this.getWalletInfo()
+    const walletAddress = walletInfo.address
+
+    const currentNetwork = await this.getConnectedNetworkId()
+    const requestTimestamp = Date.now()
+    const value = {
+      walletAddress,
+      walletId,
+      requestTimestamp,
+    }
+
+    const { data, sig } = await this.signTypedData({
+      domain: { ...REGISTER_WALLET_DOMAIN, chainId: currentNetwork },
+      types: REGISTER_WALLET_TYPES,
+      value,
+    })
+
+    await this.apiClientV2.addWalletToWalletList(this.accessToken, {
+      data,
+      signature: sig,
+    })
   }
 }
