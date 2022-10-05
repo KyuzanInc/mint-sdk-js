@@ -805,6 +805,38 @@ export interface GetItemStockById200Response {
 /**
  * 
  * @export
+ * @interface GetItemStockIdByStripePaymentId200Response
+ */
+export interface GetItemStockIdByStripePaymentId200Response {
+    /**
+     * 
+     * @type {GetItemStockIdByStripePaymentId200ResponseData}
+     * @memberof GetItemStockIdByStripePaymentId200Response
+     */
+    'data': GetItemStockIdByStripePaymentId200ResponseData;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetItemStockIdByStripePaymentId200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetItemStockIdByStripePaymentId200ResponseData
+ */
+export interface GetItemStockIdByStripePaymentId200ResponseData {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetItemStockIdByStripePaymentId200ResponseData
+     */
+    'itemStockId': string;
+}
+/**
+ * 
+ * @export
  * @interface GetItemStockPhysicalShippingInfoByItemStockId200Response
  */
 export interface GetItemStockPhysicalShippingInfoByItemStockId200Response {
@@ -1610,6 +1642,7 @@ export interface MessageObject {
 export const NetworkId = {
     NUMBER_1: 1,
     NUMBER_4: 4,
+    NUMBER_5: 5,
     NUMBER_80001: 80001,
     NUMBER_137: 137,
     NUMBER_31337: 31337
@@ -2633,6 +2666,50 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Get ItemStockId by StripePaymentId
+         * @param {string} mintAccessToken 
+         * @param {string} paymentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemStockIdByStripePaymentId: async (mintAccessToken: string, paymentId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getItemStockIdByStripePaymentId', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'paymentId' is not null or undefined
+            assertParamExists('getItemStockIdByStripePaymentId', 'paymentId', paymentId)
+            const localVarPath = `/sdk_v4/stripePayment/getItemStockIdByPaymentId`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (paymentId !== undefined) {
+                localVarQueryParameter['paymentId'] = paymentId;
+            }
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary API for getting item stock physical shipping info by item stock id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
@@ -3574,6 +3651,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get ItemStockId by StripePaymentId
+         * @param {string} mintAccessToken 
+         * @param {string} paymentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getItemStockIdByStripePaymentId(mintAccessToken: string, paymentId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetItemStockIdByStripePaymentId200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemStockIdByStripePaymentId(mintAccessToken, paymentId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary API for getting item stock physical shipping info by item stock id
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
@@ -3911,6 +4000,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         getItemStockById(mintAccessToken: string, itemStockId: string, options?: any): AxiosPromise<GetItemStockById200Response> {
             return localVarFp.getItemStockById(mintAccessToken, itemStockId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get ItemStockId by StripePaymentId
+         * @param {string} mintAccessToken 
+         * @param {string} paymentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getItemStockIdByStripePaymentId(mintAccessToken: string, paymentId: string, options?: any): AxiosPromise<GetItemStockIdByStripePaymentId200Response> {
+            return localVarFp.getItemStockIdByStripePaymentId(mintAccessToken, paymentId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4254,6 +4354,19 @@ export class DefaultApi extends BaseAPI {
      */
     public getItemStockById(mintAccessToken: string, itemStockId: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getItemStockById(mintAccessToken, itemStockId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get ItemStockId by StripePaymentId
+     * @param {string} mintAccessToken 
+     * @param {string} paymentId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getItemStockIdByStripePaymentId(mintAccessToken: string, paymentId: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getItemStockIdByStripePaymentId(mintAccessToken, paymentId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
