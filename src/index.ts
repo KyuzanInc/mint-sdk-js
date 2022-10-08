@@ -891,6 +891,81 @@ export class MintSDK {
   }
 
   /**
+   * Same as sendTxBuyItem, but this function returns itemStockId that is used for the transaction.
+   *
+   * @param itemId {@link Item}のitemId
+   * @param userResidence {@link Residence} 購入者の居住地を指定する
+   * @returns
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * await sdk.connectWallet() // required
+   * try {
+   *  const tx = await sdk.sendTxBuyItemV2('item.itemId', 'jp')
+   *  // show loading
+   *  await tx.wait()
+   *  // success transaction
+   * } catch (err) {
+   *  // display error message
+   * }
+   * ```
+   */
+  public sendTxBuyItemV2 = async (
+    itemId: string,
+    residence: Residence = 'unknown'
+  ) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    const item = await this.getItemById(itemId)
+    await this.validateNetworkForItem(item)
+    const wallet = this.web3Provider.getProvider()
+    const resItem = await this.getItemById(itemId)
+    if (
+      resItem.paymentMethodData.paymentMethod !==
+      'ethereum-contract-erc721-shop-fixed-price'
+    ) {
+      throw new Error(
+        `PaymentMethod is not ethereum-contract-erc721-shop-fixed-price: ${resItem.paymentMethodData.paymentMethod}`
+      )
+    }
+    const signer = wallet.getSigner()
+    const shopContract = new ethers.Contract(
+      resItem.paymentMethodData.contractDataERC721Shop.contractAddress,
+      JSON.parse(resItem.paymentMethodData.contractDataERC721Shop.abi),
+      signer
+    )
+    // sign
+    const {
+      data: {
+        data: { itemStockId },
+      },
+    } = await this.apiClientV2.getSellableItemStockERC721Id(
+      this.accessToken,
+      itemId
+    )
+    const {
+      data: {
+        data: { contractMethodArg },
+      },
+    } = await this.apiClientV2.getSignByItemStockId(
+      this.accessToken,
+      itemStockId,
+      SignatureType.FixedPrice,
+      await signer.getAddress(),
+      residence
+    )
+    const price = ethers.utils.parseEther(item.price.toString()).toString()
+    const tx = (await shopContract.buyFixedPrice(...contractMethodArg, {
+      value: price,
+    })) as ethers.providers.TransactionResponse
+
+    return { tx, itemStockId }
+  }
+
+  /**
    * 指定したItemをtoAddressが購入する処理を行う
    * この関数は、Stripeの[PaymentIntent](https://stripe.com/docs/api/payment_intents/object)を初期化するための `clientSecret` と、
    * Mintバックエンドと対応するAPIキーで初期化された{@link Stripe}を返す。
