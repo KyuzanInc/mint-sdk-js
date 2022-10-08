@@ -1959,4 +1959,27 @@ export class MintSDK {
       signature: sig,
     })
   }
+
+  /**
+   * Returns ItemStockId from the specified stripe paymentId.
+   *
+   * @param paymentId
+   * @returns
+   * data: {
+   *  itemStockId
+   * }
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * const { itemStockId } = await sdk.getItemStockIdByStripePaymentId('paymentId')
+   * ```
+   */
+  public getItemStockIdByStripePaymentId = async (paymentId: string) => {
+    const { data } = await this.apiClientV2.getItemStockIdByStripePaymentId(
+      this.accessToken,
+      paymentId
+    )
+    return data.data
+  }
 }
