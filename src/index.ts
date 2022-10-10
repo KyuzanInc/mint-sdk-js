@@ -135,7 +135,7 @@ export class MintSDK {
       return `https://opensea.io/assets/${contractAddress}/${tokenId}`
     }
 
-    if (networkId === 4) {
+    if (networkId === 4 || networkId === 5) {
       return `https://testnets.opensea.io/assets/${contractAddress}/${tokenId}`
     }
 
