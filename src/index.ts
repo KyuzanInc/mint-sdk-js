@@ -169,6 +169,10 @@ export class MintSDK {
       return `https://rinkeby.etherscan.io/tx/${arg.txHash}`
     }
 
+    if (arg.networkId === 5) {
+      return `https://goerli.etherscan.io/tx/${arg.txHash}`
+    }
+
     if (arg.networkId === 137) {
       return `https://explorer-mainnet.maticvigil.com/tx/${arg.txHash}`
     }
