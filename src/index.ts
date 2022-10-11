@@ -135,7 +135,7 @@ export class MintSDK {
       return `https://opensea.io/assets/${contractAddress}/${tokenId}`
     }
 
-    if (networkId === 4) {
+    if (networkId === 4 || networkId === 5) {
       return `https://testnets.opensea.io/assets/${contractAddress}/${tokenId}`
     }
 
@@ -167,6 +167,10 @@ export class MintSDK {
 
     if (arg.networkId === 4) {
       return `https://rinkeby.etherscan.io/tx/${arg.txHash}`
+    }
+
+    if (arg.networkId === 5) {
+      return `https://goerli.etherscan.io/tx/${arg.txHash}`
     }
 
     if (arg.networkId === 137) {
