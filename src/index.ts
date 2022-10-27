@@ -724,7 +724,7 @@ export class MintSDK {
       this.accessToken,
       itemStockId,
       SignatureType.AuctionBid,
-      bidPrice.toString() //only apply for shopV2
+      bidPrice ? bidPrice.toString() : '0' //only apply for shopV2
     )
     const price = ethers.utils.parseEther(String(bidPrice)).toString()
     return (await shopContract.bidAuction(
