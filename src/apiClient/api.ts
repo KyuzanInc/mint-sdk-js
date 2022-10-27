@@ -3065,12 +3065,13 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
+         * @param {string} [price] 
          * @param {string} [walletAddress] Required only at the time of purchase
          * @param {'jp' | 'unknown'} [residence] Required only at the time of purchase
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSignByItemStockId: async (mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getSignByItemStockId: async (mintAccessToken: string, itemStockId: string, signatureType: SignatureType, price?: string, walletAddress?: string, residence?: 'jp' | 'unknown', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'mintAccessToken' is not null or undefined
             assertParamExists('getSignByItemStockId', 'mintAccessToken', mintAccessToken)
             // verify required parameter 'itemStockId' is not null or undefined
@@ -3091,6 +3092,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
             if (itemStockId !== undefined) {
                 localVarQueryParameter['itemStockId'] = itemStockId;
+            }
+
+            if (price !== undefined) {
+                localVarQueryParameter['price'] = price;
             }
 
             if (signatureType !== undefined) {
@@ -3760,13 +3765,14 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
+         * @param {string} [price] 
          * @param {string} [walletAddress] Required only at the time of purchase
          * @param {'jp' | 'unknown'} [residence] Required only at the time of purchase
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSignByItemStockId200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options);
+        async getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, price?: string, walletAddress?: string, residence?: 'jp' | 'unknown', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSignByItemStockId200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, price, walletAddress, residence, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4104,13 +4110,14 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {string} mintAccessToken 
          * @param {string} itemStockId 
          * @param {SignatureType} signatureType 
+         * @param {string} [price] 
          * @param {string} [walletAddress] Required only at the time of purchase
          * @param {'jp' | 'unknown'} [residence] Required only at the time of purchase
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any): AxiosPromise<GetSignByItemStockId200Response> {
-            return localVarFp.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options).then((request) => request(axios, basePath));
+        getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, price?: string, walletAddress?: string, residence?: 'jp' | 'unknown', options?: any): AxiosPromise<GetSignByItemStockId200Response> {
+            return localVarFp.getSignByItemStockId(mintAccessToken, itemStockId, signatureType, price, walletAddress, residence, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4475,14 +4482,15 @@ export class DefaultApi extends BaseAPI {
      * @param {string} mintAccessToken 
      * @param {string} itemStockId 
      * @param {SignatureType} signatureType 
+     * @param {string} [price] 
      * @param {string} [walletAddress] Required only at the time of purchase
      * @param {'jp' | 'unknown'} [residence] Required only at the time of purchase
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, walletAddress?: string, residence?: 'jp' | 'unknown', options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getSignByItemStockId(mintAccessToken, itemStockId, signatureType, walletAddress, residence, options).then((request) => request(this.axios, this.basePath));
+    public getSignByItemStockId(mintAccessToken: string, itemStockId: string, signatureType: SignatureType, price?: string, walletAddress?: string, residence?: 'jp' | 'unknown', options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getSignByItemStockId(mintAccessToken, itemStockId, signatureType, price, walletAddress, residence, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
