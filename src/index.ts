@@ -723,7 +723,8 @@ export class MintSDK {
     } = await this.apiClientV2.getSignByItemStockId(
       this.accessToken,
       itemStockId,
-      SignatureType.AuctionBid
+      SignatureType.AuctionBid,
+      bidPrice ? bidPrice.toString() : '0' //only apply for shopV2
     )
     const price = ethers.utils.parseEther(String(bidPrice)).toString()
     return (await shopContract.bidAuction(
