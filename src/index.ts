@@ -798,6 +798,7 @@ export class MintSDK {
       this.accessToken,
       resItem.itemStockIds[0],
       SignatureType.AuctionWithdraw,
+      '0',
       await signer.getAddress(),
       residence
     )
@@ -885,6 +886,7 @@ export class MintSDK {
       this.accessToken,
       itemStockId,
       SignatureType.FixedPrice,
+      '0',
       await signer.getAddress(),
       residence
     )
@@ -959,6 +961,7 @@ export class MintSDK {
       this.accessToken,
       itemStockId,
       SignatureType.FixedPrice,
+      '0',
       await signer.getAddress(),
       residence
     )
