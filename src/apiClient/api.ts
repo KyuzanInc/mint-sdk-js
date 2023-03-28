@@ -1645,7 +1645,8 @@ export const NetworkId = {
     NUMBER_5: 5,
     NUMBER_80001: 80001,
     NUMBER_137: 137,
-    NUMBER_31337: 31337
+    NUMBER_31337: 31337,
+    NUMBER_11155111: 11155111
 } as const;
 
 export type NetworkId = typeof NetworkId[keyof typeof NetworkId];
@@ -2175,6 +2176,12 @@ export interface WalletListEventSetting {
      * @memberof WalletListEventSetting
      */
     'eventImagePreviewUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletListEventSetting
+     */
+    'privacyPolicyUrl'?: string;
 }
 
 /**
