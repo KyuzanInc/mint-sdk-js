@@ -2182,6 +2182,18 @@ export interface WalletListEventSetting {
      * @memberof WalletListEventSetting
      */
     'privacyPolicyUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletListEventSetting
+     */
+    'theme'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletListEventSetting
+     */
+    'primaryColor'?: string;
 }
 
 /**
