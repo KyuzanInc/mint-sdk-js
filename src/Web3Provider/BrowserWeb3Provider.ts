@@ -32,12 +32,16 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     const { default: WalletConnectProvider } = await import(
       '@walletconnect/web3-provider'
     )
+    const hideTorus = !!this.walletSetting?.params?.hideTorus
+
     const providerOptions: IProviderOptions = {
-      torus: {
-        package: Torus,
-      },
+      ...(!hideTorus && {
+        torus: {
+          package: Torus,
+        },
+      }),
     }
-    if (this.walletSetting?.providers?.torus) {
+    if (this.walletSetting?.providers?.torus && !hideTorus) {
       providerOptions['torus'] = {
         package: Torus,
         display: this.walletSetting?.providers?.torus?.display,

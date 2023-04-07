@@ -21,4 +21,8 @@ export type WalletSetting = {
       options: Omit<IWalletConnectConnectorOptions, 'network'>
     }
   }
+
+  params?: {
+    hideTorus?: boolean
+  }
 }
