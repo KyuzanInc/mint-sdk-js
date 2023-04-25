@@ -18,6 +18,7 @@ import {
   GET_SHIPPING_INFO_TYPES,
   PROFILE_DOMAIN,
   PROFILE_TYPES,
+  PROFILE_TYPES_WITH_EMAIL,
   REGISTER_SHIPPING_INFO_DOMAIN,
   REGISTER_SHIPPING_INFO_TYPES,
   REGISTER_WALLET_DOMAIN,
@@ -1418,12 +1419,14 @@ export class MintSDK {
     twitterAccountName: string
     instagramAccountName: string
     homepageUrl: string
+    emailAddress?: string
   }) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
     const wallet = this.web3Provider.getProvider()
     const signer = await wallet.getSigner()
+    const hasEmail = arg.emailAddress !== undefined
     const profile = {
       walletAddress: await signer.getAddress(),
       avatarImageId: arg.avatarImageId,
@@ -1432,10 +1435,12 @@ export class MintSDK {
       twitterAccountName: arg.twitterAccountName,
       instagramAccountName: arg.instagramAccountName,
       homepageUrl: arg.homepageUrl,
+      ...(hasEmail && { emailAddress: arg.emailAddress }),
     }
+    const usedTypes = hasEmail ? PROFILE_TYPES_WITH_EMAIL : PROFILE_TYPES
     const signature = await signer._signTypedData(
       PROFILE_DOMAIN,
-      PROFILE_TYPES,
+      usedTypes,
       profile
     )
     await this.apiClientV2.updateProfile(this.accessToken, {
