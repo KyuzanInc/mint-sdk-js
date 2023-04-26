@@ -13,6 +13,18 @@ export const PROFILE_TYPES = {
     { name: 'homepageUrl', type: 'string' },
   ],
 }
+export const PROFILE_TYPES_WITH_EMAIL = {
+  Profile: [
+    { name: 'walletAddress', type: 'string' },
+    { name: 'avatarImageId', type: 'string' },
+    { name: 'displayName', type: 'string' },
+    { name: 'bio', type: 'string' },
+    { name: 'twitterAccountName', type: 'string' },
+    { name: 'instagramAccountName', type: 'string' },
+    { name: 'homepageUrl', type: 'string' },
+    { name: 'emailAddress', type: 'string' },
+  ],
+}
 
 export const GET_SHIPPING_INFO_DOMAIN = {
   name: 'Get Shipping Info',

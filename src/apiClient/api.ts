@@ -2120,6 +2120,12 @@ export interface WalletAddressProfile {
      * @memberof WalletAddressProfile
      */
     'homepageUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletAddressProfile
+     */
+    'emailAddress'?: string;
 }
 /**
  * 
