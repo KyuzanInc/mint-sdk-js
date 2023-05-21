@@ -2021,4 +2021,25 @@ export class MintSDK {
       baseUrl,
     })
   }
+
+  /**
+   * Verify email authorization to validate and register user's email.
+   *
+   * @param token
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * await sdk.verifyEmailAuthorization('token')
+   * ```
+   */
+  public verifyEmailAuthorization = async (token: string) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+
+    await this.apiClientV2.verifyEmailAuthorization(this.accessToken, {
+      token,
+    })
+  }
 }
