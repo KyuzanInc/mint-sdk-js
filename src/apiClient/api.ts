@@ -659,6 +659,31 @@ export interface DomainAndPrimaryTypeAndMessage {
 /**
  * 
  * @export
+ * @interface EmailAuthorizationRequest
+ */
+export interface EmailAuthorizationRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof EmailAuthorizationRequest
+     */
+    'walletAddress': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EmailAuthorizationRequest
+     */
+    'emailAddress': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EmailAuthorizationRequest
+     */
+    'baseUrl': string;
+}
+/**
+ * 
+ * @export
  * @interface ErrorResponse
  */
 export interface ErrorResponse {
@@ -2075,6 +2100,19 @@ export type UserResidence = typeof UserResidence[keyof typeof UserResidence];
 /**
  * 
  * @export
+ * @interface VerifyEmailAuthorizationRequest
+ */
+export interface VerifyEmailAuthorizationRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof VerifyEmailAuthorizationRequest
+     */
+    'token': string;
+}
+/**
+ * 
+ * @export
  * @interface WalletAddressProfile
  */
 export interface WalletAddressProfile {
@@ -2332,6 +2370,47 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(createStripePaymentIntentRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Send email authorization link
+         * @param {string} mintAccessToken 
+         * @param {EmailAuthorizationRequest} [emailAuthorizationRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        emailAuthorization: async (mintAccessToken: string, emailAuthorizationRequest?: EmailAuthorizationRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('emailAuthorization', 'mintAccessToken', mintAccessToken)
+            const localVarPath = `/sdk_v4/profile/emailAuthorization`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(emailAuthorizationRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3540,6 +3619,47 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Verify email authorization
+         * @param {string} mintAccessToken 
+         * @param {VerifyEmailAuthorizationRequest} [verifyEmailAuthorizationRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyEmailAuthorization: async (mintAccessToken: string, verifyEmailAuthorizationRequest?: VerifyEmailAuthorizationRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('verifyEmailAuthorization', 'mintAccessToken', mintAccessToken)
+            const localVarPath = `/sdk_v4/profile/verifyEmail`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(verifyEmailAuthorizationRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -3585,6 +3705,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          */
         async createStripePaymentIntent(mintAccessToken: string, createStripePaymentIntentRequest?: CreateStripePaymentIntentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateStripePaymentIntent200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createStripePaymentIntent(mintAccessToken, createStripePaymentIntentRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Send email authorization link
+         * @param {string} mintAccessToken 
+         * @param {EmailAuthorizationRequest} [emailAuthorizationRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async emailAuthorization(mintAccessToken: string, emailAuthorizationRequest?: EmailAuthorizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddWalletToWalletList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.emailAuthorization(mintAccessToken, emailAuthorizationRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3903,6 +4035,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateProfile(mintAccessToken, updateProfileRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @summary Verify email authorization
+         * @param {string} mintAccessToken 
+         * @param {VerifyEmailAuthorizationRequest} [verifyEmailAuthorizationRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifyEmailAuthorization(mintAccessToken: string, verifyEmailAuthorizationRequest?: VerifyEmailAuthorizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddWalletToWalletList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifyEmailAuthorization(mintAccessToken, verifyEmailAuthorizationRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -3946,6 +4090,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         createStripePaymentIntent(mintAccessToken: string, createStripePaymentIntentRequest?: CreateStripePaymentIntentRequest, options?: any): AxiosPromise<CreateStripePaymentIntent200Response> {
             return localVarFp.createStripePaymentIntent(mintAccessToken, createStripePaymentIntentRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Send email authorization link
+         * @param {string} mintAccessToken 
+         * @param {EmailAuthorizationRequest} [emailAuthorizationRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        emailAuthorization(mintAccessToken: string, emailAuthorizationRequest?: EmailAuthorizationRequest, options?: any): AxiosPromise<AddWalletToWalletList200Response> {
+            return localVarFp.emailAuthorization(mintAccessToken, emailAuthorizationRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4239,6 +4394,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         updateProfile(mintAccessToken: string, updateProfileRequest?: UpdateProfileRequest, options?: any): AxiosPromise<UpdateProfile200Response> {
             return localVarFp.updateProfile(mintAccessToken, updateProfileRequest, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @summary Verify email authorization
+         * @param {string} mintAccessToken 
+         * @param {VerifyEmailAuthorizationRequest} [verifyEmailAuthorizationRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyEmailAuthorization(mintAccessToken: string, verifyEmailAuthorizationRequest?: VerifyEmailAuthorizationRequest, options?: any): AxiosPromise<AddWalletToWalletList200Response> {
+            return localVarFp.verifyEmailAuthorization(mintAccessToken, verifyEmailAuthorizationRequest, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -4287,6 +4453,19 @@ export class DefaultApi extends BaseAPI {
      */
     public createStripePaymentIntent(mintAccessToken: string, createStripePaymentIntentRequest?: CreateStripePaymentIntentRequest, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).createStripePaymentIntent(mintAccessToken, createStripePaymentIntentRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Send email authorization link
+     * @param {string} mintAccessToken 
+     * @param {EmailAuthorizationRequest} [emailAuthorizationRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public emailAuthorization(mintAccessToken: string, emailAuthorizationRequest?: EmailAuthorizationRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).emailAuthorization(mintAccessToken, emailAuthorizationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4627,6 +4806,19 @@ export class DefaultApi extends BaseAPI {
      */
     public updateProfile(mintAccessToken: string, updateProfileRequest?: UpdateProfileRequest, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).updateProfile(mintAccessToken, updateProfileRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Verify email authorization
+     * @param {string} mintAccessToken 
+     * @param {VerifyEmailAuthorizationRequest} [verifyEmailAuthorizationRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public verifyEmailAuthorization(mintAccessToken: string, verifyEmailAuthorizationRequest?: VerifyEmailAuthorizationRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).verifyEmailAuthorization(mintAccessToken, verifyEmailAuthorizationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
