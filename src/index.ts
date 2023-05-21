@@ -1995,4 +1995,30 @@ export class MintSDK {
     )
     return data.data
   }
+
+  /**
+   * Trigger email authorization process, will send email to verify user's email.
+   *
+   * @param emailAddress
+   * @param baseUrl
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * await sdk.emailAuthorization('emailAddress', 'baseUrl')
+   * ```
+   */
+  public emailAuthorization = async (emailAddress: string, baseUrl: string) => {
+    if (!(await this.isWalletConnect())) {
+      throw new Error('Wallet is not connected')
+    }
+    const walletInfo = await this.getWalletInfo()
+    const walletAddress = walletInfo.address
+
+    await this.apiClientV2.emailAuthorization(this.accessToken, {
+      walletAddress,
+      emailAddress,
+      baseUrl,
+    })
+  }
 }
