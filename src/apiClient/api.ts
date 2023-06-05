@@ -2164,6 +2164,12 @@ export interface WalletAddressProfile {
      * @memberof WalletAddressProfile
      */
     'emailAddress'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WalletAddressProfile
+     */
+    'emailStatus'?: string;
 }
 /**
  * 
