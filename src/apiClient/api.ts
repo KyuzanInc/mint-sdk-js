@@ -2109,6 +2109,12 @@ export interface VerifyEmailAuthorizationRequest {
      * @memberof VerifyEmailAuthorizationRequest
      */
     'token': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VerifyEmailAuthorizationRequest
+     */
+    'walletAddress': string;
 }
 /**
  * 

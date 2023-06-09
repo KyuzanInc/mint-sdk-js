@@ -2037,9 +2037,12 @@ export class MintSDK {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
+    const walletInfo = await this.getWalletInfo()
+    const walletAddress = walletInfo.address
 
     await this.apiClientV2.verifyEmailAuthorization(this.accessToken, {
       token,
+      walletAddress,
     })
   }
 }
