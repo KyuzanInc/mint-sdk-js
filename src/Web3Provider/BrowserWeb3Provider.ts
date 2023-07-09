@@ -1,5 +1,8 @@
 import { ethers } from 'ethers'
-import Web3Modal, { IProviderOptions } from 'web3modal'
+import Web3Modal, {
+  IProviderOptions,
+  providers as web3modalProviders,
+} from 'web3modal'
 import { WalletSetting } from '..'
 import { IWeb3Provider } from './IWeb3Provider'
 import {
@@ -7,12 +10,17 @@ import {
   MetamaskStrategy,
   TorusStrategy,
   WalletConnectStrategy,
+  WalletConnectV2Strategy,
+  walletConnectV2Connector,
 } from './strategies'
+
+const WALLET_CONNECT_DISPLAY = web3modalProviders.WALLETCONNECT
 
 export class BrowserWeb3Provider implements IWeb3Provider {
   private web3Modal: Web3Modal | null
   private ethersProvider: ethers.providers.Web3Provider | null
   private providerStrategy: IProviderStrategy | null
+  private currentAccountAddress: string | null
 
   private eventConnectCallbacks: Array<(info: { chainId: number }) => any> = []
   private eventDisconnectCallbacks: Array<
@@ -25,12 +33,16 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     this.ethersProvider = null
     this.web3Modal = null
     this.providerStrategy = null
+    this.currentAccountAddress = null
   }
 
   public async connectWallet() {
     const { default: Torus } = await import('@toruslabs/torus-embed')
     const { default: WalletConnectProvider } = await import(
       '@walletconnect/web3-provider'
+    )
+    const { default: WalletConnectV2Provider } = await import(
+      '@walletconnect/ethereum-provider'
     )
     const hideTorus = !!this.walletSetting?.params?.hideTorus
 
@@ -58,6 +70,21 @@ export class BrowserWeb3Provider implements IWeb3Provider {
         },
       }
     }
+    if (this.walletSetting?.providers?.walletconnectV2) {
+      // This is a custom provider, for WalletConnectV2
+      providerOptions['custom-walletconnectv2'] = {
+        display: {
+          logo: WALLET_CONNECT_DISPLAY.logo,
+          name: WALLET_CONNECT_DISPLAY.name,
+          description: WALLET_CONNECT_DISPLAY.description,
+        },
+        package: WalletConnectV2Provider,
+        options: {
+          ...this.walletSetting?.providers?.walletconnectV2?.options,
+        },
+        connector: walletConnectV2Connector,
+      }
+    }
 
     this.web3Modal = new Web3Modal({
       cacheProvider:
@@ -72,6 +99,9 @@ export class BrowserWeb3Provider implements IWeb3Provider {
       this.providerStrategy = new TorusStrategy(provider.torus)
     } else if (provider.wc) {
       this.providerStrategy = new WalletConnectStrategy(provider.wc)
+    } else if (provider.wcV2) {
+      // For WalletConnectV2
+      this.providerStrategy = new WalletConnectV2Strategy(provider.wcV2)
     } else {
       // Selected Injected
       this.providerStrategy = new MetamaskStrategy()
@@ -101,10 +131,14 @@ export class BrowserWeb3Provider implements IWeb3Provider {
   public async isWalletConnect() {
     if (this.ethersProvider === null) return false
 
-    const accounts = await this.ethersProvider.listAccounts()
-    if (accounts && accounts.length > 0) {
-      return true
-    } else {
+    try {
+      const accounts = await this.ethersProvider.listAccounts()
+      if (accounts && accounts.length > 0) {
+        return true
+      } else {
+        return false
+      }
+    } catch (err) {
       return false
     }
   }
@@ -116,7 +150,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     const provider = this.ethersProvider
     if (provider === null) throw Error('not wallet connect')
     const accounts = await provider.listAccounts()
-    const address = accounts[0]
+    const address = this.getAccountAddressIfWalletConnectV2() ?? accounts[0]
     const balance = await provider.getBalance(address)
     return {
       address,
@@ -206,6 +240,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
   }
 
   private emitAccountChange = (accounts: string[]) => {
+    this.currentAccountAddress = accounts?.[0]
     this.eventAccountsChangeCallbacks.forEach((f) => f(accounts))
   }
 
@@ -219,5 +254,14 @@ export class BrowserWeb3Provider implements IWeb3Provider {
 
   private emitChainChange = (chainId: number) => {
     this.eventChainChangeCallbacks.forEach((f) => f(chainId))
+  }
+
+  // Only returns the address if current provider = WalletConnectV2, else returns null
+  private getAccountAddressIfWalletConnectV2 = () => {
+    if (this.providerStrategy instanceof WalletConnectV2Strategy) {
+      return this.currentAccountAddress
+    }
+
+    return null
   }
 }
