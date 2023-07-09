@@ -32,10 +32,6 @@ export const walletConnectV2Connector = async (
 }
 
 const removeModalElements = () => {
-  const els = document.getElementsByTagName('wcm-modal')
-
-  for (let x = 0; x < els.length; x++) {
-    const item = els.item(x)
-    item?.remove()
-  }
+  const els = document.querySelectorAll('wcm-modal')
+  els.forEach((el) => el.remove())
 }
