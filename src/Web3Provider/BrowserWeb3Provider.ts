@@ -23,7 +23,9 @@ export class BrowserWeb3Provider implements IWeb3Provider {
   private currentAccountAddress: string | null
   private currentNetworkId: number | null
 
-  private eventConnectCallbacks: Array<(info: { chainId: number }) => any> = []
+  private eventConnectCallbacks: Array<
+    (info: { chainId: number | string }) => any
+  > = []
   private eventDisconnectCallbacks: Array<
     (error: { code: number; message: string }) => any
   > = []
@@ -176,7 +178,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     return network.chainId
   }
 
-  public onConnect(callback: (info: { chainId: number }) => any) {
+  public onConnect(callback: (info: { chainId: number | string }) => any) {
     this.eventConnectCallbacks.push(callback)
   }
 
@@ -255,7 +257,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     this.currentAccountAddress = address
   }
 
-  private emitConnect = (info: { chainId: number }) => {
+  private emitConnect = (info: { chainId: number | string }) => {
     this.eventConnectCallbacks.forEach((f) => f(info))
   }
 
