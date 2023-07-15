@@ -12,7 +12,7 @@ export interface IWeb3Provider {
   onAccountsChange(callback: (accounts: string[]) => any): void
   offAccountsChange(callback?: (accounts: string[]) => any): void
 
-  onConnect(callback: (info: { chainId: number }) => any): void
+  onConnect(callback: (info: { chainId: number | string }) => any): void
   offConnect(callback?: (info: { chainId: number }) => any): void
 
   onDisconnect(
