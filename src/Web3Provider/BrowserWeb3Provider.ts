@@ -21,6 +21,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
   private ethersProvider: ethers.providers.Web3Provider | null
   private providerStrategy: IProviderStrategy | null
   private currentAccountAddress: string | null
+  private currentNetworkId: number | null
 
   private eventConnectCallbacks: Array<(info: { chainId: number }) => any> = []
   private eventDisconnectCallbacks: Array<
@@ -34,6 +35,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     this.web3Modal = null
     this.providerStrategy = null
     this.currentAccountAddress = null
+    this.currentNetworkId = null
   }
 
   public async connectWallet() {
@@ -121,6 +123,9 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     this.ethersProvider = new ethers.providers.Web3Provider(provider, 'any')
 
     const network = await this.ethersProvider.getNetwork()
+    const accounts = await this.ethersProvider.listAccounts()
+    this.currentAccountAddress = accounts[0]
+    this.currentNetworkId = network.chainId
     this.emitConnect({ chainId: network.chainId })
   }
 
@@ -150,7 +155,7 @@ export class BrowserWeb3Provider implements IWeb3Provider {
     const provider = this.ethersProvider
     if (provider === null) throw Error('not wallet connect')
     const accounts = await provider.listAccounts()
-    const address = this.getAccountAddressIfWalletConnectV2() ?? accounts[0]
+    const address = this.currentAccountAddress ?? accounts[0]
     const balance = await provider.getBalance(address)
     return {
       address,
@@ -240,8 +245,14 @@ export class BrowserWeb3Provider implements IWeb3Provider {
   }
 
   private emitAccountChange = (accounts: string[]) => {
-    this.currentAccountAddress = accounts?.[0]
+    const address = accounts[0]
+
+    if (address === this.currentAccountAddress) {
+      return
+    }
+
     this.eventAccountsChangeCallbacks.forEach((f) => f(accounts))
+    this.currentAccountAddress = address
   }
 
   private emitConnect = (info: { chainId: number }) => {
@@ -249,19 +260,25 @@ export class BrowserWeb3Provider implements IWeb3Provider {
   }
 
   private emitDisconnect = (error: { code: number; message: string }) => {
+    // Prevent metamask error when changing network
+    if (
+      this.providerStrategy instanceof MetamaskStrategy &&
+      error instanceof Error
+    ) {
+      return
+    }
+
     this.eventDisconnectCallbacks.forEach((f) => f(error))
   }
 
-  private emitChainChange = (chainId: number) => {
-    this.eventChainChangeCallbacks.forEach((f) => f(chainId))
-  }
+  private emitChainChange = (chainId: string) => {
+    const networkId = parseInt(chainId)
 
-  // Only returns the address if current provider = WalletConnectV2, else returns null
-  private getAccountAddressIfWalletConnectV2 = () => {
-    if (this.providerStrategy instanceof WalletConnectV2Strategy) {
-      return this.currentAccountAddress
+    if (networkId === this.currentNetworkId) {
+      return
     }
 
-    return null
+    this.eventChainChangeCallbacks.forEach((f) => f(networkId))
+    this.currentNetworkId = networkId
   }
 }
