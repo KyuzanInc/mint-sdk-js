@@ -2045,4 +2045,88 @@ export class MintSDK {
       walletAddress,
     })
   }
+
+  /**
+   * Returns InvoiceSetting from the specified invoiceSettingId.
+   *
+   * @param invoiceSettingId
+   * @returns InvoiceSetting
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * const invoiceSetting = await sdk.getInvoiceSettingById('invoiceSettingId')
+   * ```
+   */
+  public getInvoiceSettingById = async (invoiceSettingId: string) => {
+    const { data } = await this.apiClientV2.getInvoiceSettingById(
+      this.accessToken,
+      invoiceSettingId
+    )
+    return data.data
+  }
+
+  /**
+   * Returns InvoiceData from the specified invoiceDataId.
+   *
+   * @param invoiceDataId
+   * @returns InvoiceData
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * const invoiceData = await sdk.getInvoiceDataById('invoiceDataId')
+   * ```
+   */
+  public getInvoiceDataById = async (invoiceDataId: string) => {
+    const { data } = await this.apiClientV2.getInvoiceDataById(
+      this.accessToken,
+      invoiceDataId
+    )
+    return data.data
+  }
+
+  /**
+   * Returns list of InvoiceData from the filter.
+   *
+   * @param page
+   * @param perPage
+   * @param invoiceSettingId
+   * @param walletAddress
+   * @param fromDate - optional
+   * @param toDate - optional
+   * @returns list of InvoiceData
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * const invoiceDataList = await sdk.getInvoiceData(...)
+   * ```
+   */
+  public getInvoiceData = async ({
+    page,
+    perPage,
+    invoiceSettingId,
+    walletAddress,
+    fromDate,
+    toDate,
+  }: {
+    page: number
+    perPage: number
+    invoiceSettingId: string
+    walletAddress: string
+    fromDate?: string
+    toDate?: string
+  }) => {
+    const { data } = await this.apiClientV2.getInvoiceDataByInvoiceId(
+      this.accessToken,
+      page.toString(),
+      perPage.toString(),
+      invoiceSettingId,
+      walletAddress,
+      fromDate,
+      toDate
+    )
+    return data.data
+  }
 }

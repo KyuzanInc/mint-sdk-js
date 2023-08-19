@@ -773,6 +773,63 @@ export interface GetContractERC721ById200Response {
 /**
  * 
  * @export
+ * @interface GetInvoiceDataById200Response
+ */
+export interface GetInvoiceDataById200Response {
+    /**
+     * 
+     * @type {InvoiceData}
+     * @memberof GetInvoiceDataById200Response
+     */
+    'data': InvoiceData;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetInvoiceDataById200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetInvoiceDataByInvoiceId200Response
+ */
+export interface GetInvoiceDataByInvoiceId200Response {
+    /**
+     * 
+     * @type {Array<InvoiceData>}
+     * @memberof GetInvoiceDataByInvoiceId200Response
+     */
+    'data': Array<InvoiceData>;
+    /**
+     * 
+     * @type {PaginationMetadata}
+     * @memberof GetInvoiceDataByInvoiceId200Response
+     */
+    'meta': PaginationMetadata;
+}
+/**
+ * 
+ * @export
+ * @interface GetInvoiceSettingById200Response
+ */
+export interface GetInvoiceSettingById200Response {
+    /**
+     * 
+     * @type {InvoiceSetting}
+     * @memberof GetInvoiceSettingById200Response
+     */
+    'data': InvoiceSetting;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetInvoiceSettingById200Response
+     */
+    'meta': object;
+}
+/**
+ * 
+ * @export
  * @interface GetItemById200Response
  */
 export interface GetItemById200Response {
@@ -1181,6 +1238,134 @@ export interface HasNfts200Response {
      * @memberof HasNfts200Response
      */
     'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface InvoiceData
+ */
+export interface InvoiceData {
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'id': string;
+    /**
+     * 
+     * @type {NetworkId}
+     * @memberof InvoiceData
+     */
+    'networkId': NetworkId;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'contractAddress': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'tokenId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'transactionHash': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'etherSpent': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'gasFee': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'etherSpentJPY'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'gasFeeJPY'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof InvoiceData
+     */
+    'transactionDate': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'walletAddress'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof InvoiceData
+     */
+    'rateJPY'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface InvoiceSetting
+ */
+export interface InvoiceSetting {
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceSetting
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceSetting
+     */
+    'contractAddress': string;
+    /**
+     * 
+     * @type {NetworkId}
+     * @memberof InvoiceSetting
+     */
+    'networkId': NetworkId;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceSetting
+     */
+    'issuerName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceSetting
+     */
+    'registrationNumber': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceSetting
+     */
+    'address': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceSetting
+     */
+    'logo'?: string;
 }
 /**
  * 
@@ -2653,6 +2838,160 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Get InvoiceData by Id
+         * @param {string} mintAccessToken 
+         * @param {string} invoiceDataId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvoiceDataById: async (mintAccessToken: string, invoiceDataId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getInvoiceDataById', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'invoiceDataId' is not null or undefined
+            assertParamExists('getInvoiceDataById', 'invoiceDataId', invoiceDataId)
+            const localVarPath = `/sdk_v4/invoices/data/{invoiceDataId}`
+                .replace(`{${"invoiceDataId"}}`, encodeURIComponent(String(invoiceDataId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get InvoiceData by InvoiceId
+         * @param {string} mintAccessToken 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {string} invoiceId 
+         * @param {string} walletAddress 
+         * @param {string} [fromDate] 
+         * @param {string} [toDate] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvoiceDataByInvoiceId: async (mintAccessToken: string, page: string, perPage: string, invoiceId: string, walletAddress: string, fromDate?: string, toDate?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getInvoiceDataByInvoiceId', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'page' is not null or undefined
+            assertParamExists('getInvoiceDataByInvoiceId', 'page', page)
+            // verify required parameter 'perPage' is not null or undefined
+            assertParamExists('getInvoiceDataByInvoiceId', 'perPage', perPage)
+            // verify required parameter 'invoiceId' is not null or undefined
+            assertParamExists('getInvoiceDataByInvoiceId', 'invoiceId', invoiceId)
+            // verify required parameter 'walletAddress' is not null or undefined
+            assertParamExists('getInvoiceDataByInvoiceId', 'walletAddress', walletAddress)
+            const localVarPath = `/sdk_v4/invoices/{invoiceId}/data`
+                .replace(`{${"invoiceId"}}`, encodeURIComponent(String(invoiceId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (walletAddress !== undefined) {
+                localVarQueryParameter['walletAddress'] = walletAddress;
+            }
+
+            if (fromDate !== undefined) {
+                localVarQueryParameter['fromDate'] = fromDate;
+            }
+
+            if (toDate !== undefined) {
+                localVarQueryParameter['toDate'] = toDate;
+            }
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get InvoiceSetting by Id
+         * @param {string} mintAccessToken 
+         * @param {string} invoiceId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvoiceSettingById: async (mintAccessToken: string, invoiceId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('getInvoiceSettingById', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'invoiceId' is not null or undefined
+            assertParamExists('getInvoiceSettingById', 'invoiceId', invoiceId)
+            const localVarPath = `/sdk_v4/invoices/{invoiceId}`
+                .replace(`{${"invoiceId"}}`, encodeURIComponent(String(invoiceId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get Item of project by specifying Id
          * @param {string} mintAccessToken 
          * @param {string} itemId 
@@ -3789,6 +4128,47 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get InvoiceData by Id
+         * @param {string} mintAccessToken 
+         * @param {string} invoiceDataId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getInvoiceDataById(mintAccessToken: string, invoiceDataId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvoiceDataById200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInvoiceDataById(mintAccessToken, invoiceDataId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get InvoiceData by InvoiceId
+         * @param {string} mintAccessToken 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {string} invoiceId 
+         * @param {string} walletAddress 
+         * @param {string} [fromDate] 
+         * @param {string} [toDate] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getInvoiceDataByInvoiceId(mintAccessToken: string, page: string, perPage: string, invoiceId: string, walletAddress: string, fromDate?: string, toDate?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvoiceDataByInvoiceId200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInvoiceDataByInvoiceId(mintAccessToken, page, perPage, invoiceId, walletAddress, fromDate, toDate, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get InvoiceSetting by Id
+         * @param {string} mintAccessToken 
+         * @param {string} invoiceId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getInvoiceSettingById(mintAccessToken: string, invoiceId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvoiceSettingById200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInvoiceSettingById(mintAccessToken, invoiceId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Get Item of project by specifying Id
          * @param {string} mintAccessToken 
          * @param {string} itemId 
@@ -4168,6 +4548,44 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Get InvoiceData by Id
+         * @param {string} mintAccessToken 
+         * @param {string} invoiceDataId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvoiceDataById(mintAccessToken: string, invoiceDataId: string, options?: any): AxiosPromise<GetInvoiceDataById200Response> {
+            return localVarFp.getInvoiceDataById(mintAccessToken, invoiceDataId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get InvoiceData by InvoiceId
+         * @param {string} mintAccessToken 
+         * @param {string} page 
+         * @param {string} perPage 
+         * @param {string} invoiceId 
+         * @param {string} walletAddress 
+         * @param {string} [fromDate] 
+         * @param {string} [toDate] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvoiceDataByInvoiceId(mintAccessToken: string, page: string, perPage: string, invoiceId: string, walletAddress: string, fromDate?: string, toDate?: string, options?: any): AxiosPromise<GetInvoiceDataByInvoiceId200Response> {
+            return localVarFp.getInvoiceDataByInvoiceId(mintAccessToken, page, perPage, invoiceId, walletAddress, fromDate, toDate, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get InvoiceSetting by Id
+         * @param {string} mintAccessToken 
+         * @param {string} invoiceId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvoiceSettingById(mintAccessToken: string, invoiceId: string, options?: any): AxiosPromise<GetInvoiceSettingById200Response> {
+            return localVarFp.getInvoiceSettingById(mintAccessToken, invoiceId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get Item of project by specifying Id
          * @param {string} mintAccessToken 
          * @param {string} itemId 
@@ -4538,6 +4956,50 @@ export class DefaultApi extends BaseAPI {
      */
     public getContractERC721ById(mintAccessToken: string, contractId: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getContractERC721ById(mintAccessToken, contractId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get InvoiceData by Id
+     * @param {string} mintAccessToken 
+     * @param {string} invoiceDataId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getInvoiceDataById(mintAccessToken: string, invoiceDataId: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getInvoiceDataById(mintAccessToken, invoiceDataId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get InvoiceData by InvoiceId
+     * @param {string} mintAccessToken 
+     * @param {string} page 
+     * @param {string} perPage 
+     * @param {string} invoiceId 
+     * @param {string} walletAddress 
+     * @param {string} [fromDate] 
+     * @param {string} [toDate] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getInvoiceDataByInvoiceId(mintAccessToken: string, page: string, perPage: string, invoiceId: string, walletAddress: string, fromDate?: string, toDate?: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getInvoiceDataByInvoiceId(mintAccessToken, page, perPage, invoiceId, walletAddress, fromDate, toDate, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get InvoiceSetting by Id
+     * @param {string} mintAccessToken 
+     * @param {string} invoiceId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getInvoiceSettingById(mintAccessToken: string, invoiceId: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getInvoiceSettingById(mintAccessToken, invoiceId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
