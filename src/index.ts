@@ -2095,7 +2095,11 @@ export class MintSDK {
    * @param walletAddress
    * @param fromDate - optional
    * @param toDate - optional
-   * @returns list of InvoiceData
+   * @returns
+   * {
+   *  data - list of InvoiceData;
+   *  meta - pagination metadata
+   * }
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
@@ -2127,6 +2131,6 @@ export class MintSDK {
       fromDate,
       toDate
     )
-    return data.data
+    return data
   }
 }
