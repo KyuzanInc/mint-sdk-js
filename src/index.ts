@@ -2070,18 +2070,26 @@ export class MintSDK {
    * Returns InvoiceData from the specified invoiceDataId.
    *
    * @param invoiceDataId
+   * @param invoiceSettingId
    * @returns InvoiceData
    *
    * ```typescript
    * import { MintSDK } from '@kyuzan/mint-sdk-js'
    * const sdk = new MintSDK(...)
-   * const invoiceData = await sdk.getInvoiceDataById('invoiceDataId')
+   * const invoiceData = await sdk.getInvoiceDataById(...)
    * ```
    */
-  public getInvoiceDataById = async (invoiceDataId: string) => {
+  public getInvoiceDataById = async ({
+    invoiceDataId,
+    invoiceSettingId,
+  }: {
+    invoiceDataId: string
+    invoiceSettingId: string
+  }) => {
     const { data } = await this.apiClientV2.getInvoiceDataById(
       this.accessToken,
-      invoiceDataId
+      invoiceDataId,
+      invoiceSettingId
     )
     return data.data
   }
