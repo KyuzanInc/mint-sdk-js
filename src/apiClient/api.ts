@@ -1317,6 +1317,18 @@ export interface InvoiceData {
      * @memberof InvoiceData
      */
     'rateJPY'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'contractName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceData
+     */
+    'symbol'?: string;
 }
 /**
  * 
