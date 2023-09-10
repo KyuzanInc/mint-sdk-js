@@ -1378,6 +1378,18 @@ export interface InvoiceSetting {
      * @memberof InvoiceSetting
      */
     'logo'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceSetting
+     */
+    'contractName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvoiceSetting
+     */
+    'symbol'?: string;
 }
 /**
  * 
