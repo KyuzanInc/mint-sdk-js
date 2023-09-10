@@ -3950,6 +3950,47 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Set InvoiceData last viewed by Id
+         * @param {string} mintAccessToken 
+         * @param {string} invoiceDataId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        setInvoiceDataLastViewedById: async (mintAccessToken: string, invoiceDataId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'mintAccessToken' is not null or undefined
+            assertParamExists('setInvoiceDataLastViewedById', 'mintAccessToken', mintAccessToken)
+            // verify required parameter 'invoiceDataId' is not null or undefined
+            assertParamExists('setInvoiceDataLastViewedById', 'invoiceDataId', invoiceDataId)
+            const localVarPath = `/sdk_v4/invoices/data/{invoiceDataId}/lastViewed`
+                .replace(`{${"invoiceDataId"}}`, encodeURIComponent(String(invoiceDataId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (mintAccessToken !== undefined && mintAccessToken !== null) {
+                localVarHeaderParameter['mint-access-token'] = String(mintAccessToken);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Create a profile associated with your wallet
          * @param {string} mintAccessToken 
          * @param {UpdateProfileRequest} [updateProfileRequest] 
@@ -4437,6 +4478,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Set InvoiceData last viewed by Id
+         * @param {string} mintAccessToken 
+         * @param {string} invoiceDataId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async setInvoiceDataLastViewedById(mintAccessToken: string, invoiceDataId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddWalletToWalletList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.setInvoiceDataLastViewedById(mintAccessToken, invoiceDataId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Create a profile associated with your wallet
          * @param {string} mintAccessToken 
          * @param {UpdateProfileRequest} [updateProfileRequest] 
@@ -4833,6 +4886,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         hasNfts(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: any): AxiosPromise<HasNfts200Response> {
             return localVarFp.hasNfts(mintAccessToken, walletAddress, contractAddress, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Set InvoiceData last viewed by Id
+         * @param {string} mintAccessToken 
+         * @param {string} invoiceDataId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        setInvoiceDataLastViewedById(mintAccessToken: string, invoiceDataId: string, options?: any): AxiosPromise<AddWalletToWalletList200Response> {
+            return localVarFp.setInvoiceDataLastViewedById(mintAccessToken, invoiceDataId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5289,6 +5353,19 @@ export class DefaultApi extends BaseAPI {
      */
     public hasNfts(mintAccessToken: string, walletAddress: string, contractAddress: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).hasNfts(mintAccessToken, walletAddress, contractAddress, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Set InvoiceData last viewed by Id
+     * @param {string} mintAccessToken 
+     * @param {string} invoiceDataId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public setInvoiceDataLastViewedById(mintAccessToken: string, invoiceDataId: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).setInvoiceDataLastViewedById(mintAccessToken, invoiceDataId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
