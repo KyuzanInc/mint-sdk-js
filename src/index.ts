@@ -2141,4 +2141,24 @@ export class MintSDK {
     )
     return data
   }
+
+  /**
+   * Set InvoiceData last viewed from the specified invoiceDataId.
+   * Better to validate invoiceDataId with this getInvoiceDataById function first.
+   *
+   * @param invoiceDataId
+   * @returns void
+   *
+   * ```typescript
+   * import { MintSDK } from '@kyuzan/mint-sdk-js'
+   * const sdk = new MintSDK(...)
+   * await sdk.setInvoiceDataLastViewedById('invoiceDataId')
+   * ```
+   */
+  public setInvoiceDataLastViewedById = async (invoiceDataId: string) => {
+    await this.apiClientV2.setInvoiceDataLastViewedById(
+      this.accessToken,
+      invoiceDataId
+    )
+  }
 }
