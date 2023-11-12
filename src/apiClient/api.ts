@@ -778,16 +778,126 @@ export interface GetContractERC721ById200Response {
 export interface GetInvoiceDataById200Response {
     /**
      * 
-     * @type {InvoiceData}
+     * @type {GetInvoiceDataById200ResponseData}
      * @memberof GetInvoiceDataById200Response
      */
-    'data': InvoiceData;
+    'data': GetInvoiceDataById200ResponseData;
     /**
      * 
      * @type {object}
      * @memberof GetInvoiceDataById200Response
      */
     'meta': object;
+}
+/**
+ * 
+ * @export
+ * @interface GetInvoiceDataById200ResponseData
+ */
+export interface GetInvoiceDataById200ResponseData {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'id': string;
+    /**
+     * 
+     * @type {NetworkId}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'networkId': NetworkId;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'contractAddress': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'tokenId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'transactionHash': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'etherSpent': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'gasFee': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'etherSpentJPY'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'gasFeeJPY'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'transactionDate': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'walletAddress'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'rateJPY'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'contractName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'symbol'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseData
+     */
+    'pdfDownloadUrl': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetInvoiceDataById200ResponseDataAllOf
+ */
+export interface GetInvoiceDataById200ResponseDataAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInvoiceDataById200ResponseDataAllOf
+     */
+    'pdfDownloadUrl': string | null;
 }
 /**
  * 
