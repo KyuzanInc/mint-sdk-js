@@ -86,12 +86,14 @@ export type Item = {
    * 4 === Ethereum Rinkeby Network
    * 137 ===  Polygon Main Network
    * 80001 === Matic Mumbai Network
+   * 80002 === Matic Amoy Network
    *
    * Itemが所属するネットワーク
    * 1 === Ethereum メインネットワーク
    * 4 === Ethereum Rinkebyネットワーク
    * 137 ===  Polygon メインネットワーク
    * 80001 === Matic Mumbaiネットワーク
+   * 80002 === Matic Amoy Network
    */
   networkId: NetworkId
   /**

@@ -148,6 +148,10 @@ export class MintSDK {
       return `https://testnets.opensea.io/assets/matic/${contractAddress}/${tokenId}`
     }
 
+    if (networkId === 80002) {
+      return `https://testnets.opensea.io/assets/matic/${contractAddress}/${tokenId}`
+    }
+
     return ''
   }
 
@@ -179,6 +183,10 @@ export class MintSDK {
     }
 
     if (arg.networkId === 80001) {
+      return `https://explorer-mumbai.maticvigil.com/tx/${arg.txHash}`
+    }
+
+    if (arg.networkId === 80002) {
       return `https://explorer-mumbai.maticvigil.com/tx/${arg.txHash}`
     }
 
@@ -1345,7 +1353,7 @@ export class MintSDK {
    * await sdk.addEthereumChain(137)
    * ```
    */
-  public addEthereumChain = async (networkId: 137 | 80001) => {
+  public addEthereumChain = async (networkId: 137 | 80001 | 80002) => {
     if (!(await this.isWalletConnect())) {
       throw new Error('Wallet is not connected')
     }
@@ -1363,7 +1371,7 @@ export class MintSDK {
       iconUrls?: string[] // Currently ignored.
     }
     const NETWORK_ID_MAP_CHAIN_PARAMETER: Record<
-      137 | 80001,
+      137 | 80001 | 80002,
       AddEthereumChainParameter
     > = {
       137: {
@@ -1387,6 +1395,17 @@ export class MintSDK {
         },
         rpcUrls: ['https://rpc-mumbai.matic.today'],
         blockExplorerUrls: ['https://explorer-mumbai.maticvigil.com/'],
+      },
+      80002: {
+        chainId: '0x13882',
+        chainName: 'Mumbai',
+        nativeCurrency: {
+          name: 'MATIC',
+          symbol: 'MATIC',
+          decimals: 18,
+        },
+        rpcUrls: ['https://rpc-amoy.polygon.technology'],
+        blockExplorerUrls: ['https://www.oklink.com/amoy'],
       },
     }
     await this.web3Provider.getProvider().send(

@@ -1988,6 +1988,7 @@ export const NetworkId = {
     NUMBER_4: 4,
     NUMBER_5: 5,
     NUMBER_80001: 80001,
+    NUMBER_80002: 80002,
     NUMBER_137: 137,
     NUMBER_1101: 1101,
     NUMBER_1442: 1442,
