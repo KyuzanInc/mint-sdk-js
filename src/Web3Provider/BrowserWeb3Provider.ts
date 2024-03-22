@@ -153,7 +153,9 @@ export class BrowserWeb3Provider implements IWeb3Provider {
   public async getWalletInfo() {
     const networkId = await this.getConnectedNetworkId()
     const unit: 'MATIC' | 'ETH' =
-      networkId === 137 || networkId === 80001 || networkId === 80002 ? 'MATIC' : 'ETH'
+      networkId === 137 || networkId === 80001 || networkId === 80002
+        ? 'MATIC'
+        : 'ETH'
     const provider = this.ethersProvider
     if (provider === null) throw Error('not wallet connect')
     const accounts = await provider.listAccounts()

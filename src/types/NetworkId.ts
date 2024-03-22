@@ -1,4 +1,14 @@
-export type NetworkId = 1 | 4 | 5 | 80001 | 80002 | 137 | 31337 | 11155111 | 1101 | 1442
+export type NetworkId =
+  | 1
+  | 4
+  | 5
+  | 80001
+  | 80002
+  | 137
+  | 31337
+  | 11155111
+  | 1101
+  | 1442
 export const networkIdMapLabel: Record<NetworkId, string> = {
   1: 'main',
   4: 'rinkeby',
