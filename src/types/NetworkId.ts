@@ -9,6 +9,8 @@ export type NetworkId =
   | 11155111
   | 1101
   | 2442
+  | 42161
+  | 421614
 export const networkIdMapLabel: Record<NetworkId, string> = {
   1: 'main',
   4: 'rinkeby',
@@ -19,5 +21,7 @@ export const networkIdMapLabel: Record<NetworkId, string> = {
   80001: 'maticMumbai',
   80002: 'maticAmoy',
   31337: 'hardhat for test',
+  42161: "Arbitrum One",
+  421614: "Arbitrum Sepolia",
   11155111: 'sepolia',
 }
