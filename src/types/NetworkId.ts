@@ -21,7 +21,7 @@ export const networkIdMapLabel: Record<NetworkId, string> = {
   80001: 'maticMumbai',
   80002: 'maticAmoy',
   31337: 'hardhat for test',
-  42161: "Arbitrum One",
-  421614: "Arbitrum Sepolia",
+  42161: 'Arbitrum One',
+  421614: 'Arbitrum Sepolia',
   11155111: 'sepolia',
 }
