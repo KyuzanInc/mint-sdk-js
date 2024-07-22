@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/babel-plugin": "^11.3.0",
     "@stripe/stripe-js": "^1.22.0",
-    "@toruslabs/torus-embed": "^1.20.2",
+    "@toruslabs/torus-embed": "^2.0.0",
     "@walletconnect/ethereum-provider": "^2.9.0",
     "@walletconnect/modal": "^2.5.9",
     "@walletconnect/web3-provider": "^1.7.1",
